@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>너구리</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; font-family:monospace; }
+canvas { display:block; border:3px solid #333; image-rendering:pixelated; }
+#ctrl { color:#888; font-size:11px; margin-top:8px; text-align:center; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="480" height="520"></canvas>
+<div id="ctrl">← → 이동 &nbsp;|&nbsp; ↑ ↓ 사다리 &nbsp;|&nbsp; SPACE 재시작</div>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const W = 480, H = 520, HUD = 50;
+
+// ── 상수 ──────────────────────────────
+const PSPEED = 2.8, LSPEED = 2.2, GRAV = 0.45, MAX_VY = 9;
+const PW = 22, PH = 26;   // 너구리 크기
+const EW = 26, EH = 20;   // 오리 크기
+
+// ── 플랫폼 & 사다리 ───────────────────
+const FLOORS = [490, 408, 326, 244, 162];
+
+const platforms = FLOORS.map(y => ({ y, x1: 0, x2: W }));
+
+const ladders = [
+  { x:  70, yTop: FLOORS[1], yBottom: FLOORS[0] },
+  { x: 220, yTop: FLOORS[1], yBottom: FLOORS[0] },
+  { x: 390, yTop: FLOORS[1], yBottom: FLOORS[0] },
+  { x: 130, yTop: FLOORS[2], yBottom: FLOORS[1] },
+  { x: 310, yTop: FLOORS[2], yBottom: FLOORS[1] },
+  { x: 450, yTop: FLOORS[2], yBottom: FLOORS[1] },
+  { x:  55, yTop: FLOORS[3], yBottom: FLOORS[2] },
+  { x: 200, yTop: FLOORS[3], yBottom: FLOORS[2] },
+  { x: 380, yTop: FLOORS[3], yBottom: FLOORS[2] },
+  { x: 145, yTop: FLOORS[4], yBottom: FLOORS[3] },
+  { x: 335, yTop: FLOORS[4], yBottom: FLOORS[3] },
+];
+
+// ── 게임 상태 ──────────────────────────
+let score = 0, topScore = 0, lives = 3, stage = 1;
+let gameState = 'title'; // title | playing | clear | over
+
+// ── 플레이어 ───────────────────────────
+let pl = {};
+function resetPlayer() {
+  pl = { x:30, y: FLOORS[0]-PH, vx:0, vy:0, onGround:false, onLadder:false, dir:1, ft:0, inv:0 };
+}
+
+// ── 당근 ───────────────────────────────
+let carrots = [];
+function spawnCarrots() {
+  carrots = [];
+  FLOORS.forEach((fy, fi) => {
+    let step = fi === 0 ? 70 : 60;
+    for (let x = 35; x < W-30; x += step) {
+      let skip = ladders.some(l => Math.abs(x - l.x) < 18 && (l.yTop === fy || l.yBottom === fy));
+      if (!skip) carrots.push({ x, y: fy-15, w:10, h:13, alive:true });
+    }
+  });
+}
+
+// ── 적(오리) ───────────────────────────
+let ducks = [];
+function spawnDucks() {
+  let spd = 1.2 + stage * 0.15;
+  ducks = [
+    { x:260, y: FLOORS[0]-EH, pfi:0, vx:-spd, ft:0, fr:0 },
+    { x: 80, y: FLOORS[1]-EH, pfi:1, vx: spd, ft:0, fr:0 },
+    { x:360, y: FLOORS[2]-EH, pfi:2, vx:-spd, ft:0, fr:0 },
+    { x:160, y: FLOORS[3]-EH, pfi:3, vx: spd, ft:0, fr:0 },
+    { x:100, y: FLOORS[4]-EH, pfi:4, vx:-spd, ft:0, fr:0 },
+  ];
+}
+
+// ── 입력 ───────────────────────────────
+const keys = {};
+window.addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
+  if (e.code === 'Space') handleSpace();
+});
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+function handleSpace() {
+  if (gameState === 'title') { startGame(); }
+  else if (gameState === 'over') { score=0; lives=3; stage=1; startGame(); }
+}
+
+function startGame() {
+  resetPlayer();
+  spawnCarrots();
+  spawnDucks();
+  gameState = 'playing';
+}
+
+// ── 사다리 헬퍼 ────────────────────────
+function getActiveLadder() {
+  let cx = pl.x + PW/2, cy = pl.y + PH/2;
+  for (let l of ladders)
+    if (Math.abs(cx - l.x) < 13 && cy >= l.yTop - 2 && cy <= l.yBottom + 2) return l;
+  return null;
+}
+function findLadderAt(dir) {
+  let cx = pl.x + PW/2, feet = pl.y + PH;
+  for (let l of ladders)
+    if (Math.abs(cx - l.x) < 15) {
+      if (dir === 'up'   && Math.abs(feet - l.yBottom) < 8) return l;
+      if (dir === 'down' && Math.abs(feet - l.yTop)    < 8) return l;
+    }
+  return null;
+}
+
+// ── 업데이트 ───────────────────────────
+function update() {
+  if (gameState !== 'playing') return;
+
+  let L = keys['ArrowLeft']  || keys['KeyA'];
+  let R = keys['ArrowRight'] || keys['KeyD'];
+  let U = keys['ArrowUp']    || keys['KeyW'];
+  let D = keys['ArrowDown']  || keys['KeyS'];
+
+  let prevY = pl.y;
+  let curLad = getActiveLadder();
+
+  // 사다리 올라타기
+  if (!pl.onLadder && pl.onGround) {
+    if (U) { let l = findLadderAt('up');   if (l) { pl.onLadder=true; pl.x=l.x-PW/2; curLad=l; } }
+    if (D) { let l = findLadderAt('down'); if (l) { pl.onLadder=true; pl.x=l.x-PW/2; pl.y+=3; curLad=l; } }
+  }
+
+  if (pl.onLadder && curLad) {
+    pl.vx = 0; pl.vy = 0;
+    if (U)  pl.vy = -LSPEED;
+    if (D)  pl.vy =  LSPEED;
+    if (L || R) pl.onLadder = false;
+
+    pl.y += pl.vy;
+
+    if (pl.y + PH <= curLad.yTop + 1) { pl.y = curLad.yTop - PH; pl.vy=0; pl.onLadder=false; }
+    if (pl.y + PH >= curLad.yBottom)  { pl.y = curLad.yBottom - PH; pl.vy=0; pl.onLadder=false; }
+  } else {
+    pl.onLadder = false;
+    pl.vx = L ? -PSPEED : R ? PSPEED : 0;
+    if (pl.vx > 0) pl.dir = 1;
+    if (pl.vx < 0) pl.dir = -1;
+
+    pl.vy = Math.min(pl.vy + GRAV, MAX_VY);
+    pl.x += pl.vx;
+    pl.y += pl.vy;
+
+    pl.x = Math.max(0, Math.min(W - PW, pl.x));
+
+    // 플랫폼 충돌
+    pl.onGround = false;
+    for (let pf of platforms) {
+      if (pl.x+PW > pf.x1 && pl.x < pf.x2 && pl.vy >= 0) {
+        let pFeet = prevY + PH, cFeet = pl.y + PH;
+        if (pFeet <= pf.y + 1 && cFeet >= pf.y) {
+          pl.y = pf.y - PH; pl.vy = 0; pl.onGround = true; break;
+        }
+      }
+    }
+    if (pl.y < HUD+2) { pl.y = HUD+2; pl.vy = 0; }
+    if (pl.y > H+20)  { loseLife(); return; }
+  }
+
+  pl.ft = (pl.ft + 1) % 24;
+  if (pl.inv > 0) pl.inv--;
+
+  // 오리 업데이트
+  for (let e of ducks) {
+    e.x += e.vx;
+    let pf = platforms[e.pfi];
+    if (e.x < pf.x1 + 4)      { e.x = pf.x1+4; e.vx = Math.abs(e.vx); }
+    if (e.x + EW > pf.x2 - 4) { e.x = pf.x2-EW-4; e.vx = -Math.abs(e.vx); }
+    e.ft = (e.ft+1) % 20;
+    e.fr = Math.floor(e.ft / 10);
+
+    // 충돌
+    if (pl.inv === 0 &&
+        pl.x < e.x+EW-3 && pl.x+PW > e.x+3 &&
+        pl.y < e.y+EH-2 && pl.y+PH > e.y+2) {
+      loseLife(); return;
+    }
+  }
+
+  // 당근 수집
+  for (let c of carrots) {
+    if (!c.alive) continue;
+    if (pl.x < c.x+c.w && pl.x+PW > c.x && pl.y < c.y+c.h && pl.y+PH > c.y) {
+      c.alive = false; score += 10;
+      if (score > topScore) topScore = score;
+    }
+  }
+
+  // 스테이지 클리어
+  if (carrots.every(c => !c.alive)) {
+    gameState = 'clear';
+    setTimeout(() => { stage++; spawnCarrots(); spawnDucks(); resetPlayer(); gameState='playing'; }, 2500);
+  }
+}
+
+function loseLife() {
+  lives--;
+  if (lives <= 0) { if (score > topScore) topScore = score; gameState = 'over'; }
+  else { resetPlayer(); pl.inv = 160; }
+}
+
+// ── 그리기 ─────────────────────────────
+
+function drawBG() {
+  // 하늘
+  ctx.fillStyle = '#000820';
+  ctx.fillRect(0, HUD, W, H-HUD);
+  // 바닥 아래 색
+  ctx.fillStyle = '#001440';
+  ctx.fillRect(0, FLOORS[0], W, H-FLOORS[0]);
+}
+
+function drawPlatforms() {
+  for (let pf of platforms) {
+    for (let x = pf.x1; x < pf.x2; x += 16) {
+      ctx.fillStyle = (Math.floor(x/16)%2===0) ? '#22cc22' : '#119911';
+      ctx.fillRect(x, pf.y, 16, 8);
+    }
+    // 반짝이는 선
+    ctx.fillStyle = '#55ff55';
+    ctx.fillRect(pf.x1, pf.y, pf.x2-pf.x1, 1);
+  }
+}
+
+function drawLadders() {
+  for (let l of ladders) {
+    let h = l.yBottom - l.yTop;
+    ctx.fillStyle = '#cc8800';
+    ctx.fillRect(l.x-7, l.yTop, 3, h);
+    ctx.fillRect(l.x+4, l.yTop, 3, h);
+    ctx.fillStyle = '#ffcc44';
+    for (let y = l.yTop+2; y < l.yBottom; y += 10) {
+      ctx.fillRect(l.x-7, y, 14, 3);
+    }
+  }
+}
+
+function drawCarrot(c) {
+  if (!c.alive) return;
+  // 몸통
+  ctx.fillStyle = '#ff5500';
+  ctx.beginPath();
+  ctx.moveTo(c.x+5, c.y+c.h);
+  ctx.lineTo(c.x,   c.y+4);
+  ctx.lineTo(c.x+10,c.y+4);
+  ctx.closePath(); ctx.fill();
+  // 줄기
+  ctx.fillStyle = '#cc3300';
+  ctx.fillRect(c.x+4, c.y+6, 2, c.h-5);
+  // 잎
+  ctx.fillStyle = '#11aa00';
+  ctx.fillRect(c.x+3, c.y-4, 2, 8);
+  ctx.fillRect(c.x+6, c.y-6, 2, 8);
+  ctx.fillRect(c.x,   c.y-2, 2, 6);
+}
+
+// 너구리 그리기
+function drawRaccoon(x, y, dir, ft, onLad, inv) {
+  if (inv > 0 && Math.floor(inv/7)%2 === 0) return;
+  ctx.save();
+  ctx.translate(x + PW/2, y + PH/2);
+  if (dir < 0) ctx.scale(-1,1);
+  ctx.translate(-PW/2, -PH/2);
+
+  let lf = Math.floor(ft/6) % 4;
+
+  // 꼬리
+  ctx.fillStyle = '#888'; ctx.fillRect(PW, 7, 8, 11);
+  ctx.fillStyle = '#ccc'; ctx.fillRect(PW+1, 9, 4, 2); ctx.fillRect(PW+1, 13, 4, 2);
+
+  // 몸
+  ctx.fillStyle = '#c8a060'; ctx.fillRect(3, 10, 16, 14);
+  ctx.fillStyle = '#e8c888'; ctx.fillRect(7, 13, 8, 9);
+
+  // 다리 (걷기 애니)
+  ctx.fillStyle = '#9a7040';
+  if (onLad) {
+    ctx.fillRect(lf<2?2:5, 22, 6, 6);
+    ctx.fillRect(lf<2?PW-8:PW-11, 22, 6, 6);
+  } else {
+    ctx.fillRect(lf%2===0?3:5, 22, 6, 7);
+    ctx.fillRect(lf%2===0?PW-9:PW-11, 22, 6, 7);
+  }
+
+  // 머리
+  ctx.fillStyle = '#c8a060'; ctx.fillRect(3, 0, 16, 12);
+
+  // 귀
+  ctx.fillStyle = '#c8a060';
+  ctx.fillRect(3, -5, 5, 6); ctx.fillRect(14, -5, 5, 6);
+  ctx.fillStyle = '#ff9999';
+  ctx.fillRect(4, -4, 3, 4); ctx.fillRect(15, -4, 3, 4);
+
+  // 눈 마스크
+  ctx.fillStyle = '#333'; ctx.fillRect(3, 3, 16, 5);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(5, 3, 4, 4); ctx.fillRect(13, 3, 4, 4);
+  ctx.fillStyle = '#111';
+  ctx.fillRect(6, 4, 2, 2); ctx.fillRect(14, 4, 2, 2);
+
+  // 코
+  ctx.fillStyle = '#ff8888'; ctx.fillRect(9, 8, 4, 3);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(9, 9, 1, 1); ctx.fillRect(12, 9, 1, 1);
+
+  ctx.restore();
+}
+
+// 오리 그리기
+function drawDuck(e) {
+  let x = e.x, y = e.y;
+  let dir = e.vx > 0 ? 1 : -1;
+  let lf = e.fr;
+
+  ctx.save();
+  ctx.translate(x + EW/2, y + EH/2);
+  if (dir < 0) ctx.scale(-1,1);
+  ctx.translate(-EW/2, -EH/2);
+
+  // 몸통
+  ctx.fillStyle = '#ffee00';
+  ctx.beginPath();
+  ctx.ellipse(EW/2-2, EH/2+2, 12, 9, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // 날개
+  ctx.fillStyle = '#ddcc00';
+  ctx.beginPath();
+  ctx.ellipse(EW/2-4, EH/2+1, 9, 6, 0.2, 0, Math.PI*2);
+  ctx.fill();
+
+  // 머리
+  ctx.fillStyle = '#ffee00';
+  ctx.beginPath();
+  ctx.ellipse(EW-5, EH/2-4, 8, 7, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // 부리
+  ctx.fillStyle = '#ff8800';
+  ctx.beginPath();
+  ctx.moveTo(EW+2, EH/2-4);
+  ctx.lineTo(EW+9, EH/2-2);
+  ctx.lineTo(EW+2, EH/2);
+  ctx.closePath(); ctx.fill();
+
+  // 눈
+  ctx.fillStyle = '#111';
+  ctx.beginPath(); ctx.arc(EW-2, EH/2-6, 2.5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(EW-1, EH/2-7, 1, 0, Math.PI*2); ctx.fill();
+
+  // 다리
+  ctx.fillStyle = '#ff8800';
+  ctx.fillRect(EW/2-8, EH-1, 4, lf===0?6:4);
+  ctx.fillRect(EW/2,   EH-1, 4, lf===0?4:6);
+  ctx.fillRect(EW/2-10, EH+(lf===0?5:3), 7, 2);
+  ctx.fillRect(EW/2-2,  EH+(lf===0?3:5), 7, 2);
+
+  ctx.restore();
+}
+
+function drawHUD() {
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, HUD);
+
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 13px monospace';
+  ctx.fillText('1 UP', 18, 17);
+  ctx.fillStyle = '#ff4444'; ctx.font = 'bold 15px monospace';
+  ctx.fillText(String(score).padStart(6,'0'), 8, 36);
+
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 13px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('TOP SCORE', W/2, 17);
+  ctx.fillStyle = '#ff4444'; ctx.font = 'bold 15px monospace';
+  ctx.fillText(String(topScore).padStart(6,'0'), W/2, 36);
+  ctx.textAlign = 'left';
+
+  // 스테이지
+  ctx.fillStyle = '#ffff44'; ctx.font = 'bold 12px monospace';
+  ctx.fillText('STAGE '+stage, W-100, 17);
+
+  // 목숨
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px monospace';
+  ctx.fillText('CREDIT', W-100, 36);
+  for (let i = 0; i < lives; i++) {
+    let lx = W-100 + 55 + i*14;
+    ctx.fillStyle = '#c8a060'; ctx.fillRect(lx, 25, 10, 9);
+    ctx.fillStyle = '#333';    ctx.fillRect(lx, 27, 10, 4);
+    ctx.fillStyle = '#fff';    ctx.fillRect(lx+2,27,2,3); ctx.fillRect(lx+6,27,2,3);
+  }
+}
+
+function drawOverlay(title, sub, color) {
+  ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = color; ctx.font = 'bold 38px monospace';
+  ctx.textAlign = 'center'; ctx.fillText(title, W/2, H/2-14);
+  ctx.fillStyle = '#eee'; ctx.font = '17px monospace';
+  ctx.fillText(sub, W/2, H/2+22);
+  ctx.textAlign = 'left';
+}
+
+function draw() {
+  drawBG();
+  drawLadders();
+  drawPlatforms();
+  for (let c of carrots) drawCarrot(c);
+  for (let e of ducks)   drawDuck(e);
+  drawRaccoon(pl.x, pl.y, pl.dir, pl.ft, pl.onLadder, pl.inv);
+  drawHUD();
+
+  if (gameState === 'title') {
+    ctx.fillStyle = 'rgba(0,0,20,0.78)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#ffee00'; ctx.font = 'bold 46px monospace';
+    ctx.textAlign = 'center'; ctx.fillText('너 구 리', W/2, H/2-40);
+    ctx.fillStyle = '#aaffaa'; ctx.font = '17px monospace';
+    ctx.fillText('오리를 피해 당근을 모두 모아라!', W/2, H/2+10);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('SPACE 키로 시작', W/2, H/2+48);
+    ctx.textAlign = 'left';
+  }
+  if (gameState === 'clear') drawOverlay('STAGE CLEAR!', '다음 스테이지 준비중...', '#ffff00');
+  if (gameState === 'over')  drawOverlay('GAME OVER', 'SPACE 키로 재시작', '#ff3333');
+}
+
+// ── 게임 루프 ──────────────────────────
+function loop() { update(); draw(); requestAnimationFrame(loop); }
+
+resetPlayer();
+spawnCarrots();
+spawnDucks();
+loop();
+</script>
+</body>
+</html>

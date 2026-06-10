@@ -267,6 +267,33 @@
     }
     .tetris-btn:hover { background: #5b21b6; transform: scale(1.08); }
 
+    /* ── 너구리 버튼 ── */
+    .nookrigi-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 156px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #0e7c4a;
+      color: #fff;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(14,124,74,0.5);
+      transition: background 0.15s, transform 0.12s;
+      z-index: 100;
+      line-height: 1.3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .nookrigi-btn:hover { background: #0a5c37; transform: scale(1.08); }
+
     /* ── 모달 오버레이 ── */
     .modal-overlay {
       display: none;
@@ -560,6 +587,21 @@
     &copy; 2026 홈앤쇼핑 &middot; 내부 포탈
   </footer>
 
+  <!-- 너구리 버튼 -->
+  <button class="nookrigi-btn" onclick="openNookrigi()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <!-- 너구리 얼굴 -->
+      <circle cx="12" cy="11" r="8" fill="white" fill-opacity="0.85"/>
+      <rect x="7" y="9" width="10" height="4" rx="1" fill="white" fill-opacity="0.3"/>
+      <circle cx="9.5" cy="10" r="1.5" fill="white"/>
+      <circle cx="14.5" cy="10" r="1.5" fill="white"/>
+      <circle cx="10" cy="10.5" r="0.7" fill="#111"/>
+      <circle cx="15" cy="10.5" r="0.7" fill="#111"/>
+      <ellipse cx="12" cy="13" rx="2" ry="1" fill="white" fill-opacity="0.5"/>
+    </svg>
+    <span>GAME<br/>너구리</span>
+  </button>
+
   <!-- 테트리스 버튼 -->
   <button class="tetris-btn" onclick="openTetris()">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -616,6 +658,14 @@
       window.open('https://m.hnsmall.com/main','mobile_shop',
         'width='+w+',height='+h+',left='+left+',top='+top+
         ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no');
+    }
+    function openNookrigi() {
+      var w=510, h=600;
+      var left=Math.round((screen.width-w)/2);
+      var top=Math.round((screen.height-h)/2);
+      window.open('nookrigi.html','nookrigi_game',
+        'width='+w+',height='+h+',left='+left+',top='+top+
+        ',resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no');
     }
     function openTetris() {
       var w = 520, h = 680;
