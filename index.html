@@ -116,9 +116,10 @@
     .bg-coral  { background: #fff4f0; }
     .bg-slate  { background: #f1f5f9; }
 
-    /* 전자계약 어드민을 전자계약 사이트 아래(3열)에 배치 */
-    .grid .card:nth-child(10) {
-      grid-column: 3;
+    /* 빈 자리 채우기 */
+    .grid-spacer {
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .card-label {
@@ -379,6 +380,8 @@
         <span class="card-label">전자계약<br/>사이트</span>
       </a>
 
+      <div class="grid-spacer"></div>
+      <div class="grid-spacer"></div>
       <!-- 10. 전자계약 어드민 -->
       <a class="card" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener">
         <div class="icon-wrap bg-slate">
