@@ -240,6 +240,33 @@
     }
     .info-btn:hover { background: #c8001f; transform: scale(1.08); }
 
+    /* ── 테트리스 버튼 ── */
+    .tetris-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 88px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #6d28d9;
+      color: #fff;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(109,40,217,0.4);
+      transition: background 0.15s, transform 0.12s;
+      z-index: 100;
+      line-height: 1.3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .tetris-btn:hover { background: #5b21b6; transform: scale(1.08); }
+
     /* ── 모달 오버레이 ── */
     .modal-overlay {
       display: none;
@@ -502,6 +529,18 @@
     &copy; 2026 홈앤쇼핑 &middot; 내부 포탈
   </footer>
 
+  <!-- 테트리스 버튼 -->
+  <button class="tetris-btn" onclick="openTetris()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <!-- 테트로미노 블록 모양 (L자) -->
+      <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white"/>
+      <rect x="3" y="12" width="7" height="7" rx="1.5" fill="white" fill-opacity="0.7"/>
+      <rect x="12" y="12" width="7" height="7" rx="1.5" fill="white" fill-opacity="0.5"/>
+      <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" fill-opacity="0.3"/>
+    </svg>
+    <span>GAME</span>
+  </button>
+
   <!-- info 버튼 -->
   <button class="info-btn" onclick="document.getElementById('infoModal').classList.add('open')">log-in<br/>info</button>
 
@@ -538,5 +577,15 @@
     </div>
   </div>
 
+  <script>
+    function openTetris() {
+      var w = 520, h = 680;
+      var left = Math.round((screen.width  - w) / 2);
+      var top  = Math.round((screen.height - h) / 2);
+      window.open('tetris.html', 'tetris_game',
+        'width='+w+',height='+h+',left='+left+',top='+top+
+        ',resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no');
+    }
+  </script>
 </body>
 </html>
