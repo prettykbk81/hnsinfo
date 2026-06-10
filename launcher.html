@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>홈앤쇼핑 포탈 런처</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 24px;
+    }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: #e8192c;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text {
+      font-size: 26px;
+      font-weight: 700;
+      color: #222;
+    }
+    .logo-text span { color: #e8192c; }
+
+    .btn {
+      background: #e8192c;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 48px;
+      font-size: 17px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: -0.3px;
+      box-shadow: 0 4px 16px rgba(232,25,44,0.3);
+      transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+    }
+    .btn:hover {
+      background: #c8001f;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(232,25,44,0.38);
+    }
+    .btn:active { transform: translateY(0); }
+
+    .notice {
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-wrap">
+    <div class="logo-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M4 10h20M4 18h20M14 4v20" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="14" cy="14" r="11" stroke="white" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <span class="logo-text">홈<span>&amp;</span>쇼핑 포탈</span>
+  </div>
+
+  <button class="btn" onclick="openPortal()">포탈 열기</button>
+
+  <p class="notice">버튼을 클릭하면 포탈이 새 창으로 열립니다.</p>
+
+  <script>
+    function openPortal() {
+      var W = 560, H = 720;
+      var left = Math.round((screen.width  - W) / 2);
+      var top  = Math.round((screen.height - H) / 2);
+      var opts = 'width=' + W + ',height=' + H +
+                 ',left=' + left + ',top=' + top +
+                 ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,status=no';
+      window.open('portal.html', 'hns_portal', opts);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>홈앤쇼핑 포탈</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      width: 100%;
+      background: #e8192c;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    }
+
+    .header-logo {
+      width: 36px;
+      height: 36px;
+    }
+
+    .header-title {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header-title span {
+      color: #ffd0d5;
+    }
+
+    /* ── 메인 카드 영역 ── */
+    .main {
+      width: 100%;
+      max-width: 560px;
+      padding: 30px 20px 40px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* ── 개별 카드 ── */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1.5px solid #e8e8e8;
+      padding: 20px 10px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: box-shadow 0.15s, transform 0.12s, border-color 0.15s;
+      user-select: none;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 18px rgba(232, 25, 44, 0.18);
+      border-color: #e8192c;
+      transform: translateY(-2px);
+    }
+
+    .card:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(232, 25, 44, 0.12);
+    }
+
+    /* ── 아이콘 원 ── */
+    .icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .icon-wrap svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    /* 배경 색 테마 */
+    .bg-red    { background: #fff0f1; }
+    .bg-orange { background: #fff5ec; }
+    .bg-purple { background: #f3f0ff; }
+    .bg-blue   { background: #eff6ff; }
+    .bg-green  { background: #f0fdf4; }
+    .bg-teal   { background: #f0fdfa; }
+    .bg-pink   { background: #fdf2f8; }
+    .bg-indigo { background: #eef2ff; }
+    .bg-amber  { background: #fffbeb; }
+    .bg-coral  { background: #fff4f0; }
+    .bg-slate  { background: #f1f5f9; }
+
+    /* 빈 자리 채우기 */
+    .grid-spacer {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .card-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+
+    /* 배지 (선택 사항) */
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #e8192c;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 1px 4px;
+    }
+
+    /* ── 푸터 ── */
+    .footer {
+      margin-top: auto;
+      padding: 16px;
+      color: #aaa;
+      font-size: 11px;
+    }
+
+    /* ── info 버튼 ── */
+    .info-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e8192c;
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(232,25,44,0.35);
+      transition: background 0.15s, transform 0.12s;
+      z-index: 100;
+    }
+    .info-btn:hover { background: #c8001f; transform: scale(1.08); }
+
+    /* ── 모달 오버레이 ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 32px;
+      min-width: 280px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      position: relative;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e8192c;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid #f0f0f0;
+      margin: 16px 0;
+    }
+
+    .modal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .modal-table tr + tr td { padding-top: 10px; }
+    .modal-table td:first-child {
+      color: #888;
+      font-weight: 600;
+      width: 36px;
+      padding-right: 12px;
+    }
+    .modal-table td:last-child {
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #aaa;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #333; }
+  </style>
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header class="header">
+    <!-- 홈앤쇼핑 로고 SVG -->
+    <svg class="header-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="8" fill="white" fill-opacity="0.2"/>
+      <path d="M7 14h22M7 22h22" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M18 8v20" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="18" cy="18" r="10" stroke="white" stroke-width="1.5"/>
+    </svg>
+    <span class="header-title">홈<span>&amp;</span>쇼핑 포탈</span>
+  </header>
+
+  <!-- 메인 그리드 -->
+  <main class="main">
+    <div class="grid">
+
+      <!-- 1. H&S콜판 -->
+      <a class="card" href="http://sc.hnsmall.com/" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-red">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 11a9 9 0 1 1 18 0" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
+            <rect x="2" y="11" width="4" height="6" rx="2" fill="#e8192c"/>
+            <rect x="18" y="11" width="4" height="6" rx="2" fill="#e8192c"/>
+            <path d="M21 17v1a4 4 0 0 1-4 4h-3" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="13" cy="22" r="1.5" fill="#e8192c"/>
+          </svg>
+        </div>
+        <span class="card-label">H&amp;S콜판</span>
+      </a>
+
+      <!-- 2. H&S뉴콜판 -->
+      <a class="card" href="http://172.16.16.92:8080/html/realtime_order_h_accum.html" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-orange">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="2,18 8,12 13,15 22,6" stroke="#f97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="22" cy="6" r="2" fill="#f97316"/>
+            <line x1="2" y1="21" x2="22" y2="21" stroke="#f97316" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span class="badge">NEW</span>
+        </div>
+        <span class="card-label">H&amp;S뉴콜판</span>
+      </a>
+
+      <!-- 3. PRISM 인사이트 포탈 -->
+      <a class="card" href="https://shoppinga-ai.hns.tv/" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-purple">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="3" fill="#7c3aed"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-label">PRISM<br/>인사이트 포탈</span>
+      </a>
+
+      <!-- 4. 스팟파이어 -->
+      <a class="card" href="http://sf-web.hns.tv/spotfire/ui/library/browse/174ecefb-6ee3-4cdd-ad03-d1f7249ca66a" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-blue">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C9 6 7 8.5 7 11a5 5 0 0 0 10 0c0-2.5-2-5-5-9z" fill="#2563eb" fill-opacity="0.85"/>
+            <path d="M12 14c-1.5 0-2.5-1-2.5-2.2 0-1 .8-2 1.5-2.8.7.8 1.5 1.8 1.5 2.8C12.5 13 11.5 14 12 14z" fill="#fff" fill-opacity="0.7"/>
+            <rect x="6" y="19" width="12" height="2" rx="1" fill="#2563eb"/>
+          </svg>
+        </div>
+        <span class="card-label">스팟파이어</span>
+      </a>
+
+      <!-- 5. KT GSI -->
+      <a class="card" href="https://mbs.kt.com/home/homeMain" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-teal">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="9" stroke="#0d9488" stroke-width="2"/>
+            <ellipse cx="12" cy="12" rx="4" ry="9" stroke="#0d9488" stroke-width="1.5"/>
+            <line x1="3" y1="12" x2="21" y2="12" stroke="#0d9488" stroke-width="1.5"/>
+            <line x1="5" y1="7" x2="19" y2="7" stroke="#0d9488" stroke-width="1" stroke-linecap="round"/>
+            <line x1="5" y1="17" x2="19" y2="17" stroke="#0d9488" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-label">KT GSI</span>
+      </a>
+
+      <!-- 6. OLAP -->
+      <a class="card" href="https://olap.hns.tv/editds/portal" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-amber">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="12" width="4" height="9" rx="1" fill="#d97706"/>
+            <rect x="8" y="8" width="4" height="13" rx="1" fill="#d97706"/>
+            <rect x="14" y="4" width="4" height="17" rx="1" fill="#d97706"/>
+            <rect x="20" y="7" width="2" height="14" rx="1" fill="#d97706" fill-opacity="0.4"/>
+            <path d="M2 10l4-3 4 2 4-4 4 2" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="card-label">OLAP</span>
+      </a>
+
+      <!-- 7. 홈쇼핑모아 -->
+      <a class="card" href="https://hsmoa.com/" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-green">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" stroke="#16a34a" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="3" y1="6" x2="21" y2="6" stroke="#16a34a" stroke-width="2"/>
+            <path d="M16 10a4 4 0 0 1-8 0" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-label">홈쇼핑모아</span>
+      </a>
+
+      <!-- 8. 라방바 -->
+      <a class="card" href="https://live.ecomm-data.com/" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-coral">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="7" width="13" height="10" rx="2" stroke="#ea4c2a" stroke-width="2"/>
+            <path d="M15 10.5l5-3v9l-5-3v-3z" fill="#ea4c2a"/>
+            <circle cx="6" cy="4" r="1.2" fill="#ea4c2a"/>
+            <circle cx="12" cy="4" r="1.2" fill="#ea4c2a" fill-opacity="0.5"/>
+            <circle cx="18" cy="4" r="1.2" fill="#ea4c2a" fill-opacity="0.25"/>
+          </svg>
+          <span class="badge">LIVE</span>
+        </div>
+        <span class="card-label">라방바</span>
+      </a>
+
+      <!-- 9. 전자계약 사이트 -->
+      <a class="card" href="https://ecs.hnsmall.com/web/mainForm.do" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-indigo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="14,2 14,8 20,8" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="7" y1="13" x2="17" y2="13" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="7" y1="17" x2="13" y2="17" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M9 10l1.5 1.5L13 8" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="card-label">전자계약<br/>사이트</span>
+      </a>
+
+      <div class="grid-spacer"></div>
+      <div class="grid-spacer"></div>
+      <!-- 10. 전자계약 어드민 -->
+      <a class="card" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-slate">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="3" stroke="#475569" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#475569" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="card-label">전자계약<br/>어드민</span>
+      </a>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 홈앤쇼핑 &middot; 내부 포탈
+  </footer>
+
+  <!-- info 버튼 -->
+  <button class="info-btn" onclick="document.getElementById('infoModal').classList.add('open')">info</button>
+
+  <!-- info 모달 -->
+  <div class="modal-overlay" id="infoModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('infoModal').classList.remove('open')">&times;</button>
+
+      <div class="modal-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#e8192c" stroke-width="2"/>
+          <path d="M12 8v4M12 16h.01" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        스팟파이어 접속 정보
+      </div>
+      <table class="modal-table">
+        <tr><td>ID</td><td>hnsadmin</td></tr>
+        <tr><td>PW</td><td>ghados!23</td></tr>
+      </table>
+
+      <hr class="modal-divider"/>
+
+      <div class="modal-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#e8192c" stroke-width="2"/>
+          <path d="M12 8v4M12 16h.01" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        라방바 접속 정보
+      </div>
+      <table class="modal-table">
+        <tr><td>ID</td><td>idea@hnsmall.com</td></tr>
+        <tr><td>PW</td><td>hnsmall!01</td></tr>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>
