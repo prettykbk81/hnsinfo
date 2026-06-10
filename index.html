@@ -143,6 +143,89 @@
       color: #aaa;
       font-size: 11px;
     }
+
+    /* ── info 버튼 ── */
+    .info-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e8192c;
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(232,25,44,0.35);
+      transition: background 0.15s, transform 0.12s;
+      z-index: 100;
+    }
+    .info-btn:hover { background: #c8001f; transform: scale(1.08); }
+
+    /* ── 모달 오버레이 ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 32px;
+      min-width: 280px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      position: relative;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e8192c;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .modal-table tr + tr td { padding-top: 10px; }
+    .modal-table td:first-child {
+      color: #888;
+      font-weight: 600;
+      width: 36px;
+      padding-right: 12px;
+    }
+    .modal-table td:last-child {
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #aaa;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #333; }
   </style>
 </head>
 <body>
@@ -294,6 +377,33 @@
   <footer class="footer">
     &copy; 2026 홈앤쇼핑 &middot; 내부 포탈
   </footer>
+
+  <!-- info 버튼 -->
+  <button class="info-btn" onclick="document.getElementById('infoModal').classList.add('open')">info</button>
+
+  <!-- info 모달 -->
+  <div class="modal-overlay" id="infoModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('infoModal').classList.remove('open')">&times;</button>
+      <div class="modal-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#e8192c" stroke-width="2"/>
+          <path d="M12 8v4M12 16h.01" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        스팟파이어 접속 정보
+      </div>
+      <table class="modal-table">
+        <tr>
+          <td>ID</td>
+          <td>hnsadmin</td>
+        </tr>
+        <tr>
+          <td>PW</td>
+          <td>ghados!23</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
 </body>
 </html>
