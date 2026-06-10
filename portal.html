@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>홈앤쇼핑 포탈</title>
+  <meta name="updated" content="2026-06-10">
   <style>
     * {
       margin: 0;
@@ -116,11 +117,71 @@
     .bg-coral  { background: #fff4f0; }
     .bg-slate  { background: #f1f5f9; }
 
-    /* 빈 자리 채우기 */
-    .grid-spacer {
-      visibility: hidden;
-      pointer-events: none;
+    /* ── 분할 카드 (전자계약) ── */
+    .split-card {
+      padding: 0 !important;
+      overflow: hidden;
+      position: relative;
+      min-height: 110px;
+      gap: 0;
     }
+    .split-card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: #e8e8e8;
+    }
+    .split-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom right,
+        transparent calc(50% - 1.5px),
+        #d0d0d0 calc(50% - 1.5px),
+        #d0d0d0 calc(50% + 1.5px),
+        transparent calc(50% + 1.5px)
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+    .split-web, .split-admin {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: filter 0.15s;
+    }
+    .split-web {
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+      background: #eef2ff;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 12px 0 0 12px;
+      gap: 4px;
+    }
+    .split-admin {
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      background: #f1f5f9;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding: 0 12px 10px 0;
+      gap: 4px;
+    }
+    .split-web:hover  { filter: brightness(0.93); }
+    .split-admin:hover { filter: brightness(0.93); }
+    .split-web svg, .split-admin svg { width: 22px; height: 22px; }
+    .split-label {
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: left;
+    }
+    .split-web .split-label  { color: #4338ca; }
+    .split-admin .split-label { color: #475569; text-align: right; }
+
+    /* BOS 4번째 줄 가운데 */
+    .card-bos { grid-column: 2; }
 
     .card-label {
       font-size: 12.5px;
@@ -366,31 +427,37 @@
         <span class="card-label">라방바</span>
       </a>
 
-      <!-- 9. 전자계약 사이트 -->
-      <a class="card" href="https://ecs.hnsmall.com/web/mainForm.do" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-indigo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- 9. 전자계약 (대각선 분할 카드) -->
+      <div class="card split-card">
+        <!-- 위 삼각형: WEB -->
+        <a class="split-web" href="https://ecs.hnsmall.com/web/mainForm.do" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
             <polyline points="14,2 14,8 20,8" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
-            <line x1="7" y1="13" x2="17" y2="13" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="7" y1="17" x2="13" y2="17" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
             <path d="M9 10l1.5 1.5L13 8" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </div>
-        <span class="card-label">전자계약<br/>사이트</span>
-      </a>
-
-      <div class="grid-spacer"></div>
-      <div class="grid-spacer"></div>
-      <!-- 10. 전자계약 어드민 -->
-      <a class="card" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-slate">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <span class="split-label">전자계약<br/>WEB</span>
+        </a>
+        <!-- 아래 삼각형: 어드민 -->
+        <a class="split-admin" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener">
+          <span class="split-label">전자계약<br/>어드민</span>
+          <svg viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="3" stroke="#475569" stroke-width="2"/>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#475569" stroke-width="2"/>
           </svg>
+        </a>
+      </div>
+
+      <!-- 10. BOS (4번째 줄 가운데) -->
+      <a class="card card-bos" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="background:#fff7ed;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#ea580c" stroke-width="2"/>
+            <path d="M8 21h8M12 17v4" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 7h4M6 11h8M14 7h4" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
         </div>
-        <span class="card-label">전자계약<br/>어드민</span>
+        <span class="card-label">BOS</span>
       </a>
 
     </div>
