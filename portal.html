@@ -180,8 +180,13 @@
     .split-web .split-label  { color: #4338ca; }
     .split-admin .split-label { color: #475569; text-align: right; }
 
-    /* BOS 4번째 줄 가운데 */
-    .card-bos { grid-column: 2; }
+    /* 방송심의 URL 미정 안내 */
+    .card-pending { opacity: 0.75; cursor: default; }
+    .card-pending:hover { transform: none; box-shadow: none; border-color: #e8e8e8; }
+    .pending-badge {
+      font-size: 9px; font-weight: 700; color: #aaa;
+      background: #f0f0f0; border-radius: 6px; padding: 1px 5px;
+    }
 
     .card-label {
       font-size: 12.5px;
@@ -448,8 +453,23 @@
         </a>
       </div>
 
-      <!-- 10. BOS (4번째 줄 가운데) -->
-      <a class="card card-bos" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
+      <!-- 10. 그룹웨어 -->
+      <a class="card" href="https://gw.hnsmall.com/GWIndex/" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="background:#fff0f1;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 좌측 빨간 사이드바 -->
+            <rect x="2" y="2" width="7" height="20" rx="2" fill="#e8192c"/>
+            <!-- 우측 상단 카드 -->
+            <rect x="11" y="2" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
+            <!-- 우측 하단 카드 -->
+            <rect x="11" y="13" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="card-label">그룹웨어</span>
+      </a>
+
+      <!-- 11. BOS -->
+      <a class="card" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
         <div class="icon-wrap" style="background:#fff7ed;">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="3" width="20" height="14" rx="2" stroke="#ea580c" stroke-width="2"/>
@@ -459,6 +479,24 @@
         </div>
         <span class="card-label">BOS</span>
       </a>
+
+      <!-- 12. 방송심의 (URL 추후 등록) -->
+      <div class="card card-pending">
+        <div class="icon-wrap" style="background:#f0fdf4; position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- TV 화면 -->
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#16a34a" stroke-width="2"/>
+            <!-- 안테나 -->
+            <path d="M8 3L12 1l4 2" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- 스탠드 -->
+            <path d="M8 17v3M16 17v3M6 20h12" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round"/>
+            <!-- 체크 (심의 완료) -->
+            <path d="M8 10l3 3 5-5" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="position:absolute;top:-4px;right:-4px;background:#f59e0b;color:#fff;font-size:8px;font-weight:700;border-radius:6px;padding:1px 4px;">준비중</span>
+        </div>
+        <span class="card-label">방송심의</span>
+      </div>
 
     </div>
   </main>
