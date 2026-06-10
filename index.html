@@ -51,13 +51,13 @@
     /* ── 메인 카드 영역 ── */
     .main {
       width: 100%;
-      max-width: 740px;
+      max-width: 920px;
       padding: 30px 20px 40px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 14px;
     }
 
@@ -354,7 +354,27 @@
   <main class="main">
     <div class="grid">
 
-      <!-- 1. H&S콜판 -->
+      <!-- ── 1행: 그룹웨어, BOS, H&S콜판, H&S뉴콜판, PRISM ── -->
+      <a class="card" href="https://gw.hnsmall.com/GWIndex/" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="background:#fff0f1;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="7" height="20" rx="2" fill="#e8192c"/>
+            <rect x="11" y="2" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
+            <rect x="11" y="13" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="card-label">그룹웨어</span>
+      </a>
+      <a class="card" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="background:#fff7ed;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#ea580c" stroke-width="2"/>
+            <path d="M8 21h8M12 17v4" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 7h4M6 11h8M14 7h4" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-label">BOS</span>
+      </a>
       <a class="card" href="http://sc.hnsmall.com/" target="_blank" rel="noopener">
         <div class="icon-wrap bg-red">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -367,8 +387,6 @@
         </div>
         <span class="card-label">H&amp;S콜판</span>
       </a>
-
-      <!-- 2. H&S뉴콜판 -->
       <a class="card" href="http://172.16.16.92:8080/html/realtime_order_h_accum.html" target="_blank" rel="noopener">
         <div class="icon-wrap bg-orange">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -380,8 +398,6 @@
         </div>
         <span class="card-label">H&amp;S뉴콜판</span>
       </a>
-
-      <!-- 3. PRISM 인사이트 포탈 -->
       <a class="card" href="https://shoppinga-ai.hns.tv/" target="_blank" rel="noopener">
         <div class="icon-wrap bg-purple">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -393,7 +409,71 @@
         <span class="card-label">PRISM<br/>인사이트 포탈</span>
       </a>
 
-      <!-- 4. 스팟파이어 -->
+      <!-- ── 2행: 홈앤쇼핑WEB, 홈앤쇼핑모바일, 입점시스템, 전자계약, Live방송심의 ── -->
+      <a class="card" href="https://www.hnsmall.com/index.do" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-indigo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="3" width="20" height="18" rx="3" stroke="#4338ca" stroke-width="2"/>
+            <line x1="2" y1="8" x2="22" y2="8" stroke="#4338ca" stroke-width="2"/>
+            <circle cx="6" cy="5.5" r="1" fill="#4338ca"/>
+            <circle cx="10" cy="5.5" r="1" fill="#4338ca"/>
+            <circle cx="14" cy="5.5" r="1" fill="#4338ca"/>
+            <path d="M7 13h10M7 17h6" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-label">홈앤쇼핑<br/>(WEB)</span>
+      </a>
+      <a class="card" href="https://m.hnsmall.com/main" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-amber">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="2" width="14" height="20" rx="3" stroke="#d97706" stroke-width="2"/>
+            <line x1="9" y1="6" x2="15" y2="6" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="12" cy="19" r="1.2" fill="#d97706"/>
+            <path d="M9 10h6M9 13h4" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-label">홈앤쇼핑<br/>(모바일)</span>
+      </a>
+      <a class="card" href="https://join.hnsmall.com/main" target="_blank" rel="noopener">
+        <div class="icon-wrap bg-pink">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#db2777" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="9,22 9,12 15,12 15,22" stroke="#db2777" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="card-label">입점시스템</span>
+      </a>
+      <div class="card split-card">
+        <a class="split-web" href="https://ecs.hnsmall.com/web/mainForm.do" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="14,2 14,8 20,8" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 10l1.5 1.5L13 8" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="split-label">전자계약<br/>WEB</span>
+        </a>
+        <a class="split-admin" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener">
+          <span class="split-label">전자계약<br/>어드민</span>
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="3" stroke="#475569" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#475569" stroke-width="2"/>
+          </svg>
+        </a>
+      </div>
+      <a class="card" href="https://ai-review.hns.tv/" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="background:#f0fdf4; position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#16a34a" stroke-width="2"/>
+            <path d="M8 3L12 1l4 2" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 17v3M16 17v3M6 20h12" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M8 10l3 3 5-5" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="position:absolute;top:-4px;right:-4px;background:#e8192c;color:#fff;font-size:8px;font-weight:700;border-radius:6px;padding:1px 4px;">Beta</span>
+        </div>
+        <span class="card-label">Live 방송심의</span>
+      </a>
+
+      <!-- ── 3행: 스팟파이어, KT GSI, OLAP, 홈쇼핑모아, 라방바 ── -->
       <a class="card" href="http://sf-web.hns.tv/spotfire/ui/library/browse/174ecefb-6ee3-4cdd-ad03-d1f7249ca66a" target="_blank" rel="noopener">
         <div class="icon-wrap bg-blue">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -404,8 +484,6 @@
         </div>
         <span class="card-label">스팟파이어</span>
       </a>
-
-      <!-- 5. KT GSI -->
       <a class="card" href="https://mbs.kt.com/home/homeMain" target="_blank" rel="noopener">
         <div class="icon-wrap bg-teal">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -418,8 +496,6 @@
         </div>
         <span class="card-label">KT GSI</span>
       </a>
-
-      <!-- 6. OLAP -->
       <a class="card" href="https://olap.hns.tv/editds/portal" target="_blank" rel="noopener">
         <div class="icon-wrap bg-amber">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -432,8 +508,6 @@
         </div>
         <span class="card-label">OLAP</span>
       </a>
-
-      <!-- 7. 홈쇼핑모아 -->
       <a class="card" href="https://hsmoa.com/" target="_blank" rel="noopener">
         <div class="icon-wrap bg-green">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -444,8 +518,6 @@
         </div>
         <span class="card-label">홈쇼핑모아</span>
       </a>
-
-      <!-- 8. 라방바 -->
       <a class="card" href="https://live.ecomm-data.com/" target="_blank" rel="noopener">
         <div class="icon-wrap bg-coral">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -460,69 +532,7 @@
         <span class="card-label">라방바</span>
       </a>
 
-      <!-- 9. 전자계약 (대각선 분할 카드) -->
-      <div class="card split-card">
-        <!-- 위 삼각형: WEB -->
-        <a class="split-web" href="https://ecs.hnsmall.com/web/mainForm.do" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
-            <polyline points="14,2 14,8 20,8" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M9 10l1.5 1.5L13 8" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="split-label">전자계약<br/>WEB</span>
-        </a>
-        <!-- 아래 삼각형: 어드민 -->
-        <a class="split-admin" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener">
-          <span class="split-label">전자계약<br/>어드민</span>
-          <svg viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="3" stroke="#475569" stroke-width="2"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#475569" stroke-width="2"/>
-          </svg>
-        </a>
-      </div>
-
-      <!-- 10. 그룹웨어 -->
-      <a class="card" href="https://gw.hnsmall.com/GWIndex/" target="_blank" rel="noopener">
-        <div class="icon-wrap" style="background:#fff0f1;">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- 좌측 빨간 사이드바 -->
-            <rect x="2" y="2" width="7" height="20" rx="2" fill="#e8192c"/>
-            <!-- 우측 상단 카드 -->
-            <rect x="11" y="2" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
-            <!-- 우측 하단 카드 -->
-            <rect x="11" y="13" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
-          </svg>
-        </div>
-        <span class="card-label">그룹웨어</span>
-      </a>
-
-      <!-- 11. BOS -->
-      <a class="card" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
-        <div class="icon-wrap" style="background:#fff7ed;">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#ea580c" stroke-width="2"/>
-            <path d="M8 21h8M12 17v4" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/>
-            <path d="M6 7h4M6 11h8M14 7h4" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="card-label">BOS</span>
-      </a>
-
-      <!-- 12. Live 방송심의(Beta) -->
-      <a class="card" href="https://ai-review.hns.tv/" target="_blank" rel="noopener">
-        <div class="icon-wrap" style="background:#f0fdf4; position:relative;">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#16a34a" stroke-width="2"/>
-            <path d="M8 3L12 1l4 2" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 17v3M16 17v3M6 20h12" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M8 10l3 3 5-5" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span style="position:absolute;top:-4px;right:-4px;background:#e8192c;color:#fff;font-size:8px;font-weight:700;border-radius:6px;padding:1px 4px;">Beta</span>
-        </div>
-        <span class="card-label">Live 방송심의</span>
-      </a>
-
-      <!-- 13. EDU -->
+      <!-- ── 4행: EDU, 클라썸, 팀즈 ── -->
       <a class="card" href="https://hnsmall.hunet.co.kr/edu/Login/LoginGate" target="_blank" rel="noopener">
         <div class="icon-wrap" style="background:#fefce8;">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -534,8 +544,6 @@
         </div>
         <span class="card-label">EDU</span>
       </a>
-
-      <!-- 14. 클라썸 -->
       <a class="card" href="https://www.classum.com/main/org/hnsmall/home" target="_blank" rel="noopener">
         <div class="icon-wrap" style="background:#ecfdf5;">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -547,8 +555,6 @@
         </div>
         <span class="card-label">클라썸</span>
       </a>
-
-      <!-- 15. 팀즈 -->
       <a class="card" href="https://teams.cloud.microsoft/" target="_blank" rel="noopener">
         <div class="icon-wrap" style="background:#f5f3ff;">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -560,45 +566,6 @@
           </svg>
         </div>
         <span class="card-label">팀즈</span>
-      </a>
-
-      <!-- 16. 입점시스템 -->
-      <a class="card" href="https://join.hnsmall.com/main" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-pink">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#db2777" stroke-width="2" stroke-linejoin="round"/>
-            <polyline points="9,22 9,12 15,12 15,22" stroke="#db2777" stroke-width="2" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="card-label">입점시스템</span>
-      </a>
-
-      <!-- 17. 홈앤쇼핑(WEB) -->
-      <a class="card" href="https://www.hnsmall.com/index.do" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-indigo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="3" width="20" height="18" rx="3" stroke="#4338ca" stroke-width="2"/>
-            <line x1="2" y1="8" x2="22" y2="8" stroke="#4338ca" stroke-width="2"/>
-            <circle cx="6" cy="5.5" r="1" fill="#4338ca"/>
-            <circle cx="10" cy="5.5" r="1" fill="#4338ca"/>
-            <circle cx="14" cy="5.5" r="1" fill="#4338ca"/>
-            <path d="M7 13h10M7 17h6" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="card-label">홈앤쇼핑<br/>(WEB)</span>
-      </a>
-
-      <!-- 18. 홈앤쇼핑(모바일) -->
-      <a class="card" href="https://m.hnsmall.com/main" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-amber">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="5" y="2" width="14" height="20" rx="3" stroke="#d97706" stroke-width="2"/>
-            <line x1="9" y1="6" x2="15" y2="6" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="12" cy="19" r="1.2" fill="#d97706"/>
-            <path d="M9 10h6M9 13h4" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="card-label">홈앤쇼핑<br/>(모바일)</span>
       </a>
 
     </div>
