@@ -354,7 +354,7 @@
   <main class="main">
     <div class="grid">
 
-      <!-- ── 1행: BOS, 그룹웨어, H&S콜판, H&S뉴콜판, PRISM ── -->
+      <!-- ── 1행: BOS, 그룹웨어, H&S콜판+뉴콜판(split), Live방송심의, PRISM ── -->
       <a class="card" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
         <div class="icon-wrap" style="background:#fff7ed;">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -375,28 +375,39 @@
         </div>
         <span class="card-label">그룹웨어</span>
       </a>
-      <a class="card" href="http://sc.hnsmall.com/" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-red">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- H&S콜판 + H&S뉴콜판 분할 카드 -->
+      <div class="card split-card">
+        <a class="split-web" href="http://sc.hnsmall.com/" target="_blank" rel="noopener" style="background:#fff0f1;">
+          <svg viewBox="0 0 24 24" fill="none">
             <path d="M3 11a9 9 0 1 1 18 0" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
             <rect x="2" y="11" width="4" height="6" rx="2" fill="#e8192c"/>
             <rect x="18" y="11" width="4" height="6" rx="2" fill="#e8192c"/>
             <path d="M21 17v1a4 4 0 0 1-4 4h-3" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
             <circle cx="13" cy="22" r="1.5" fill="#e8192c"/>
           </svg>
-        </div>
-        <span class="card-label">H&amp;S콜판</span>
-      </a>
-      <a class="card" href="http://172.16.16.92:8080/html/realtime_order_h_accum.html" target="_blank" rel="noopener">
-        <div class="icon-wrap bg-orange">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <span class="split-label" style="color:#e8192c;">H&amp;S<br/>콜판</span>
+        </a>
+        <a class="split-admin" href="http://172.16.16.92:8080/html/realtime_order_h_accum.html" target="_blank" rel="noopener" style="background:#fff5ec;">
+          <span class="split-label" style="color:#f97316; text-align:right;">H&amp;S<br/>뉴콜판</span>
+          <svg viewBox="0 0 24 24" fill="none">
             <polyline points="2,18 8,12 13,15 22,6" stroke="#f97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="22" cy="6" r="2" fill="#f97316"/>
             <line x1="2" y1="21" x2="22" y2="21" stroke="#f97316" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          <span class="badge">NEW</span>
+        </a>
+      </div>
+      <!-- Live 방송심의 Beta -->
+      <a class="card" href="https://ai-review.hns.tv/" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="background:#f0fdf4; position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#16a34a" stroke-width="2"/>
+            <path d="M8 3L12 1l4 2" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 17v3M16 17v3M6 20h12" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M8 10l3 3 5-5" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="position:absolute;top:-4px;right:-4px;background:#e8192c;color:#fff;font-size:8px;font-weight:700;border-radius:6px;padding:1px 4px;">Beta</span>
         </div>
-        <span class="card-label">H&amp;S뉴콜판</span>
+        <span class="card-label">Live 방송심의</span>
       </a>
       <a class="card" href="https://shoppinga-ai.hns.tv/" target="_blank" rel="noopener">
         <div class="icon-wrap bg-purple">
