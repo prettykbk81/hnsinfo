@@ -146,9 +146,6 @@
     }
 
     /* ── 페이지 타이틀 ── */
-    .page-header {
-      margin-bottom: 28px;
-    }
 
     .page-title {
       font-size: 28px;
@@ -408,6 +405,60 @@
     }
     .modal-close:hover { color: #333; }
 
+    /* ── 뷰 스위처 (Streamlit 스타일) ── */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .view-switcher {
+      display: flex;
+      align-items: center;
+      background: var(--st-surface);
+      border: 1px solid var(--st-border);
+      border-radius: 16px;
+      padding: 5px;
+      gap: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .vs-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 11px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--st-muted);
+      transition: all 0.2s cubic-bezier(.4,0,.2,1);
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      position: relative;
+    }
+    .vs-btn:not(.active):hover {
+      background: var(--st-surface2);
+      color: var(--st-text);
+    }
+    /* A형 비활성 */
+    .vs-btn.vs-a:not(.active) svg { opacity: 0.5; }
+    /* B형 활성 */
+    .vs-btn.vs-b.active {
+      background: linear-gradient(135deg, #ff4b4b 0%, #ff6b35 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(255,75,75,0.38), 0 1px 3px rgba(255,75,75,0.2);
+    }
+    .vs-btn.vs-b.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .vs-btn.vs-b.active svg { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+
     /* ── 푸터 ── */
     .footer {
       margin-top: 40px;
@@ -493,14 +544,38 @@
 
     <!-- 페이지 헤더 -->
     <div class="page-header">
-      <div class="page-title">
-        홈&amp;쇼핑 포탈
-        <span class="st-badge">
-          <svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="currentColor"/></svg>
-          v2
-        </span>
+      <div>
+        <div class="page-title">
+          홈&amp;쇼핑 포탈
+          <span class="st-badge">
+            <svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="currentColor"/></svg>
+            v2
+          </span>
+        </div>
+        <div class="page-subtitle">사내 업무 시스템 통합 포탈 · Streamlit Edition</div>
       </div>
-      <div class="page-subtitle">사내 업무 시스템 통합 포탈 · Streamlit Edition</div>
+
+      <!-- 뷰 스위처 -->
+      <div class="view-switcher">
+        <a class="vs-btn vs-a" href="https://prettykbk81.github.io/hnsinfo/index.html">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <rect x="1" y="2" width="8" height="7" rx="2" fill="currentColor"/>
+            <rect x="11" y="2" width="8" height="7" rx="2" fill="currentColor" fill-opacity="0.6"/>
+            <rect x="1" y="11" width="8" height="7" rx="2" fill="currentColor" fill-opacity="0.4"/>
+            <rect x="11" y="11" width="8" height="7" rx="2" fill="currentColor" fill-opacity="0.25"/>
+          </svg>
+          A형
+        </a>
+        <a class="vs-btn vs-b active" href="https://prettykbk81.github.io/hnsinfo/index2.html">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <path d="M11.5 2L5 11h5.5l-1.5 7L17 9h-5.5l1.5-7z" fill="currentColor" stroke="rgba(255,255,255,0.4)" stroke-width="0.5" stroke-linejoin="round"/>
+          </svg>
+          B형
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="margin-left:-2px;opacity:0.7;">
+            <path d="M6 1l1 3h3l-2.5 2 1 3L6 7.5 3.5 9l1-3L2 4h3z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
     </div>
 
     <!-- 메트릭 바 -->
