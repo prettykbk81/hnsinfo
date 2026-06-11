@@ -12,14 +12,14 @@ canvas { display:block; border:3px solid #333; image-rendering:pixelated; }
 </head>
 <body>
 <canvas id="c" width="480" height="520"></canvas>
-<div id="ctrl">← → 이동 &nbsp;|&nbsp; ↑ ↓ 사다리 &nbsp;|&nbsp; SPACE 재시작</div>
+<div id="ctrl">← → 이동 &nbsp;|&nbsp; ↑ ↓ 사다리 오르내리기 &nbsp;|&nbsp; SPACE 점프 &nbsp;|&nbsp; SPACE 시작/재시작</div>
 <script>
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 const W = 480, H = 520, HUD = 50;
 
 // ── 상수 ──────────────────────────────
-const PSPEED = 2.8, LSPEED = 2.2, GRAV = 0.45, MAX_VY = 9;
+const PSPEED = 2.8, LSPEED = 2.2, GRAV = 0.45, MAX_VY = 9, JUMP_VY = -9.2;
 const PW = 22, PH = 26;   // 너구리 크기
 const EW = 26, EH = 20;   // 오리 크기
 
@@ -83,13 +83,17 @@ const keys = {};
 window.addEventListener('keydown', e => {
   keys[e.code] = true;
   if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
-  if (e.code === 'Space') handleSpace();
+  if (e.code === 'Space' && !e.repeat) handleSpace();
 });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
 function handleSpace() {
-  if (gameState === 'title') { startGame(); }
-  else if (gameState === 'over') { score=0; lives=3; stage=1; startGame(); }
+  if (gameState === 'title') { startGame(); return; }
+  if (gameState === 'over')  { score=0; lives=3; stage=1; startGame(); return; }
+  if (gameState === 'playing' && !pl.onLadder && pl.onGround) {
+    pl.vy = JUMP_VY;
+    pl.onGround = false;
+  }
 }
 
 function startGame() {
@@ -103,15 +107,16 @@ function startGame() {
 function getActiveLadder() {
   let cx = pl.x + PW/2, cy = pl.y + PH/2;
   for (let l of ladders)
-    if (Math.abs(cx - l.x) < 13 && cy >= l.yTop - 2 && cy <= l.yBottom + 2) return l;
+    // yTop - PH 까지 허용: 상단 플로어에서 내려탈 때 center가 ladder 위에 있을 수 있음
+    if (Math.abs(cx - l.x) < 18 && cy >= l.yTop - PH - 2 && cy <= l.yBottom + 4) return l;
   return null;
 }
 function findLadderAt(dir) {
   let cx = pl.x + PW/2, feet = pl.y + PH;
   for (let l of ladders)
-    if (Math.abs(cx - l.x) < 15) {
-      if (dir === 'up'   && Math.abs(feet - l.yBottom) < 8) return l;
-      if (dir === 'down' && Math.abs(feet - l.yTop)    < 8) return l;
+    if (Math.abs(cx - l.x) < 22) {
+      if (dir === 'up'   && Math.abs(feet - l.yBottom) < 18) return l;
+      if (dir === 'down' && Math.abs(feet - l.yTop)    < 18) return l;
     }
   return null;
 }

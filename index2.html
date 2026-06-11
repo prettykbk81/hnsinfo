@@ -176,48 +176,6 @@
       pointer-events: none;
     }
 
-    /* ─────────────────── METRICS ─────────────────── */
-    .metric-bar {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 14px; margin-bottom: 36px;
-    }
-
-    .metric-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px; padding: 18px 20px;
-      position: relative; overflow: hidden;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .metric-card:hover { background: var(--card-hover); }
-
-    /* top accent bar */
-    .metric-card::before {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-    }
-    .mc-red::before    { background: linear-gradient(90deg, #ff4b4b, #ff6b35); }
-    .mc-green::before  { background: linear-gradient(90deg, #22c55e, #10b981); }
-    .mc-purple::before { background: linear-gradient(90deg, #8b5cf6, #6366f1); }
-    .mc-blue::before   { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
-
-    .mc-icon {
-      width: 30px; height: 30px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 14px;
-    }
-    .mc-red    .mc-icon { background: rgba(255,75,75,0.14); }
-    .mc-green  .mc-icon { background: rgba(34,197,94,0.14); }
-    .mc-purple .mc-icon { background: rgba(139,92,246,0.14); }
-    .mc-blue   .mc-icon { background: rgba(59,130,246,0.14); }
-
-    .mc-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-    .mc-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; line-height: 1; margin-bottom: 7px; }
-    .mc-delta { font-size: 11px; font-weight: 600; }
-    .d-green { color: #4ade80; }
-    .d-blue  { color: #60a5fa; }
-    .d-muted { color: var(--text-muted); }
-
     /* ─────────────────── SECTION ─────────────────── */
     .sec-header {
       display: flex; align-items: center; gap: 10px;
@@ -446,42 +404,6 @@
           <path d="M6 1l1.2 3H10L7.6 6l1 3L6 7.3 3.4 9l1-3L2 4h2.8z" fill="currentColor"/>
         </svg>
       </a>
-    </div>
-  </div>
-
-  <!-- 메트릭 바 -->
-  <div class="metric-bar">
-    <div class="metric-card mc-red">
-      <div class="mc-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#f87171"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#f87171" fill-opacity="0.7"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#f87171" fill-opacity="0.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#f87171" fill-opacity="0.3"/></svg>
-      </div>
-      <div class="mc-label">전체 서비스</div>
-      <div class="mc-value" style="color:#f87171;">13</div>
-      <div class="mc-delta d-green">▲ 2 이번 달 추가</div>
-    </div>
-    <div class="metric-card mc-green">
-      <div class="mc-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#4ade80" stroke-width="2"/><path d="M8 10l3 3 5-5" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="mc-label">Live 방송심의</div>
-      <div class="mc-value" style="color:#4ade80;">Beta</div>
-      <div class="mc-delta d-green">● AI 심의 운영중</div>
-    </div>
-    <div class="metric-card mc-purple">
-      <div class="mc-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" fill="#a78bfa"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="mc-label">PRISM 인사이트</div>
-      <div class="mc-value" style="color:#a78bfa;">ON</div>
-      <div class="mc-delta d-blue">● 정상 운영중</div>
-    </div>
-    <div class="metric-card mc-blue">
-      <div class="mc-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#60a5fa"/><rect x="12" y="12" width="7" height="7" rx="1.5" fill="#60a5fa" fill-opacity="0.7"/><rect x="3" y="12" width="7" height="7" rx="1.5" fill="#60a5fa" fill-opacity="0.5"/><rect x="12" y="3" width="7" height="7" rx="1.5" fill="#60a5fa" fill-opacity="0.3"/></svg>
-      </div>
-      <div class="mc-label">GAME 존</div>
-      <div class="mc-value" style="color:#60a5fa;">2종</div>
-      <div class="mc-delta d-muted">테트리스 · 너구리</div>
     </div>
   </div>
 
