@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>홈앤쇼핑 포탈 v2</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --st-bg: #0e1117;
+      --st-sidebar: #262730;
+      --st-sidebar-hover: #3d3d4f;
+      --st-primary: #ff4b4b;
+      --st-surface: #ffffff;
+      --st-surface2: #f0f2f6;
+      --st-border: #e6e9ef;
+      --st-text: #31333f;
+      --st-muted: #8d909e;
+      --st-green: #09ab3b;
+      --st-blue: #4c89f8;
+      --st-purple: #803df5;
+      --st-orange: #ffa421;
+      --sidebar-w: 240px;
+    }
+
+    body {
+      font-family: 'Source Sans 3', 'Malgun Gothic', sans-serif;
+      background: var(--st-surface2);
+      min-height: 100vh;
+      display: flex;
+      color: var(--st-text);
+    }
+
+    /* ── 워터마크 배경 ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' font-family='sans-serif' font-size='20' font-weight='700' fill='%23e8192c' fill-opacity='0.055' transform='rotate(-35 100 100)'%3EH%26amp%3BS%3C/text%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 160px 160px;
+    }
+
+    /* ── 사이드바 ── */
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--st-sidebar);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+    }
+
+    .sidebar-logo {
+      padding: 22px 20px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-logo svg { flex-shrink: 0; }
+
+    .sidebar-logo-text {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .sidebar-logo-text span { color: #ff4b4b; }
+
+    .sidebar-section {
+      padding: 18px 12px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--st-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      margin: 2px 8px;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    .sidebar-item:hover { background: var(--st-sidebar-hover); color: #fff; }
+    .sidebar-item.active { background: rgba(255,75,75,0.18); color: #ff6b6b; }
+    .sidebar-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.85; }
+
+    .sidebar-divider {
+      margin: 10px 16px;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .sidebar-game-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 9px 12px;
+      margin-bottom: 6px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.12s;
+    }
+    .sidebar-game-btn:hover { opacity: 0.85; transform: translateX(2px); }
+    .btn-tetris  { background: rgba(109,40,217,0.25); color: #c084fc; }
+    .btn-nookrigi { background: rgba(14,124,74,0.25); color: #34d399; }
+    .btn-info    { background: rgba(255,75,75,0.18); color: #ff6b6b; }
+
+    /* ── 메인 영역 ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 32px 36px 48px;
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    /* ── 페이지 타이틀 ── */
+    .page-header {
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--st-text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--st-muted);
+      margin-top: 4px;
+    }
+
+    .st-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,75,75,0.1);
+      color: var(--st-primary);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 3px 10px;
+      border: 1px solid rgba(255,75,75,0.2);
+    }
+
+    /* ── 섹션 구분자 ── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px 0 16px;
+    }
+    .section-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--st-border);
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--st-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* ── 카드 그리드 ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    /* ── 포탈 카드 ── */
+    .pcard {
+      background: var(--st-surface);
+      border-radius: 10px;
+      border: 1px solid var(--st-border);
+      padding: 18px 10px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: box-shadow 0.15s, transform 0.12s, border-color 0.15s;
+      user-select: none;
+      position: relative;
+    }
+    .pcard:hover {
+      box-shadow: 0 4px 20px rgba(255,75,75,0.15);
+      border-color: var(--st-primary);
+      transform: translateY(-2px);
+    }
+    .pcard:active { transform: translateY(0); }
+
+    .pcard-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .pcard-icon svg { width: 28px; height: 28px; }
+
+    .pcard-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--st-text);
+      text-align: center;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+
+    /* 배경 테마 */
+    .bg-red    { background: #fff0f1; }
+    .bg-orange { background: #fff5ec; }
+    .bg-purple { background: #f3f0ff; }
+    .bg-blue   { background: #eff6ff; }
+    .bg-green  { background: #f0fdf4; }
+    .bg-teal   { background: #f0fdfa; }
+    .bg-pink   { background: #fdf2f8; }
+    .bg-indigo { background: #eef2ff; }
+    .bg-amber  { background: #fffbeb; }
+    .bg-coral  { background: #fff4f0; }
+    .bg-slate  { background: #f1f5f9; }
+
+    /* ── 분할 카드 ── */
+    .pcard.split-card {
+      padding: 0 !important;
+      overflow: hidden;
+      min-height: 108px;
+      gap: 0;
+    }
+    .pcard.split-card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: var(--st-border);
+    }
+    .pcard.split-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom right,
+        transparent calc(50% - 1.5px),
+        #d0d0d0 calc(50% - 1.5px),
+        #d0d0d0 calc(50% + 1.5px),
+        transparent calc(50% + 1.5px)
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+    .split-web, .split-admin {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: filter 0.15s;
+    }
+    .split-web {
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+      background: #eef2ff;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 10px 0 0 10px;
+      gap: 4px;
+    }
+    .split-admin {
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      background: #f1f5f9;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding: 0 10px 10px 0;
+      gap: 4px;
+    }
+    .split-web:hover  { filter: brightness(0.93); }
+    .split-admin:hover { filter: brightness(0.93); }
+    .split-web svg, .split-admin svg { width: 22px; height: 22px; }
+    .split-label {
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .split-web .split-label  { color: #4338ca; text-align: left; }
+    .split-admin .split-label { color: #475569; text-align: right; }
+
+    /* 배지 */
+    .pcard-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--st-primary);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 1px 4px;
+    }
+
+    /* ── Streamlit 스타일 메트릭 바 ── */
+    .metric-bar {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .metric-card {
+      flex: 1;
+      background: var(--st-surface);
+      border: 1px solid var(--st-border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .metric-label {
+      font-size: 12px;
+      color: var(--st-muted);
+      font-weight: 600;
+    }
+    .metric-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--st-text);
+    }
+    .metric-delta {
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .delta-up   { color: var(--st-green); }
+    .delta-down { color: var(--st-primary); }
+
+    /* ── 모달 ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--st-surface);
+      border-radius: 14px;
+      padding: 28px 32px;
+      min-width: 300px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+      position: relative;
+    }
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--st-primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .modal-divider { border: none; border-top: 1px solid var(--st-border); margin: 16px 0; }
+    .modal-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .modal-table tr + tr td { padding-top: 10px; }
+    .modal-table td:first-child { color: #888; font-weight: 600; width: 36px; padding-right: 12px; }
+    .modal-table td:last-child { font-weight: 700; color: #222; letter-spacing: 0.5px; }
+    .modal-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; font-size: 20px; color: #aaa; cursor: pointer;
+    }
+    .modal-close:hover { color: #333; }
+
+    /* ── 푸터 ── */
+    .footer {
+      margin-top: 40px;
+      padding-bottom: 4px;
+      font-size: 11px;
+      color: var(--st-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 사이드바 ── -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+        <rect width="36" height="36" rx="8" fill="#ff4b4b" fill-opacity="0.25"/>
+        <path d="M7 14h22M7 22h22" stroke="#ff4b4b" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M18 8v20" stroke="#ff4b4b" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="18" cy="18" r="10" stroke="#ff4b4b" stroke-width="1.5"/>
+      </svg>
+      <div class="sidebar-logo-text">홈<span>&amp;</span>쇼핑<br/>포탈</div>
+    </div>
+
+    <div class="sidebar-section">메뉴</div>
+
+    <a class="sidebar-item active" href="index2.html">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      홈 포탈
+    </a>
+    <a class="sidebar-item" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg>
+      기본 포탈 (v1)
+    </a>
+
+    <hr class="sidebar-divider"/>
+    <div class="sidebar-section">바로가기</div>
+
+    <a class="sidebar-item" href="https://bos.hnsmall.com/app/index.html?" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      BOS
+    </a>
+    <a class="sidebar-item" href="https://gw.hnsmall.com/GWIndex/" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="7" height="20" rx="2" stroke="currentColor" stroke-width="2"/><rect x="11" y="2" width="11" height="9" rx="2" stroke="currentColor" stroke-width="2"/><rect x="11" y="13" width="11" height="9" rx="2" stroke="currentColor" stroke-width="2"/></svg>
+      그룹웨어
+    </a>
+    <a class="sidebar-item" href="https://shoppinga-ai.hns.tv/" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      PRISM 인사이트
+    </a>
+    <a class="sidebar-item" href="https://ai-review.hns.tv/" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 10l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Live 방송심의
+    </a>
+
+    <div class="sidebar-bottom">
+      <button class="sidebar-game-btn btn-nookrigi" onclick="openNookrigi()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="11" r="8" fill="currentColor" fill-opacity="0.3"/>
+          <circle cx="10" cy="10.5" r="0.7" fill="currentColor"/>
+          <circle cx="15" cy="10.5" r="0.7" fill="currentColor"/>
+        </svg>
+        GAME 너구리
+      </button>
+      <button class="sidebar-game-btn btn-tetris" onclick="openTetris()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor"/>
+          <rect x="12" y="12" width="7" height="7" rx="1" fill="currentColor" fill-opacity="0.7"/>
+          <rect x="3" y="12" width="7" height="7" rx="1" fill="currentColor" fill-opacity="0.5"/>
+          <rect x="12" y="3" width="7" height="7" rx="1" fill="currentColor" fill-opacity="0.3"/>
+        </svg>
+        GAME 테트리스
+      </button>
+      <button class="sidebar-game-btn btn-info" onclick="document.getElementById('infoModal').classList.add('open')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        로그인 정보
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── 메인 콘텐츠 ── -->
+  <main class="main">
+
+    <!-- 페이지 헤더 -->
+    <div class="page-header">
+      <div class="page-title">
+        홈&amp;쇼핑 포탈
+        <span class="st-badge">
+          <svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="currentColor"/></svg>
+          v2
+        </span>
+      </div>
+      <div class="page-subtitle">사내 업무 시스템 통합 포탈 · Streamlit Edition</div>
+    </div>
+
+    <!-- 메트릭 바 -->
+    <div class="metric-bar">
+      <div class="metric-card">
+        <div class="metric-label">전체 서비스</div>
+        <div class="metric-value">13</div>
+        <div class="metric-delta delta-up">▲ 2 이번 달 추가</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Live 방송심의</div>
+        <div class="metric-value">Beta</div>
+        <div class="metric-delta delta-up">● AI 심의 운영중</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">PRISM 인사이트</div>
+        <div class="metric-value">ON</div>
+        <div class="metric-delta delta-up">● 정상 운영중</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">GAME 존</div>
+        <div class="metric-value">2종</div>
+        <div class="metric-delta">테트리스 · 너구리</div>
+      </div>
+    </div>
+
+    <!-- 1행 -->
+    <div class="section-divider">
+      <div class="section-label">업무 핵심</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="card-grid">
+      <a class="pcard" href="https://bos.hnsmall.com/app/index.html?" target="_blank" rel="noopener">
+        <div class="pcard-icon" style="background:#fff7ed;">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#ea580c" stroke-width="2"/>
+            <path d="M8 21h8M12 17v4" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 7h4M6 11h8M14 7h4" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">BOS</span>
+      </a>
+
+      <a class="pcard" href="https://gw.hnsmall.com/GWIndex/" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-red">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="7" height="20" rx="2" fill="#e8192c"/>
+            <rect x="11" y="2" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
+            <rect x="11" y="13" width="11" height="9" rx="2" fill="#e8192c" fill-opacity="0.15" stroke="#e8192c" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="pcard-label">그룹웨어</span>
+      </a>
+
+      <!-- H&S콜판 + 뉴콜판 분할 -->
+      <div class="pcard split-card">
+        <a class="split-web" href="http://sc.hnsmall.com/" target="_blank" rel="noopener" style="background:#fff0f1; padding:10px 0 0 10px; gap:5px;">
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;">
+            <path d="M3 11a9 9 0 1 1 18 0" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/>
+            <rect x="2" y="11" width="4" height="6" rx="2" fill="#e8192c"/>
+            <rect x="18" y="11" width="4" height="6" rx="2" fill="#e8192c"/>
+          </svg>
+          <span class="split-label" style="color:#e8192c; font-size:11px;">H&amp;S<br/>콜판</span>
+        </a>
+        <a class="split-admin" href="http://172.16.16.92:8080/html/realtime_order_h_accum.html" target="_blank" rel="noopener" style="background:#fff5ec; padding:0 10px 10px 0; gap:5px;">
+          <span class="split-label" style="color:#f97316; font-size:11px; text-align:right;">H&amp;S<br/>뉴콜판</span>
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;">
+            <polyline points="2,18 8,12 13,15 22,6" stroke="#f97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="22" cy="6" r="2" fill="#f97316"/>
+          </svg>
+        </a>
+      </div>
+
+      <a class="pcard" href="https://ai-review.hns.tv/" target="_blank" rel="noopener">
+        <div class="pcard-icon" style="background:#f0fdf4; position:relative;">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#16a34a" stroke-width="2"/>
+            <path d="M8 10l3 3 5-5" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="pcard-badge">Beta</span>
+        </div>
+        <span class="pcard-label">Live 방송심의</span>
+      </a>
+
+      <a class="pcard" href="https://shoppinga-ai.hns.tv/" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-purple">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="3" fill="#7c3aed"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">PRISM<br/>인사이트 포탈</span>
+      </a>
+    </div>
+
+    <!-- 2행 -->
+    <div class="section-divider">
+      <div class="section-label">쇼핑몰 · 데이터</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="card-grid">
+      <a class="pcard" href="https://www.hnsmall.com/index.do" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-indigo">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="18" rx="3" stroke="#4338ca" stroke-width="2"/>
+            <line x1="2" y1="8" x2="22" y2="8" stroke="#4338ca" stroke-width="2"/>
+            <circle cx="6" cy="5.5" r="1" fill="#4338ca"/>
+            <circle cx="10" cy="5.5" r="1" fill="#4338ca"/>
+            <path d="M7 13h10M7 17h6" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">홈앤쇼핑<br/>(WEB)</span>
+      </a>
+
+      <a class="pcard" href="#" onclick="openMobile(); return false;">
+        <div class="pcard-icon bg-amber">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="5" y="2" width="14" height="20" rx="3" stroke="#d97706" stroke-width="2"/>
+            <circle cx="12" cy="19" r="1.2" fill="#d97706"/>
+            <path d="M9 10h6M9 13h4" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">홈앤쇼핑<br/>(모바일)</span>
+      </a>
+
+      <a class="pcard" href="https://join.hnsmall.com/main" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-pink">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#db2777" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="9,22 9,12 15,12 15,22" stroke="#db2777" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">입점시스템</span>
+      </a>
+
+      <a class="pcard" href="https://olap.hns.tv/editds/portal" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-amber">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="12" width="4" height="9" rx="1" fill="#d97706"/>
+            <rect x="8" y="8" width="4" height="13" rx="1" fill="#d97706"/>
+            <rect x="14" y="4" width="4" height="17" rx="1" fill="#d97706"/>
+            <path d="M2 10l4-3 4 2 4-4 4 2" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">OLAP</span>
+      </a>
+
+      <!-- 전자계약 분할 -->
+      <div class="pcard split-card">
+        <a class="split-web" href="https://ecs.hnsmall.com/web/mainForm.do" target="_blank" rel="noopener" style="padding:10px 0 0 10px; gap:5px;">
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
+            <polyline points="14,2 14,8 20,8" stroke="#4338ca" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 10l1.5 1.5L13 8" stroke="#4338ca" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="split-label" style="font-size:11px;">전자계약<br/>WEB</span>
+        </a>
+        <a class="split-admin" href="https://ecs.hnsmall.com/admin/adminLogin.do" target="_blank" rel="noopener" style="padding:0 10px 10px 0; gap:5px;">
+          <span class="split-label" style="font-size:11px; text-align:right;">전자계약<br/>어드민</span>
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;">
+            <circle cx="12" cy="12" r="3" stroke="#475569" stroke-width="2"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#475569" stroke-width="2"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 3행 -->
+    <div class="section-divider">
+      <div class="section-label">분석 · 외부</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="card-grid">
+      <a class="pcard" href="http://sf-web.hns.tv/spotfire/ui/library/browse/174ecefb-6ee3-4cdd-ad03-d1f7249ca66a" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-blue">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C9 6 7 8.5 7 11a5 5 0 0 0 10 0c0-2.5-2-5-5-9z" fill="#2563eb" fill-opacity="0.85"/>
+            <rect x="6" y="19" width="12" height="2" rx="1" fill="#2563eb"/>
+          </svg>
+        </div>
+        <span class="pcard-label">스팟파이어</span>
+      </a>
+
+      <a class="pcard" href="https://mbs.kt.com/home/homeMain" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-teal">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="#0d9488" stroke-width="2"/>
+            <ellipse cx="12" cy="12" rx="4" ry="9" stroke="#0d9488" stroke-width="1.5"/>
+            <line x1="3" y1="12" x2="21" y2="12" stroke="#0d9488" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="pcard-label">KT GSI</span>
+      </a>
+
+      <a class="pcard" href="https://hsmoa.com/" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-green">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" stroke="#16a34a" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="3" y1="6" x2="21" y2="6" stroke="#16a34a" stroke-width="2"/>
+            <path d="M16 10a4 4 0 0 1-8 0" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pcard-label">홈쇼핑모아</span>
+      </a>
+
+      <a class="pcard" href="https://live.ecomm-data.com/" target="_blank" rel="noopener">
+        <div class="pcard-icon bg-coral" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="7" width="13" height="10" rx="2" stroke="#ea4c2a" stroke-width="2"/>
+            <path d="M15 10.5l5-3v9l-5-3v-3z" fill="#ea4c2a"/>
+          </svg>
+          <span class="pcard-badge">LIVE</span>
+        </div>
+        <span class="pcard-label">라방바</span>
+      </a>
+
+      <!-- EDU + 클라썸 분할 -->
+      <div class="pcard split-card">
+        <a class="split-web" href="https://hnsmall.hunet.co.kr/edu/Login/LoginGate" target="_blank" rel="noopener" style="background:#fefce8; padding:10px 0 0 10px; gap:5px;">
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;">
+            <path d="M12 3L2 8l10 5 10-5-10-5z" fill="#ca8a04" fill-opacity="0.9"/>
+            <path d="M6 10.5v4.5a6 6 0 0 0 12 0v-4.5" stroke="#ca8a04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="split-label" style="font-size:11px; color:#92400e;">EDU</span>
+        </a>
+        <a class="split-admin" href="https://www.classum.com/main/org/hnsmall/home" target="_blank" rel="noopener" style="background:#ecfdf5; padding:0 10px 10px 0; gap:5px;">
+          <span class="split-label" style="font-size:11px; color:#065f46; text-align:right;">클라썸</span>
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#059669" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="9" cy="10" r="1.5" fill="#059669"/>
+            <circle cx="12" cy="10" r="1.5" fill="#059669"/>
+            <circle cx="15" cy="10" r="1.5" fill="#059669"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">&copy; 2026 홈앤쇼핑 &middot; 내부 포탈 v2</div>
+  </main>
+
+  <!-- info 모달 -->
+  <div class="modal-overlay" id="infoModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('infoModal').classList.remove('open')">&times;</button>
+      <div class="modal-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#ff4b4b" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="#ff4b4b" stroke-width="2" stroke-linecap="round"/></svg>
+        스팟파이어 접속 정보
+      </div>
+      <table class="modal-table">
+        <tr><td>ID</td><td>hnsadmin</td></tr>
+        <tr><td>PW</td><td>ghados!23</td></tr>
+      </table>
+      <hr class="modal-divider"/>
+      <div class="modal-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#ff4b4b" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="#ff4b4b" stroke-width="2" stroke-linecap="round"/></svg>
+        라방바 접속 정보
+      </div>
+      <table class="modal-table">
+        <tr><td>ID</td><td>idea@hnsmall.com</td></tr>
+        <tr><td>PW</td><td>hnsmall!01</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function openMobile() {
+      var w=390, h=844;
+      var left=Math.round((screen.width-w)/2);
+      var top=Math.round((screen.height-h)/2);
+      window.open('https://m.hnsmall.com/main','mobile_shop',
+        'width='+w+',height='+h+',left='+left+',top='+top+
+        ',resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no');
+    }
+    function openNookrigi() {
+      var w=510, h=600;
+      var left=Math.round((screen.width-w)/2);
+      var top=Math.round((screen.height-h)/2);
+      window.open('nookrigi.html','nookrigi_game',
+        'width='+w+',height='+h+',left='+left+',top='+top+
+        ',resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no');
+    }
+    function openTetris() {
+      var w=520, h=680;
+      var left=Math.round((screen.width-w)/2);
+      var top=Math.round((screen.height-h)/2);
+      window.open('tetris.html','tetris_game',
+        'width='+w+',height='+h+',left='+left+',top='+top+
+        ',resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no');
+    }
+  </script>
+</body>
+</html>
