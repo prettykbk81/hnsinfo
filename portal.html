@@ -19,6 +19,23 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' font-family='Malgun Gothic, sans-serif' font-size='22' font-weight='700' fill='%23e8192c' fill-opacity='0.07' transform='rotate(-35 100 100)'%3EH%26amp%3BS%3C/text%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 160px 160px;
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
     }
 
     /* ── 헤더 ── */
@@ -361,6 +378,41 @@
       line-height: 1;
     }
     .modal-close:hover { color: #333; }
+
+    /* ── 뷰 스위처 ── */
+    .view-switcher {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.13);
+      border-radius: 11px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .vs-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      font-family: inherit;
+    }
+    .vs-btn.active {
+      background: rgba(255,255,255,0.95);
+      color: #e8192c;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.14);
+    }
+    .vs-btn:not(.active):hover {
+      color: #fff;
+      background: rgba(255,255,255,0.2);
+    }
   </style>
 </head>
 <body>
@@ -375,6 +427,25 @@
       <circle cx="18" cy="18" r="10" stroke="white" stroke-width="1.5"/>
     </svg>
     <span class="header-title">홈<span>&amp;</span>쇼핑 포탈</span>
+
+    <!-- 뷰 스위처 -->
+    <div class="view-switcher">
+      <a class="vs-btn active" href="https://prettykbk81.github.io/hnsinfo/index.html">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+          <rect x="1" y="2" width="8" height="7" rx="2" fill="currentColor"/>
+          <rect x="11" y="2" width="8" height="7" rx="2" fill="currentColor" fill-opacity="0.6"/>
+          <rect x="1" y="11" width="8" height="7" rx="2" fill="currentColor" fill-opacity="0.4"/>
+          <rect x="11" y="11" width="8" height="7" rx="2" fill="currentColor" fill-opacity="0.25"/>
+        </svg>
+        A형
+      </a>
+      <a class="vs-btn" href="https://prettykbk81.github.io/hnsinfo/index2.html">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+          <path d="M11.5 2L5 11h5.5l-1.5 7L17 9h-5.5l1.5-7z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/>
+        </svg>
+        B형
+      </a>
+    </div>
   </header>
 
   <!-- 메인 그리드 -->
@@ -611,7 +682,7 @@
       <rect x="12" y="12" width="7" height="7" rx="1.5" fill="white" fill-opacity="0.5"/>
       <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" fill-opacity="0.3"/>
     </svg>
-    <span>GAME<br/>tetris</span>
+    <span>Tetris</span>
   </button>
 
   <!-- info 버튼 -->
