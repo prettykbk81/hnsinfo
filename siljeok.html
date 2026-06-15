@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전사실적 진척현황</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Malgun Gothic','맑은 고딕',sans-serif;
+  background:#eaeaea;
+  font-size:12px;
+  color:#333;
+}
+
+/* ── 페이지 헤더 ── */
+.page-header {
+  background:#fff;
+  padding:13px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  border-bottom:2px solid #ddd;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.page-title {
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.3px;
+  color:#111;
+}
+.home-btn {
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  text-decoration:none;
+  color:#444;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  border-radius:6px;
+  transition:background .15s;
+}
+.home-btn:hover { background:#f0f0f0; color:#c0392b; }
+.home-btn svg { width:22px; height:22px; }
+
+/* ── 필터 ── */
+.filter-wrap {
+  background:#fff;
+  border-bottom:1px solid #d8d8d8;
+  padding:8px 0 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.filter-row {
+  display:flex;
+  align-items:center;
+  gap:3px;
+  font-size:12px;
+  color:#555;
+}
+.filter-row select {
+  padding:3px 16px 3px 5px;
+  border:1px solid #bbb;
+  border-radius:3px;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath d='M0 0l4 4 4-4z' fill='%23888'/%3E%3C/svg%3E") no-repeat right 4px center;
+  font-size:12px;
+  font-family:inherit;
+  color:#333;
+  -webkit-appearance:none;
+  appearance:none;
+  cursor:pointer;
+}
+.unit-lbl { color:#555; margin-right:2px; }
+.tilde { margin:0 8px; color:#888; font-size:14px; }
+.btn-query {
+  margin-left:12px;
+  padding:7px 22px;
+  background:#2c5282;
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  letter-spacing:.5px;
+  box-shadow:0 2px 4px rgba(0,0,0,.15);
+}
+.btn-query:hover { background:#1a365d; }
+
+/* ── 안내 바 ── */
+.note-bar {
+  background:#f8f8f8;
+  border-bottom:1px solid #e0e0e0;
+  padding:4px 14px;
+  font-size:10px;
+  color:#aaa;
+  text-align:right;
+}
+
+/* ── 테이블 ── */
+.table-wrap { overflow-x:auto; }
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  min-width:560px;
+}
+
+thead th {
+  background:#3a3a3a;
+  color:#f0f0f0;
+  text-align:center;
+  padding:9px 8px;
+  font-size:12px;
+  font-weight:600;
+  border:1px solid #4a4a4a;
+  line-height:1.4;
+  white-space:nowrap;
+}
+
+/* 날짜 요약 행 */
+tr.r-date td {
+  background:#5c5c5c;
+  color:#f0f0f0;
+  font-weight:700;
+  font-size:13px;
+  padding:7px 10px;
+  border:1px solid #4a4a4a;
+}
+tr.r-date.wknd td { background:#4e5a6e; }
+
+/* 채널 소계 행 */
+tr.r-channel td {
+  background:#fff;
+  padding:5px 10px;
+  border:1px solid #e0e0e0;
+  font-weight:700;
+  color:#222;
+}
+
+/* 서브채널 행 */
+tr.r-sub td {
+  background:#f7f7f7;
+  padding:4px 10px;
+  border:1px solid #e8e8e8;
+  color:#555;
+}
+tr.r-sub.alt td { background:#f0f0f0; }
+
+/* 기간누계 행 */
+tr.r-total td {
+  background:#1e3a5f;
+  color:#fff;
+  font-weight:700;
+  font-size:13px;
+  padding:8px 10px;
+  border:1px solid #152b48;
+}
+
+/* 셀 정렬 */
+.cl { text-align:left; }
+.cl.ind { padding-left:20px; color:#666; }
+.cl.ind::before { content:'└ '; color:#ccc; font-size:11px; }
+.cn { text-align:right; font-variant-numeric:tabular-nums; letter-spacing:-.3px; }
+.cp { text-align:center; }
+
+/* 달성률 색상 */
+.over { color:#c0392b; font-weight:700; }
+.med  { color:#333; }
+.low  { color:#d4720b; font-weight:700; }
+.na   { color:#bbb; }
+
+tr.r-date .over, tr.r-total .over { color:#ff9999; font-weight:700; }
+tr.r-date .med,  tr.r-total .med  { color:#eee; }
+tr.r-date .low,  tr.r-total .low  { color:#ffcc66; font-weight:700; }
+
+.no-data { text-align:center; padding:40px; color:#aaa; font-size:13px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">전사실적 진척현황</div>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/" title="포탈 홈">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="filter-wrap">
+  <div class="filter-row">
+    <select id="sY1"></select><span class="unit-lbl">년</span>
+    <select id="sM1"></select><span class="unit-lbl">월</span>
+    <select id="sD1"></select><span class="unit-lbl">일</span>
+    <span class="tilde">~</span>
+    <select id="sY2"></select><span class="unit-lbl">년</span>
+    <select id="sM2"></select><span class="unit-lbl">월</span>
+    <select id="sD2"></select><span class="unit-lbl">일</span>
+    <button class="btn-query" onclick="render()">조회</button>
+  </div>
+</div>
+
+<div class="note-bar">단위 : 백만원 &nbsp;|&nbsp; ※ 임시 더미 데이터 — Supabase 연동 예정</div>
+
+<div class="table-wrap">
+  <table>
+    <colgroup>
+      <col style="width:105px;">
+      <col style="width:110px;">
+      <col style="width:110px;">
+      <col style="width:78px;">
+      <col style="width:110px;">
+      <col style="width:78px;">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>일자</th>
+        <th>목표<br>취급액</th>
+        <th>예상<br>취급액</th>
+        <th>예상<br>달성률</th>
+        <th>실현<br>취급액</th>
+        <th>실현<br>달성률</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr><td colspan="6" class="no-data">조회 버튼을 눌러주세요</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+// ── 유틸 ──────────────────────────────────────────────────────
+function fmt(n) {
+  return (n == null || isNaN(n)) ? '-' : Math.round(n).toLocaleString('ko-KR');
+}
+function calcRate(actual, target) {
+  if (!target) return null;
+  return Math.round(actual / target * 100);
+}
+function rateHtml(rate) {
+  if (rate === null) return '<span class="na">-</span>';
+  const cls = rate >= 100 ? 'over' : (rate >= 80 ? 'med' : 'low');
+  return `<span class="${cls}">${rate}%</span>`;
+}
+
+// ── 시드 기반 랜덤 ────────────────────────────────────────────
+function sr(seed, min, max) {
+  const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+  const r = x - Math.floor(x);
+  return Math.floor(r * (max - min + 1)) + min;
+}
+
+// ── 실제 데이터 (스크린샷 기준) ──────────────────────────────
+const FIXED = {
+  '2026-06-14': {
+    dateStr:'06/14(일)', dow:0,
+    target:5336, forecast:6696, actual:36,
+    channels:[
+      { name:'방송', target:4714, forecast:6189, actual:24,
+        subs:[
+          { name:'일반상품', target:2881, forecast:2409, actual:24 },
+          { name:'렌탈/여행', target:1752, forecast:3770, actual:0  },
+          { name:'중기지원',  target:82,   forecast:10,   actual:1  },
+        ]},
+      { name:'쇼핑몰', target:588, forecast:505, actual:12,
+        subs:[
+          { name:'텐텐+', target:346, forecast:317, actual:7 },
+          { name:'M/EC',  target:242, forecast:187, actual:4 },
+        ]},
+    ]
+  },
+  '2026-06-13': {
+    dateStr:'06/13(토)', dow:6,
+    target:5225, forecast:6058, actual:2788,
+    channels:[
+      { name:'방송', target:4618, forecast:5701, actual:2413,
+        subs:[
+          { name:'일반상품', target:2822, forecast:2088, actual:2309 },
+          { name:'렌탈/여행', target:1716, forecast:3606, actual:0   },
+          { name:'중기지원',  target:80,   forecast:7,    actual:104  },
+        ]},
+      { name:'쇼핑몰', target:574, forecast:355, actual:373,
+        subs:[
+          { name:'텐텐+', target:323, forecast:219, actual:252 },
+          { name:'M/EC',  target:251, forecast:136, actual:121 },
+        ]},
+    ]
+  },
+  '2026-06-12': {
+    dateStr:'06/12(금)', dow:5,
+    target:4355, forecast:2635, actual:2369,
+    channels:[
+      { name:'방송', target:3581, forecast:2159, actual:1907,
+        subs:[
+          { name:'일반상품', target:2192, forecast:2077, actual:1838 },
+          { name:'렌탈/여행', target:1326, forecast:72,   actual:0   },
+          { name:'중기지원',  target:63,   forecast:11,   actual:69  },
+        ]},
+      { name:'쇼핑몰', target:740, forecast:472, actual:459,
+        subs:[
+          { name:'텐텐+', target:431, forecast:344, actual:283 },
+          { name:'M/EC',  target:309, forecast:128, actual:176 },
+        ]},
+    ]
+  },
+};
+
+// ── 더미 데이터 생성 ──────────────────────────────────────────
+const DOW_KR = ['일','월','화','수','목','금','토'];
+
+function makeDay(year, month, day) {
+  const date = new Date(year, month - 1, day);
+  const dow  = date.getDay();
+  const wknd = dow === 0 || dow === 6;
+  const s    = year * 10000 + month * 100 + day;
+
+  const tvTgt   = wknd ? sr(s*3, 4500, 5400) : sr(s*3, 3400, 4400);
+  const mallTgt = wknd ? sr(s*5, 550, 800)   : sr(s*5, 480, 680);
+
+  const tvSubs = [
+    { name:'일반상품',
+      target:   Math.round(tvTgt * .60),
+      forecast: Math.round(tvTgt * .60 * sr(s+11, 70, 130) / 100),
+      actual:   Math.round(tvTgt * .60 * sr(s+12, 60, 100) / 100) },
+    { name:'렌탈/여행',
+      target:   Math.round(tvTgt * .35),
+      forecast: Math.round(tvTgt * .35 * sr(s+21, 5, 230) / 100),
+      actual:   sr(s+22, 0, 4) < 1 ? 0 : Math.round(tvTgt * .35 * sr(s+23, 30, 90) / 100) },
+    { name:'중기지원',
+      target:   Math.round(tvTgt * .05),
+      forecast: Math.round(tvTgt * .05 * sr(s+31, 8, 25) / 100),
+      actual:   Math.round(tvTgt * .05 * sr(s+32, 70, 160) / 100) },
+  ];
+  const mallSubs = [
+    { name:'텐텐+',
+      target:   Math.round(mallTgt * .55),
+      forecast: Math.round(mallTgt * .55 * sr(s+41, 60, 100) / 100),
+      actual:   Math.round(mallTgt * .55 * sr(s+42, 55, 100) / 100) },
+    { name:'M/EC',
+      target:   Math.round(mallTgt * .45),
+      forecast: Math.round(mallTgt * .45 * sr(s+51, 45, 90) / 100),
+      actual:   Math.round(mallTgt * .45 * sr(s+52, 40, 95) / 100) },
+  ];
+
+  const tvFc   = tvSubs.reduce((a, x) => a + x.forecast, 0);
+  const tvAc   = tvSubs.reduce((a, x) => a + x.actual,   0);
+  const mallFc = mallSubs.reduce((a, x) => a + x.forecast, 0);
+  const mallAc = mallSubs.reduce((a, x) => a + x.actual,   0);
+
+  const mm = String(month).padStart(2, '0');
+  const dd = String(day).padStart(2, '0');
+  return {
+    dateStr: `${mm}/${dd}(${DOW_KR[dow]})`,
+    dow, isWknd: wknd,
+    target:   tvTgt + mallTgt,
+    forecast: tvFc  + mallFc,
+    actual:   tvAc  + mallAc,
+    channels: [
+      { name:'방송',   target:tvTgt,   forecast:tvFc,   actual:tvAc,   subs:tvSubs   },
+      { name:'쇼핑몰', target:mallTgt, forecast:mallFc, actual:mallAc, subs:mallSubs },
+    ]
+  };
+}
+
+function getDay(year, month, day) {
+  const key = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  const f   = FIXED[key];
+  if (f) return { ...f, isWknd: f.dow === 0 || f.dow === 6 };
+  return makeDay(year, month, day);
+}
+
+// ── 필터 초기화 ──────────────────────────────────────────────
+function initFilters() {
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth() + 1, d = now.getDate();
+
+  ['sY1','sY2'].forEach(id => {
+    const el = document.getElementById(id);
+    [2024, 2025, 2026].forEach(yr => el.add(new Option(yr, yr, yr === y, yr === y)));
+  });
+  ['sM1','sM2'].forEach(id => {
+    const el = document.getElementById(id);
+    for (let i = 1; i <= 12; i++) el.add(new Option(`${i}월`, i, i === m, i === m));
+  });
+  const sd1 = document.getElementById('sD1');
+  for (let i = 1; i <= 31; i++) sd1.add(new Option(`${i}일`, i, i === 1, i === 1));
+  const sd2 = document.getElementById('sD2');
+  for (let i = 1; i <= 31; i++) sd2.add(new Option(`${i}일`, i, i === d, i === d));
+}
+
+// ── 렌더링 ───────────────────────────────────────────────────
+function render() {
+  const y1 = +document.getElementById('sY1').value;
+  const m1 = +document.getElementById('sM1').value;
+  const d1 = +document.getElementById('sD1').value;
+  const y2 = +document.getElementById('sY2').value;
+  const m2 = +document.getElementById('sM2').value;
+  const d2 = +document.getElementById('sD2').value;
+
+  const start = new Date(y1, m1 - 1, d1);
+  const end   = new Date(y2, m2 - 1, d2);
+  if (start > end) { alert('시작일이 종료일보다 늦습니다.'); return; }
+
+  const days = [];
+  for (let dt = new Date(end); dt >= start; dt.setDate(dt.getDate() - 1)) {
+    days.push(getDay(dt.getFullYear(), dt.getMonth() + 1, dt.getDate()));
+  }
+
+  let cumTgt = 0, cumFc = 0, cumAc = 0;
+  days.forEach(r => { cumTgt += r.target; cumFc += r.forecast; cumAc += r.actual; });
+
+  let html = '';
+  let altToggle = 0;
+
+  days.forEach(day => {
+    html += `<tr class="r-date${day.isWknd ? ' wknd' : ''}">
+      <td class="cl">${day.dateStr}</td>
+      <td class="cn">${fmt(day.target)}</td>
+      <td class="cn">${fmt(day.forecast)}</td>
+      <td class="cp">${rateHtml(calcRate(day.forecast, day.target))}</td>
+      <td class="cn">${fmt(day.actual)}</td>
+      <td class="cp">${rateHtml(calcRate(day.actual, day.target))}</td>
+    </tr>`;
+
+    day.channels.forEach(ch => {
+      html += `<tr class="r-channel">
+        <td class="cl">${ch.name}</td>
+        <td class="cn">${fmt(ch.target)}</td>
+        <td class="cn">${fmt(ch.forecast)}</td>
+        <td class="cp">${rateHtml(calcRate(ch.forecast, ch.target))}</td>
+        <td class="cn">${fmt(ch.actual)}</td>
+        <td class="cp">${rateHtml(calcRate(ch.actual, ch.target))}</td>
+      </tr>`;
+
+      ch.subs.forEach(sub => {
+        const alt = (altToggle++ % 2 === 1) ? ' alt' : '';
+        html += `<tr class="r-sub${alt}">
+          <td class="cl ind">${sub.name}</td>
+          <td class="cn">${fmt(sub.target)}</td>
+          <td class="cn">${fmt(sub.forecast)}</td>
+          <td class="cp">${rateHtml(calcRate(sub.forecast, sub.target))}</td>
+          <td class="cn">${fmt(sub.actual)}</td>
+          <td class="cp">${rateHtml(calcRate(sub.actual, sub.target))}</td>
+        </tr>`;
+      });
+    });
+  });
+
+  html += `<tr class="r-total">
+    <td class="cl">기간누계</td>
+    <td class="cn">${fmt(cumTgt)}</td>
+    <td class="cn">${fmt(cumFc)}</td>
+    <td class="cp">${rateHtml(calcRate(cumFc, cumTgt))}</td>
+    <td class="cn">${fmt(cumAc)}</td>
+    <td class="cp">${rateHtml(calcRate(cumAc, cumTgt))}</td>
+  </tr>`;
+
+  document.getElementById('tbody').innerHTML = html;
+}
+
+initFilters();
+render();
+
+// ── Supabase 연동 예정 ────────────────────────────────────────
+/*
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+const supabase = createClient('SUPABASE_URL', 'SUPABASE_ANON_KEY');
+
+async function fetchPerformance(startDate, endDate) {
+  const { data, error } = await supabase
+    .from('daily_performance')
+    .select('*')
+    .gte('date', startDate)
+    .lte('date', endDate)
+    .order('date', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+*/
+</script>
+</body>
+</html>
