@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카드뉴스 템플릿</title>
+<style>
+/* ── 페이지 배경 ── */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#d4d0c8;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:32px 20px 24px;
+  font-family:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',sans-serif;
+}
+
+/* ══════════════════════════════════════
+   카드 디자인 — 이 아래는 수정 불필요
+══════════════════════════════════════ */
+#card {
+  width:900px;
+  background:#f0e9d8;
+  padding:44px 56px 36px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 4px 24px rgba(0,0,0,.15);
+}
+
+/* 상단 행 */
+.c-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:22px;
+}
+.c-handle {
+  font-size:11px;
+  font-weight:700;
+  color:#cc2b2b;
+  letter-spacing:.8px;
+  margin-bottom:3px;
+}
+.c-category { font-size:13px; color:#5a4a3a; }
+.c-date { font-size:11px; color:#9a8a7a; letter-spacing:1px; }
+
+/* 제목 */
+.c-title {
+  font-size:54px;
+  font-weight:900;
+  color:#111;
+  line-height:1.08;
+  letter-spacing:-1.5px;
+  margin-bottom:38px;
+}
+.c-title .hl { color:#cc2b2b; }
+
+/* 항목 리스트 */
+.c-items { display:flex; flex-direction:column; gap:6px; }
+
+.c-item {
+  display:flex;
+  align-items:center;
+  padding:15px 0 15px 22px;
+  border-left:4px solid #cc2b2b;
+  gap:0;
+}
+.i-num {
+  font-size:28px;
+  font-weight:900;
+  color:#cc2b2b;
+  width:52px;
+  flex-shrink:0;
+  line-height:1;
+}
+.i-kw {
+  font-size:17px;
+  font-weight:700;
+  color:#111;
+  width:220px;
+  flex-shrink:0;
+}
+.i-desc {
+  font-size:14.5px;
+  color:#666;
+  flex:1;
+}
+.i-desc b  { color:#cc2b2b; font-weight:700; }
+.i-desc em { color:#111;    font-style:normal; font-weight:700; }
+
+/* 구분선 */
+.c-divider {
+  border:none;
+  border-top:1px solid #c8bdb0;
+  margin:28px 0 16px;
+}
+
+/* 하단 */
+.c-footer {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.c-foot-text { font-size:13px; font-weight:700; color:#222; }
+.c-credit    { font-size:11px; color:#9a8a7a; }
+
+/* ── 페이지 컨트롤 ── */
+.ctrl {
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.ctrl button {
+  padding:8px 20px;
+  border:none;
+  border-radius:5px;
+  font-size:13px;
+  font-family:inherit;
+  cursor:pointer;
+}
+.btn-print { background:#333; color:#fff; }
+.btn-print:hover { background:#111; }
+.ctrl .hint { font-size:11px; color:#888; }
+
+@media print {
+  body { background:none; padding:0; }
+  .ctrl { display:none; }
+  #card { box-shadow:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  ✏️  여기 텍스트만 바꾸면 됩니다  ✏️              ║
+     ╚══════════════════════════════════════════════════╝ -->
+<script>
+const CARD = {
+
+  /* 상단 */
+  handle:   '@AI_MARKETING_DAILY',
+  category: '방법 3 · HTML로 찍어내기',
+  date:     'JUNE 2026',
+
+  /* 제목 — <br> 로 줄바꿈, <span class="hl">빨강강조</span> 가능 */
+  title: '내용만<br>갈아끼워요',
+
+  /* 항목 (num / keyword / desc) — desc에 <b>빨강</b> <em>굵게</em> 사용 가능 */
+  items: [
+    {
+      num:     '1',
+      keyword: '카드 1장 = HTML',
+      desc:    '색·폰트·여백이 코드에 고정',
+    },
+    {
+      num:     '2',
+      keyword: '텍스트만 교체',
+      desc:    '같은 코드에 내용만 바꾸면',
+    },
+    {
+      num:     '3',
+      keyword: '10장 그대로',
+      desc:    '절대 안 흐트러진다 — <b>완벽 일관</b>',
+    },
+  ],
+
+  /* 하단 */
+  footer: '디자인 툴 안 열고, 대화만으로 카드가 나온다.',
+  credit: '© 이상희 · AI 마케팅 사수',
+
+};
+</script>
+<!-- ══════════════════════════════════════════════════ -->
+
+<div id="card"></div>
+
+<div class="ctrl">
+  <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+  <span class="hint">※ PDF 저장 시 '배경 그래픽' 체크 필요</span>
+</div>
+
+<script>
+/* ── 렌더링 (수정 불필요) ────────────────────── */
+const items = CARD.items.map(it => `
+  <div class="c-item">
+    <span class="i-num">${it.num}</span>
+    <span class="i-kw">${it.keyword}</span>
+    <span class="i-desc">${it.desc}</span>
+  </div>
+`).join('');
+
+document.getElementById('card').innerHTML = `
+  <div class="c-top">
+    <div>
+      <div class="c-handle">${CARD.handle}</div>
+      <div class="c-category">${CARD.category}</div>
+    </div>
+    <div class="c-date">${CARD.date}</div>
+  </div>
+  <div class="c-title">${CARD.title}</div>
+  <div class="c-items">${items}</div>
+  <hr class="c-divider">
+  <div class="c-footer">
+    <div class="c-foot-text">${CARD.footer}</div>
+    <div class="c-credit">${CARD.credit}</div>
+  </div>
+`;
+</script>
+</body>
+</html>
