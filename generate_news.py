@@ -11,24 +11,55 @@ daily_news.html 에 저장합니다.
 """
 
 import anthropic
+import httpx
 import json
 import os
 import re
 import requests
+import urllib3
 from datetime import datetime
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ── 네이버 뉴스 검색 키워드 ───────────────────────────────
 SEARCH_QUERIES = ['홈쇼핑', '라이브커머스', '홈앤쇼핑']
 NAVER_API_URL  = 'https://openapi.naver.com/v1/search/news.json'
 
 
+def _env(key: str) -> str:
+    """환경변수 → secrets.toml 순서로 값을 읽는다 (로컬 실행 지원)"""
+    val = os.environ.get(key, '')
+    if val:
+        return val
+    try:
+        base = os.path.dirname(os.path.abspath(__file__))
+        toml_path = os.path.join(base, '.streamlit', 'secrets.toml')
+        import tomllib
+        with open(toml_path, 'rb') as f:
+            return tomllib.load(f).get(key, '')
+    except (ImportError, FileNotFoundError, Exception):
+        pass
+    try:
+        base = os.path.dirname(os.path.abspath(__file__))
+        toml_path = os.path.join(base, '.streamlit', 'secrets.toml')
+        with open(toml_path, encoding='utf-8') as f:
+            for line in f:
+                s = line.strip()
+                if s.startswith(key):
+                    _, _, v = s.partition('=')
+                    return v.strip().strip('"').strip("'")
+    except FileNotFoundError:
+        pass
+    return ''
+
+
 def fetch_naver_news() -> list[dict]:
     """네이버 뉴스 API로 홈쇼핑 관련 최신 뉴스 수집"""
-    client_id     = os.environ.get('NAVER_CLIENT_ID', '')
-    client_secret = os.environ.get('NAVER_CLIENT_SECRET', '')
+    client_id     = _env('NAVER_CLIENT_ID')
+    client_secret = _env('NAVER_CLIENT_SECRET')
 
     if not client_id or not client_secret:
-        print("⚠️  NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 없음 → 네이버 뉴스 건너뜀")
+        print("[!] NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 없음 - 네이버 뉴스 건너뜀")
         return []
 
     headers = {
@@ -46,6 +77,7 @@ def fetch_naver_news() -> list[dict]:
                 headers=headers,
                 params={'query': query, 'display': 10, 'sort': 'date'},
                 timeout=10,
+                verify=False,
             )
             resp.raise_for_status()
             items = resp.json().get('items', [])
@@ -74,9 +106,9 @@ def fetch_naver_news() -> list[dict]:
 
 def generate_cards(articles: list[dict]) -> list[dict]:
     """Claude로 카드뉴스 3장 생성"""
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    api_key = _env('ANTHROPIC_API_KEY')
     if not api_key:
-        raise ValueError("ANTHROPIC_API_KEY 환경변수가 없습니다.")
+        raise ValueError("ANTHROPIC_API_KEY 가 없습니다. secrets.toml 또는 환경변수를 확인하세요.")
 
     if articles:
         news_text = "\n\n".join(
@@ -108,7 +140,7 @@ JSON 배열로만 응답하세요 (다른 텍스트 없이):
   {{...}}
 ]"""
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = anthropic.Anthropic(api_key=api_key, http_client=httpx.Client(verify=False))
     msg = client.messages.create(
         model='claude-haiku-4-5-20251001',
         max_tokens=2000,
