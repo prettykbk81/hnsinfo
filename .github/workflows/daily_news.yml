@@ -1,0 +1,39 @@
+name: AI Daily News 자동 생성
+
+on:
+  schedule:
+    - cron: '0 23 * * *'   # 매일 KST 08:00 (UTC 23:00)
+  workflow_dispatch:         # 수동 실행 (테스트용)
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 패키지 설치
+        run: pip install anthropic requests
+
+      - name: 카드뉴스 생성
+        run: python generate_news.py
+        env:
+          ANTHROPIC_API_KEY:    ${{ secrets.ANTHROPIC_API_KEY }}
+          NAVER_CLIENT_ID:      ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET:  ${{ secrets.NAVER_CLIENT_SECRET }}
+
+      - name: daily_news.html 커밋 & 푸시
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'AI Daily News 자동 업데이트'
+          add: 'daily_news.html'
+          default_author: github_actions
