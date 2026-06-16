@@ -12,6 +12,7 @@ from datetime import date
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import anthropic
+import httpx
 import requests
 import streamlit as st
 
@@ -83,7 +84,10 @@ def _start_proxy(api_key: str, model: str) -> None:
             self.end_headers()
 
             try:
-                client = anthropic.Anthropic(api_key=_key)
+                client = anthropic.Anthropic(
+                    api_key=_key,
+                    http_client=httpx.Client(verify=False),
+                )
                 with client.messages.stream(
                     model=_mdl,
                     max_tokens=1024,
@@ -125,7 +129,11 @@ def _start_proxy(api_key: str, model: str) -> None:
 # ───────────────────────────────────────────────────────────
 @st.cache_resource
 def _make_client(api_key: str) -> anthropic.Anthropic:
-    return anthropic.Anthropic(api_key=api_key)
+    # 회사 네트워크 SSL 인터셉트 대응 (verify=False)
+    return anthropic.Anthropic(
+        api_key=api_key,
+        http_client=httpx.Client(verify=False),
+    )
 
 
 # ───────────────────────────────────────────────────────────
