@@ -323,8 +323,19 @@ if __name__ == '__main__':
 
     html = build_html(cards)
 
-    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'daily_news.html')
-    with open(out, 'w', encoding='utf-8') as f:
-        f.write(html)
+    base = os.path.dirname(os.path.abspath(__file__))
 
-    print(f"저장 완료 → {out}")
+    out_html = os.path.join(base, 'daily_news.html')
+    with open(out_html, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"저장 완료 → {out_html}")
+
+    out_json = os.path.join(base, 'daily_news.json')
+    payload = {
+        'date':     datetime.now().strftime('%Y년 %m월 %d일'),
+        'date_en':  datetime.now().strftime('%B %d, %Y').upper(),
+        'cards':    cards[:3],
+    }
+    with open(out_json, 'w', encoding='utf-8') as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    print(f"저장 완료 → {out_json}")
