@@ -658,35 +658,21 @@ async function aiSummary() {
     alert('먼저 조회 버튼을 눌러 데이터를 불러오세요.');
     return;
   }
-  const apiKey = localStorage.getItem('hns_claude_key') || '';
-  if (!apiKey) {
-    const panel  = document.getElementById('aiPanel');
-    const bodyEl = document.getElementById('aiBody');
-    panel.classList.add('open');
-    bodyEl.innerHTML =
-      '<span style="color:#f9a8d4;">🔑 API 키가 설정되지 않았습니다.<br>' +
-      '<a href="ai.html" style="color:#a78bfa;text-decoration:underline;">ai.html 설정</a>에서 ' +
-      'Claude API 키를 등록하면 여기서도 자동으로 사용됩니다.</span>';
-    return;
-  }
-  await runStream(apiKey);
+  await runStream();
 }
 
 function closeAiPanel() {
   document.getElementById('aiPanel').classList.remove('open');
 }
 
-async function runStream(apiKey) {
+async function runStream() {
   const panel   = document.getElementById('aiPanel');
   const bodyEl  = document.getElementById('aiBody');
   const metaEl  = document.getElementById('aiMeta');
   const badgeEl = document.getElementById('aiModelBadge');
   const btnAI   = document.getElementById('btnAI');
 
-  const model = localStorage.getItem('hns_model') || 'claude-haiku-4-5-20251001';
-  const modelShort = model.replace('claude-','').replace('-20251001','');
-  badgeEl.textContent = modelShort;
-
+  badgeEl.textContent = 'claude-haiku';
   panel.classList.add('open');
   bodyEl.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 매출 데이터를 분석 중입니다…</div>';
   metaEl.textContent = '';
@@ -696,31 +682,18 @@ async function runStream(apiKey) {
   try {
     const prompt = buildPrompt(window.lastRenderData);
 
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    // proxy.py (localhost:8502) 를 통해 Claude 호출 — API 키는 서버에서 secrets.toml로 관리
+    const resp = await fetch('http://localhost:8502/api/summarize', {
       method: 'POST',
-      headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: 1024,
-        stream: true,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
     });
 
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
-      const msg = err.error?.message || `HTTP ${resp.status}`;
-      if (resp.status === 401) throw new Error('API 키가 올바르지 않습니다. 키를 다시 확인하세요.');
-      if (resp.status === 429) throw new Error('요청 한도 초과입니다. 잠시 후 다시 시도하세요.');
-      throw new Error(msg);
+      throw new Error(err.error || `HTTP ${resp.status}`);
     }
 
-    // 스트리밍 시작
     let fullText = '';
     bodyEl.innerHTML = '';
     const textNode = document.createTextNode('');
@@ -743,25 +716,31 @@ async function runStream(apiKey) {
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
         const raw = line.slice(6).trim();
-        if (raw === '[DONE]') continue;
+        if (raw === '[DONE]') break;
         try {
           const ev = JSON.parse(raw);
-          if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
-            fullText += ev.delta.text;
+          if (ev.error) throw new Error(ev.error);
+          if (ev.text) {
+            fullText += ev.text;
             textNode.textContent = fullText;
-            // 패널 스크롤 따라가기
             panel.scrollTop = panel.scrollHeight;
           }
-        } catch(_) {}
+        } catch(parseErr) {
+          if (parseErr.message !== 'Unexpected token') throw parseErr;
+        }
       }
     }
 
     cursor.remove();
     metaEl.textContent =
-      `✦ 분석 완료 · 조회 기간: ${window.lastRenderData.rangeStr} · 모델: ${modelShort} · ${new Date().toLocaleTimeString('ko-KR')}`;
+      `✦ 분석 완료 · 조회 기간: ${window.lastRenderData.rangeStr} · ${new Date().toLocaleTimeString('ko-KR')}`;
 
   } catch(e) {
-    bodyEl.innerHTML = `<span style="color:#f87171;">⚠️ ${e.message}</span>`;
+    const isOffline = e.message.includes('Failed to fetch') || e.message.includes('ERR_CONNECTION_REFUSED');
+    bodyEl.innerHTML = isOffline
+      ? '<span style="color:#f87171;">⚠️ 프록시 서버가 실행되지 않았습니다.<br>' +
+        '터미널에서 <code style="background:#1e1b4b;padding:1px 6px;border-radius:3px;font-size:12px;">python proxy.py</code> 를 먼저 실행해주세요.</span>'
+      : `<span style="color:#f87171;">⚠️ ${e.message}</span>`;
   } finally {
     btnAI.disabled = false;
     const last = btnAI.lastChild;
