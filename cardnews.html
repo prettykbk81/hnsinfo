@@ -155,7 +155,7 @@ const CARD = {
   /* 상단 */
   handle:   '@홈앤쇼핑_AI_DAILY_NEWS',
   category: '',
-  date:     'JUNE 2026',
+  date:     (()=>{ const d=new Date(); return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}).toUpperCase(); })(),
 
   /* 제목 — <br> 로 줄바꿈, <span class="hl">빨강강조</span> 가능 */
   title: '내용만<br>갈아끼워요',
