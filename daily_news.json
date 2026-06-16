@@ -3,27 +3,27 @@
   "date_en": "JUNE 16, 2026",
   "left": [
     {
-      "category": "실적·성장",
-      "title": "농가 상생으로<br>판로 확대 중",
+      "category": "성장",
+      "title": "농가 상생으로 <br>신뢰 기반 확대",
       "items": [
         {
           "keyword": "새청무쌀",
-          "desc": "순천농협 대표 브랜드 <b>특별 방송</b> 진행으로 우수 농산물 소비 촉진"
+          "desc": "순천농협 대표 브랜드 특별방송으로 <b>우수 농산물</b> 소비 촉진"
         },
         {
-          "keyword": "매실 상생",
-          "desc": "<b>농어촌상생협력기금</b> 출연으로 주산지 지자체·농협과 협력 강화"
+          "keyword": "농어촌기금",
+          "desc": "대중소기업농어업협력재단에 <b>기금 출연</b>으로 상생 체계화"
         },
         {
-          "keyword": "지역 특산물",
-          "desc": "전국 농가와의 상생을 통한 <b>판로 다각화</b> 추진 중"
+          "keyword": "매실 살리기",
+          "desc": "광양·순천·하동 주산지와 협력해 <b>지역 경제 활성화</b>"
         }
       ],
-      "footer": "TV홈쇼핑 중심에서 지역 농산물 특화로 차별화 전략 구축",
+      "footer": "로컬 우수 농산물 판로 개척으로 고객신뢰와 사회적 가치 동시 확보",
       "sources": [
         {
-          "title": "홈앤쇼핑 새청무쌀 특별방송",
-          "url": "https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065593418938562"
+          "title": "순천농협 새청무쌀 특별방송",
+          "url": "https://www.ajunews.com/view/20260615132042509"
         },
         {
           "title": "농협경제지주 매실 소비 살리기",
@@ -32,56 +32,60 @@
       ]
     },
     {
-      "category": "경영전략",
-      "title": "ESG 경영으로<br>브랜드 가치 제고",
+      "category": "전략",
+      "title": "오프라인 유통 <br>강화 가속화",
       "items": [
         {
-          "keyword": "상생 협력",
-          "desc": "<b>대중소기업농어업협력</b> 재단 출연으로 사회적 책임 이행"
+          "keyword": "홈플러스 익스프레스",
+          "desc": "NS홈쇼핑이 인수하며 <b>하림 유통사업 핵심축</b> 구축"
         },
         {
-          "keyword": "지역 활성화",
-          "desc": "광양·순천·하동 등 <b>주산지 지자체</b>와 협력 확대"
+          "keyword": "채널 다각화",
+          "desc": "TV시청 감소 대응으로 <b>오프라인 경쟁력</b> 강화 중"
         },
         {
-          "keyword": "ESG 실천",
-          "desc": "농어촌 소비 활성화로 <b>지속가능한 사업</b> 모델 구축"
+          "keyword": "전략 동맹",
+          "url": "현대홈쇼핑, LG헬로비전과 협력으로 <b>생존 전선</b> 재편"
         }
       ],
-      "footer": "농가 상생 기반의 ESG 경영으로 기업 신뢰도 및 브랜드 가치 상승",
+      "footer": "TV 중심 사업 한계 극복 위해 온·오프라인 통합 유통 전환 추진 중",
       "sources": [
         {
-          "title": "ESG 한발 더 우리 농가와 상생",
-          "url": "https://www.news2day.co.kr/article/20260616500050"
+          "title": "NS홈쇼핑 홈플러스 익스프레스 인수",
+          "url": "https://www.dailian.co.kr/news/view/1656016/?sc=Naver"
         },
         {
-          "title": "우리 농산물 판로 확대 나선 홈앤쇼핑",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201287"
+          "title": "홈쇼핑 전략적 동맹 강화",
+          "url": "https://economist.co.kr/article/view/ecn202606150051"
         }
       ]
     },
     {
-      "category": "산업동향",
-      "title": "홈쇼핑업계<br>생존 전략 전환",
+      "category": "정책",
+      "title": "ESG 경영으로 <br>산업 리더십 확보",
       "items": [
         {
-          "keyword": "시장 위기",
-          "desc": "<b>TV 시청 감소</b>로 홈쇼핑업계 사업 환경 악화 중"
+          "keyword": "지역 특산물",
+          "desc": "<b>NS홈쇼핑 'YES, NS! 팔도장터'</b>로 지역 활성화 선도"
         },
         {
-          "keyword": "전략 전환",
-          "desc": "TV 중심에서 <b>오프라인·특화</b> 사업으로 다각화 가속화"
+          "keyword": "상생 협력",
+          "desc": "현대그린푸드 태안 대파 <b>100톤 매입</b>으로 농가 지원"
         },
         {
-          "keyword": "동맹 강화",
-          "desc": "업계 전반 <b>전략적 협력</b>으로 생존 체계 구축"
+          "keyword": "사회적 가치",
+          "desc": "홈쇼핑 업계 통합 추진으로 <b>ESG 기준</b> 업계 주도"
         }
       ],
-      "footer": "TV홈쇼핑 한계 극복을 위한 지역 농산물 특화·상생 경영이 차별화 전략",
+      "footer": "유통업계 ESG 선도 기업으로 국내 농가와의 동반성장 모델 제시",
       "sources": [
         {
-          "title": "TV 요즘 누가 보나 홈쇼핑 생존",
-          "url": "https://economist.co.kr/article/view/ecn202606150051"
+          "title": "NS홈쇼핑 ESG 우리 농가와 상생",
+          "url": "https://www.news2day.co.kr/article/20260616500050"
+        },
+        {
+          "title": "우리 농산물 판로 확대 홈앤쇼핑",
+          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201287"
         }
       ]
     }
@@ -89,88 +93,84 @@
   "right": [
     {
       "category": "트렌드",
-      "title": "온·오프라인 결합<br>홈쇼핑의 新전략",
+      "title": "온·오프라인 결합이<br>생존 전략",
       "items": [
         {
-          "keyword": "채널 연계",
-          "desc": "홈쇼핑-오프라인 유통 협력 강화로 <b>초기 유통량 전량 소진</b> 성공"
+          "keyword": "채널 다각화",
+          "desc": "TV 시청 감소로 홈쇼핑사들이 <b>오프라인 유통망 확보</b>에 나섬"
         },
         {
-          "keyword": "SSM 진출",
-          "desc": "NS홈쇼핑, 홈플러스 익스프레스 인수로 <b>전국 오프라인망 확보</b>"
+          "keyword": "NS 홈쇼핑",
+          "desc": "홈플러스 익스프레스 <b>1,206억 원 인수</b>로 전국 SSM 네트워크 구축"
         },
         {
-          "keyword": "생존 전략",
-          "desc": "TV 시청 감소 대응, <b>온라인+오프라인 융합</b>으로 고객 확보"
+          "keyword": "브랜드 협력",
+          "desc": "볼빅 등 브랜드와 홈쇼핑 생방송 <b>대용량 패키지 완판</b> 달성"
         }
       ],
-      "footer": "홈쇼핑 업계, TV 의존도 탈피하며 하이브리드 유통으로 전환 중",
+      "footer": "홈쇼핑 + 오프라인 결합으로 고객 접점 확대가 필수 과제",
       "sources": [
-        {
-          "title": "사모펀드 떠난 자리, 홈플러스 살릴...",
-          "url": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003243223"
-        },
         {
           "title": "시청자 감소로 성장 한계…TV 밖으로",
           "url": "https://www.hani.co.kr/arti/economy/consumer/1263829.html"
-        }
-      ]
-    },
-    {
-      "category": "경쟁사 동향",
-      "title": "NS홈쇼핑<br>공격적 사업 확장",
-      "items": [
-        {
-          "keyword": "M&A 성과",
-          "desc": "홈플러스 익스프레스 <b>1,206억 원</b>에 인수, 공정위 승인 획득"
         },
-        {
-          "keyword": "오프라인 강화",
-          "desc": "14년 만에 <b>SSM 사업 재진출</b>, 전국 단위 유통망 확보"
-        },
-        {
-          "keyword": "하림그룹 시너지",
-          "desc": "하림 계열사 NS홈쇼핑의 온·오프라인 <b>결합 전략</b> 시험대"
-        }
-      ],
-      "footer": "경쟁사, 오프라인 인수로 유통 다각화 추진 중…선제 대응 필요",
-      "sources": [
         {
           "title": "홈플러스 익스프레스 품은 NS홈쇼핑",
           "url": "https://www.newsway.co.kr/news/view?ud=2026061615200188054"
-        },
-        {
-          "title": "김홍국 하림 회장, 홈플러스 익스프레스 품고",
-          "url": "https://www.insightkorea.co.kr/news/articleView.html?idxno=248243"
         }
       ]
     },
     {
       "category": "실적·성장",
-      "title": "홈쇼핑 채널<br>강력한 완판 실적",
+      "title": "홈쇼핑, 다양한<br>카테고리 확대 중",
       "items": [
         {
-          "keyword": "완판 기록",
-          "desc": "볼빅 두피관리 제품, 홈쇼핑 첫 협업서 <b>기획 패키지 전량 소진</b>"
+          "keyword": "뷰티·헬스",
+          "desc": "탈모 관리 전문 브랜드 볼빅의 홈쇼핑 협업으로 <b>초기 물량 전량 소진</b>"
         },
         {
-          "keyword": "판매력 검증",
-          "desc": "실시간 방송망 활용, <b>대용량 복합 패키지 초기물량 전소</b> 성공"
+          "keyword": "식품·HMR",
+          "desc": "외갓집 등 편의식 제품이 이커머스·홈쇼핑에서 <b>불티나게 판매</b> 중"
         },
         {
-          "keyword": "브랜드 확대",
-          "desc": "펫푸드·의약품 등 신규 카테고리 <b>홈쇼핑 채널 중심 강화</b>"
+          "keyword": "펫 산업",
+          "desc": "압타머사이언스, 펫푸드·동물의약품으로 <b>홈쇼핑 사업 확대</b> 추진"
         }
       ],
-      "footer": "홈쇼핑의 실시간 판매 효율성, 초기물량 확보의 최고 채널로 입증",
+      "footer": "기존 의류·생활용품 중심에서 뷰티·식품·펫용품으로 포트폴리오 다변화",
       "sources": [
         {
-          "title": "이노진 볼빅 홈쇼핑 채널 연계 탈모...",
+          "title": "이노진 볼빅 홈쇼핑 채널 연계 완판",
           "url": "http://www.lawissue.co.kr/view.php?ud=202606161737372405204ead0791_12"
         },
         {
-          "title": "펫푸드 품은 압타머사이언스, 사명 바꾸고",
+          "title": "펫푸드 품은 압타머사이언스, 유통사업",
           "url": "https://www.topdaily.kr/articles/110561"
+        }
+      ]
+    },
+    {
+      "category": "정책·규제",
+      "title": "식품 안전성 문제로<br>업계 신뢰도 위기",
+      "items": [
+        {
+          "keyword": "품질 관리",
+          "desc": "외갓집 HMR 제품에서 <b>대장균 검출</b>, 쿠팡·네이버·홈쇼핑 동시 판매 중"
+        },
+        {
+          "keyword": "판매 채널",
+          "desc": "이커머스·홈쇼핑·자사몰 등 <b>다중 채널 유통</b>으로 감시 어려움"
+        },
+        {
+          "keyword": "소비자 신뢰",
+          "desc": "홈쇼핑의 신뢰도 기반인 상품 품질 <b>관리 강화 필요</b>"
+        }
+      ],
+      "footer": "온·오프라인 채널 확대 시 식품 안전 기준 강화가 필수 선행 과제",
+      "sources": [
+        {
+          "title": "쿠팡 인기 간편식 '외갓집 갈비탕' 대장균",
+          "url": "https://www.kpinews.kr/newsView/1065596469219721"
         }
       ]
     }

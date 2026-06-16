@@ -1,0 +1,19 @@
+/**
+ * portal_config.js — 로컬 전용 설정 (GitHub에 올라가지 않음)
+ *
+ * 사용법:
+ *   1. 이 파일을 portal_config.js 로 복사
+ *   2. GITHUB_TOKEN 값을 실제 PAT으로 교체
+ *
+ * GitHub PAT 발급:
+ *   https://github.com/settings/tokens
+ *   → Fine-grained tokens → Generate new token
+ *   → Repository: prettykbk81/hnsinfo
+ *   → Permissions: Actions (Read and write)
+ */
+window.PORTAL_CONFIG = {
+  GITHUB_TOKEN: "github_pat_여기에_토큰_입력",
+  GITHUB_OWNER: "prettykbk81",
+  GITHUB_REPO:  "hnsinfo",
+  WORKFLOW_FILE: "daily_news.yml",
+};

@@ -269,13 +269,16 @@ body {{
 .c-footer   {{ display:flex; justify-content:space-between; align-items:center; }}
 .c-foot-text {{ font-size:12px; font-weight:700; color:#222; }}
 .c-credit    {{ font-size:10px; color:#9a8a7a; }}
-.c-sources   {{ margin-top:10px; padding-top:8px; border-top:1px dashed #d0c4b4; }}
-.c-sources-label {{ font-size:9px; font-weight:700; color:#9a8a7a; letter-spacing:.8px; margin-bottom:3px; }}
+.c-sources   {{ margin-top:12px; padding-top:10px; border-top:1px dashed #d0c4b4; }}
+.c-sources-label {{ font-size:9px; font-weight:700; color:#9a8a7a; letter-spacing:.8px; margin-bottom:5px; }}
 .c-sources a {{
-  display:inline-block; font-size:10px; color:#7a6a5a;
-  text-decoration:none; margin-right:10px; line-height:1.8;
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:11px; color:#cc2b2b;
+  text-decoration:underline; text-underline-offset:2px;
+  margin-right:12px; line-height:2; cursor:pointer;
 }}
-.c-sources a:hover {{ color:#cc2b2b; text-decoration:underline; }}
+.c-sources a::after {{ content:'↗'; font-size:9px; opacity:.7; }}
+.c-sources a:hover {{ color:#a01f1f; opacity:.85; }}
 
 /* ── 컨트롤 ── */
 .ctrl {{

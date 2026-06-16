@@ -1,5 +1,6 @@
 # ── 절대 커밋하면 안 되는 파일 ──────────────────────────
 .streamlit/secrets.toml
+portal_config.js
 
 # Python
 __pycache__/

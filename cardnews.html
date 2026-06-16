@@ -54,12 +54,15 @@ body {
 .c-foot-text { font-size:12px; font-weight:700; color:#222; }
 .c-credit    { font-size:10px; color:#9a8a7a; }
 .c-sources   { margin-top:10px; padding-top:8px; border-top:1px dashed #d0c4b4; }
-.c-sources-label { font-size:9px; font-weight:700; color:#9a8a7a; letter-spacing:.8px; margin-bottom:3px; }
+.c-sources-label { font-size:9px; font-weight:700; color:#9a8a7a; letter-spacing:.8px; margin-bottom:5px; }
 .c-sources a {
-  display:inline-block; font-size:10px; color:#7a6a5a;
-  text-decoration:none; margin-right:10px; line-height:1.8;
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:11px; color:#cc2b2b;
+  text-decoration:underline; text-underline-offset:2px;
+  margin-right:12px; line-height:2; cursor:pointer;
 }
-.c-sources a:hover { color:#cc2b2b; text-decoration:underline; }
+.c-sources a::after { content:'↗'; font-size:9px; opacity:.7; }
+.c-sources a:hover { color:#a01f1f; opacity:.85; }
 
 /* ── 로딩/에러 ── */
 .status { text-align:center; padding:60px 20px; font-size:15px; color:#888; grid-column:1/-1; }
@@ -87,6 +90,9 @@ body {
 .btn-home:hover    { background:#c8001f; }
 .btn-print         { background:#333; color:#fff; }
 .btn-print:hover   { background:#111; }
+.btn-generate       { background:#1a7f37; color:#fff; }
+.btn-generate:hover { background:#14632b; }
+.btn-generate:disabled { background:#888; cursor:not-allowed; }
 .btn-refresh       { background:#555; color:#fff; }
 .btn-refresh:hover { background:#333; }
 
@@ -116,11 +122,82 @@ body {
     </svg>
     홈으로
   </a>
+  <button class="btn-generate" id="btnGenerate" onclick="generateNews()">⚡ 뉴스 새로 생성</button>
   <button class="btn-refresh" onclick="loadNews()">↻ 새로고침</button>
   <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF</button>
 </div>
+<div id="statusMsg" style="margin-top:12px;font-size:12px;color:#888;text-align:center;min-height:18px;"></div>
 
+<script src="portal_config.js"></script>
 <script>
+/* ── GitHub Actions 트리거 ── */
+function generateNews() {
+  var cfg = window.PORTAL_CONFIG;
+  var btn = document.getElementById('btnGenerate');
+  var msg = document.getElementById('statusMsg');
+
+  if (!cfg || !cfg.GITHUB_TOKEN || cfg.GITHUB_TOKEN.indexOf('여기에') !== -1) {
+    window.open(
+      'https://github.com/prettykbk81/hnsinfo/actions/workflows/daily_news.yml',
+      '_blank'
+    );
+    msg.textContent = 'GitHub Actions 페이지에서 Run workflow를 클릭하세요.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 생성 중...';
+  msg.textContent = 'GitHub Actions 워크플로우를 시작합니다...';
+
+  var apiBase = 'https://api.github.com/repos/' + cfg.GITHUB_OWNER + '/' + cfg.GITHUB_REPO;
+  var headers  = {
+    'Authorization': 'Bearer ' + cfg.GITHUB_TOKEN,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+
+  fetch(apiBase + '/actions/workflows/' + cfg.WORKFLOW_FILE + '/dispatches', {
+    method: 'POST',
+    headers: Object.assign({'Content-Type': 'application/json'}, headers),
+    body: JSON.stringify({ref: 'main'}),
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('워크플로우 시작 실패 (HTTP ' + r.status + ')');
+    msg.textContent = '워크플로우 시작됨. 완료까지 약 1~2분 소요됩니다...';
+    return pollWorkflow(apiBase, headers, 0);
+  })
+  .then(function() {
+    msg.textContent = '완료! 새 뉴스를 불러옵니다...';
+    setTimeout(function() { loadNews(); msg.textContent = ''; }, 2000);
+  })
+  .catch(function(err) {
+    msg.textContent = '오류: ' + err.message;
+  })
+  .finally(function() {
+    btn.disabled = false;
+    btn.textContent = '⚡ 뉴스 새로 생성';
+  });
+}
+
+function pollWorkflow(apiBase, headers, attempts) {
+  if (attempts > 24) return Promise.resolve(); // 최대 2분 대기
+  return new Promise(function(resolve) { setTimeout(resolve, 5000); })
+    .then(function() {
+      return fetch(apiBase + '/actions/runs?per_page=1&event=workflow_dispatch', {headers: headers});
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var run = data.workflow_runs && data.workflow_runs[0];
+      if (!run) return pollWorkflow(apiBase, headers, attempts + 1);
+      var status = run.status;
+      var conclusion = run.conclusion;
+      document.getElementById('statusMsg').textContent =
+        '워크플로우 상태: ' + status + (conclusion ? ' / ' + conclusion : '') + ' (' + (attempts * 5) + '초 경과)';
+      if (status === 'completed') return Promise.resolve();
+      return pollWorkflow(apiBase, headers, attempts + 1);
+    });
+}
+
 function makeCard(card, dateEn) {
   var items = (card.items || []).map(function(it, i) {
     return '<div class="c-item">'
