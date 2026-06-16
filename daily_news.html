@@ -9,49 +9,61 @@
 body {
   background:#d4d0c8;
   min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  display:flex; flex-direction:column; align-items:center;
   padding:32px 20px 48px;
   font-family:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',sans-serif;
 }
-.page-label {
-  font-size:12px; font-weight:700; color:#cc2b2b;
-  letter-spacing:2.5px; margin-bottom:4px; text-align:center;
-}
-.page-date {
-  font-size:11px; color:#777; letter-spacing:1px;
-  margin-bottom:30px; text-align:center;
-}
-.cards-wrap { display:flex; flex-direction:column; gap:24px; width:100%; max-width:900px; }
+.page-label { font-size:12px; font-weight:700; color:#cc2b2b; letter-spacing:2.5px; margin-bottom:4px; text-align:center; }
+.page-date  { font-size:11px; color:#777; letter-spacing:1px; margin-bottom:30px; text-align:center; }
 
-/* ── 카드 (cardnews.html 동일 디자인) ── */
+/* ── 2열 그리드 ── */
+.grid-wrap {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+  width:100%; max-width:1860px;
+}
+.col { display:flex; flex-direction:column; gap:20px; }
+.col-header {
+  font-size:11px; font-weight:700; color:#fff;
+  background:#cc2b2b; letter-spacing:1.5px;
+  padding:6px 14px; align-self:flex-start;
+}
+
+/* ── 카드 ── */
 .card {
-  width:100%; background:#f0e9d8; padding:44px 56px 36px;
+  background:#f0e9d8; padding:36px 44px 28px;
   display:flex; flex-direction:column;
   box-shadow:0 4px 24px rgba(0,0,0,.15);
 }
-.c-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:22px; }
-.c-handle   { font-size:11px; font-weight:700; color:#cc2b2b; letter-spacing:.8px; margin-bottom:3px; }
-.c-category { font-size:13px; color:#5a4a3a; }
-.c-date     { font-size:11px; color:#9a8a7a; letter-spacing:1px; }
-.c-title    { font-size:48px; font-weight:900; color:#111; line-height:1.08; letter-spacing:-1.5px; margin-bottom:38px; }
+.c-top      { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
+.c-handle   { font-size:10px; font-weight:700; color:#cc2b2b; letter-spacing:.8px; margin-bottom:2px; }
+.c-category { font-size:12px; color:#5a4a3a; }
+.c-date     { font-size:10px; color:#9a8a7a; letter-spacing:1px; }
+.c-title    { font-size:36px; font-weight:900; color:#111; line-height:1.1; letter-spacing:-1px; margin-bottom:28px; }
 .c-title .hl { color:#cc2b2b; }
-.c-items    { display:flex; flex-direction:column; gap:6px; }
-.c-item     { display:flex; align-items:center; padding:15px 0 15px 22px; border-left:4px solid #cc2b2b; }
-.i-num      { font-size:28px; font-weight:900; color:#cc2b2b; width:52px; flex-shrink:0; line-height:1; }
-.i-kw       { font-size:17px; font-weight:700; color:#111; width:220px; flex-shrink:0; }
-.i-desc     { font-size:14.5px; color:#666; flex:1; }
+.c-items    { display:flex; flex-direction:column; gap:4px; }
+.c-item     { display:flex; align-items:center; padding:11px 0 11px 18px; border-left:4px solid #cc2b2b; }
+.i-num      { font-size:22px; font-weight:900; color:#cc2b2b; width:42px; flex-shrink:0; line-height:1; }
+.i-kw       { font-size:14px; font-weight:700; color:#111; width:160px; flex-shrink:0; }
+.i-desc     { font-size:12.5px; color:#666; flex:1; }
 .i-desc b   { color:#cc2b2b; font-weight:700; }
 .i-desc em  { color:#111; font-style:normal; font-weight:700; }
-.c-divider  { border:none; border-top:1px solid #c8bdb0; margin:28px 0 16px; }
+.c-divider  { border:none; border-top:1px solid #c8bdb0; margin:20px 0 12px; }
 .c-footer   { display:flex; justify-content:space-between; align-items:center; }
-.c-foot-text { font-size:13px; font-weight:700; color:#222; }
-.c-credit    { font-size:11px; color:#9a8a7a; }
+.c-foot-text { font-size:12px; font-weight:700; color:#222; }
+.c-credit    { font-size:10px; color:#9a8a7a; }
+.c-sources   { margin-top:10px; padding-top:8px; border-top:1px dashed #d0c4b4; }
+.c-sources-label { font-size:9px; font-weight:700; color:#9a8a7a; letter-spacing:.8px; margin-bottom:3px; }
+.c-sources a {
+  display:inline-block; font-size:10px; color:#7a6a5a;
+  text-decoration:none; margin-right:10px; line-height:1.8;
+}
+.c-sources a:hover { color:#cc2b2b; text-decoration:underline; }
 
 /* ── 컨트롤 ── */
 .ctrl {
-  margin-top:20px; display:flex; gap:10px;
+  margin-top:24px; display:flex; gap:10px;
   align-items:center; flex-wrap:wrap; justify-content:center;
 }
 .btn-home, .btn-print {
@@ -65,8 +77,10 @@ body {
 .btn-home:hover  { background:#c8001f; }
 .btn-print       { background:#333; color:#fff; }
 .btn-print:hover { background:#111; }
-.hint { font-size:11px; color:#888; }
 
+@media (max-width:900px) {
+  .grid-wrap { grid-template-columns:1fr; }
+}
 @media print {
   body { background:none; padding:0; }
   .ctrl, .page-label, .page-date { display:none; }
@@ -79,7 +93,20 @@ body {
 <div class="page-label">@홈앤쇼핑_AI_DAILY_NEWS</div>
 <div class="page-date">2026년 06월 16일 · 네이버 뉴스 × Claude AI</div>
 
-<div class="cards-wrap" id="wrap"></div>
+<div class="grid-wrap">
+  <div class="col">
+    <div class="col-header">홈앤쇼핑 자사 뉴스</div>
+    <div class="card"><div class="c-top"><div><div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div><div class="c-category">실적·성장</div></div><div class="c-date">JUNE 16, 2026</div></div><div class="c-title">농가 상생으로 <br>판로 확대</div><div class="c-items"><div class="c-item"><span class="i-num">1</span><span class="i-kw">새청무쌀</span><span class="i-desc">순천농협 명품쌀 <b>특별방송</b> 진행으로 우수 농산물 소비 촉진</span></div><div class="c-item"><span class="i-num">2</span><span class="i-kw">매실 소비</span><span class="i-desc"><b>농어촌상생협력기금</b> 출연으로 지역 농가 지원 강화</span></div><div class="c-item"><span class="i-num">3</span><span class="i-kw">지역 특산물</span><span class="i-desc">광양·순천·하동 등 <b>주산지 협력</b>으로 판로 다각화</span></div></div><hr class="c-divider"><div class="c-footer"><div class="c-foot-text">로컬 농산물 판매를 통한 신규 고객층 확보 및 브랜드 신뢰도 상승</div><div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div></div><div class="c-sources"><div class="c-sources-label">출처 SOURCE</div><a href="https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065593418938562" target="_blank" rel="noopener">순천농협 새청무쌀 특별방송</a><a href="http://www.newsfarm.co.kr/news/articleView.html?idxno=101308" target="_blank" rel="noopener">농협경제지주, 매실 소비 살리기</a></div></div>
+<div class="card"><div class="c-top"><div><div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div><div class="c-category">경영전략</div></div><div class="c-date">JUNE 16, 2026</div></div><div class="c-title">ESG 경영으로 <br>기업가치 강화</div><div class="c-items"><div class="c-item"><span class="i-num">1</span><span class="i-kw">상생 협력</span><span class="i-desc"><b>대중소기업농어업협력재단</b>에 기금 출연으로 사회공헌</span></div><div class="c-item"><span class="i-num">2</span><span class="i-kw">지역 경제</span><span class="i-desc">전국 하나로마트 연계 판매로 <b>오프라인 연동</b> 확대</span></div><div class="c-item"><span class="i-num">3</span><span class="i-kw">ESG 활동</span><span class="i-desc">농어촌 상생협력으로 <b>사회적 책임</b> 구현</span></div></div><hr class="c-divider"><div class="c-footer"><div class="c-foot-text">농가 지원을 통한 사회적 가치 창출로 ESG 경영 강화 및 기업 이미지 제고</div><div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div></div><div class="c-sources"><div class="c-sources-label">출처 SOURCE</div><a href="https://www.news2day.co.kr/article/20260616500050" target="_blank" rel="noopener">NS홈쇼핑·현대그린푸드·홈앤쇼핑 상생</a><a href="http://www.thefirstmedia.net/news/articleView.html?idxno=201287" target="_blank" rel="noopener">우리 농산물 판로 확대 나선 홈앤쇼핑</a></div></div>
+<div class="card"><div class="c-top"><div><div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div><div class="c-category">시장동향</div></div><div class="c-date">JUNE 16, 2026</div></div><div class="c-title">쌀 소비 감소 속 <br>프리미엄 전환</div><div class="c-items"><div class="c-item"><span class="i-num">1</span><span class="i-kw">쌀 소비</span><span class="i-desc"><b>장기 감소 추세</b>에도 품질·품종 중심 프리미엄 쌀 수요 증가</span></div><div class="c-item"><span class="i-num">2</span><span class="i-kw">포지셔닝</span><span class="i-desc">대표 브랜드 쌀 특별방송으로 <b>고부가가치</b> 상품 강화</span></div><div class="c-item"><span class="i-num">3</span><span class="i-kw">차별화</span><span class="i-desc">산지·품질 기반 명품 쌀 마케팅으로 <b>가격 경쟁력</b> 제고</span></div></div><hr class="c-divider"><div class="c-footer"><div class="c-foot-text">저가 경쟁 회피 후 프리미엄 상품 중심 구조 전환으로 마진율 개선 기대</div><div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div></div><div class="c-sources"><div class="c-sources-label">출처 SOURCE</div><a href="https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065593418938562" target="_blank" rel="noopener">우수 농산물 소비 촉진 나서</a><a href="http://www.thefirstmedia.net/news/articleView.html?idxno=201287" target="_blank" rel="noopener">우리 농산물 판로 확대</a></div></div>
+  </div>
+  <div class="col">
+    <div class="col-header">홈쇼핑 업계 동향</div>
+    <div class="card"><div class="c-top"><div><div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div><div class="c-category">트렌드</div></div><div class="c-date">JUNE 16, 2026</div></div><div class="c-title">TV 시청 감소, 채널 다각화로<br>돌파구 모색 중</div><div class="c-items"><div class="c-item"><span class="i-num">1</span><span class="i-kw">채널 확대</span><span class="i-desc"><b>오프라인·온라인 결합</b> 전략으로 고객층 확대 추진 중</span></div><div class="c-item"><span class="i-num">2</span><span class="i-kw">송출수수료</span><span class="i-desc">방송 송출수수료 부담 증가로 수익성 악화 심화</span></div><div class="c-item"><span class="i-num">3</span><span class="i-kw">고객 접근</span><span class="i-desc">TV 밖에서 직접 고객 찾기 시작한 업계 재편기</span></div></div><hr class="c-divider"><div class="c-footer"><div class="c-foot-text">TV 의존도 탈피 필수, 멀티채널 경쟁 심화 단계 진입</div><div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div></div><div class="c-sources"><div class="c-sources-label">출처 SOURCE</div><a href="https://www.hani.co.kr/arti/economy/consumer/1263829.html" target="_blank" rel="noopener">TV 밖으로 고객 찾아나선 홈쇼핑</a></div></div>
+<div class="card"><div class="c-top"><div><div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div><div class="c-category">경쟁사 동향</div></div><div class="c-date">JUNE 16, 2026</div></div><div class="c-title">NS홈쇼핑, 홈플러스 익스프레스<br>1,206억 원 인수 승인</div><div class="c-items"><div class="c-item"><span class="i-num">1</span><span class="i-kw">규모</span><span class="i-desc">홈플러스 익스프레스 <b>1,206억 원</b>에 인수 (공정위 승인)</span></div><div class="c-item"><span class="i-num">2</span><span class="i-kw">전략</span><span class="i-desc">온·오프라인 결합으로 전국 단위 <b>오프라인 유통망</b> 확보</span></div><div class="c-item"><span class="i-num">3</span><span class="i-kw">재진출</span><span class="i-desc">하림 계열, <b>14년 만에 SSM 사업 재진출</b> 시도</span></div></div><hr class="c-divider"><div class="c-footer"><div class="c-foot-text">경쟁사의 오프라인 기반 강화 움직임, 업계 판도 변화 신호</div><div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div></div><div class="c-sources"><div class="c-sources-label">출처 SOURCE</div><a href="https://www.newsway.co.kr/news/view?ud=2026061615200188054" target="_blank" rel="noopener">NS홈쇼핑 홈플러스익스프레스 인수 승인</a><a href="https://www.insightkorea.co.kr/news/articleView.html?idxno=248243" target="_blank" rel="noopener">김홍국 회장 그리는 온·오프라인 결합</a></div></div>
+<div class="card"><div class="c-top"><div><div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div><div class="c-category">실적·성장</div></div><div class="c-date">JUNE 16, 2026</div></div><div class="c-title">브랜드별 채널 연계 확대,<br>완판 성과 주목</div><div class="c-items"><div class="c-item"><span class="i-num">1</span><span class="i-kw">볼빅</span><span class="i-desc">홈쇼핑 첫 협업 생방송에서 <b>기획 패키지 전량 완판</b> 기록</span></div><div class="c-item"><span class="i-num">2</span><span class="i-kw">채널 다양화</span><span class="i-desc">쿠팡·네이버·홈쇼핑 <b>멀티채널 동시 판매</b> 확대 추세</span></div><div class="c-item"><span class="i-num">3</span><span class="i-kw">신규 사업</span><span class="i-desc">압타머사이언스, 홈쇼핑 중심 <b>유통사업 본격화</b> 선언</span></div></div><hr class="c-divider"><div class="c-footer"><div class="c-foot-text">대용량 패키지 기획상품과 멀티채널 전략이 실적 견인 중</div><div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div></div><div class="c-sources"><div class="c-sources-label">출처 SOURCE</div><a href="http://www.lawissue.co.kr/view.php?ud=202606161737372405204ead0791_12" target="_blank" rel="noopener">볼빅 홈쇼핑 채널 연계 완판 기록</a><a href="https://www.topdaily.kr/articles/110561" target="_blank" rel="noopener">펫푸드 브랜드 유통사업 본격화</a></div></div>
+  </div>
+</div>
 
 <div class="ctrl">
   <a class="btn-home" href="https://prettykbk81.github.io/hnsinfo/">
@@ -91,42 +118,7 @@ body {
     홈으로
   </a>
   <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF</button>
-  <span class="hint">※ PDF 저장 시 '배경 그래픽' 체크</span>
 </div>
 
-<script>
-var CARDS = [{"category": "경쟁사 동향", "title": "NS홈쇼핑, 오프라인<br>유통망 확보 전략", "items": [{"keyword": "홈플러스익스프레스", "desc": "<b>1,206억 원</b>에 인수 완료, 전국 SSM 네트워크 확보"}, {"keyword": "온오프라인 결합", "desc": "TV 시청 감소에 대응, 오프라인 채널과 연계 강화"}, {"keyword": "14년 만 재진출", "desc": "하림그룹, SSM 사업 복귀로 유통 사업 본격화"}], "footer": "TV 의존도 탈피 움직임 가속화, 업계 구도 재편 시작"}, {"category": "산업 트렌드", "title": "홈쇼핑, 오프라인으로<br>확장 시작", "items": [{"keyword": "시청자 감소", "desc": "TV 인구 감소로 성장 한계 직면, 채널 다각화 필수"}, {"keyword": "채널 연계 강화", "desc": "홈쇼핑-오프라인 결합 모델, 업계 공통 전략으로 확산"}, {"keyword": "유통 사업 확대", "desc": "펫푸드, 농특산물 등 다양한 상품군으로 판로 개척"}], "footer": "온라인 중심→온오프라인 통합 유통시대로 전환 중"}, {"category": "정책·규제", "title": "식품 안전 관리<br>강화 추세", "items": [{"keyword": "부작용 적발", "desc": "인기 HMR 제품 대장균 검출, 쿠팡·네이버 등 판매 중단"}, {"keyword": "다채널 판매", "desc": "이커머스·홈쇼핑·자사몰 동시 판매로 리스크 노출"}, {"keyword": "동일 공정 문제", "desc": "3개 제품 동일 시설에서 생산되며 품질 관리 이슈"}], "footer": "공급사 검증 강화 필수, 식품 카테고리 리스크 증대"}];
-var DATE  = 'JUNE 16, 2026';
-
-CARDS.forEach(function(card) {
-  var items = (card.items || []).map(function(it, i) {
-    return '<div class="c-item">'
-      + '<span class="i-num">'  + (i + 1) + '</span>'
-      + '<span class="i-kw">'   + (it.keyword || '') + '</span>'
-      + '<span class="i-desc">' + (it.desc    || '') + '</span>'
-      + '</div>';
-  }).join('');
-
-  var el = document.createElement('div');
-  el.className = 'card';
-  el.innerHTML =
-    '<div class="c-top">'
-      + '<div>'
-        + '<div class="c-handle">@홈앤쇼핑_AI_DAILY_NEWS</div>'
-        + '<div class="c-category">' + (card.category || '') + '</div>'
-      + '</div>'
-      + '<div class="c-date">' + DATE + '</div>'
-    + '</div>'
-    + '<div class="c-title">'  + (card.title  || '') + '</div>'
-    + '<div class="c-items">'  + items + '</div>'
-    + '<hr class="c-divider">'
-    + '<div class="c-footer">'
-      + '<div class="c-foot-text">' + (card.footer || '') + '</div>'
-      + '<div class="c-credit">© 홈앤쇼핑 AI Daily · powered by Claude</div>'
-    + '</div>';
-
-  document.getElementById('wrap').appendChild(el);
-});
-</script>
 </body>
 </html>
