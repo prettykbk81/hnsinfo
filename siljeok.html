@@ -182,6 +182,171 @@ tr.r-date .med,  tr.r-total .med  { color:#eee; }
 tr.r-date .low,  tr.r-total .low  { color:#ffcc66; font-weight:700; }
 
 .no-data { text-align:center; padding:40px; color:#aaa; font-size:13px; }
+
+/* ── AI 요약 버튼 ── */
+.btn-ai {
+  margin-left:8px;
+  padding:7px 15px;
+  background:linear-gradient(90deg,#6d28d9,#4f46e5);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(109,40,217,.35);
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  transition:opacity .15s;
+}
+.btn-ai:hover { opacity:.88; }
+.btn-ai:disabled { opacity:.5; cursor:not-allowed; }
+
+/* ── AI 패널 ── */
+.ai-panel {
+  background:linear-gradient(135deg,#1e1b4b,#1a1a2e);
+  border-bottom:2px solid #4c1d95;
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .45s ease, padding .35s ease;
+}
+.ai-panel.open { max-height:500px; padding:16px 20px 18px; }
+
+.ai-panel-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+.ai-panel-title {
+  font-size:13px;
+  font-weight:700;
+  color:#c4b5fd;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.ai-badge {
+  font-size:9px;
+  background:rgba(139,92,246,.3);
+  border:1px solid rgba(139,92,246,.5);
+  color:#a78bfa;
+  padding:2px 7px;
+  border-radius:10px;
+  letter-spacing:.03em;
+}
+.ai-close {
+  background:none;
+  border:none;
+  color:#666;
+  font-size:20px;
+  cursor:pointer;
+  line-height:1;
+  padding:0 4px;
+}
+.ai-close:hover { color:#fff; }
+
+.ai-body {
+  font-size:13px;
+  line-height:1.85;
+  white-space:pre-wrap;
+  color:#e2e8f0;
+  min-height:36px;
+  word-break:keep-all;
+}
+.ai-cursor {
+  display:inline-block;
+  width:2px;
+  height:14px;
+  background:#a78bfa;
+  margin-left:2px;
+  vertical-align:middle;
+  animation:blink .75s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.ai-loading {
+  color:#888;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.ai-spinner {
+  width:13px;
+  height:13px;
+  border:2px solid #333;
+  border-top-color:#a78bfa;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  flex-shrink:0;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.ai-meta {
+  margin-top:10px;
+  padding-top:8px;
+  border-top:1px solid #2d2d4e;
+  font-size:10px;
+  color:#4a4a6a;
+}
+
+/* ── API 키 모달 ── */
+.key-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:900;
+  align-items:center;
+  justify-content:center;
+}
+.key-overlay.open { display:flex; }
+.key-modal {
+  background:#fff;
+  border-radius:12px;
+  padding:24px;
+  width:360px;
+  max-width:94vw;
+  box-shadow:0 8px 32px rgba(0,0,0,.25);
+}
+.key-modal h3 { font-size:14px; font-weight:700; color:#1a1a2e; margin-bottom:6px; }
+.key-modal p  { font-size:11.5px; color:#666; line-height:1.6; margin-bottom:14px; }
+.key-modal input {
+  width:100%;
+  border:1.5px solid #e5e7eb;
+  border-radius:7px;
+  padding:9px 11px;
+  font-size:13px;
+  font-family:inherit;
+  outline:none;
+  margin-bottom:12px;
+}
+.key-modal input:focus { border-color:#7c3aed; }
+.key-modal-row { display:flex; gap:8px; }
+.btn-key-ok {
+  flex:1;
+  padding:9px;
+  background:linear-gradient(90deg,#6d28d9,#4f46e5);
+  color:#fff;
+  border:none;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  font-family:inherit;
+}
+.btn-key-cancel {
+  padding:9px 14px;
+  background:#f5f5f5;
+  color:#555;
+  border:none;
+  border-radius:7px;
+  font-size:13px;
+  cursor:pointer;
+  font-family:inherit;
+}
 </style>
 </head>
 <body>
@@ -207,6 +372,44 @@ tr.r-date .low,  tr.r-total .low  { color:#ffcc66; font-weight:700; }
     <select id="sM2"></select><span class="unit-lbl">월</span>
     <select id="sD2"></select><span class="unit-lbl">일</span>
     <button class="btn-query" onclick="render()">조회</button>
+    <button class="btn-ai" id="btnAI" onclick="aiSummary()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      오늘 매출 AI 요약
+    </button>
+  </div>
+</div>
+
+<!-- AI 요약 패널 -->
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-head">
+    <div class="ai-panel-title">
+      ✦ 경영진용 AI 매출 요약
+      <span class="ai-badge" id="aiModelBadge">claude-haiku</span>
+    </div>
+    <button class="ai-close" onclick="closeAiPanel()" title="닫기">×</button>
+  </div>
+  <div class="ai-body" id="aiBody"></div>
+  <div class="ai-meta" id="aiMeta"></div>
+</div>
+
+<!-- API 키 입력 모달 -->
+<div class="key-overlay" id="keyOverlay" onclick="if(event.target===this)closeKeyModal()">
+  <div class="key-modal">
+    <h3>🔑 Claude API 키 설정</h3>
+    <p>
+      AI 요약 기능은 Anthropic API 키가 필요합니다.<br>
+      키는 이 브라우저의 localStorage에만 저장되며<br>
+      ai.html 설정과 공유됩니다.
+    </p>
+    <input type="password" id="keyInput" placeholder="sk-ant-api03-...">
+    <div class="key-modal-row">
+      <button class="btn-key-ok" onclick="saveKeyAndSummary()">저장 후 요약 시작</button>
+      <button class="btn-key-cancel" onclick="closeKeyModal()">취소</button>
+    </div>
   </div>
 </div>
 
@@ -419,6 +622,12 @@ function render() {
   let cumTgt = 0, cumFc = 0, cumAc = 0;
   days.forEach(r => { cumTgt += r.target; cumFc += r.forecast; cumAc += r.actual; });
 
+  // AI 요약용 데이터 저장
+  const d1Str = `${y1}.${String(m1).padStart(2,'0')}.${String(d1).padStart(2,'0')}`;
+  const d2Str = `${y2}.${String(m2).padStart(2,'0')}.${String(d2).padStart(2,'0')}`;
+  window.lastRenderData = { days, cumTgt, cumFc, cumAc,
+    rangeStr: d1Str === d2Str ? d1Str : `${d1Str} ~ ${d2Str}` };
+
   let html = '';
   let altToggle = 0;
 
@@ -470,6 +679,173 @@ function render() {
 
 initFilters();
 render();
+
+// ── AI 요약 ──────────────────────────────────────────────────
+
+function buildPrompt(d) {
+  const { days, cumTgt, cumFc, cumAc, rangeStr } = d;
+  const r = (a, t) => t ? Math.round(a / t * 100) + '%' : '-';
+
+  let txt = `분석 기간: ${rangeStr}\n단위: 백만원\n\n`;
+
+  txt += `[기간 누계]\n`;
+  txt += `목표 ${fmt(cumTgt)} | 예상 ${fmt(cumFc)} (${r(cumFc,cumTgt)}) | 실현 ${fmt(cumAc)} (${r(cumAc,cumTgt)})\n\n`;
+
+  txt += `[일별·채널별 현황]\n`;
+  days.forEach(day => {
+    txt += `${day.dateStr}: 목표 ${fmt(day.target)}, 예상 ${fmt(day.forecast)}(${r(day.forecast,day.target)}), 실현 ${fmt(day.actual)}(${r(day.actual,day.target)})\n`;
+    day.channels.forEach(ch => {
+      txt += `  ┣ ${ch.name}: 목표 ${fmt(ch.target)}, 예상 ${fmt(ch.forecast)}(${r(ch.forecast,ch.target)}), 실현 ${fmt(ch.actual)}(${r(ch.actual,ch.target)})\n`;
+      ch.subs.forEach(s => {
+        txt += `  ┃ └ ${s.name}: 목표 ${fmt(s.target)}, 예상 ${fmt(s.forecast)}(${r(s.forecast,s.target)}), 실현 ${fmt(s.actual)}(${r(s.actual,s.target)})\n`;
+      });
+    });
+  });
+
+  return `당신은 한국 홈쇼핑 경영진 보고 전문가입니다.
+홈앤쇼핑의 매출 진척 데이터를 분석해 경영진이 30초 안에 상황을 파악할 수 있는 요약을 작성하세요.
+
+${txt}
+---
+아래 형식으로 작성하세요. 각 섹션은 2~3문장 이내로 간결하게.
+
+■ 기간 누계 요약
+(달성률 수치와 전반적 흐름을 한눈에)
+
+■ 채널별 현황
+(방송 / 쇼핑몰 각각 핵심 수치와 특징 한 줄씩)
+
+■ 주요 특이사항
+(달성률이 두드러지게 높거나 낮은 항목, 주목할 변동 등 1~2가지)
+
+■ 한 줄 코멘트
+(경영진이 즉시 판단 내릴 수 있는 결론)
+
+규칙: 모든 수치는 데이터 그대로 인용, 단위 '억원' 또는 '백만원' 명시, 달성률 % 표기 필수.`;
+}
+
+async function aiSummary() {
+  if (!window.lastRenderData) {
+    alert('먼저 조회 버튼을 눌러 데이터를 불러오세요.');
+    return;
+  }
+  const apiKey = localStorage.getItem('hns_claude_key') || '';
+  if (!apiKey) { openKeyModal(); return; }
+  await runStream(apiKey);
+}
+
+function openKeyModal() {
+  document.getElementById('keyInput').value = '';
+  document.getElementById('keyOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('keyInput').focus(), 100);
+}
+function closeKeyModal() {
+  document.getElementById('keyOverlay').classList.remove('open');
+}
+async function saveKeyAndSummary() {
+  const key = document.getElementById('keyInput').value.trim();
+  if (!key) { alert('API 키를 입력해주세요.'); return; }
+  localStorage.setItem('hns_claude_key', key);
+  closeKeyModal();
+  await runStream(key);
+}
+
+function closeAiPanel() {
+  document.getElementById('aiPanel').classList.remove('open');
+}
+
+async function runStream(apiKey) {
+  const panel   = document.getElementById('aiPanel');
+  const bodyEl  = document.getElementById('aiBody');
+  const metaEl  = document.getElementById('aiMeta');
+  const badgeEl = document.getElementById('aiModelBadge');
+  const btnAI   = document.getElementById('btnAI');
+
+  const model = localStorage.getItem('hns_model') || 'claude-haiku-4-5-20251001';
+  const modelShort = model.replace('claude-','').replace('-20251001','');
+  badgeEl.textContent = modelShort;
+
+  panel.classList.add('open');
+  bodyEl.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 매출 데이터를 분석 중입니다…</div>';
+  metaEl.textContent = '';
+  btnAI.disabled = true;
+  btnAI.lastChild.textContent = ' 분석 중…';
+
+  try {
+    const prompt = buildPrompt(window.lastRenderData);
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 1024,
+        stream: true,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      const msg = err.error?.message || `HTTP ${resp.status}`;
+      if (resp.status === 401) throw new Error('API 키가 올바르지 않습니다. 키를 다시 확인하세요.');
+      if (resp.status === 429) throw new Error('요청 한도 초과입니다. 잠시 후 다시 시도하세요.');
+      throw new Error(msg);
+    }
+
+    // 스트리밍 시작
+    let fullText = '';
+    bodyEl.innerHTML = '';
+    const textNode = document.createTextNode('');
+    const cursor   = Object.assign(document.createElement('span'), { className: 'ai-cursor' });
+    bodyEl.appendChild(textNode);
+    bodyEl.appendChild(cursor);
+
+    const reader  = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim();
+        if (raw === '[DONE]') continue;
+        try {
+          const ev = JSON.parse(raw);
+          if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
+            fullText += ev.delta.text;
+            textNode.textContent = fullText;
+            // 패널 스크롤 따라가기
+            panel.scrollTop = panel.scrollHeight;
+          }
+        } catch(_) {}
+      }
+    }
+
+    cursor.remove();
+    metaEl.textContent =
+      `✦ 분석 완료 · 조회 기간: ${window.lastRenderData.rangeStr} · 모델: ${modelShort} · ${new Date().toLocaleTimeString('ko-KR')}`;
+
+  } catch(e) {
+    bodyEl.innerHTML = `<span style="color:#f87171;">⚠️ ${e.message}</span>`;
+  } finally {
+    btnAI.disabled = false;
+    const last = btnAI.lastChild;
+    if (last) last.textContent = ' 오늘 매출 AI 요약';
+  }
+}
 
 // ── Supabase 연동 예정 ────────────────────────────────────────
 /*
