@@ -1,0 +1,15 @@
+# ── 절대 커밋하면 안 되는 파일 ──────────────────────────
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.env
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
