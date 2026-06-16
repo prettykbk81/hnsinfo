@@ -7,11 +7,15 @@ API 키는 .streamlit/secrets.toml 또는 환경변수에서만 로드.
 import json
 import os
 import re
+import threading
 from datetime import date
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import anthropic
 import requests
 import streamlit as st
+
+PROXY_PORT = 8502
 
 # ───────────────────────────────────────────────────────────
 # 페이지 설정
@@ -49,6 +53,71 @@ def _cfg() -> dict:
         "n_tok":   get("NOTION_TOKEN"),
         "n_db":    get("NOTION_DATABASE_ID"),
     }
+
+
+# ───────────────────────────────────────────────────────────
+# siljeok.html AI 요약용 프록시 — Streamlit 시작 시 자동 실행
+# ───────────────────────────────────────────────────────────
+@st.cache_resource
+def _start_proxy(api_key: str, model: str) -> None:
+    """localhost:8502에서 SSE 프록시를 백그라운드 스레드로 시작 (한 번만)"""
+    _key, _mdl = api_key, model
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_OPTIONS(self):
+            self.send_response(200)
+            self._cors()
+            self.end_headers()
+
+        def do_POST(self):
+            if self.path != "/api/summarize":
+                self.send_error(404)
+                return
+            n      = int(self.headers.get("Content-Length", 0))
+            prompt = json.loads(self.rfile.read(n) or b"{}").get("prompt", "")
+
+            self.send_response(200)
+            self._cors()
+            self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+            self.send_header("Cache-Control", "no-cache")
+            self.end_headers()
+
+            try:
+                client = anthropic.Anthropic(api_key=_key)
+                with client.messages.stream(
+                    model=_mdl,
+                    max_tokens=1024,
+                    messages=[{"role": "user", "content": prompt}],
+                ) as stream:
+                    for chunk in stream.text_stream:
+                        self.wfile.write(
+                            f"data: {json.dumps({'text': chunk}, ensure_ascii=False)}\n\n".encode()
+                        )
+                        self.wfile.flush()
+            except Exception as e:
+                self.wfile.write(
+                    f"data: {json.dumps({'error': str(e)})}\n\n".encode()
+                )
+                self.wfile.flush()
+
+            self.wfile.write(b"data: [DONE]\n\n")
+            self.wfile.flush()
+
+        def _cors(self):
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+
+        def log_message(self, *args):
+            pass
+
+    def _run():
+        try:
+            HTTPServer(("localhost", PROXY_PORT), _Handler).serve_forever()
+        except OSError:
+            pass  # 이미 같은 포트에서 실행 중이면 무시
+
+    threading.Thread(target=_run, daemon=True).start()
 
 
 # ───────────────────────────────────────────────────────────
@@ -178,9 +247,12 @@ def _sidebar(cfg: dict) -> None:
 # 메인 UI
 # ───────────────────────────────────────────────────────────
 def main() -> None:
-    cfg = _cfg()          # 설정을 여기서만 로드 — 전역 변수 없음
+    cfg = _cfg()
     api_key = cfg["api_key"]
     model   = cfg["model"]
+
+    if api_key:
+        _start_proxy(api_key, model)  # siljeok.html AI 요약 프록시 자동 시작
 
     _sidebar(cfg)
 
