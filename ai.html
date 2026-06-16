@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude's Vibe — 홈쇼핑 AI 카피 메이커</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #0d0b1e;
+  color: #222;
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #0c3547 100%);
+  color: #fff;
+  padding: 56px 24px 72px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 50%, rgba(139,92,246,.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 50%, rgba(6,182,212,.2) 0%, transparent 55%);
+}
+.hero > * { position: relative; z-index: 1; }
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(139,92,246,.35);
+  border: 1px solid rgba(139,92,246,.6);
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.hero h1 em { color: #a78bfa; font-style: normal; }
+.hero p {
+  font-size: 16px;
+  color: rgba(255,255,255,.7);
+  max-width: 560px;
+  margin: 0 auto 28px;
+  line-height: 1.65;
+}
+.hero-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-nav a {
+  display: inline-block;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .15s;
+}
+.btn-primary { background: #7c3aed; color: #fff; }
+.btn-primary:hover { background: #6d28d9; }
+.btn-ghost { border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.8); }
+.btn-ghost:hover { background: rgba(255,255,255,.1); }
+
+/* ── LAYOUT ── */
+.page { max-width: 960px; margin: 0 auto; padding: 48px 20px 80px; }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: #7c3aed;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section-h2 {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 32px;
+}
+
+/* ── PRD 카드 ── */
+.prd-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,.35);
+  margin-bottom: 48px;
+}
+.prd-header {
+  background: linear-gradient(90deg, #7c3aed, #4f46e5);
+  color: #fff;
+  padding: 22px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.prd-header-left h2 { font-size: 18px; font-weight: 900; }
+.prd-header-left p { font-size: 12px; opacity: .75; margin-top: 2px; }
+.prd-ver {
+  background: rgba(255,255,255,.2);
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+.prd-body { padding: 32px; }
+
+.prd-section { margin-bottom: 28px; }
+.prd-section:last-child { margin-bottom: 0; }
+
+.prd-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: #7c3aed;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.prd-section-title {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid #f0f0f0;
+}
+
+.prd-section p { font-size: 14px; color: #444; line-height: 1.7; margin-bottom: 8px; }
+.prd-section p:last-child { margin-bottom: 0; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tag-purple { background: #f3f0ff; color: #6d28d9; }
+.tag-blue   { background: #eff6ff; color: #1d4ed8; }
+.tag-green  { background: #f0fdf4; color: #15803d; }
+.tag-red    { background: #fff0f1; color: #c0392b; }
+.tag-gray   { background: #f5f5f5; color: #555; text-decoration: line-through; opacity: .7; }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.feature-item {
+  background: #fafafa;
+  border: 1.5px solid #ede9fe;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.feature-item .f-num { font-size: 20px; font-weight: 900; color: #7c3aed; margin-bottom: 4px; }
+.feature-item .f-name { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+.feature-item .f-desc { font-size: 12px; color: #666; line-height: 1.5; }
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.flow-step {
+  background: #f3f0ff;
+  border: 1.5px solid #c4b5fd;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4c1d95;
+}
+.flow-arrow { color: #9ca3af; font-size: 18px; font-weight: 300; }
+
+.mcp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.mcp-item {
+  border: 1.5px solid #e0e7ff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #f8f7ff;
+}
+.mcp-item .mcp-name { font-size: 12px; font-weight: 700; color: #3730a3; margin-bottom: 4px; }
+.mcp-item .mcp-use  { font-size: 12px; color: #555; line-height: 1.5; }
+
+/* ── TOOL ── */
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,.35);
+  margin-bottom: 48px;
+}
+.tool-header {
+  background: linear-gradient(90deg, #e8192c, #c0392b);
+  color: #fff;
+  padding: 20px 28px;
+}
+.tool-header h2 { font-size: 17px; font-weight: 900; }
+.tool-header p  { font-size: 12px; opacity: .75; margin-top: 3px; }
+
+.tool-body { padding: 28px 32px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label { font-size: 12px; font-weight: 700; color: #555; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #222;
+  outline: none;
+  transition: border-color .15s;
+  background: #fafafa;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: #7c3aed; background: #fff; }
+.form-group textarea { resize: none; height: 70px; line-height: 1.5; }
+
+.gen-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(90deg, #7c3aed, #e8192c);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: .03em;
+  transition: opacity .15s, transform .12s;
+  margin-bottom: 24px;
+}
+.gen-btn:hover { opacity: .9; }
+.gen-btn:active { transform: scale(.99); }
+
+.result-area { display: none; }
+.result-area.show { display: block; }
+
+.result-section { margin-bottom: 20px; }
+.result-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.result-items { display: flex; flex-direction: column; gap: 8px; }
+.result-item {
+  background: #fafafa;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.result-text {
+  font-size: 13.5px;
+  color: #222;
+  line-height: 1.6;
+  flex: 1;
+  white-space: pre-line;
+}
+.copy-btn {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  background: #f3f0ff;
+  color: #7c3aed;
+  border: 1.5px solid #c4b5fd;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: .15s;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: #7c3aed; color: #fff; }
+.copy-btn.copied { background: #10b981; color: #fff; border-color: #10b981; }
+
+.divider {
+  height: 1.5px;
+  background: linear-gradient(90deg, #ede9fe, #fce7f3, #ede9fe);
+  margin: 20px 0;
+}
+
+/* ── MCP 설명 ── */
+.mcp-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,.35);
+}
+.mcp-header {
+  background: linear-gradient(90deg, #0f766e, #0d9488);
+  color: #fff;
+  padding: 20px 28px;
+}
+.mcp-header h2 { font-size: 17px; font-weight: 900; }
+.mcp-header p  { font-size: 12px; opacity: .75; margin-top: 3px; }
+.mcp-body { padding: 28px 32px; }
+
+.mcp-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+.mcp-block {
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+}
+.mcp-block .icon { font-size: 28px; margin-bottom: 8px; }
+.mcp-block .name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.mcp-block .desc { font-size: 12px; line-height: 1.5; opacity: .8; }
+.mcp-notion { background: #f8f5ff; color: #4c1d95; border: 1.5px solid #ddd6fe; }
+.mcp-m365   { background: #eff6ff; color: #1e3a8a; border: 1.5px solid #bfdbfe; }
+.mcp-claude { background: #f0fdf4; color: #14532d; border: 1.5px solid #bbf7d0; }
+.mcp-arrow  { display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.3); font-size: 22px; }
+
+/* ── 뒤로가기 ── */
+.back-bar {
+  text-align: center;
+  padding: 20px 20px 48px;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 8px;
+  color: rgba(255,255,255,.65);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: .15s;
+}
+.back-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .mcp-row { grid-template-columns: 1fr; }
+  .prd-body { padding: 20px; }
+  .tool-body { padding: 20px; }
+  .mcp-body { padding: 20px; }
+  .hero { padding: 40px 16px 56px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-tag">Claude's Vibe Coding · 2026.06</div>
+  <h1>홈쇼핑 <em>AI 카피 메이커</em></h1>
+  <p>상품명과 특징만 넣으면 카드뉴스 제목 · 인스타 캡션 · 방송 오프닝 멘트까지<br>5초 안에 자동 완성 — Claude가 바이브코딩으로 직접 만든 도구입니다</p>
+  <div class="hero-nav">
+    <a href="#tool" class="btn-primary">▶ 도구 바로 써보기</a>
+    <a href="#prd" class="btn-ghost">PRD 문서 보기</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── PRD ── -->
+  <a id="prd"></a>
+  <div class="section-title">PRODUCT REQUIREMENTS DOCUMENT</div>
+  <div class="section-h2">Claude가 쓴 PRD</div>
+  <div class="section-sub">바이브코딩 교육 Day 1 내용을 바탕으로 — 하루 안에 완성 가능한 MVP</div>
+
+  <div class="prd-card">
+    <div class="prd-header">
+      <div class="prd-header-left">
+        <h2>홈쇼핑 AI 카피 메이커</h2>
+        <p>HomeShopping AI Copy Maker · PRD v1.0</p>
+      </div>
+      <div class="prd-ver">MVP · 1일 완성</div>
+    </div>
+
+    <div class="prd-body">
+
+      <!-- 1. 목표 -->
+      <div class="prd-section">
+        <div class="prd-section-title">
+          <span class="prd-num">1</span>목표 — Claude가 만들고 싶은 것
+        </div>
+        <p>홈쇼핑 MD·SNS 운영자가 <strong>상품명 + 특징만 입력</strong>하면 인스타그램 카드뉴스 제목 3종, 이모지 캡션, 해시태그 세트, 방송 오프닝 멘트를 <strong>5초 안에</strong> 생성해주는 브라우저 기반 도구를 만든다.</p>
+        <p>서버 없이 HTML + JavaScript만으로 동작해, 배포도 GitHub Pages 한 방이면 끝난다. 바이브코딩으로 하루 안에 완성할 수 있는 가장 실용적인 도구.</p>
+      </div>
+
+      <!-- 2. 주요 사용자 -->
+      <div class="prd-section">
+        <div class="prd-section-title">
+          <span class="prd-num">2</span>주요 사용자
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-purple">홈앤쇼핑 MD (핵심)</span>
+          <span class="tag tag-blue">SNS 운영팀</span>
+          <span class="tag tag-blue">방송 작가 · PD</span>
+          <span class="tag tag-green">파트너사 마케터</span>
+          <span class="tag tag-green">바이브코딩 배우는 누구나</span>
+        </div>
+        <p style="margin-top:12px;">Claude가 제안하는 확장 사용자: 카피라이팅을 배우는 인턴, 상세페이지 초안이 필요한 협력사, 방송 스크립트 작업이 반복되는 작가까지. <strong>카피 업무가 있다면 누구든 쓸 수 있다.</strong></p>
+      </div>
+
+      <!-- 3. 핵심 기능 -->
+      <div class="prd-section">
+        <div class="prd-section-title">
+          <span class="prd-num">3</span>핵심 기능 (MVP 4개)
+        </div>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="f-num">01</div>
+            <div class="f-name">카드뉴스 제목 3종 생성</div>
+            <div class="f-desc">카테고리별 패턴으로 임팩트 있는 제목 3가지를 한 번에 제안</div>
+          </div>
+          <div class="feature-item">
+            <div class="f-num">02</div>
+            <div class="f-name">인스타 캡션 + 해시태그</div>
+            <div class="f-desc">이모지 포함 캡션 + 카테고리 맞춤 해시태그 20개 자동 생성</div>
+          </div>
+          <div class="feature-item">
+            <div class="f-num">03</div>
+            <div class="f-name">방송 오프닝 멘트</div>
+            <div class="f-desc">카테고리·분위기별 오프닝 멘트 1종 생성 (재생성 버튼)</div>
+          </div>
+          <div class="feature-item">
+            <div class="f-num">04</div>
+            <div class="f-name">원클릭 복사</div>
+            <div class="f-desc">각 결과물 옆 복사 버튼 → 클립보드 즉시 복사, 완료 표시</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Out of Scope -->
+      <div class="prd-section">
+        <div class="prd-section-title">
+          <span class="prd-num">4</span>이번 버전에서 제외 (Out of Scope)
+        </div>
+        <p>아래는 제외하지만 Claude가 교육 내용을 기반으로 더 만든다면 언제든 확장 가능 —</p>
+        <div class="tag-row" style="margin-top:10px;">
+          <span class="tag tag-gray">실제 AI API 연동 (Claude API)</span>
+          <span class="tag tag-gray">자동 인스타그램 포스팅</span>
+          <span class="tag tag-gray">이미지 자동 생성 (DALL·E)</span>
+          <span class="tag tag-gray">상품 DB 연동</span>
+          <span class="tag tag-gray">로그인·사용자 관리</span>
+        </div>
+        <p style="margin-top:12px; color:#888; font-size:13px;">
+          💡 Day 2~3 교육 이후라면: Claude API 연동으로 진짜 AI 카피 생성, Notion MCP로 결과 자동 저장, GitHub Actions로 자동 배포까지 확장 가능.
+        </p>
+      </div>
+
+      <!-- 5. 화면 흐름 -->
+      <div class="prd-section">
+        <div class="prd-section-title">
+          <span class="prd-num">5</span>화면 흐름
+        </div>
+        <div class="flow-row">
+          <div class="flow-step">① 상품 정보 입력</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">② 생성 버튼 클릭</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">③ 결과 카드 노출</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">④ 원클릭 복사</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">⑤ 카드뉴스 제작</div>
+        </div>
+        <p style="margin-top:14px; font-size:13px; color:#666;">입력: 상품명 / 카테고리(드롭다운) / 가격대 / 핵심 특징 2가지<br>출력: 제목 3종 + 인스타 캡션 + 해시태그 세트 + 방송 오프닝 — 각각 복사 버튼 포함</p>
+
+        <!-- MCP 활용 포인트 -->
+        <div style="margin-top:20px; background:#f8f7ff; border:1.5px solid #ddd6fe; border-radius:10px; padding:16px;">
+          <div style="font-size:12px; font-weight:700; color:#4c1d95; margin-bottom:10px;">🔌 MCP 활용 포인트</div>
+          <div class="mcp-row">
+            <div class="mcp-item">
+              <div class="mcp-name">Notion MCP</div>
+              <div class="mcp-use">생성된 카피를 Notion PRD 페이지에 자동 저장 → 팀 공유 즉시 가능</div>
+            </div>
+            <div class="mcp-item">
+              <div class="mcp-name">Microsoft 365 MCP</div>
+              <div class="mcp-use">결과물을 Excel 시트로 내보내거나 Word 문서로 패키징해 보고 가능</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TOOL ── -->
+  <a id="tool"></a>
+  <div class="section-title">VIBE CODING RESULT</div>
+  <div class="section-h2">실제 동작하는 도구</div>
+  <div class="section-sub">Claude가 바이브로 직접 코딩 — 지금 바로 써보세요</div>
+
+  <div class="tool-card">
+    <div class="tool-header">
+      <h2>🛍️ 홈쇼핑 AI 카피 메이커</h2>
+      <p>상품 정보를 입력하고 생성 버튼을 누르면 됩니다</p>
+    </div>
+    <div class="tool-body">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>상품명 *</label>
+          <input type="text" id="f-product" placeholder="예) 제주 한라봉 주스" maxlength="40">
+        </div>
+        <div class="form-group">
+          <label>카테고리 *</label>
+          <select id="f-category">
+            <option value="">선택하세요</option>
+            <option value="food">식품 · 건강</option>
+            <option value="beauty">뷰티 · 스킨케어</option>
+            <option value="fashion">패션 · 의류</option>
+            <option value="appliance">생활가전</option>
+            <option value="home">홈리빙 · 인테리어</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>가격대</label>
+          <input type="text" id="f-price" placeholder="예) 29,900원 / 3개 세트">
+        </div>
+        <div class="form-group">
+          <label>핵심 특징 ①</label>
+          <input type="text" id="f-feat1" placeholder="예) 무농약 인증">
+        </div>
+        <div class="form-group full">
+          <label>핵심 특징 ②</label>
+          <input type="text" id="f-feat2" placeholder="예) 착즙 100% 무첨가">
+        </div>
+      </div>
+
+      <button class="gen-btn" onclick="generate()">✨ AI 카피 생성하기</button>
+
+      <div class="result-area" id="result-area">
+
+        <div class="result-section">
+          <div class="result-label">📌 카드뉴스 제목 3종</div>
+          <div class="result-items" id="r-titles"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="result-section">
+          <div class="result-label">📸 인스타그램 캡션</div>
+          <div class="result-items" id="r-caption"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="result-section">
+          <div class="result-label">#️⃣ 해시태그 세트</div>
+          <div class="result-items" id="r-hashtag"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="result-section">
+          <div class="result-label">🎙️ 방송 오프닝 멘트</div>
+          <div class="result-items" id="r-opening"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MCP 워크플로우 ── -->
+  <div class="section-title" style="margin-top:20px;">MCP WORKFLOW</div>
+  <div class="section-h2">MCP로 더 강해지는 워크플로우</div>
+  <div class="section-sub">Claude Code + MCP 서버를 연결하면 이 도구가 이렇게 진화합니다</div>
+
+  <div class="mcp-card">
+    <div class="mcp-header">
+      <h2>🔌 MCP 통합 계획</h2>
+      <p>Notion · Microsoft 365 MCP 연동 시나리오</p>
+    </div>
+    <div class="mcp-body">
+      <div class="mcp-flow">
+        <div class="mcp-block mcp-claude">
+          <div class="icon">🤖</div>
+          <div class="name">Claude Code</div>
+          <div class="desc">카피 생성 요청<br>및 프롬프트 작성</div>
+        </div>
+        <div class="mcp-arrow">→</div>
+        <div class="mcp-block mcp-notion">
+          <div class="icon">📝</div>
+          <div class="name">Notion MCP</div>
+          <div class="desc">PRD·결과물 자동<br>Notion 페이지 저장<br>+ 팀 공유 링크 생성</div>
+        </div>
+        <div class="mcp-arrow">→</div>
+        <div class="mcp-block mcp-m365">
+          <div class="icon">📊</div>
+          <div class="name">Microsoft 365 MCP</div>
+          <div class="desc">카피 목록 Excel 저장<br>월간 카드뉴스 캘린더<br>자동 생성</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px; background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:#14532d; margin-bottom:8px;">🚀 실제 사용 시나리오</div>
+        <ol style="font-size:13px; color:#166534; line-height:2; padding-left:20px;">
+          <li>Claude Code에서 상품 정보 입력 → AI 카피 3종 생성</li>
+          <li>Notion MCP → 자동으로 이번달 카드뉴스 계획 페이지에 저장</li>
+          <li>M365 MCP → Teams 채널에 카피 공유 + Excel 콘텐츠 캘린더 업데이트</li>
+          <li>담당자가 최종 선택 → 디자인 가이드 적용 → 카드뉴스 완성 🎉</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<div class="back-bar">
+  <a href="https://prettykbk81.github.io/hnsinfo/" class="back-btn">
+    ← 홈앤쇼핑 포탈로 돌아가기
+  </a>
+</div>
+
+<script>
+const DB = {
+  food: {
+    adj: ['신선한','달콤한','영양 가득한','건강한','프리미엄'],
+    hook: ['든든하게','건강하게','맛있게','영양 챙겨','자연 그대로'],
+    titles: [
+      (p,f1,f2,pr) => `🍊 ${f1} ${p}, 이 가격이 말이 돼?`,
+      (p,f1,f2,pr) => `하루 한 잔으로 건강 챙기는 방법 — ${p}`,
+      (p,f1,f2,pr) => `${pr ? pr+'에 ' : ''}${f2} ${p} 놓치면 후회`,
+      (p,f1,f2,pr) => `엄마가 직접 고른 ${p} · ${f1}의 차이`,
+      (p,f1,f2,pr) => `오늘만 이 가격 🔥 ${p} 특가`,
+    ],
+    caption: (p,f1,f2,pr) =>
+`🍃 오늘 소개할 제품은 바로!
+
+✨ ${p}
+
+${f1 ? `✅ ${f1}` : ''}
+${f2 ? `✅ ${f2}` : ''}
+${pr ? `💰 지금 ${pr}에 만나보세요!` : ''}
+
+건강한 한 끼, 오늘부터 시작해보세요 🙌
+지금 홈앤쇼핑에서 확인하세요 👇`,
+    hashtags: ['#홈앤쇼핑','#홈쇼핑특가','#건강식품','#식품추천','#건강한라이프','#유기농','#건강간식','#영양식','#다이어트식품','#건강선물','#건강음료','#웰빙푸드','#자연식품','#국내산','#무첨가'],
+    opening: [
+      (p,f1,f2) => `여러분~ 오늘 제가 정말 자신 있게 들고 나온 제품이에요! 바로 ${p}인데요, ${f1 ? f1+'이라' : '품질이'} 정말 남다릅니다. ${f2 ? f2+'까지 ' : ''}챙길 수 있는 이 기회, 절대 놓치지 마세요!`,
+      (p,f1) => `안녕하세요 여러분! 오늘 방송 시작하자마자 말씀드리고 싶었어요. ${p}, 지금까지 이런 퀄리티 이 가격에 본 적 없으실 거예요. ${f1 ? f1+' 덕분에 ' : ''}완전히 반해버렸습니다!`,
+    ],
+  },
+  beauty: {
+    titles: [
+      (p,f1,f2,pr) => `✨ ${f1} 완성해주는 ${p} — 피부과보다 효과적?`,
+      (p,f1,f2,pr) => `피부 고민 끝 📣 ${p} 솔직 후기`,
+      (p,f1,f2,pr) => `${pr ? pr+'원대 ' : ''}가성비 끝판왕 — ${p}`,
+      (p,f1,f2,pr) => `${f2} ${p}, 쓰기 전·후 차이가 이렇게 크다고?`,
+      (p,f1,f2,pr) => `뷰티 유튜버들이 숨겨둔 ${p} 공개 🤫`,
+    ],
+    caption: (p,f1,f2,pr) =>
+`💄 피부 고민, 이제 ${p}으로 해결!
+
+${f1 ? `🌸 ${f1}` : ''}
+${f2 ? `💫 ${f2}` : ''}
+${pr ? `🏷️ 오늘 단 ${pr}에 만나요!` : ''}
+
+내 피부를 위한 선물, 지금 홈앤쇼핑에서 🛍️`,
+    hashtags: ['#홈앤쇼핑','#뷰티','#스킨케어','#화장품추천','#피부관리','#뷰티템','#에센스','#세럼','#수분크림','#뷰티하울','#피부고민','#광채피부','#안티에이징','#뷰티팁','#홈쇼핑뷰티'],
+    opening: [
+      (p,f1) => `여러분! 오늘 준비한 제품 보시고 깜짝 놀라실 거예요. ${p}, ${f1 ? f1+'으로 ' : ''}피부 고민을 한방에 해결해드릴 제품입니다. 방송 끝날 때까지 절대 채널 돌리지 마세요!`,
+      (p,f1) => `안녕하세요~ 오늘 제 피부 좀 보세요. 이게 다 ${p} 덕분이에요! ${f1 ? f1+' 정말 ' : '정말 '}대단하더라고요. 여러분도 지금 바로 경험해보세요!`,
+    ],
+  },
+  fashion: {
+    titles: [
+      (p,f1,f2,pr) => `👗 이번 시즌 필수템 — ${p}`,
+      (p,f1,f2,pr) => `${f1} ${p}, 어디서도 못 본 가격`,
+      (p,f1,f2,pr) => `스타일리스트가 추천한 ${p} 코디법`,
+      (p,f1,f2,pr) => `${pr ? pr+'에 득템! ' : ''}${p} 오늘만 한정수량`,
+      (p,f1,f2,pr) => `계절이 바뀌어도 오래 입는 ${p} 비결`,
+    ],
+    caption: (p,f1,f2,pr) =>
+`👗 이번 시즌 진짜 아이템 발견!
+
+✨ ${p}
+
+${f1 ? `• ${f1}` : ''}
+${f2 ? `• ${f2}` : ''}
+${pr ? `💸 ${pr}에 만나요!` : ''}
+
+내 옷장에 딱 필요했던 바로 그 아이템 🙌
+홈앤쇼핑에서 지금 확인하세요 👇`,
+    hashtags: ['#홈앤쇼핑','#패션','#옷추천','#데일리룩','#코디추천','#패션하울','#오오티디','#홈쇼핑패션','#시즌아이템','#가성비패션','#봄코디','#여름패션','#스타일링','#패션템','#쇼핑추천'],
+    opening: [
+      (p,f1) => `여러분~ 오늘 제가 착용하고 나온 거 보셨어요? 바로 ${p}인데요! ${f1 ? f1+' 덕분에 ' : ''}착용감이 정말 남달라요. 이번 시즌 꼭 하나씩은 있어야 하는 아이템이에요!`,
+    ],
+  },
+  appliance: {
+    titles: [
+      (p,f1,f2,pr) => `🏠 집안일 혁명 — ${p} 써보니까`,
+      (p,f1,f2,pr) => `${f1} ${p}, 한 번 쓰면 못 돌아와요`,
+      (p,f1,f2,pr) => `${pr ? pr+'원 ' : ''}가성비로 이 기능? ${p} 솔직 리뷰`,
+      (p,f1,f2,pr) => `주부들이 난리난 ${p} — 이유가 있었어`,
+      (p,f1,f2,pr) => `${f2} 탑재 ${p}, 경쟁사와 비교했더니`,
+    ],
+    caption: (p,f1,f2,pr) =>
+`⚡ 가전 고민 끝! ${p} 등장
+
+🔧 ${f1 ? f1 : '스마트한 기능'}
+💡 ${f2 ? f2 : '편리한 사용성'}
+${pr ? `🏷️ ${pr} 특가!` : ''}
+
+한번 쓰면 못 돌아가는 그 제품
+지금 홈앤쇼핑에서 확인! 👇`,
+    hashtags: ['#홈앤쇼핑','#가전제품','#생활가전','#주방가전','#스마트가전','#가성비가전','#인테리어가전','#집꾸미기','#홈카페','#주방용품','#생활용품','#편리한생활','#신혼가전','#1인가구','#홈쇼핑가전'],
+    opening: [
+      (p,f1) => `여러분~ 오늘 이 제품 때문에 방송 전부터 난리났어요! ${p}인데요, ${f1 ? f1+' 기능이 ' : '성능이 '}정말 기대 이상이에요. 지금 이 가격 다시는 못 나온다고 보시면 됩니다!`,
+    ],
+  },
+  home: {
+    titles: [
+      (p,f1,f2,pr) => `🏡 집이 달라보이는 마법 — ${p}`,
+      (p,f1,f2,pr) => `${f1} ${p}, 인테리어 비용 반값으로`,
+      (p,f1,f2,pr) => `SNS에서 난리난 그 ${p} 드디어 입고`,
+      (p,f1,f2,pr) => `${pr ? pr+'원에 ' : ''}이 퀄리티? ${p} 언박싱`,
+      (p,f1,f2,pr) => `공간이 달라지는 ${p} — ${f2} 비결`,
+    ],
+    caption: (p,f1,f2,pr) =>
+`🏡 우리 집이 달라졌어요!
+
+✨ ${p}
+
+${f1 ? `🌿 ${f1}` : ''}
+${f2 ? `💎 ${f2}` : ''}
+${pr ? `🏷️ ${pr} 특가로 만나요!` : ''}
+
+홈스타그램 감성 완성 🤍
+지금 홈앤쇼핑에서 확인하세요 👇`,
+    hashtags: ['#홈앤쇼핑','#홈인테리어','#집꾸미기','#인테리어소품','#홈데코','#북유럽인테리어','#미니멀라이프','#홈스타그램','#인테리어추천','#인테리어용품','#셀프인테리어','#홈리빙','#공간꾸미기','#인테리어쇼핑','#홈스타일링'],
+    opening: [
+      (p,f1) => `여러분 저 지금 너무 설레요! 오늘 ${p} 보시면 집에 당장 두고 싶으실 거예요. ${f1 ? f1+' 디자인이 ' : ''}정말 사진보다 실물이 훨씬 예쁘더라고요. 지금 화면 가득 보여드릴게요!`,
+    ],
+  },
+};
+
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function makeResultItem(text, id) {
+  return `<div class="result-item">
+    <div class="result-text" id="${id}">${text}</div>
+    <button class="copy-btn" onclick="copyItem('${id}', this)">복사</button>
+  </div>`;
+}
+
+async function copyItem(id, btn) {
+  const text = document.getElementById(id).innerText;
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ 복사됨!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 2000);
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ 복사됨!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 2000);
+  }
+}
+
+function generate() {
+  const product  = document.getElementById('f-product').value.trim();
+  const category = document.getElementById('f-category').value;
+  const price    = document.getElementById('f-price').value.trim();
+  const feat1    = document.getElementById('f-feat1').value.trim();
+  const feat2    = document.getElementById('f-feat2').value.trim();
+
+  if (!product) { alert('상품명을 입력해주세요!'); return; }
+  if (!category) { alert('카테고리를 선택해주세요!'); return; }
+
+  const d = DB[category];
+
+  // 제목 3개 (랜덤 3개 선택)
+  const shuffled = [...d.titles].sort(() => Math.random() - .5).slice(0, 3);
+  const titles = shuffled.map((fn, i) => makeResultItem(fn(product, feat1, feat2, price), `t${i}`));
+
+  // 캡션
+  const caption = makeResultItem(d.caption(product, feat1, feat2, price), 'cap');
+
+  // 해시태그
+  const baseHtags = d.hashtags.slice();
+  if (product) baseHtags.push(`#${product.replace(/\s/g,'')}`);
+  const htag = baseHtags.slice(0, 18).join(' ');
+  const hashtag = makeResultItem(htag, 'htag');
+
+  // 오프닝
+  const opening = makeResultItem(pick(d.opening)(product, feat1, feat2), 'open');
+
+  document.getElementById('r-titles').innerHTML = titles.join('');
+  document.getElementById('r-caption').innerHTML = caption;
+  document.getElementById('r-hashtag').innerHTML = hashtag;
+  document.getElementById('r-opening').innerHTML = opening;
+
+  const area = document.getElementById('result-area');
+  area.classList.add('show');
+  area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
