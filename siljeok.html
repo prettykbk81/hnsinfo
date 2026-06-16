@@ -292,61 +292,6 @@ tr.r-date .low,  tr.r-total .low  { color:#ffcc66; font-weight:700; }
   color:#4a4a6a;
 }
 
-/* ── API 키 모달 ── */
-.key-overlay {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  z-index:900;
-  align-items:center;
-  justify-content:center;
-}
-.key-overlay.open { display:flex; }
-.key-modal {
-  background:#fff;
-  border-radius:12px;
-  padding:24px;
-  width:360px;
-  max-width:94vw;
-  box-shadow:0 8px 32px rgba(0,0,0,.25);
-}
-.key-modal h3 { font-size:14px; font-weight:700; color:#1a1a2e; margin-bottom:6px; }
-.key-modal p  { font-size:11.5px; color:#666; line-height:1.6; margin-bottom:14px; }
-.key-modal input {
-  width:100%;
-  border:1.5px solid #e5e7eb;
-  border-radius:7px;
-  padding:9px 11px;
-  font-size:13px;
-  font-family:inherit;
-  outline:none;
-  margin-bottom:12px;
-}
-.key-modal input:focus { border-color:#7c3aed; }
-.key-modal-row { display:flex; gap:8px; }
-.btn-key-ok {
-  flex:1;
-  padding:9px;
-  background:linear-gradient(90deg,#6d28d9,#4f46e5);
-  color:#fff;
-  border:none;
-  border-radius:7px;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-  font-family:inherit;
-}
-.btn-key-cancel {
-  padding:9px 14px;
-  background:#f5f5f5;
-  color:#555;
-  border:none;
-  border-radius:7px;
-  font-size:13px;
-  cursor:pointer;
-  font-family:inherit;
-}
 </style>
 </head>
 <body>
@@ -396,22 +341,6 @@ tr.r-date .low,  tr.r-total .low  { color:#ffcc66; font-weight:700; }
   <div class="ai-meta" id="aiMeta"></div>
 </div>
 
-<!-- API 키 입력 모달 -->
-<div class="key-overlay" id="keyOverlay" onclick="if(event.target===this)closeKeyModal()">
-  <div class="key-modal">
-    <h3>🔑 Claude API 키 설정</h3>
-    <p>
-      AI 요약 기능은 Anthropic API 키가 필요합니다.<br>
-      키는 이 브라우저의 localStorage에만 저장되며<br>
-      ai.html 설정과 공유됩니다.
-    </p>
-    <input type="password" id="keyInput" placeholder="sk-ant-api03-...">
-    <div class="key-modal-row">
-      <button class="btn-key-ok" onclick="saveKeyAndSummary()">저장 후 요약 시작</button>
-      <button class="btn-key-cancel" onclick="closeKeyModal()">취소</button>
-    </div>
-  </div>
-</div>
 
 <div class="note-bar">단위 : 백만원 &nbsp;|&nbsp; ※ 임시 더미 데이터 — Supabase 연동 예정</div>
 
@@ -730,24 +659,17 @@ async function aiSummary() {
     return;
   }
   const apiKey = localStorage.getItem('hns_claude_key') || '';
-  if (!apiKey) { openKeyModal(); return; }
+  if (!apiKey) {
+    const panel  = document.getElementById('aiPanel');
+    const bodyEl = document.getElementById('aiBody');
+    panel.classList.add('open');
+    bodyEl.innerHTML =
+      '<span style="color:#f9a8d4;">🔑 API 키가 설정되지 않았습니다.<br>' +
+      '<a href="ai.html" style="color:#a78bfa;text-decoration:underline;">ai.html 설정</a>에서 ' +
+      'Claude API 키를 등록하면 여기서도 자동으로 사용됩니다.</span>';
+    return;
+  }
   await runStream(apiKey);
-}
-
-function openKeyModal() {
-  document.getElementById('keyInput').value = '';
-  document.getElementById('keyOverlay').classList.add('open');
-  setTimeout(() => document.getElementById('keyInput').focus(), 100);
-}
-function closeKeyModal() {
-  document.getElementById('keyOverlay').classList.remove('open');
-}
-async function saveKeyAndSummary() {
-  const key = document.getElementById('keyInput').value.trim();
-  if (!key) { alert('API 키를 입력해주세요.'); return; }
-  localStorage.setItem('hns_claude_key', key);
-  closeKeyModal();
-  await runStream(key);
 }
 
 function closeAiPanel() {

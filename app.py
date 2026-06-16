@@ -1,7 +1,7 @@
 """
 홈쇼핑 AI 카피 메이커 — Streamlit 앱
 API 키는 .streamlit/secrets.toml 또는 환경변수에서만 로드.
-소스 코드에 절대 저장하지 않습니다.
+소스 코드에 키를 절대 저장하지 않습니다.
 """
 
 import json
@@ -22,22 +22,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# ───────────────────────────────────────────────────────────
-# 설정 로드 — secrets.toml → 환경변수 순서
-# 키를 소스에 직접 쓰지 않기 위해 이 함수만 사용한다.
-# ───────────────────────────────────────────────────────────
-def _get(key: str, default: str = "") -> str:
-    try:
-        return st.secrets[key]
-    except (KeyError, FileNotFoundError):
-        return os.environ.get(key, default)
-
-
-ANTHROPIC_API_KEY  = _get("ANTHROPIC_API_KEY")
-ANTHROPIC_MODEL    = _get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
-NOTION_TOKEN       = _get("NOTION_TOKEN")
-NOTION_DATABASE_ID = _get("NOTION_DATABASE_ID")
-
 CATEGORIES = [
     "식품 · 건강",
     "뷰티 · 스킨케어",
@@ -46,16 +30,61 @@ CATEGORIES = [
     "홈리빙 · 인테리어",
 ]
 
-# ───────────────────────────────────────────────────────────
-# Claude API (서버 사이드)
-# ───────────────────────────────────────────────────────────
-def generate_copy(product: str, cat: str, price: str, feat1: str, feat2: str) -> dict:
-    if not ANTHROPIC_API_KEY:
-        raise EnvironmentError(
-            "ANTHROPIC_API_KEY가 설정되지 않았습니다.\n"
-            ".streamlit/secrets.toml 에 키를 추가하세요."
-        )
 
+# ───────────────────────────────────────────────────────────
+# 설정 로드 — secrets.toml → 환경변수 순서
+# 이 함수만이 키에 접근한다. 소스 어디에도 키 값을 쓰지 않는다.
+# ───────────────────────────────────────────────────────────
+def _cfg() -> dict:
+    def get(key: str, default: str = "") -> str:
+        try:
+            v = st.secrets.get(key)          # secrets.toml 우선
+            return v if v is not None else os.environ.get(key, default)
+        except Exception:
+            return os.environ.get(key, default)  # toml 없으면 환경변수
+
+    return {
+        "api_key": get("ANTHROPIC_API_KEY"),
+        "model":   get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001"),
+        "n_tok":   get("NOTION_TOKEN"),
+        "n_db":    get("NOTION_DATABASE_ID"),
+    }
+
+
+# ───────────────────────────────────────────────────────────
+# Anthropic 클라이언트 — api_key 값 기준으로 캐시
+# ───────────────────────────────────────────────────────────
+@st.cache_resource
+def _make_client(api_key: str) -> anthropic.Anthropic:
+    return anthropic.Anthropic(api_key=api_key)
+
+
+# ───────────────────────────────────────────────────────────
+# 에러 → 사용자 친화적 메시지 변환
+# ───────────────────────────────────────────────────────────
+def _friendly(e: Exception) -> str:
+    msg = str(e).lower()
+    if "401" in msg or "authentication" in msg or "invalid" in msg:
+        return (
+            "🔑 **API 키가 올바르지 않습니다.**\n\n"
+            "`.streamlit/secrets.toml`의 `ANTHROPIC_API_KEY` 값을 확인하세요.\n"
+            "앱을 재시작하면 새 키가 적용됩니다."
+        )
+    if "429" in msg or "rate_limit" in msg:
+        return "⏱️ **요청 한도 초과입니다.** 잠시 후 다시 시도해주세요."
+    if "overload" in msg:
+        return "🌐 **Claude 서버가 일시적으로 혼잡합니다.** 30초 후 다시 시도해주세요."
+    if "timeout" in msg or "connection" in msg:
+        return "📡 **네트워크 오류입니다.** 연결 상태를 확인하고 다시 시도해주세요."
+    return f"오류가 발생했습니다: {e}"
+
+
+# ───────────────────────────────────────────────────────────
+# Claude API — 카피 생성
+# ───────────────────────────────────────────────────────────
+def generate_copy(api_key: str, model: str,
+                  product: str, cat: str,
+                  price: str, feat1: str, feat2: str) -> dict:
     prompt = f"""당신은 한국 홈쇼핑 전문 카피라이터입니다. 아래 상품 정보로 마케팅 카피를 작성하세요.
 
 상품명: {product}
@@ -69,12 +98,12 @@ def generate_copy(product: str, cat: str, price: str, feat1: str, feat2: str) ->
   "titles": ["카드뉴스 제목1 (임팩트 있게)", "카드뉴스 제목2 (가격·혜택 강조)", "카드뉴스 제목3 (감성·스토리)"],
   "caption": "인스타그램 캡션 (이모지 포함, 줄바꿈 사용, 5-7줄, 홈앤쇼핑 구매 안내 포함)",
   "hashtags": "#홈앤쇼핑 #관련태그1 #관련태그2 (총 18개)",
-  "opening": "TV홈쇼핑 방송 오프닝 멘트 (2-3문장, 친근하고 활기찬 어조, 시청자에게 직접 말하는 형식)"
+  "opening": "TV홈쇼핑 방송 오프닝 멘트 (2-3문장, 친근하고 활기찬 어조)"
 }}"""
 
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    client = _make_client(api_key)
     msg = client.messages.create(
-        model=ANTHROPIC_MODEL,
+        model=model,
         max_tokens=1500,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -82,26 +111,21 @@ def generate_copy(product: str, cat: str, price: str, feat1: str, feat2: str) ->
     text = msg.content[0].text.strip()
     m = re.search(r"\{[\s\S]*\}", text)
     if not m:
-        raise ValueError("AI 응답 형식 오류입니다. 다시 시도해주세요.")
+        raise ValueError("AI 응답 형식을 파싱할 수 없습니다. 다시 시도해주세요.")
     return json.loads(m.group())
 
 
 # ───────────────────────────────────────────────────────────
-# Notion 저장 (서버 사이드 — CORS 문제 없음)
+# Notion 저장 — 서버 사이드이므로 CORS 불필요
 # ───────────────────────────────────────────────────────────
-def save_to_notion(product: str, cat: str, data: dict) -> None:
-    if not NOTION_TOKEN or not NOTION_DATABASE_ID:
-        raise EnvironmentError(
-            "NOTION_TOKEN 또는 NOTION_DATABASE_ID가 설정되지 않았습니다."
-        )
-
-    titles = data.get("titles", ["", "", ""])
-
+def save_to_notion(n_tok: str, n_db: str,
+                   product: str, cat: str, data: dict) -> None:
     def txt(s: str) -> list:
         return [{"text": {"content": s[:2000]}}]
 
+    titles = data.get("titles", ["", "", ""])
     payload = {
-        "parent": {"database_id": NOTION_DATABASE_ID},
+        "parent": {"database_id": n_db},
         "properties": {
             "상품명":   {"title": txt(product)},
             "카테고리": {"select": {"name": cat}},
@@ -117,7 +141,7 @@ def save_to_notion(product: str, cat: str, data: dict) -> None:
     r = requests.post(
         "https://api.notion.com/v1/pages",
         headers={
-            "Authorization": f"Bearer {NOTION_TOKEN}",
+            "Authorization": f"Bearer {n_tok}",
             "Content-Type": "application/json",
             "Notion-Version": "2022-06-28",
         },
@@ -129,9 +153,36 @@ def save_to_notion(product: str, cat: str, data: dict) -> None:
 
 
 # ───────────────────────────────────────────────────────────
+# 사이드바 — 상태 표시 + 설정 가이드
+# ───────────────────────────────────────────────────────────
+def _sidebar(cfg: dict) -> None:
+    with st.sidebar:
+        st.header("⚙️ 연결 상태")
+
+        if cfg["api_key"]:
+            model_short = cfg["model"].replace("claude-", "").replace("-20251001", "")
+            st.success(f"✅ Claude API 연결됨\n\n모델: `{model_short}`")
+        else:
+            st.error("❌ Claude API 키 없음")
+
+        if cfg["n_tok"] and cfg["n_db"]:
+            st.success("✅ Notion 연동 완료")
+        else:
+            st.info("ℹ️ Notion 미설정 (선택)")
+
+        st.divider()
+        st.markdown("[← 홈앤쇼핑 포탈](https://prettykbk81.github.io/hnsinfo/)")
+
+
+# ───────────────────────────────────────────────────────────
 # 메인 UI
 # ───────────────────────────────────────────────────────────
 def main() -> None:
+    cfg = _cfg()          # 설정을 여기서만 로드 — 전역 변수 없음
+    api_key = cfg["api_key"]
+    model   = cfg["model"]
+
+    _sidebar(cfg)
 
     # ── 헤더 ──────────────────────────────────────────────
     st.markdown(
@@ -139,10 +190,13 @@ def main() -> None:
         <div style="background:linear-gradient(135deg,#1a0533,#2d1b69,#0c3547);
                     padding:32px 24px 28px;border-radius:14px;color:#fff;
                     text-align:center;margin-bottom:20px;">
-          <p style="font-size:11px;font-weight:700;color:#c4b5fd;letter-spacing:.1em;margin-bottom:6px;">
+          <p style="font-size:11px;font-weight:700;color:#c4b5fd;
+                    letter-spacing:.1em;margin-bottom:6px;">
             CLAUDE'S VIBE CODING · 2026.06
           </p>
-          <h1 style="font-size:34px;font-weight:900;margin:0 0 10px;">🛍️ 홈쇼핑 AI 카피 메이커</h1>
+          <h1 style="font-size:34px;font-weight:900;margin:0 0 10px;">
+            🛍️ 홈쇼핑 AI 카피 메이커
+          </h1>
           <p style="font-size:14px;color:rgba(255,255,255,.65);margin:0;">
             상품 정보만 입력하면 카드뉴스 제목·캡션·해시태그·방송 오프닝을 Claude AI가 즉시 작성합니다
           </p>
@@ -150,24 +204,6 @@ def main() -> None:
         """,
         unsafe_allow_html=True,
     )
-
-    # ── API 상태 표시 ──────────────────────────────────────
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        if ANTHROPIC_API_KEY:
-            st.success(f"✅ Claude API 연결됨")
-        else:
-            st.error("❌ Claude API 키 미설정")
-    with c2:
-        if NOTION_TOKEN and NOTION_DATABASE_ID:
-            st.success("✅ Notion 연동 완료")
-        else:
-            st.warning("⚠️ Notion 미설정 (선택사항)")
-    with c3:
-        model_short = ANTHROPIC_MODEL.replace("claude-", "").replace("-20251001", "")
-        st.info(f"🤖 모델: {model_short}")
-
-    st.divider()
 
     # ── 입력 폼 ───────────────────────────────────────────
     with st.container(border=True):
@@ -187,29 +223,35 @@ def main() -> None:
 
         feat2 = st.text_input("핵심 특징 ②", placeholder="예) 착즙 100% 무첨가")
 
-        if st.button("✨ Claude AI로 카피 생성", type="primary", use_container_width=True):
-            if not product:
-                st.error("상품명을 입력해주세요.")
-            else:
-                with st.spinner("Claude가 카피를 작성 중입니다…"):
-                    try:
-                        results = generate_copy(product, cat, price, feat1, feat2)
-                        st.session_state["results"] = results
-                        st.session_state["meta"] = {
-                            "product": product,
-                            "cat": cat,
-                            "price": price,
-                            "feat1": feat1,
-                            "feat2": feat2,
-                        }
-                    except Exception as e:
-                        st.error(str(e))
+        clicked = st.button(
+            "✨ Claude AI로 카피 생성",
+            type="primary",
+            use_container_width=True,
+        )
+
+    if clicked:
+        if not product:
+            st.error("상품명을 입력해주세요.")
+        else:
+            with st.spinner("Claude가 카피를 작성 중입니다…"):
+                try:
+                    results = generate_copy(api_key, model, product, cat, price, feat1, feat2)
+                    st.session_state["results"] = results
+                    st.session_state["meta"] = {
+                        "product": product,
+                        "cat": cat,
+                        "price": price,
+                        "feat1": feat1,
+                        "feat2": feat2,
+                    }
+                except Exception as e:
+                    st.error(_friendly(e))   # 친절한 에러 메시지
 
     # ── 결과 ─────────────────────────────────────────────
     if "results" not in st.session_state:
         return
 
-    r = st.session_state["results"]
+    r    = st.session_state["results"]
     meta = st.session_state.get("meta", {})
 
     st.divider()
@@ -233,19 +275,23 @@ def main() -> None:
     b1, b2, b3 = st.columns(3)
 
     with b1:
-        notion_ready = bool(NOTION_TOKEN and NOTION_DATABASE_ID)
+        notion_ready = bool(cfg["n_tok"] and cfg["n_db"])
         if st.button(
             "📥 Notion에 저장",
             disabled=not notion_ready,
             use_container_width=True,
-            help="secrets.toml에 NOTION_TOKEN과 NOTION_DATABASE_ID가 있어야 활성화됩니다.",
+            help=(
+                "Notion 연동 완료 ✅" if notion_ready
+                else "secrets.toml에 NOTION_TOKEN과 NOTION_DATABASE_ID를 추가하면 활성화됩니다."
+            ),
         ):
             with st.spinner("Notion에 저장 중…"):
                 try:
-                    save_to_notion(meta["product"], meta["cat"], r)
+                    save_to_notion(cfg["n_tok"], cfg["n_db"],
+                                   meta["product"], meta["cat"], r)
                     st.success("Notion에 저장되었습니다! ✓")
                 except Exception as e:
-                    st.error(str(e))
+                    st.error(_friendly(e))
 
     with b2:
         titles_text = "\n".join(
@@ -274,61 +320,14 @@ def main() -> None:
             with st.spinner("Claude가 카피를 다시 작성 중입니다…"):
                 try:
                     results = generate_copy(
-                        m.get("product", ""),
-                        m.get("cat", ""),
-                        m.get("price", ""),
-                        m.get("feat1", ""),
-                        m.get("feat2", ""),
+                        api_key, model,
+                        m.get("product", ""), m.get("cat", ""),
+                        m.get("price", ""), m.get("feat1", ""), m.get("feat2", ""),
                     )
                     st.session_state["results"] = results
                     st.rerun()
                 except Exception as e:
-                    st.error(str(e))
-
-    # ── 사이드바 ──────────────────────────────────────────
-    with st.sidebar:
-        st.header("⚙️ 설정 가이드")
-        st.markdown(
-            """
-**1. secrets.toml 생성**
-
-프로젝트 루트에서:
-```
-.streamlit/
-  secrets.toml   ← 여기에 키 입력
-```
-
-**2. 내용 예시**
-```toml
-ANTHROPIC_API_KEY = "sk-ant-..."
-ANTHROPIC_MODEL   = "claude-haiku-4-5-20251001"
-
-# Notion (선택)
-NOTION_TOKEN        = "secret_..."
-NOTION_DATABASE_ID  = "32자리 ID"
-```
-
-**3. 보안**
-
-`secrets.toml`은 `.gitignore`에 등록되어
-GitHub에 올라가지 않습니다.
-
----
-
-**로컬 실행**
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-**Streamlit Cloud 배포**
-
-Repository → Deploy → Advanced →
-Secrets 탭에 동일 내용 붙여넣기
-            """
-        )
-        st.divider()
-        st.markdown("[← 홈앤쇼핑 포탈](https://prettykbk81.github.io/hnsinfo/)")
+                    st.error(_friendly(e))
 
 
 if __name__ == "__main__":
