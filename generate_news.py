@@ -142,16 +142,25 @@ JSON 배열로만 응답하세요 (다른 텍스트 없이):
 ]"""
 
     client = anthropic.Anthropic(api_key=api_key, http_client=httpx.Client(verify=False))
-    msg = client.messages.create(
-        model='claude-haiku-4-5-20251001',
-        max_tokens=2000,
-        messages=[{'role': 'user', 'content': prompt}],
-    )
-    text = msg.content[0].text.strip()
-    m = re.search(r'\[[\s\S]*\]', text)
-    if not m:
-        raise ValueError("AI 응답 파싱 실패")
-    return json.loads(m.group())
+
+    for attempt in range(3):
+        msg = client.messages.create(
+            model='claude-haiku-4-5-20251001',
+            max_tokens=2000,
+            messages=[{'role': 'user', 'content': prompt}],
+        )
+        text = msg.content[0].text.strip()
+        m = re.search(r'\[[\s\S]*\]', text)
+        if not m:
+            print(f"  [시도 {attempt+1}] JSON 배열 없음, 재시도...")
+            continue
+        try:
+            return json.loads(m.group())
+        except json.JSONDecodeError as e:
+            print(f"  [시도 {attempt+1}] JSON 파싱 오류: {e}, 재시도...")
+            continue
+
+    raise ValueError("AI 응답 파싱 3회 실패 - 나중에 다시 시도하세요.")
 
 
 def build_html(cards: list[dict]) -> str:
