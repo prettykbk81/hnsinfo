@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홈쇼핑 카드뉴스 디자인 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #EDEDED;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .card {
+    width: 1080px;
+    background: #FBF8F3;
+    padding: 72px 80px 60px;
+    position: relative;
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+  .brand { font-size: 13px; color: #C0392B; font-weight: 700; letter-spacing: 0.06em; }
+  .date  { font-size: 13px; color: #888; letter-spacing: 0.05em; }
+
+  .subtitle { font-size: 15px; color: #C0392B; font-weight: 700; margin-bottom: 10px; }
+
+  .main-title {
+    font-size: 58px;
+    font-weight: 900;
+    color: #1A1A1A;
+    line-height: 1.15;
+    margin-bottom: 52px;
+  }
+  .main-title em { color: #C0392B; font-style: normal; }
+
+  /* ── 섹션 그리드 ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 80px;
+    margin-bottom: 52px;
+  }
+
+  .section-label {
+    font-size: 38px;
+    font-weight: 900;
+    color: #1A1A1A;
+    margin-bottom: 10px;
+  }
+  .section-label span { font-size: 20px; font-weight: 700; margin-left: 10px; color: #1A1A1A; }
+
+  /* 색상 세트 */
+  .color-sets { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+
+  .color-row { display: flex; align-items: center; gap: 10px; }
+  .color-row .index { font-size: 13px; font-weight: 700; color: #888; width: 16px; }
+
+  .swatches { display: flex; gap: 5px; }
+  .swatch {
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .color-info { flex: 1; }
+  .color-name { font-size: 13px; font-weight: 700; color: #1A1A1A; }
+  .color-hex  { font-size: 11px; color: #888; margin-top: 1px; letter-spacing: 0.03em; }
+  .color-mood { font-size: 12px; color: #555; margin-top: 2px; }
+
+  /* 폰트 */
+  .font-block { margin-top: 4px; }
+  .font-item { margin-bottom: 14px; }
+  .font-role { font-size: 12px; font-weight: 700; color: #C0392B; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .font-name { font-size: 18px; font-weight: 700; color: #1A1A1A; }
+  .font-sub  { font-size: 12px; color: #777; margin-top: 2px; }
+  .font-preview { font-size: 13px; color: #444; margin-top: 3px; line-height: 1.5; }
+
+  /* 여백·크기 */
+  .spec-block { margin-top: 4px; }
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid #E8E3DB;
+  }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-label { font-size: 13px; color: #555; }
+  .spec-value { font-size: 14px; font-weight: 700; color: #1A1A1A; }
+  .spec-value em { color: #C0392B; font-style: normal; }
+
+  /* 강조 규칙 */
+  .rule-block { margin-top: 4px; }
+  .rule-item { display: flex; gap: 10px; margin-bottom: 11px; align-items: flex-start; }
+  .rule-dot  {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #C0392B; margin-top: 6px; flex-shrink: 0;
+  }
+  .rule-text { font-size: 13px; color: #333; line-height: 1.6; }
+  .rule-text strong { color: #C0392B; }
+
+  /* ── 하단 바 ── */
+  .footer {
+    border-top: 1.5px solid #1A1A1A;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-msg { font-size: 14px; color: #1A1A1A; font-weight: 500; }
+  .footer-copy { font-size: 12px; color: #888; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div>
+      <div class="brand">홈쇼핑 인스타그램</div>
+      <div class="subtitle">카드뉴스 디자인 가이드</div>
+    </div>
+    <div class="date">JUNE 2026</div>
+  </div>
+
+  <div class="main-title">일관된 카드뉴스,<br><em>딱 4가지</em> 규칙</div>
+
+  <div class="grid">
+
+    <!-- 1. 색상 -->
+    <div>
+      <div class="section-label">1 <span>색상 3세트</span></div>
+      <div class="color-sets">
+
+        <div class="color-row">
+          <div class="index">A</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#FBF8F3;"></div>
+            <div class="swatch" style="background:#1A1A2E;"></div>
+            <div class="swatch" style="background:#C0392B;"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">크림 · 딥네이비 · 레드</div>
+            <div class="color-hex">#FBF8F3 · #1A1A2E · #C0392B</div>
+            <div class="color-mood">고급스럽고 신뢰감 있는 프리미엄 홈쇼핑 느낌</div>
+          </div>
+        </div>
+
+        <div class="color-row">
+          <div class="index">B</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#FFFFFF;"></div>
+            <div class="swatch" style="background:#222222;"></div>
+            <div class="swatch" style="background:#E67E22;"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">화이트 · 차콜 · 오렌지</div>
+            <div class="color-hex">#FFFFFF · #222222 · #E67E22</div>
+            <div class="color-mood">시원하고 세일·특가 느낌이 강한 활기찬 분위기</div>
+          </div>
+        </div>
+
+        <div class="color-row">
+          <div class="index">C</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#F4F1EC;"></div>
+            <div class="swatch" style="background:#2C3E50;"></div>
+            <div class="swatch" style="background:#1A7F64;"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">아이보리 · 슬레이트 · 에메랄드</div>
+            <div class="color-hex">#F4F1EC · #2C3E50 · #1A7F64</div>
+            <div class="color-mood">자연·건강식품·리빙 카테고리에 어울리는 신선함</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. 폰트 -->
+    <div>
+      <div class="section-label">2 <span>한글 무료 폰트</span></div>
+      <div class="font-block">
+
+        <div class="font-item">
+          <div class="font-role">TITLE — 제목용</div>
+          <div class="font-name">나눔스퀘어라운드 ExtraBold</div>
+          <div class="font-sub">제공: 네이버 / 무료 상업용 가능</div>
+          <div class="font-preview">둥글고 힘 있는 획 → 신뢰+친근 동시 전달</div>
+        </div>
+
+        <div class="font-item">
+          <div class="font-role">BODY — 본문용</div>
+          <div class="font-name">Pretendard Regular / Medium</div>
+          <div class="font-sub">제공: orioncactus GitHub / OFL 무료</div>
+          <div class="font-preview">가독성 최우선 설계 → 작은 글씨도 또렷하게</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. 여백·크기 -->
+    <div>
+      <div class="section-label">3 <span>여백 · 크기</span></div>
+      <div class="spec-block">
+        <div class="spec-row">
+          <div class="spec-label">카드 기준 사이즈</div>
+          <div class="spec-value">1080 × 1080 px</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">바깥 여백 (패딩)</div>
+          <div class="spec-value"><em>60 px</em> 사방 동일</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">메인 제목</div>
+          <div class="spec-value"><em>52–64 px</em> / ExtraBold</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">소제목</div>
+          <div class="spec-value">20–24 px / Bold</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">본문</div>
+          <div class="spec-value">15–17 px / Regular</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">줄간격</div>
+          <div class="spec-value">제목 1.25 · 본문 1.65</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 강조 규칙 -->
+    <div>
+      <div class="section-label">4 <span>강조 규칙</span></div>
+      <div class="rule-block">
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <div class="rule-text">카드 1장당 강조는 <strong>1–2군데만</strong> — 많으면 아무것도 안 보임</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <div class="rule-text">강조색으로 <strong>핵심 단어만</strong> 색 변경 (나머지는 기본 글자색 유지)</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <div class="rule-text">가격·할인율은 <strong>Bold + 강조색</strong> 조합으로 크기 1.4× 확대</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <div class="rule-text">밑줄 대신 <strong>배경 하이라이트</strong> 사각형 블록 사용 (모바일 가독성↑)</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <div class="rule-text">1장 표지 → 강조 텍스트만, 본문 카드 → 아이콘+숫자+짧은 설명 3줄 이내</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- 푸터 -->
+  <div class="footer">
+    <div class="footer-msg">이 가이드 한 장을 AI에게 넘기면 카드뉴스를 일관되게 만들 수 있다.</div>
+    <div class="footer-copy">홈쇼핑 영업기획팀</div>
+  </div>
+
+</div>
+</body>
+</html>

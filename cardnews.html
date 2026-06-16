@@ -124,6 +124,17 @@ body {
 }
 .btn-print { background:#333; color:#fff; }
 .btn-print:hover { background:#111; }
+.btn-home {
+  background:#e8192c; color:#fff;
+  display:flex; align-items:center; gap:6px;
+  text-decoration:none;
+  padding:8px 20px;
+  border-radius:5px;
+  font-size:13px;
+  font-family:inherit;
+  cursor:pointer;
+}
+.btn-home:hover { background:#c8001f; }
 .ctrl .hint { font-size:11px; color:#888; }
 
 @media print {
@@ -142,7 +153,7 @@ body {
 const CARD = {
 
   /* 상단 */
-  handle:   '@AI_MARKETING_DAILY',
+  handle:   '@홈앤쇼핑_AI_DAILY_NEWS',
   category: '방법 3 · HTML로 찍어내기',
   date:     'JUNE 2026',
 
@@ -170,7 +181,7 @@ const CARD = {
 
   /* 하단 */
   footer: '디자인 툴 안 열고, 대화만으로 카드가 나온다.',
-  credit: '© 이상희 · AI 마케팅 사수',
+  credit: '© 홈앤쇼핑 강봉규 · 영업기획팀 ',
 
 };
 </script>
@@ -179,6 +190,13 @@ const CARD = {
 <div id="card"></div>
 
 <div class="ctrl">
+  <a class="btn-home" href="https://prettykbk81.github.io/hnsinfo/" target="_blank">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+    홈으로
+  </a>
   <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
   <span class="hint">※ PDF 저장 시 '배경 그래픽' 체크 필요</span>
 </div>
