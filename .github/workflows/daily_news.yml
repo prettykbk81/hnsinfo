@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: 패키지 설치
-        run: pip install anthropic requests
+        run: pip install anthropic httpx requests urllib3
 
       - name: 카드뉴스 생성
         run: python generate_news.py
