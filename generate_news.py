@@ -58,7 +58,8 @@ def fetch_naver_news() -> list[dict]:
     client_id     = _env('NAVER_CLIENT_ID')
     client_secret = _env('NAVER_CLIENT_SECRET')
 
-    if not client_id or not client_secret:
+    placeholder = lambda v: not v or v.startswith('여기에')
+    if placeholder(client_id) or placeholder(client_secret):
         print("[!] NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 없음 - 네이버 뉴스 건너뜀")
         return []
 
@@ -294,6 +295,16 @@ CARDS.forEach(function(card) {{
 
 if __name__ == '__main__':
     print("── 홈앤쇼핑 AI Daily News 생성 시작 ──")
+
+    # 키 상태 출력 (값은 숨김)
+    naver_id     = _env('NAVER_CLIENT_ID')
+    naver_secret = _env('NAVER_CLIENT_SECRET')
+    claude_key   = _env('ANTHROPIC_API_KEY')
+
+    print(f"  Claude API  : {'OK' if claude_key else '[!] 없음 - secrets.toml 확인'}")
+    print(f"  Naver ID    : {'OK' if naver_id and not naver_id.startswith('여기에') else '[!] 없음 - secrets.toml 확인'}")
+    print(f"  Naver Secret: {'OK' if naver_secret and not naver_secret.startswith('여기에') else '[!] 없음 - secrets.toml 확인'}")
+    print()
 
     articles = fetch_naver_news()
 

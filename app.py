@@ -95,10 +95,12 @@ def _cfg() -> dict:
             return os.environ.get(key, default)
 
     return {
-        "api_key": get("ANTHROPIC_API_KEY"),
-        "model":   get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001"),
-        "n_tok":   get("NOTION_TOKEN"),
-        "n_db":    get("NOTION_DATABASE_ID"),
+        "api_key":        get("ANTHROPIC_API_KEY"),
+        "model":          get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001"),
+        "n_tok":          get("NOTION_TOKEN"),
+        "n_db":           get("NOTION_DATABASE_ID"),
+        "naver_id":       get("NAVER_CLIENT_ID"),
+        "naver_secret":   get("NAVER_CLIENT_SECRET"),
     }
 
 
@@ -213,6 +215,17 @@ def _sidebar(cfg: dict) -> None:
             st.success(f"✅ Claude API 연결됨\n\n모델: `{model_short}`")
         else:
             st.error("❌ Claude API 키 없음")
+
+        naver_ok = bool(
+            cfg["naver_id"]
+            and not cfg["naver_id"].startswith("여기에")
+            and cfg["naver_secret"]
+            and not cfg["naver_secret"].startswith("여기에")
+        )
+        if naver_ok:
+            st.success("✅ 네이버 뉴스 API 연결됨")
+        else:
+            st.warning("⚠️ 네이버 API 미설정\nsecrets.toml에 NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 추가 필요")
 
         if cfg["n_tok"] and cfg["n_db"]:
             st.success("✅ Notion 연동 완료")
