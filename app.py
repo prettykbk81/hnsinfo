@@ -7,9 +7,9 @@ API 키는 .streamlit/secrets.toml 또는 환경변수에서만 로드.
 import json
 import os
 import re
-import threading
+import subprocess
+import sys
 from datetime import date
-from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import anthropic
 import httpx
@@ -17,13 +17,13 @@ import requests
 import streamlit as st
 
 PROXY_PORT = 8502
+_PROXY_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "proxy.py")
 
 
 # ───────────────────────────────────────────────────────────
-# secrets.toml 직접 읽기 (st.secrets 없이 — 모듈 로드 시 사용)
+# secrets.toml 직접 읽기 (st.secrets 없이)
 # ───────────────────────────────────────────────────────────
 def _read_toml(key: str, default: str = "") -> str:
-    """tomllib 또는 직접 파싱으로 secrets.toml 에서 값을 읽는다."""
     try:
         import tomllib
         with open(".streamlit/secrets.toml", "rb") as f:
@@ -43,79 +43,26 @@ def _read_toml(key: str, default: str = "") -> str:
 
 
 # ───────────────────────────────────────────────────────────
-# 프록시 서버 — 모듈 로드 즉시 백그라운드 스레드로 시작
-# streamlit run app.py 실행하는 순간 localhost:8502 가 열림
+# 프록시 서버 — subprocess로 실행 (Streamlit 모듈 로드 즉시)
 # ───────────────────────────────────────────────────────────
 def _launch_proxy() -> None:
-    api_key = _read_toml("ANTHROPIC_API_KEY")
-    model   = _read_toml("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
+    import socket
+    s = socket.socket()
+    already_running = (s.connect_ex(("localhost", PROXY_PORT)) == 0)
+    s.close()
+    if already_running:
+        return  # 이미 실행 중
 
-    if not api_key:
-        return  # 키 없으면 프록시 비활성
-
-    _key, _mdl = api_key, model
-
-    class _Handler(BaseHTTPRequestHandler):
-        def do_OPTIONS(self):
-            self.send_response(200)
-            self._cors()
-            self.end_headers()
-
-        def do_POST(self):
-            if self.path != "/api/summarize":
-                self.send_error(404)
-                return
-            n      = int(self.headers.get("Content-Length", 0))
-            prompt = json.loads(self.rfile.read(n) or b"{}").get("prompt", "")
-
-            self.send_response(200)
-            self._cors()
-            self.send_header("Content-Type", "text/event-stream; charset=utf-8")
-            self.send_header("Cache-Control", "no-cache")
-            self.end_headers()
-
-            try:
-                client = anthropic.Anthropic(
-                    api_key=_key,
-                    http_client=httpx.Client(verify=False),
-                )
-                with client.messages.stream(
-                    model=_mdl,
-                    max_tokens=1024,
-                    messages=[{"role": "user", "content": prompt}],
-                ) as stream:
-                    for chunk in stream.text_stream:
-                        self.wfile.write(
-                            f"data: {json.dumps({'text': chunk}, ensure_ascii=False)}\n\n".encode()
-                        )
-                        self.wfile.flush()
-            except Exception as e:
-                self.wfile.write(
-                    f"data: {json.dumps({'error': str(e)})}\n\n".encode()
-                )
-                self.wfile.flush()
-
-            self.wfile.write(b"data: [DONE]\n\n")
-            self.wfile.flush()
-
-        def _cors(self):
-            self.send_header("Access-Control-Allow-Origin", "*")
-            self.send_header("Access-Control-Allow-Headers", "Content-Type")
-            self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
-
-        def log_message(self, *args):
-            pass
-
-    def _run():
-        try:
-            HTTPServer(("localhost", PROXY_PORT), _Handler).serve_forever()
-        except OSError:
-            pass  # 이미 실행 중이면 무시
-
-    threading.Thread(target=_run, daemon=True, name="ai-proxy").start()
+    if os.path.exists(_PROXY_SCRIPT):
+        subprocess.Popen(
+            [sys.executable, _PROXY_SCRIPT],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0,
+        )
 
 
-_launch_proxy()  # ← streamlit run app.py 즉시 실행
+_launch_proxy()  # streamlit run app.py 실행 즉시 프록시 시작
 
 
 # ───────────────────────────────────────────────────────────
