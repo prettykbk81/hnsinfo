@@ -3,89 +3,85 @@
   "date_en": "JUNE 17, 2026",
   "left": [
     {
-      "category": "실적·성장",
-      "title": "농어촌 상생협력으로<br>새로운 판로 개척",
+      "category": "사업 확장",
+      "title": "농어촌 상생협력으로<br>ESG 경영 강화",
       "items": [
         {
           "keyword": "상생 후원금",
-          "desc": "<b>1억원</b> 규모 농어촌상생협력기금 조성 및 활용"
+          "desc": "<b>1억원</b> 규모 농어촌상생협력기금 조성"
         },
         {
-          "keyword": "매실 주산지",
-          "desc": "광양·순천·하동 등 <b>3개 지자체</b>와 협력 강화"
+          "keyword": "매실 판매",
+          "desc": "광양·순천·하동 주산지와 협력하여 <b>소비 회복</b>"
         },
         {
           "keyword": "특별방송",
-          "desc": "순천농협 새청무쌀 <b>특별 방송</b> 통한 농산물 판매"
+          "desc": "순천농협 '새청무쌀' 특별방송으로 <b>지역상생</b> 실천"
         }
       ],
-      "footer": "지역 농가와 직접 거래로 구매력 확보 및 브랜드 신뢰도 상승",
+      "footer": "지역 농가와의 동반성장으로 ESG 가치 극대화",
       "sources": [
         {
-          "title": "농협하나로마트 상생 후원금 1억원 활용",
+          "title": "농협하나로마트, 상생 후원금 1억원",
           "url": "http://www.wonyesanup.co.kr/news/articleView.html?idxno=64973"
         },
         {
-          "title": "홈앤쇼핑, 순천농협 새청무쌀 특별 방송",
+          "title": "홈앤쇼핑, 새청무쌀 특별 방송",
           "url": "https://www.ajunews.com/view/20260615132042509"
         }
       ]
     },
     {
-      "category": "전략·방향",
-      "title": "ESG 경영으로 업계 리더<br>입지 강화 중",
+      "category": "마케팅",
+      "title": "배우 한지혜 섭외로<br>센트아우라 샴푸 론칭",
       "items": [
         {
-          "keyword": "ESG 전략",
-          "desc": "우리 농가와 <b>'상생'</b> 프로젝트로 사회가치 창출"
+          "keyword": "전속모델",
+          "desc": "배우 한지혜를 <b>공식 전속모델</b>로 선정"
         },
         {
-          "keyword": "지역 특산물",
-          "desc": "팔도장터·새청무쌀 등 <b>지역 브랜드</b> 집중 소개"
+          "keyword": "방송 시작",
+          "desc": "<b>2026년 6월부터</b> 홈쇼핑 방송 본격 개시"
         },
         {
-          "keyword": "경쟁사 대비",
-          "desc": "NS홈쇼핑·현대그린푸드와 <b>동등 수준</b>의 상생 활동"
+          "keyword": "제품 포지셍",
+          "desc": "탈모증상완화 <b>기능성 샴푸</b>로 차별화"
         }
       ],
-      "footer": "TV홈쇼핑 중심에서 탈피하여 지속가능한 성장 기반 마련",
+      "footer": "유명배우 활용으로 신제품 인지도 및 신뢰도 제고",
       "sources": [
         {
-          "title": "NS홈쇼핑·현대그린푸드·홈앤쇼핑 우리 농가와 상생",
-          "url": "https://www.news2day.co.kr/article/20260616500050"
-        },
-        {
-          "title": "우리 농산물 판로 확대 나선 홈앤쇼핑",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201287"
+          "title": "페르니코리아, 센트아우라 샴푸 홈쇼핑",
+          "url": "https://news.tvchosun.com/site/data/html_dir/2026/06/17/2026061790239.html"
         }
       ]
     },
     {
-      "category": "시장·트렌드",
-      "title": "TV 시청 감소 속<br>전략적 협력 강화 필수",
+      "category": "업계 동향",
+      "title": "TV 시청 감소 속<br>생존 전략 수립 시급",
       "items": [
         {
           "keyword": "업계 위기",
-          "desc": "<b>TV 시청 감소</b>로 홈쇼핑 사업 환경 악화 진행 중"
+          "desc": "TV 시청 감소와 <b>송출수수료 부담</b> 심화"
         },
         {
-          "keyword": "동맹 강화",
-          "desc": "현대홈쇼핑 등 경쟁사도 <b>전략적 협력</b> 가속화"
+          "keyword": "경쟁사 대응",
+          "desc": "NS홈쇼핑, 홈플러스 익스프레스 인수로 <b>오프라인 확대</b>"
         },
         {
-          "keyword": "생존 전략",
-          "desc": "오프라인·농가협력 등 <b>다각화</b>로 리스크 분산"
+          "keyword": "전략적 연대",
+          "desc": "현대홈쇼핑 등 기업들 <b>협력 전선 구축</b> 중"
         }
       ],
-      "footer": "TV 중심 사업 구조 탈피 및 새로운 성장동력 발굴 시급",
+      "footer": "TV 중심 사업 구조 탈피 및 다각화 전략 필수",
       "sources": [
         {
-          "title": "TV 요즘 누가 보나 홈쇼핑 생존 위해 동맹 강화",
-          "url": "https://economist.co.kr/article/view/ecn202606150051"
+          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수",
+          "url": "https://www.dailian.co.kr/news/view/1656016/?sc=Naver"
         },
         {
-          "title": "홈플러스 익스프레스 품는 NS홈쇼핑",
-          "url": "https://www.dailian.co.kr/news/view/1656016/?sc=Naver"
+          "title": "TV 요즘 누가 보나...홈쇼핑 생존",
+          "url": "https://economist.co.kr/article/view/ecn202606150051"
         }
       ]
     }
@@ -93,88 +89,76 @@
   "right": [
     {
       "category": "트렌드",
-      "title": "여름철 물가 대응<br>할인 전략 확대",
+      "title": "기후변화 대응<br>복합상품 편성 확대",
       "items": [
         {
-          "keyword": "공영홈쇼핑",
-          "desc": "중소기업·농축수산물 <b>10% 할인</b> 진행 중"
+          "keyword": "양우산",
+          "desc": "<b>폭염과 장마 동시 대비</b>로 기존 단일 계절상품에서 탈피"
         },
         {
-          "keyword": "물가 대응",
-          "desc": "공공유통플랫폼으로 소비자 <b>장바구니 부담 경감</b>"
+          "keyword": "제습가전",
+          "desc": "습도 변화에 대응하는 기능성 가전 <b>편성 대폭 확대</b>"
         },
         {
-          "keyword": "계절 상품",
-          "desc": "보양식 등 여름철 수요 상품 <b>집중 프로모션</b>"
+          "keyword": "기능성 의류",
+          "desc": "복잡해진 기후환경에 <b>유연하게 대응</b>하는 신규 카테고리"
         }
       ],
-      "footer": "물가 안정화를 통한 고객 신뢰 확보 시점",
+      "footer": "불규칙한 날씨 트렌드를 선반영한 상품 구성이 경쟁력",
       "sources": [
         {
-          "title": "더위잡고 물가잡고 특집",
-          "url": "https://www.naeil.com/news/read/592226?ref=naver"
-        },
-        {
-          "title": "공영홈쇼핑 더위 대비 10% 할인",
-          "url": "https://www.segye.com/newsView/20260617507301"
+          "title": "롯데홈쇼핑 폭염·장마 동시대비",
+          "url": "https://www.thepublic.kr/news/articleView.html?idxno=308063"
         }
       ]
     },
     {
       "category": "경쟁사 동향",
-      "title": "AI·기술 투자로<br>경쟁 심화",
+      "title": "NS쇼핑 SSM 진출<br>리테일 사업 확장",
       "items": [
         {
-          "keyword": "AI 전환",
-          "desc": "CJ온스타일, <b>챗GPT→클로드 전사 도입</b> 가속화"
+          "keyword": "홈플 인수",
+          "desc": "<b>홈플러스 익스프레스 인수 8부 능선</b> 진입 완료"
         },
         {
-          "keyword": "유통망 확대",
-          "desc": "BBQ, 온·오프라인 <b>전방위 채널 구축</b>"
+          "keyword": "국내3위 SSM",
+          "desc": "기업형 슈퍼마켓 시장에서 <b>새로운 포지셔닝</b> 시도"
         },
         {
-          "keyword": "전략 고도화",
-          "desc": "롯데홈쇼핑, 기후변화 기반 <b>트렌드 대응</b> 중"
+          "keyword": "고용 승계",
+          "desc": "공정거래위 승인 후 <b>적극적 통합 추진</b> 중"
         }
       ],
-      "footer": "기술·채널 다각화로 시장 주도권 경쟁 심화",
+      "footer": "홈쇼핑 업체들의 오프라인 리테일 확장 경쟁 심화",
       "sources": [
         {
-          "title": "CJ온스타일-롯데홈쇼핑 전략 고도화",
-          "url": "http://www.wsobi.com/news/articleView.html?idxno=313843"
-        },
-        {
-          "title": "BBQ 가정간편식 유통망 확대",
-          "url": "https://www.naeil.com/news/read/592213?ref=naver"
+          "title": "NS쇼핑 홈플 익스프레스 인수 8부능선",
+          "url": "https://www.edaily.co.kr/news/newspath.asp?newsid=05074166645482704"
         }
       ]
     },
     {
-      "category": "시장 변화",
-      "title": "홈쇼핑 M&A·<br>통합 본격화",
+      "category": "정책·규제",
+      "title": "배송기사 고용구조<br>개편 이슈 대두",
       "items": [
         {
-          "keyword": "NS홈쇼핑",
-          "desc": "홈플러스 익스프레스 인수, <b>조직 통합 작업 진행</b>"
+          "keyword": "17년 경력자",
+          "desc": "퇴직금 80만원, <b>고용해체로 일자리 상실</b> 사례 발생"
         },
         {
-          "keyword": "신규 상품",
-          "desc": "에버홈 스마트 다리미 NS홈쇼핑 <b>첫 론칭</b>"
+          "keyword": "전담조직 해체",
+          "desc": "홈쇼핑 3월 배송기사 <b>전담 조직 구조조정</b> 단행"
         },
         {
-          "keyword": "대기업 진출",
-          "desc": "현대홈쇼핑 등 <b>50개 대기업 K-뉴딜 참여</b>"
+          "keyword": "고용 문제",
+          "desc": "<b>장기 경력자 보호</b> 및 노동 정책 개선 필요성 대두"
         }
       ],
-      "footer": "대형 플레이어 중심의 산업 재편 진행 중",
+      "footer": "고용안정성 강화가 업계 신뢰도 제고의 핵심과제",
       "sources": [
         {
-          "title": "익스프레스 회생 홈플러스 통합 작업",
-          "url": "https://www.ddaily.co.kr/page/view/2026061710222241329"
-        },
-        {
-          "title": "에버홈 스마트 다리미 NS홈쇼핑 론칭",
-          "url": "https://www.enetnews.co.kr/news/articleView.html?idxno=51285"
+          "title": "17년 배송기사 퇴직금 80만원 실업급여 의존",
+          "url": "https://www.kyeongin.com/article/1765739"
         }
       ]
     }
