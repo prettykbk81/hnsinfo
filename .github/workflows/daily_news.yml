@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -15,15 +18,11 @@ jobs:
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Python 설정
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: 패키지 설치
         run: pip install anthropic httpx requests urllib3
