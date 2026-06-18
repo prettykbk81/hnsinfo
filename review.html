@@ -11,20 +11,44 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .page-title{font-size:16px;font-weight:700;color:#111;}
 .home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;transition:background .15s;}
 .home-btn:hover{background:#f0f0f0;color:#e8192c;}
-.wrap{max-width:860px;margin:24px auto;padding:0 16px;}
+.wrap{max-width:900px;margin:24px auto;padding:0 16px;}
 .section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
 .section h2{font-size:14px;font-weight:700;color:#e8192c;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-label{display:block;font-weight:600;margin-bottom:6px;color:#555;}
-input[type=text]{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;}
-input:focus,textarea:focus{outline:none;border-color:#e8192c;}
-textarea{width:100%;height:200px;padding:12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;}
-.hint{font-size:11px;color:#999;margin-top:4px;}
-.btn-area{text-align:center;margin-top:18px;}
-.btn-run{background:#e8192c;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
-.btn-run:hover{background:#c8001f;}
-.btn-run:disabled{background:#999;cursor:not-allowed;}
+/* 검색 */
+.search-bar{display:flex;gap:8px;}
+.search-bar input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;}
+.search-bar input:focus{outline:none;border-color:#e8192c;}
+.search-bar button{background:#e8192c;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.search-bar button:hover{background:#c8001f;}
+.search-bar button:disabled{background:#999;cursor:not-allowed;}
+.hint{font-size:11px;color:#999;margin-top:6px;}
+/* 상품 그리드 */
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;}
+.product-card{border:2px solid #eee;border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s;text-align:center;background:#fff;}
+.product-card:hover{border-color:#e8192c;box-shadow:0 2px 12px rgba(232,25,44,.15);transform:translateY(-2px);}
+.product-card.selected{border-color:#e8192c;background:#fff5f5;}
+.product-card img{width:100%;aspect-ratio:1;object-fit:cover;background:#f5f5f5;}
+.product-card .p-name{padding:8px 6px 4px;font-size:11.5px;font-weight:600;color:#333;line-height:1.4;height:48px;overflow:hidden;}
+.product-card .p-price{padding:0 6px 8px;font-size:13px;font-weight:800;color:#e8192c;}
+/* 선택된 상품 정보 */
+.selected-product{display:none;margin-top:16px;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #eee;}
+.sp-row{display:flex;gap:16px;align-items:flex-start;}
+.sp-img{width:120px;height:120px;border-radius:8px;object-fit:cover;background:#eee;flex-shrink:0;}
+.sp-info{flex:1;}
+.sp-name{font-size:15px;font-weight:700;color:#111;margin-bottom:6px;}
+.sp-price{font-size:14px;color:#e8192c;font-weight:700;margin-bottom:8px;}
+.sp-score{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#fff5f5;border-radius:12px;font-size:12px;font-weight:600;color:#e8192c;}
+.sp-reviews{font-size:11px;color:#888;margin-top:6px;}
+/* 블로그 후기 */
+.blog-list{margin-top:14px;}
+.blog-item{padding:10px 12px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.6;}
+.blog-item:last-child{border-bottom:none;}
+.blog-item .b-title{font-weight:600;color:#333;}
+.blog-item .b-desc{color:#666;margin-top:2px;}
+.blog-item .b-meta{font-size:10px;color:#aaa;margin-top:3px;}
+/* 분석 결과 */
 .result{display:none;}
-.result-body{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#333;}
+.result-body{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;}
 .result-body b{color:#e8192c;}
 .ai-loading{text-align:center;padding:30px;color:#888;}
 .ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#e8192c;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
@@ -32,6 +56,11 @@ textarea{width:100%;height:200px;padding:12px;border:1.5px solid #ddd;border-rad
 .ai-cursor{display:inline-block;width:2px;height:14px;background:#e8192c;animation:blink .6s infinite;}
 @keyframes blink{50%{opacity:0;}}
 .error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
+.btn-analyze{background:#e8192c;color:#fff;border:none;padding:11px 32px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:14px;}
+.btn-analyze:hover{background:#c8001f;}
+.btn-analyze:disabled{background:#999;cursor:not-allowed;}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#e8192c;color:#fff;border-radius:50%;font-size:11px;font-weight:700;}
+@media(max-width:600px){.product-grid{grid-template-columns:repeat(2,1fr);}.sp-row{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -45,63 +74,184 @@ textarea{width:100%;height:200px;padding:12px;border:1.5px solid #ddd;border-rad
 </div>
 
 <div class="wrap">
+  <!-- STEP 1: 검색 -->
   <div class="section">
-    <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" fill="#e8192c"/></svg>
-      리뷰 입력
-    </h2>
-    <label for="prodName">상품명 (선택)</label>
-    <input type="text" id="prodName" placeholder="예) 제주 한라봉 5kg 세트">
-    <div style="height:14px;"></div>
-    <label for="reviews">고객 리뷰 텍스트</label>
-    <textarea id="reviews" placeholder="리뷰를 여기에 붙여넣으세요.&#10;&#10;예)&#10;신선하고 맛있어요. 배송도 빨랐습니다.&#10;크기가 좀 작아서 아쉬웠어요.&#10;가격 대비 괜찮은 것 같습니다. 재구매 의향 있습니다.&#10;포장이 꼼꼼해서 좋았어요!"></textarea>
-    <div class="hint">※ 리뷰가 많을수록 분석 정확도가 올라갑니다 (10건 이상 권장)</div>
-    <div class="btn-area">
-      <button class="btn-run" id="btnRun" onclick="analyze()">AI 리뷰 분석 시작</button>
+    <h2><span class="step-badge">1</span> 상품 검색</h2>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="상품명을 입력하세요 (예: 한라봉, 선풍기, 홍삼)" onkeypress="if(event.keyCode===13)searchProduct()">
+      <button id="btnSearch" onclick="searchProduct()">검색</button>
+    </div>
+    <div class="hint">※ 홈앤쇼핑(hnsmall.com) 판매 상품을 검색합니다</div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <!-- STEP 2: 상품 정보 + 후기 -->
+  <div class="section" id="step2" style="display:none;">
+    <h2><span class="step-badge">2</span> 상품 정보 &amp; 블로그 후기</h2>
+    <div class="selected-product" id="selectedProduct" style="display:block;">
+      <div class="sp-row">
+        <img class="sp-img" id="spImg" src="" alt="">
+        <div class="sp-info">
+          <div class="sp-name" id="spName"></div>
+          <div class="sp-price" id="spPrice"></div>
+          <div class="sp-score" id="spScore"></div>
+          <div class="sp-reviews" id="spReviews"></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <h2 style="font-size:13px;color:#555;margin-bottom:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="#16a34a" stroke-width="2" rx="2"/><path d="M8 8h8M8 12h5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/></svg>
+        네이버 블로그 후기 <span id="blogCount" style="color:#aaa;font-weight:400;"></span>
+      </h2>
+      <div class="blog-list" id="blogList">
+        <div class="ai-loading"><div class="ai-spinner"></div>블로그 후기를 검색 중...</div>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn-analyze" id="btnAnalyze" onclick="analyzeReviews()">AI 리뷰 분석 시작</button>
     </div>
   </div>
 
-  <div class="section result" id="resultSection">
-    <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#e8192c" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/></svg>
-      분석 결과
-    </h2>
+  <!-- STEP 3: 분석 결과 -->
+  <div class="section result" id="step3">
+    <h2><span class="step-badge">3</span> AI 분석 결과</h2>
     <div class="result-body" id="resultBody"></div>
   </div>
 </div>
 
 <script>
-async function analyze() {
-  var name = document.getElementById('prodName').value.trim();
-  var reviews = document.getElementById('reviews').value.trim();
-  if (!reviews) { alert('리뷰 텍스트를 입력해주세요.'); return; }
+var PROXY = 'http://localhost:8502';
+var _selectedProduct = null;
+var _blogReviews = [];
 
-  var section = document.getElementById('resultSection');
+async function searchProduct() {
+  var q = document.getElementById('searchInput').value.trim();
+  if (!q) { alert('상품명을 입력해주세요.'); return; }
+  var grid = document.getElementById('productGrid');
+  var btn = document.getElementById('btnSearch');
+  grid.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑에서 검색 중...</div>';
+  btn.disabled = true; btn.textContent = '검색 중...';
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step3').style.display = 'none';
+
+  try {
+    var r = await fetch(PROXY + '/api/search-product?q=' + encodeURIComponent(q));
+    if (!r.ok) throw new Error('프록시 연결 실패');
+    var products = await r.json();
+    if (!products.length) {
+      grid.innerHTML = '<div style="padding:20px;color:#888;text-align:center;">검색 결과가 없습니다.</div>';
+      return;
+    }
+    grid.innerHTML = products.map(function(p) {
+      return '<div class="product-card" onclick=\'selectProduct(' + JSON.stringify(p).replace(/'/g,"&#39;") + ')\'>'
+        + '<img src="' + p.image + '" alt="" onerror="this.src=\'https://via.placeholder.com/200?text=No+Image\'">'
+        + '<div class="p-name">' + p.name + '</div>'
+        + (p.price ? '<div class="p-price">' + p.price + '원</div>' : '')
+        + '</div>';
+    }).join('');
+  } catch(e) {
+    grid.innerHTML = '<div class="error">' +
+      (e.message.indexOf('fetch') > -1 || e.message.indexOf('Failed') > -1
+        ? 'streamlit run app.py 를 먼저 실행해주세요.'
+        : e.message) + '</div>';
+  } finally {
+    btn.disabled = false; btn.textContent = '검색';
+  }
+}
+
+async function selectProduct(product) {
+  _selectedProduct = product;
+  // 카드 선택 표시
+  document.querySelectorAll('.product-card').forEach(function(c) { c.classList.remove('selected'); });
+  event.currentTarget.classList.add('selected');
+
+  // STEP 2 표시
+  var step2 = document.getElementById('step2');
+  step2.style.display = 'block';
+  document.getElementById('spImg').src = product.image;
+  document.getElementById('spName').textContent = product.name;
+  document.getElementById('spPrice').textContent = product.price ? product.price + '원' : '';
+  document.getElementById('spScore').textContent = '만족도 로딩 중...';
+  document.getElementById('spReviews').textContent = '';
+  document.getElementById('blogList').innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>후기를 수집 중...</div>';
+  document.getElementById('step3').style.display = 'none';
+
+  step2.scrollIntoView({behavior:'smooth', block:'start'});
+
+  // 만족도 + 블로그 후기 동시 로드
+  var scorePromise = fetch(PROXY + '/api/product-score?code=' + product.code).then(function(r){return r.json();}).catch(function(){return {};});
+  var blogPromise = fetch(PROXY + '/api/search-reviews?q=' + encodeURIComponent('홈앤쇼핑 ' + product.name + ' 후기') + '&n=10').then(function(r){return r.json();}).catch(function(){return [];});
+
+  var results = await Promise.all([scorePromise, blogPromise]);
+  var score = results[0];
+  var blogs = results[1];
+  _blogReviews = blogs;
+
+  // 만족도 표시
+  if (score.score) {
+    document.getElementById('spScore').innerHTML = '&#11088; 만족도 ' + score.score + '점 (' + score.level + ')';
+    document.getElementById('spReviews').textContent = '상품평 ' + score.count + '건';
+  } else {
+    document.getElementById('spScore').textContent = '만족도 정보 없음';
+  }
+
+  // 블로그 후기 표시
+  if (blogs.length) {
+    document.getElementById('blogCount').textContent = '(' + blogs.length + '건)';
+    document.getElementById('blogList').innerHTML = blogs.map(function(b) {
+      return '<div class="blog-item">'
+        + '<div class="b-title">' + b.title + '</div>'
+        + '<div class="b-desc">' + b.desc + '</div>'
+        + '<div class="b-meta">' + b.blogger + ' · ' + b.date + ' <a href="' + b.link + '" target="_blank" style="color:#e8192c;">원문 보기</a></div>'
+        + '</div>';
+    }).join('');
+  } else {
+    document.getElementById('blogCount').textContent = '(0건)';
+    document.getElementById('blogList').innerHTML = '<div style="padding:16px;color:#888;text-align:center;">블로그 후기를 찾지 못했습니다.</div>';
+  }
+}
+
+async function analyzeReviews() {
+  if (!_selectedProduct) return;
+  var section = document.getElementById('step3');
   var body = document.getElementById('resultBody');
-  var btn = document.getElementById('btnRun');
+  var btn = document.getElementById('btnAnalyze');
   section.style.display = 'block';
   body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 리뷰를 분석 중입니다...</div>';
   btn.disabled = true; btn.textContent = '분석 중...';
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+
+  var reviewText = _blogReviews.map(function(b, i) {
+    return '[후기' + (i+1) + '] ' + b.title + '\n' + b.desc;
+  }).join('\n\n');
+
+  var scoreInfo = document.getElementById('spScore').textContent;
+  var countInfo = document.getElementById('spReviews').textContent;
 
   var prompt = '당신은 홈쇼핑 상품 리뷰 분석 전문가입니다.\n\n';
-  if (name) prompt += '상품명: ' + name + '\n\n';
-  prompt += '아래 고객 리뷰를 분석해주세요:\n\n' + reviews + '\n\n';
-  prompt += '다음 항목을 분석해주세요:\n';
-  prompt += '1. 감성 분석: 긍정/부정/중립 비율 (%) + 전체 평가\n';
-  prompt += '2. 핵심 키워드 TOP 5 (언급 빈도 순)\n';
-  prompt += '3. 고객이 좋아하는 점 (긍정 포인트)\n';
-  prompt += '4. 개선이 필요한 점 (부정 포인트)\n';
-  prompt += '5. 상품 담당 MD에게 제안하는 액션 아이템 3가지\n';
-  prompt += '6. 한 줄 요약\n\n';
-  prompt += '각 항목별로 구분하여 읽기 쉽게 작성해주세요.';
+  prompt += '상품명: ' + _selectedProduct.name + '\n';
+  prompt += '판매처: 홈앤쇼핑\n';
+  if (scoreInfo) prompt += '홈앤쇼핑 ' + scoreInfo + ' / ' + countInfo + '\n';
+  prompt += '\n아래는 네이버 블로그에서 수집한 고객 후기입니다:\n\n';
+  prompt += reviewText || '(후기 데이터 없음 - 일반적인 분석을 해주세요)';
+  prompt += '\n\n위 후기를 분석하여 다음 항목별로 정리해주세요:\n\n';
+  prompt += '1. 종합 평가 (한 줄 요약 + 5점 만점 추천 점수)\n';
+  prompt += '2. 좋은 점 (고객들이 만족한 포인트 3~5개)\n';
+  prompt += '3. 아쉬운 점 (고객들이 불만족한 포인트)\n';
+  prompt += '4. 배송/포장 평가\n';
+  prompt += '5. 가성비 평가\n';
+  prompt += '6. MD 개선 제안 (상품 담당자에게 제안하는 액션 아이템 3가지)\n';
+  prompt += '7. 경쟁 상품 대비 차별점\n\n';
+  prompt += '각 항목은 구체적 후기 내용을 인용하며 작성해주세요.';
 
   try {
-    var resp = await fetch('http://localhost:8502/api/summarize', {
+    var resp = await fetch(PROXY + '/api/summarize', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({prompt: prompt}),
     });
-    if (!resp.ok) throw new Error('프록시 서버 연결 실패 (HTTP ' + resp.status + ')');
+    if (!resp.ok) throw new Error('프록시 서버 연결 실패');
 
     body.innerHTML = '';
     var textNode = document.createTextNode('');
@@ -129,7 +279,7 @@ async function analyze() {
     cursor.remove();
   } catch(e) {
     body.innerHTML = '<div class="error">' +
-      (e.message.indexOf('fetch') > -1 ? 'app.py(Streamlit)가 실행되지 않았습니다.<br>streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
+      (e.message.indexOf('fetch') > -1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
       '</div>';
   } finally {
     btn.disabled = false; btn.textContent = 'AI 리뷰 분석 시작';
