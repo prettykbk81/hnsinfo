@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 리뷰 분석기 · 홈앤쇼핑 AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
+.page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.page-title{font-size:16px;font-weight:700;color:#111;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;transition:background .15s;}
+.home-btn:hover{background:#f0f0f0;color:#e8192c;}
+.wrap{max-width:860px;margin:24px auto;padding:0 16px;}
+.section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.section h2{font-size:14px;font-weight:700;color:#e8192c;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+label{display:block;font-weight:600;margin-bottom:6px;color:#555;}
+input[type=text]{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;}
+input:focus,textarea:focus{outline:none;border-color:#e8192c;}
+textarea{width:100%;height:200px;padding:12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;}
+.hint{font-size:11px;color:#999;margin-top:4px;}
+.btn-area{text-align:center;margin-top:18px;}
+.btn-run{background:#e8192c;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
+.btn-run:hover{background:#c8001f;}
+.btn-run:disabled{background:#999;cursor:not-allowed;}
+.result{display:none;}
+.result-body{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#333;}
+.result-body b{color:#e8192c;}
+.ai-loading{text-align:center;padding:30px;color:#888;}
+.ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#e8192c;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-cursor{display:inline-block;width:2px;height:14px;background:#e8192c;animation:blink .6s infinite;}
+@keyframes blink{50%{opacity:0;}}
+.error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">상품 리뷰 분석기</span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="section">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" fill="#e8192c"/></svg>
+      리뷰 입력
+    </h2>
+    <label for="prodName">상품명 (선택)</label>
+    <input type="text" id="prodName" placeholder="예) 제주 한라봉 5kg 세트">
+    <div style="height:14px;"></div>
+    <label for="reviews">고객 리뷰 텍스트</label>
+    <textarea id="reviews" placeholder="리뷰를 여기에 붙여넣으세요.&#10;&#10;예)&#10;신선하고 맛있어요. 배송도 빨랐습니다.&#10;크기가 좀 작아서 아쉬웠어요.&#10;가격 대비 괜찮은 것 같습니다. 재구매 의향 있습니다.&#10;포장이 꼼꼼해서 좋았어요!"></textarea>
+    <div class="hint">※ 리뷰가 많을수록 분석 정확도가 올라갑니다 (10건 이상 권장)</div>
+    <div class="btn-area">
+      <button class="btn-run" id="btnRun" onclick="analyze()">AI 리뷰 분석 시작</button>
+    </div>
+  </div>
+
+  <div class="section result" id="resultSection">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#e8192c" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#e8192c" stroke-width="2" stroke-linecap="round"/></svg>
+      분석 결과
+    </h2>
+    <div class="result-body" id="resultBody"></div>
+  </div>
+</div>
+
+<script>
+async function analyze() {
+  var name = document.getElementById('prodName').value.trim();
+  var reviews = document.getElementById('reviews').value.trim();
+  if (!reviews) { alert('리뷰 텍스트를 입력해주세요.'); return; }
+
+  var section = document.getElementById('resultSection');
+  var body = document.getElementById('resultBody');
+  var btn = document.getElementById('btnRun');
+  section.style.display = 'block';
+  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 리뷰를 분석 중입니다...</div>';
+  btn.disabled = true; btn.textContent = '분석 중...';
+
+  var prompt = '당신은 홈쇼핑 상품 리뷰 분석 전문가입니다.\n\n';
+  if (name) prompt += '상품명: ' + name + '\n\n';
+  prompt += '아래 고객 리뷰를 분석해주세요:\n\n' + reviews + '\n\n';
+  prompt += '다음 항목을 분석해주세요:\n';
+  prompt += '1. 감성 분석: 긍정/부정/중립 비율 (%) + 전체 평가\n';
+  prompt += '2. 핵심 키워드 TOP 5 (언급 빈도 순)\n';
+  prompt += '3. 고객이 좋아하는 점 (긍정 포인트)\n';
+  prompt += '4. 개선이 필요한 점 (부정 포인트)\n';
+  prompt += '5. 상품 담당 MD에게 제안하는 액션 아이템 3가지\n';
+  prompt += '6. 한 줄 요약\n\n';
+  prompt += '각 항목별로 구분하여 읽기 쉽게 작성해주세요.';
+
+  try {
+    var resp = await fetch('http://localhost:8502/api/summarize', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: prompt}),
+    });
+    if (!resp.ok) throw new Error('프록시 서버 연결 실패 (HTTP ' + resp.status + ')');
+
+    body.innerHTML = '';
+    var textNode = document.createTextNode('');
+    var cursor = document.createElement('span');
+    cursor.className = 'ai-cursor';
+    body.appendChild(textNode);
+    body.appendChild(cursor);
+
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, {stream: true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        var payload = line.slice(6);
+        if (payload === '[DONE]') { cursor.remove(); break; }
+        try { textNode.textContent += JSON.parse(payload).text; } catch(e) {}
+      }
+    }
+    cursor.remove();
+  } catch(e) {
+    body.innerHTML = '<div class="error">' +
+      (e.message.indexOf('fetch') > -1 ? 'app.py(Streamlit)가 실행되지 않았습니다.<br>streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
+      '</div>';
+  } finally {
+    btn.disabled = false; btn.textContent = 'AI 리뷰 분석 시작';
+  }
+}
+</script>
+</body>
+</html>

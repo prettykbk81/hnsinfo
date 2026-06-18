@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무 보고서 자동 생성기 · 홈앤쇼핑 AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
+.page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.page-title{font-size:16px;font-weight:700;color:#111;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;width:34px;height:34px;border-radius:6px;transition:background .15s;justify-content:center;}
+.home-btn:hover{background:#f0f0f0;color:#e8192c;}
+.wrap{max-width:860px;margin:24px auto;padding:0 16px;}
+.section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.section h2{font-size:14px;font-weight:700;color:#0369a1;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;}
+label{display:block;font-weight:600;margin-bottom:6px;color:#555;}
+select,input[type=text]{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;}
+select:focus,input:focus,textarea:focus{outline:none;border-color:#0369a1;}
+textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;}
+.hint{font-size:11px;color:#999;margin-top:4px;}
+.btn-area{text-align:center;margin-top:18px;display:flex;gap:10px;justify-content:center;}
+.btn-run{background:#0369a1;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
+.btn-run:hover{background:#024e7c;}
+.btn-run:disabled{background:#999;cursor:not-allowed;}
+.btn-copy{background:#333;color:#fff;border:none;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
+.btn-copy:hover{background:#111;}
+.result{display:none;}
+.result h2{color:#0369a1;}
+.result-body{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;border:1px solid #e0e0e0;border-radius:8px;padding:20px;background:#fafafa;}
+.ai-loading{text-align:center;padding:30px;color:#888;}
+.ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#0369a1;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-cursor{display:inline-block;width:2px;height:14px;background:#0369a1;animation:blink .6s infinite;}
+@keyframes blink{50%{opacity:0;}}
+.error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">업무 보고서 자동 생성기</span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="section">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#0369a1" stroke-width="2" stroke-linejoin="round"/><polyline points="14,2 14,8 20,8" stroke="#0369a1" stroke-width="2"/></svg>
+      보고서 설정
+    </h2>
+    <div class="form-row">
+      <div>
+        <label for="rType">보고서 유형</label>
+        <select id="rType">
+          <option value="주간업무보고">주간업무보고</option>
+          <option value="월간실적보고">월간실적보고</option>
+          <option value="기획보고">기획보고</option>
+          <option value="회의록 정리">회의록 정리</option>
+          <option value="업무 인수인계서">업무 인수인계서</option>
+        </select>
+      </div>
+      <div>
+        <label for="rTarget">보고 대상</label>
+        <select id="rTarget">
+          <option value="팀장">팀장</option>
+          <option value="실장/부서장">실장/부서장</option>
+          <option value="임원">임원</option>
+          <option value="경영진">경영진</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label for="rPeriod">보고 기간</label>
+        <input type="text" id="rPeriod" placeholder="예) 2026.06.09 ~ 06.13">
+      </div>
+      <div>
+        <label for="rDept">부서/팀</label>
+        <input type="text" id="rDept" placeholder="예) 영업기획팀">
+      </div>
+    </div>
+    <label for="rContent">핵심 내용 (키워드 또는 메모)</label>
+    <textarea id="rContent" placeholder="보고서에 들어갈 내용을 간단히 적어주세요.&#10;&#10;예)&#10;- 6월 2주차 매출 전주대비 12% 상승&#10;- 식품 카테고리 신규 입점사 3개 확보&#10;- 라이브커머스 시범 방송 2회 진행, 평균 시청 3,200명&#10;- 다음 주 목표: 여름 시즌 기획전 준비"></textarea>
+    <div class="hint">※ 키워드만 나열해도 AI가 문장으로 완성합니다</div>
+    <div class="btn-area">
+      <button class="btn-run" id="btnRun" onclick="generate()">보고서 생성</button>
+      <button class="btn-copy" id="btnCopy" onclick="copyResult()">복사하기</button>
+    </div>
+  </div>
+
+  <div class="section result" id="resultSection">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#0369a1" stroke-width="2"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#0369a1" stroke-width="1.5" stroke-linecap="round"/></svg>
+      생성된 보고서
+    </h2>
+    <div class="result-body" id="resultBody"></div>
+  </div>
+</div>
+
+<script>
+async function generate() {
+  var type = document.getElementById('rType').value;
+  var target = document.getElementById('rTarget').value;
+  var period = document.getElementById('rPeriod').value.trim();
+  var dept = document.getElementById('rDept').value.trim();
+  var content = document.getElementById('rContent').value.trim();
+  if (!content) { alert('핵심 내용을 입력해주세요.'); return; }
+
+  var section = document.getElementById('resultSection');
+  var body = document.getElementById('resultBody');
+  var btn = document.getElementById('btnRun');
+  var copyBtn = document.getElementById('btnCopy');
+  section.style.display = 'block';
+  copyBtn.style.display = 'none';
+  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 보고서를 작성 중입니다...</div>';
+  btn.disabled = true; btn.textContent = '생성 중...';
+
+  var prompt = '당신은 홈앤쇼핑 ' + (dept || '영업기획팀') + ' 소속 직원입니다.\n\n';
+  prompt += '다음 정보로 ' + type + '를 작성해주세요:\n\n';
+  prompt += '보고서 유형: ' + type + '\n';
+  prompt += '보고 대상: ' + target + '\n';
+  if (period) prompt += '보고 기간: ' + period + '\n';
+  if (dept) prompt += '부서: ' + dept + '\n';
+  prompt += '\n핵심 내용:\n' + content + '\n\n';
+  prompt += '작성 규칙:\n';
+  prompt += '- ' + target + '에게 보고하는 공식 문서 톤으로 작성\n';
+  prompt += '- 한국 대기업/홈쇼핑 회사 보고서 형식에 맞게\n';
+  prompt += '- 수치가 있으면 강조하고, 전주/전월 대비 변화율 포함\n';
+  prompt += '- 마지막에 "향후 계획" 또는 "요청사항" 섹션 포함\n';
+  prompt += '- 불필요한 인사말 없이 바로 본론으로\n';
+  prompt += '- 읽기 쉽게 구조화 (제목, 소제목, 번호 활용)';
+
+  try {
+    var resp = await fetch('http://localhost:8502/api/summarize', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: prompt}),
+    });
+    if (!resp.ok) throw new Error('프록시 서버 연결 실패');
+
+    body.innerHTML = '';
+    var textNode = document.createTextNode('');
+    var cursor = document.createElement('span');
+    cursor.className = 'ai-cursor';
+    body.appendChild(textNode);
+    body.appendChild(cursor);
+
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, {stream: true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        var payload = line.slice(6);
+        if (payload === '[DONE]') { cursor.remove(); break; }
+        try { textNode.textContent += JSON.parse(payload).text; } catch(e) {}
+      }
+    }
+    cursor.remove();
+    copyBtn.style.display = 'inline-block';
+  } catch(e) {
+    body.innerHTML = '<div class="error">' +
+      (e.message.indexOf('fetch') > -1 ? 'app.py(Streamlit)가 실행되지 않았습니다.<br>streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
+      '</div>';
+  } finally {
+    btn.disabled = false; btn.textContent = '보고서 생성';
+  }
+}
+
+function copyResult() {
+  var text = document.getElementById('resultBody').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = '복사 완료!';
+    setTimeout(function() { btn.textContent = '복사하기'; }, 1500);
+  });
+}
+</script>
+</body>
+</html>

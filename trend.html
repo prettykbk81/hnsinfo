@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홈쇼핑 트렌드 리포트 · 홈앤쇼핑 AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
+.page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.page-title{font-size:16px;font-weight:700;color:#111;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;width:34px;height:34px;border-radius:6px;transition:background .15s;justify-content:center;}
+.home-btn:hover{background:#f0f0f0;color:#e8192c;}
+.wrap{max-width:860px;margin:24px auto;padding:0 16px;}
+.section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.section h2{font-size:14px;font-weight:700;color:#0d9488;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.cat-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.cat-chip{padding:8px 18px;border:2px solid #ddd;border-radius:20px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;background:#fff;transition:all .15s;color:#555;}
+.cat-chip:hover{border-color:#0d9488;color:#0d9488;}
+.cat-chip.active{background:#0d9488;color:#fff;border-color:#0d9488;}
+.focus-input{margin-bottom:14px;}
+.focus-input input{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;}
+.focus-input input:focus{outline:none;border-color:#0d9488;}
+.btn-area{text-align:center;margin-top:14px;}
+.btn-run{background:#0d9488;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
+.btn-run:hover{background:#0a766d;}
+.btn-run:disabled{background:#999;cursor:not-allowed;}
+.news-source{margin-top:14px;padding:12px 16px;background:#f8f8f8;border-radius:6px;font-size:11px;color:#888;line-height:1.6;}
+.news-source b{color:#555;}
+.result{display:none;}
+.result h2{color:#0d9488;}
+.result-body{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;}
+.result-body b{color:#0d9488;}
+.ai-loading{text-align:center;padding:30px;color:#888;}
+.ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#0d9488;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-cursor{display:inline-block;width:2px;height:14px;background:#0d9488;animation:blink .6s infinite;}
+@keyframes blink{50%{opacity:0;}}
+.error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">홈쇼핑 트렌드 리포트</span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="section">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      트렌드 분석 설정
+    </h2>
+    <label style="margin-bottom:8px;">관심 업종 (복수 선택 가능)</label>
+    <div class="cat-chips" id="chips">
+      <button class="cat-chip active" data-cat="전체">전체</button>
+      <button class="cat-chip" data-cat="식품/건강">식품/건강</button>
+      <button class="cat-chip" data-cat="뷰티/스킨케어">뷰티</button>
+      <button class="cat-chip" data-cat="패션/의류">패션</button>
+      <button class="cat-chip" data-cat="생활가전">생활가전</button>
+      <button class="cat-chip" data-cat="라이브커머스">라이브커머스</button>
+    </div>
+    <div class="focus-input">
+      <label for="focusTopic">추가 관심 키워드 (선택)</label>
+      <input type="text" id="focusTopic" placeholder="예) MZ세대, 프리미엄, 가성비">
+    </div>
+    <div class="btn-area">
+      <button class="btn-run" id="btnRun" onclick="analyzeTrend()">트렌드 리포트 생성</button>
+    </div>
+    <div class="news-source" id="newsSource" style="display:none;"></div>
+  </div>
+
+  <div class="section result" id="resultSection">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 20h20M5 20V10M9 20V4M13 20V14M17 20V8M21 20V2" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/></svg>
+      트렌드 리포트
+    </h2>
+    <div class="result-body" id="resultBody"></div>
+  </div>
+</div>
+
+<script>
+// 칩 토글
+document.getElementById('chips').addEventListener('click', function(e) {
+  var chip = e.target.closest('.cat-chip');
+  if (!chip) return;
+  if (chip.dataset.cat === '전체') {
+    document.querySelectorAll('.cat-chip').forEach(function(c) { c.classList.remove('active'); });
+    chip.classList.add('active');
+  } else {
+    document.querySelector('.cat-chip[data-cat="전체"]').classList.remove('active');
+    chip.classList.toggle('active');
+    if (!document.querySelector('.cat-chip.active')) {
+      document.querySelector('.cat-chip[data-cat="전체"]').classList.add('active');
+    }
+  }
+});
+
+async function analyzeTrend() {
+  var cats = [];
+  document.querySelectorAll('.cat-chip.active').forEach(function(c) { cats.push(c.dataset.cat); });
+  var focus = document.getElementById('focusTopic').value.trim();
+
+  var section = document.getElementById('resultSection');
+  var body = document.getElementById('resultBody');
+  var btn = document.getElementById('btnRun');
+  var newsSource = document.getElementById('newsSource');
+  section.style.display = 'block';
+  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>최신 뉴스를 불러오고 분석 중입니다...</div>';
+  btn.disabled = true; btn.textContent = '분석 중...';
+
+  // daily_news.json에서 최신 뉴스 데이터 로드
+  var newsContext = '';
+  try {
+    var newsResp = await fetch('daily_news.json?t=' + Date.now());
+    if (newsResp.ok) {
+      var newsData = await newsResp.json();
+      var allCards = (newsData.left || []).concat(newsData.right || []);
+      newsContext = allCards.map(function(c) {
+        var items = (c.items || []).map(function(it) { return it.keyword + ': ' + it.desc; }).join('\n');
+        return '[' + c.category + '] ' + (c.title || '').replace(/<br>/g, ' ') + '\n' + items;
+      }).join('\n\n');
+      newsSource.innerHTML = '<b>뉴스 데이터:</b> ' + (newsData.date || '') + ' 기준 카드뉴스 ' + allCards.length + '건 활용';
+      newsSource.style.display = 'block';
+    }
+  } catch(e) {}
+
+  var prompt = '당신은 홈쇼핑/이커머스 산업 트렌드 분석 전문가입니다.\n\n';
+  if (newsContext) {
+    prompt += '아래는 오늘의 홈쇼핑 관련 최신 뉴스 요약입니다:\n\n' + newsContext + '\n\n';
+  }
+  prompt += '분석 대상 업종: ' + cats.join(', ') + '\n';
+  if (focus) prompt += '추가 관심 키워드: ' + focus + '\n';
+  prompt += '\n다음 형식으로 홈쇼핑 트렌드 리포트를 작성해주세요:\n\n';
+  prompt += '1. 이번 주 핵심 트렌드 TOP 3 (각각 제목 + 2~3줄 설명)\n';
+  prompt += '2. 업종별 동향 (선택된 업종 중심)\n';
+  prompt += '3. 경쟁사 주요 움직임\n';
+  prompt += '4. 소비자 트렌드 변화 (MZ세대, 시니어 등)\n';
+  prompt += '5. 홈앤쇼핑에 대한 전략적 시사점 3가지\n';
+  prompt += '6. 다음 주 주목할 포인트\n\n';
+  prompt += '수치와 구체적 사례를 포함해서, 경영진에게 보고할 수 있는 수준으로 작성해주세요.';
+
+  try {
+    var resp = await fetch('http://localhost:8502/api/summarize', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: prompt}),
+    });
+    if (!resp.ok) throw new Error('프록시 서버 연결 실패');
+
+    body.innerHTML = '';
+    var textNode = document.createTextNode('');
+    var cursor = document.createElement('span');
+    cursor.className = 'ai-cursor';
+    body.appendChild(textNode);
+    body.appendChild(cursor);
+
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, {stream: true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        var payload = line.slice(6);
+        if (payload === '[DONE]') { cursor.remove(); break; }
+        try { textNode.textContent += JSON.parse(payload).text; } catch(e) {}
+      }
+    }
+    cursor.remove();
+  } catch(e) {
+    body.innerHTML = '<div class="error">' +
+      (e.message.indexOf('fetch') > -1 ? 'app.py(Streamlit)가 실행되지 않았습니다.<br>streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
+      '</div>';
+  } finally {
+    btn.disabled = false; btn.textContent = '트렌드 리포트 생성';
+  }
+}
+</script>
+</body>
+</html>
