@@ -119,7 +119,7 @@ def generate_cards(articles: list[dict], topic: str) -> list[dict]:
 
     prompt = f"""{context}
 
-위 내용을 바탕으로 홈앤쇼핑 임직원이 30초 안에 파악할 수 있는 카드뉴스 3장을 만들어주세요.
+위 내용을 바탕으로 홈앤쇼핑 임직원이 30초 안에 파악할 수 있는 카드뉴스 5장을 만들어주세요.
 주제: {topic}
 각 카드는 서로 다른 주제이며, 경영진도 볼 수 있도록 수치와 인사이트를 포함하세요.
 각 카드마다 내용의 근거가 된 뉴스 URL을 1~2개 sources에 포함하세요.
@@ -139,8 +139,7 @@ JSON 배열로만 응답하세요 (다른 텍스트 없이):
       {{"title": "기사 제목 (20자 내외로 축약)", "url": "https://원문URL"}}
     ]
   }},
-  {{...}},
-  {{...}}
+  {{...카드 5장...}}
 ]"""
 
     client = anthropic.Anthropic(api_key=api_key, http_client=httpx.Client(verify=False))
@@ -148,7 +147,7 @@ JSON 배열로만 응답하세요 (다른 텍스트 없이):
     for attempt in range(3):
         msg = client.messages.create(
             model='claude-haiku-4-5-20251001',
-            max_tokens=2000,
+            max_tokens=3500,
             messages=[{'role': 'user', 'content': prompt}],
         )
         text = msg.content[0].text.strip()
@@ -376,8 +375,8 @@ if __name__ == '__main__':
     payload = {
         'date':    datetime.now().strftime('%Y년 %m월 %d일'),
         'date_en': datetime.now().strftime('%B %d, %Y').upper(),
-        'left':    left_cards[:3],
-        'right':   right_cards[:3],
+        'left':    left_cards[:5],
+        'right':   right_cards[:5],
     }
     with open(out_json, 'w', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)

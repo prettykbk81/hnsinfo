@@ -64,6 +64,22 @@ body {
 .c-sources a::after { content:'↗'; font-size:9px; opacity:.7; }
 .c-sources a:hover { color:#a01f1f; opacity:.85; }
 
+/* ── 더보기 ── */
+.more-wrap {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:28px; width:100%; max-width:1860px;
+  margin-top:0;
+}
+.btn-more {
+  margin-top:20px; padding:12px 40px;
+  background:#f0e9d8; color:#cc2b2b;
+  border:2px solid #cc2b2b; border-radius:6px;
+  font-size:14px; font-weight:700; font-family:inherit;
+  cursor:pointer; letter-spacing:.5px;
+  transition:all .2s;
+}
+.btn-more:hover { background:#cc2b2b; color:#fff; }
+
 /* ── 로딩/에러 ── */
 .status { text-align:center; padding:60px 20px; font-size:15px; color:#888; grid-column:1/-1; }
 .spinner {
@@ -112,6 +128,11 @@ body {
 <div class="grid-wrap" id="wrap">
   <div class="status"><div class="spinner"></div>최신 뉴스 카드를 불러오는 중입니다…</div>
 </div>
+
+<div id="moreWrap" class="more-wrap" style="display:none;"></div>
+<button class="btn-more" id="btnMore" style="display:none;" onclick="showMore()">
+  + 기사 더보기
+</button>
 
 <div class="ctrl">
   <a class="btn-home" href="https://prettykbk81.github.io/hnsinfo/">
@@ -232,16 +253,20 @@ function makeCard(card, dateEn) {
     + '</div>';
 }
 
+var _newsData = null;
+
 function renderCards(data) {
+  _newsData = data;
   document.getElementById('pageDate').textContent =
     (data.date || '') + ' · 네이버 뉴스 × Claude AI';
 
-  var left  = (data.left  || data.cards || []).slice(0,3);
-  var right = (data.right || []).slice(0,3);
+  var left   = (data.left  || data.cards || []);
+  var right  = (data.right || []);
   var dateEn = data.date_en || '';
 
-  var leftHtml  = left.map(function(c)  { return makeCard(c, dateEn); }).join('');
-  var rightHtml = right.map(function(c) { return makeCard(c, dateEn); }).join('');
+  // 처음 3장씩만 표시
+  var leftHtml  = left.slice(0,3).map(function(c)  { return makeCard(c, dateEn); }).join('');
+  var rightHtml = right.slice(0,3).map(function(c) { return makeCard(c, dateEn); }).join('');
 
   var wrap = document.getElementById('wrap');
   if (right.length) {
@@ -251,6 +276,31 @@ function renderCards(data) {
   } else {
     wrap.innerHTML = '<div class="col" style="grid-column:1/-1">' + leftHtml + '</div>';
   }
+
+  // 추가 카드가 있으면 더보기 버튼 표시
+  var hasMore = (left.length > 3) || (right.length > 3);
+  document.getElementById('btnMore').style.display = hasMore ? 'block' : 'none';
+  document.getElementById('moreWrap').style.display = 'none';
+}
+
+function showMore() {
+  if (!_newsData) return;
+  var left   = (_newsData.left  || _newsData.cards || []).slice(3);
+  var right  = (_newsData.right || []).slice(3);
+  var dateEn = _newsData.date_en || '';
+
+  var leftHtml  = left.map(function(c)  { return makeCard(c, dateEn); }).join('');
+  var rightHtml = right.map(function(c) { return makeCard(c, dateEn); }).join('');
+
+  var moreWrap = document.getElementById('moreWrap');
+  moreWrap.innerHTML =
+    '<div class="col">' + leftHtml + '</div>'
+    + '<div class="col">' + rightHtml + '</div>';
+  moreWrap.style.display = 'grid';
+  moreWrap.style.marginTop = '28px';
+
+  document.getElementById('btnMore').style.display = 'none';
+  moreWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function loadNews() {
