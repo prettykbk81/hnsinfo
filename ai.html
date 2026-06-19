@@ -1018,9 +1018,6 @@ async function generate(mode) {
   try {
     let data;
     if (mode === 'ai') {
-      if (!cfg.apiKey) {
-        throw new Error('Claude API 키가 없습니다. 우상단 ⚙️ 설정에서 입력해주세요.\n(API 키 없이는 오른쪽 📝 템플릿 생성을 사용하세요)');
-      }
       data = await callClaude(product, category, catName, price, feat1, feat2);
     } else {
       data = generateTemplate(product, category, price, feat1, feat2);
@@ -1054,35 +1051,36 @@ async function callClaude(product, category, catName, price, feat1, feat2) {
   "opening": "TV홈쇼핑 방송 오프닝 멘트 (2-3문장, 친근하고 활기찬 어조, 시청자에게 직접 말하는 형식)"
 }`;
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(PROXY + '/api/summarize', {
     method: 'POST',
-    headers: {
-      'x-api-key': cfg.apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: cfg.model,
-      max_tokens: 1500,
-      messages: [{ role: 'user', content: prompt }]
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt }),
   });
 
-  if (res.status === 401) throw new Error('API 키가 올바르지 않습니다. 설정을 확인해주세요.');
-  if (res.status === 429) throw new Error('요청이 너무 많습니다. 잠시 후 다시 시도해주세요.');
-  if (!res.ok) {
-    const e = await res.json().catch(() => ({}));
-    throw new Error(e.error?.message || `API 오류 (${res.status})`);
+  if (!res.ok) throw new Error('프록시 서버 연결 실패. streamlit run app.py를 먼저 실행해주세요.');
+
+  let fullText = '';
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  while (true) {
+    const chunk = await reader.read();
+    if (chunk.done) break;
+    buffer += decoder.decode(chunk.value, {stream:true});
+    const lines = buffer.split('\n');
+    buffer = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      const p = line.slice(6);
+      if (p === '[DONE]') break;
+      try { fullText += JSON.parse(p).text; } catch(e) {}
+    }
   }
 
-  const data = await res.json();
-  const text = data.content[0].text.trim();
-
-  const match = text.match(/\{[\s\S]*\}/);
+  const match = fullText.match(/\{[\s\S]*\}/);
   if (!match) throw new Error('AI 응답 형식 오류. 다시 시도해주세요.');
 
-  return JSON.parse(match[0]);
+  return JSON.parse(match[0].replace(/,\s*([\]}])/g,'$1'));
 }
 
 /* ── TEMPLATE (오프라인 폴백) ── */
