@@ -303,18 +303,90 @@ function showMore() {
   moreWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function getTodayStr() {
+  var d = new Date();
+  return d.getFullYear() + '년 ' + ('0'+(d.getMonth()+1)).slice(-2) + '월 ' + ('0'+d.getDate()).slice(-2) + '일';
+}
+
 function loadNews() {
   var wrap = document.getElementById('wrap');
   wrap.innerHTML = '<div class="status"><div class="spinner"></div>최신 뉴스 카드를 불러오는 중입니다…</div>';
 
   fetch('daily_news.json?t=' + Date.now())
     .then(function(r) { if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(renderCards)
+    .then(function(data) {
+      var today = getTodayStr();
+      var dataDate = data.date || '';
+
+      if (dataDate === today) {
+        renderCards(data);
+      } else {
+        // 오늘 날짜가 아니면 자동 생성 시도
+        var alreadyTriggered = sessionStorage.getItem('news_triggered_' + today);
+        if (!alreadyTriggered) {
+          sessionStorage.setItem('news_triggered_' + today, '1');
+          wrap.innerHTML = '<div class="status"><div class="spinner"></div>'
+            + '오늘(' + today + ') 뉴스가 아직 없습니다.<br>'
+            + '<small style="color:#aaa">현재 데이터: ' + dataDate + '</small><br><br>'
+            + 'GitHub Actions로 자동 생성을 시도합니다...</div>';
+          triggerGenerate(data);
+        } else {
+          // 이미 시도했으면 기존 데이터 표시
+          renderCards(data);
+          document.getElementById('pageDate').textContent =
+            dataDate + ' (최신) · 네이버 뉴스 × Claude AI';
+        }
+      }
+    })
     .catch(function(err) {
       wrap.innerHTML = '<div class="status">뉴스를 불러오지 못했습니다.<br>'
         + '<small style="color:#aaa">'+err.message+'</small><br><br>'
         + '<a href="daily_news.html" style="color:#cc2b2b">daily_news.html 바로가기</a></div>';
     });
+}
+
+function triggerGenerate(fallbackData) {
+  var wrap = document.getElementById('wrap');
+  var token = localStorage.getItem('hnsinfo_github_token');
+  var cfg = window.PORTAL_CONFIG;
+  if (cfg && cfg.GITHUB_TOKEN && cfg.GITHUB_TOKEN.indexOf('여기에') === -1) {
+    token = cfg.GITHUB_TOKEN;
+  }
+
+  if (!token) {
+    // 토큰 없으면 기존 데이터 표시 + 안내
+    wrap.innerHTML = '<div class="status">'
+      + '오늘 뉴스가 아직 생성되지 않았습니다.<br><br>'
+      + '<button onclick="generateNews()" class="btn-generate" style="display:inline-flex;">⚡ 뉴스 새로 생성</button>'
+      + '<br><small style="color:#aaa;margin-top:8px;display:block;">또는 매일 오전 8시에 자동 생성됩니다</small></div>';
+    if (fallbackData) {
+      setTimeout(function() { renderCards(fallbackData); }, 3000);
+    }
+    return;
+  }
+
+  // GitHub Actions 트리거
+  fetch('https://api.github.com/repos/prettykbk81/hnsinfo/actions/workflows/daily_news.yml/dispatches', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ref: 'main'}),
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    wrap.innerHTML = '<div class="status"><div class="spinner"></div>'
+      + '오늘 뉴스를 생성 중입니다... (약 1~2분 소요)<br>'
+      + '<small style="color:#aaa">GitHub Actions가 실행 중입니다</small></div>';
+    // 90초 후 다시 로드
+    setTimeout(function() { loadNews(); }, 90000);
+  })
+  .catch(function() {
+    // 트리거 실패하면 기존 데이터 표시
+    if (fallbackData) renderCards(fallbackData);
+  });
 }
 
 loadNews();

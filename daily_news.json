@@ -1,284 +1,284 @@
 {
-  "date": "2026년 06월 18일",
-  "date_en": "JUNE 18, 2026",
+  "date": "2026년 06월 19일",
+  "date_en": "JUNE 19, 2026",
   "left": [
     {
       "category": "실적·성장",
-      "title": "여름·추석 휴가철<br>해외여행 수요 공략",
+      "title": "창립 15주년 기념<br>여행 특집 방송",
       "items": [
         {
-          "keyword": "타겟 시즌",
-          "desc": "여름 휴가철과 <b>추석 황금연휴</b>를 집중 공략"
+          "keyword": "편성 규모",
+          "desc": "<b>연쇄 편성</b>으로 프리미엄 해외여행 패키지 집중 방송 진행"
         },
         {
-          "keyword": "상품 구성",
-          "desc": "유럽·아시아·크루즈 등 <b>다층 포트폴리오</b> 구성"
+          "keyword": "프로모션",
+          "desc": "실시간 추첨을 통한 <b>현금 지원금·상품권</b> 제공"
         },
         {
-          "keyword": "수요 전략",
-          "desc": "프리미엄 여행 수요 <b>지속적 확대</b> 추세 포착"
+          "keyword": "타이밍",
+          "desc": "여름 휴가철과 <b>추석 황금연휴</b> 대비 전략적 편성"
         }
       ],
-      "footer": "계절별 수요 변화에 맞춘 유동적 상품 기획력 강화",
+      "footer": "기념 이벤트와 시즈널 마케팅을 결합한 고객 수요 선점 전략",
       "sources": [
         {
-          "title": "여름·추석 수요 공략 특집",
-          "url": "https://www.insightkorea.co.kr/news/articleView.html?idxno=248427"
+          "title": "KT&G·세라젬 등 유통가 소식",
+          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
         },
         {
-          "title": "주말 여행 특집 방송",
-          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=461347"
+          "title": "여름 히트 상품 집합한 여행 특집",
+          "url": "https://www.ziksir.com/news/articleView.html?idxno=137435"
         }
       ]
     },
     {
-      "category": "상품전략",
-      "title": "강화된 항공·숙박<br>조건 + 대규모 혜택",
+      "category": "상품·서비스",
+      "title": "NO 추가비용<br>프리미엘 여행 상품",
       "items": [
         {
-          "keyword": "차별화 요소",
-          "desc": "<b>항공·숙박 조건 강화</b>로 품질 경쟁력 확보"
+          "keyword": "호텔 등급",
+          "desc": "<b>월드 체인 4성급 호텔</b> 3연박 + 자유시간 1일 보장"
         },
         {
-          "keyword": "비용 혜택",
-          "desc": "단체 쇼핑·<b>유류세 차액</b> 부담 제거"
+          "keyword": "차별화",
+          "desc": "<b>NO 단체쇼핑·NO 유류세 차액</b> 정책으로 비용 부담 완화"
         },
         {
-          "keyword": "구성 전략",
-          "desc": "<b>자유일정</b> 추가로 편의성과 자유도 양립"
+          "keyword": "구성",
+          "desc": "패키지 편리함과 <b>자유여행의 여유</b> 결합 상품"
         }
       ],
-      "footer": "원가 경쟁에서 벗어나 고객 경험 중심의 가치 제공",
+      "footer": "고객 신뢰 확보와 상품 차별화로 경쟁사 대비 우위 확보",
       "sources": [
         {
-          "title": "동유럽·싱가포르 특집",
-          "url": "https://www.etnews.com/20260619000023"
+          "title": "동유럽·싱가포르 여행 상품 연속방송",
+          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113345"
         },
         {
-          "title": "동유럽 찍고 싱가포르까지",
-          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=461347"
+          "title": "유럽·아시아 여행 상품 단독 편성",
+          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304680"
         }
       ]
     },
     {
-      "category": "제휴전략",
-      "title": "롯데관광과 손잡은<br>프리미엄 크루즈",
+      "category": "상품·서비스",
+      "title": "동유럽·싱가포르<br>이중 지역 공략",
       "items": [
         {
-          "keyword": "파트너",
-          "desc": "<b>롯데관광</b>과 특별 기획한 협력 모델"
+          "keyword": "유럽 상품",
+          "desc": "<b>동유럽</b> 프리미엄 여행 패키지로 중가 시장 공략"
         },
         {
-          "keyword": "상품명",
-          "desc": "'<b>오키나와·대만 MSC</b> 벨리시마' 크루즈"
+          "keyword": "아시아 상품",
+          "desc": "<b>싱가포르</b> 여행 상품으로 근거리 수요층 확보"
         },
         {
-          "keyword": "타겟",
-          "desc": "겨울 휴양 수요·연말연시 <b>프리미엄층</b> 공략"
+          "keyword": "편성 전략",
+          "desc": "20일 밤 <b>연이어 편성</b>으로 다층 고객층 동시 커버"
         }
       ],
-      "footer": "대형 유통사 제휴로 신뢰도와 상품 다양성 동시 확보",
+      "footer": "지역 다변화로 고객 선호 세분화 대응 및 매출 기회 극대화",
       "sources": [
         {
-          "title": "오키나와·대만 크루즈 선봬",
-          "url": "https://www.ziksir.com/news/articleView.html?idxno=137391"
+          "title": "20일 밤 유럽·아시아 프리미엄 여행 특집",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124264"
         },
         {
-          "title": "프리미엄 크루즈 상품 선봬",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201632"
+          "title": "휴가준비 하세요 유럽·아시아 방송",
+          "url": "https://www.newsis.com/view/NISX20260619_0003676006"
         }
       ]
     },
     {
-      "category": "시장동향",
-      "title": "경기 불확실성 속<br>프리미엄 수요 확대",
+      "category": "채널·마케팅",
+      "title": "전채널 패션 재고<br>소진 캠페인",
       "items": [
         {
-          "keyword": "시장 현황",
-          "desc": "고물가·경기 불확실성에도 <b>프리미엄 수요 증가</b>"
+          "keyword": "채널 운영",
+          "desc": "TV홈쇼핑·모바일 앱·라이브커머스 <b>전 채널</b> 통합 운영"
         },
         {
-          "keyword": "소비 심화",
-          "desc": "기존 대비 <b>항공·숙박 등급 상향</b> 추세"
+          "keyword": "할인 규모",
+          "desc": "국내외 패션 브랜드 대상 <b>최대 51% 할인</b> 제공"
         },
         {
-          "keyword": "기회 포착",
-          "desc": "<b>고객 충성도</b> 높은 세그먼트로 수익성 강화"
+          "keyword": "목적",
+          "desc": "고객에게 <b>합리적 쇼핑 기회</b> 제공하며 재고 소진"
         }
       ],
-      "footer": "경기 역행하는 프리미엄 고객 확보가 수익 안정화 핵심",
+      "footer": "옴니채널 전략으로 고객 접점 확대 및 재고 효율화 동시 달성",
       "sources": [
         {
-          "title": "프리미엄 크루즈 상품 선봬",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201632"
-        },
-        {
-          "title": "오키나와·대만 크루즈 상품",
-          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=461179"
+          "title": "유통레이더 농심·남양유업 등",
+          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1378043"
         }
       ]
     },
     {
-      "category": "채널전략",
-      "title": "TV홈쇼핑 채널로<br>집중 고객 도달",
+      "category": "트렌드",
+      "title": "여름 휴가철 수요<br>집중 공략 중",
       "items": [
         {
-          "keyword": "방송 편성",
-          "desc": "<b>오후 9시 35분 등</b> 골든타임 집중 편성"
+          "keyword": "시장 기회",
+          "desc": "<b>여름 휴가+추석 황금연휴</b> 더블 시즌 도래"
         },
         {
-          "keyword": "빈도 전략",
-          "desc": "여러 노선을 <b>연이어 편성</b>으로 지속 노출"
+          "keyword": "상품 전략",
+          "desc": "여름 <b>히트 상품 총결산</b>으로 수요층 최대화"
         },
         {
-          "keyword": "효과",
-          "desc": "TV 시청 시간대 <b>대규모 고객 접근성</b> 확보"
+          "keyword": "타겟 확대",
+          "desc": "패키지 여행부터 패션까지 <b>다층 상품 구성</b>"
         }
       ],
-      "footer": "전통 채널의 높은 도달력을 활용한 예약 수요 극대화",
+      "footer": "연중 주요 소비 시즌 선제적 공략으로 분기 실적 극대화 추진",
       "sources": [
         {
-          "title": "동유럽·싱가포르 특집",
-          "url": "https://www.etnews.com/20260619000023"
+          "title": "여름 히트 상품 집합한 여행 특집 방송",
+          "url": "https://www.ziksir.com/news/articleView.html?idxno=137435"
         },
         {
-          "title": "여름·추석 수요 공략 특집",
-          "url": "https://www.insightkorea.co.kr/news/articleView.html?idxno=248427"
+          "title": "KT&G·세라젬 등 유통가 소식",
+          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
         }
       ]
     }
   ],
   "right": [
     {
-      "category": "트렌드",
-      "title": "역시즌 패션이 핫트렌드<br>여름에 겨울옷 구매 확산",
-      "items": [
-        {
-          "keyword": "역시즌 특가",
-          "desc": "GS샵, 프리미엄 겨울 아우터 <b>최대 51% 할인</b> 진행"
-        },
-        {
-          "keyword": "고물가 대응",
-          "desc": "현명한 소비 지향 고객층이 선제적 <b>사전 구매</b> 시작"
-        },
-        {
-          "keyword": "멀티채널 확대",
-          "desc": "TV홈쇼핑·모바일앱·라이브커머스 <b>전 채널 동시 진행</b>"
-        }
-      ],
-      "footer": "고물가 시대, 고객의 합리적 소비 심화로 역시즌 상품 수요 증가",
-      "sources": [
-        {
-          "title": "GS샵, 프리미엄 아우터 최대 51% 할인",
-          "url": "https://view.asiae.co.kr/article/2026061908330712065"
-        },
-        {
-          "title": "겨울 아우터 지금 사야 쌉니다",
-          "url": "https://www.hankyung.com/article/202606195683g"
-        }
-      ]
-    },
-    {
       "category": "경쟁사 동향",
-      "title": "프리미엄 헬스케어 시장<br>차별화 제품 출시 경쟁",
+      "title": "대형 유통사의<br>홈쇼핑 사업 강화",
       "items": [
         {
-          "keyword": "신제품 론칭",
-          "desc": "자이글, 국내 최초 <b>고주파 장운동기 셀375</b> 롯데 홈쇼핑 론칭"
+          "keyword": "현대百그룹",
+          "desc": "현대홈쇼핑 지분을 <b>5.01%</b>까지 확대, 주요 주주 진입"
         },
         {
-          "keyword": "프리미엄 진화",
-          "desc": "웨어러블·고주파 기술로 <b>뷰티·헬스 시장 확대</b>"
+          "keyword": "하림그룹",
+          "desc": "NS홈쇼핑의 홈플러스익스프레스 인수, <b>290개 점포</b> 확보"
         },
         {
-          "keyword": "채널 활용",
-          "desc": "홈쇼핑 채널의 프리미엄 신제품 <b>런칭 플랫폼 역할</b> 부각"
+          "keyword": "전략",
+          "desc": "백화점·면세점과 홈쇼핑의 <b>시너지</b> 추구 중"
         }
       ],
-      "footer": "경쟁사의 프리미엄 헬스케어 신기술 출시로 시장 경쟁 심화 중",
+      "footer": "대형 그룹의 홈쇼핑 사업 집중 투자로 경쟁 심화 예상",
       "sources": [
         {
-          "title": "자이글, 국내 최초 고주파 장운동기 셀375 론칭",
-          "url": "https://www.mt.co.kr/stock/2026/06/19/2026061908402827076"
+          "title": "현대百그룹, 백화점·면세점 쌍끌이 반등",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124268"
+        },
+        {
+          "title": "홈플러스익스프레스는 하림의 날개가 되어",
+          "url": "https://www.businesspost.co.kr/BP?command=article_view&num=440395"
         }
       ]
     },
     {
-      "category": "성장기회",
-      "title": "라이브커머스·라이브방송<br>홈쇼핑 차세대 먹거리",
+      "category": "트렌드",
+      "title": "멀티채널 전략<br>필수 과제로 부상",
       "items": [
         {
-          "keyword": "라이브 확대",
-          "desc": "리본카, 2020년 라이브쇼 시작 후 <b>일일 홈쇼핑 방송 운영</b>"
+          "keyword": "전채널 운영",
+          "desc": "TV홈쇼핑 + 모바일앱 + <b>라이브커머스</b> 동시 진행"
         },
         {
-          "keyword": "인프라 투자",
-          "desc": "청라·부산에 <b>전용 스튜디오 2곳</b> 구축하여 본격화"
-        },
-        {
-          "keyword": "1:1 서비스",
-          "desc": "쇼호스트·영상상담으로 <b>개인맞춤 판매</b> 모델 구축"
-        }
-      ],
-      "footer": "라이브커머스가 홈쇼핑 업계의 핵심 성장 드라이버로 부상 중",
-      "sources": [
-        {
-          "title": "CAR 브리프 - 리본카 라이브방송 사례",
-          "url": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202606161621176950612"
-        }
-      ]
-    },
-    {
-      "category": "정책·규제",
-      "title": "소상공인 판로 개척<br>대형 플랫폼과의 연결고리",
-      "items": [
-        {
-          "keyword": "MD 상담회",
-          "desc": "충북도, 현대홈쇼핑·11번가 등 <b>5개 유통사 MD 참여</b> 행사 개최"
-        },
-        {
-          "keyword": "1:1 맞춤 상담",
-          "desc": "소상공인당 <b>평균 3개 이상 플랫폼</b> 담당자 상담 진행"
-        },
-        {
-          "keyword": "입점 확대",
-          "desc": "단순 홍보 넘어 <b>실질적 입점 지원</b>으로 규모화"
-        }
-      ],
-      "footer": "정부 차원의 소상공인 유통 지원으로 홈쇼핑 입점 활성화 예상",
-      "sources": [
-        {
-          "title": "충북도, 소상공인 유통 플랫폼 MD 상담회 개최",
-          "url": "http://www.enewstoday.co.kr/news/articleView.html?idxno=2440406"
-        }
-      ]
-    },
-    {
-      "category": "채널전략",
-      "title": "멀티채널 통합 운영<br>TV·앱·라이브 동시 진행",
-      "items": [
-        {
-          "keyword": "채널 통합",
-          "desc": "GS샵, TV홈쇼핑·모바일앱·라이브커머스 <b>3채널 동시 운영</b>"
-        },
-        {
-          "keyword": "패션 브랜드",
-          "desc": "자체 브랜드 '스테파넬·쏘울' 등으로 <b>채널별 차별화</b> 강화"
+          "keyword": "GS샵 사례",
+          "desc": "프리미었 아우터 수요 대응 위해 <b>전채널</b> 활용 중"
         },
         {
           "keyword": "고객 접점",
-          "desc": "세대별·선호도별 <b>맞춤 채널 전략</b>으로 고객 확대"
+          "desc": "라이브커머스로 <b>실시간 상호작용</b> 강화 추세"
         }
       ],
-      "footer": "채널 간 유기적 협력으로 고객 접점 확대 및 매출 극대화 추진 중",
+      "footer": "단일 채널에서 멀티채널 통합운영으로의 전환이 경쟁력 결정",
       "sources": [
         {
-          "title": "GS샵, 프리미엄 아우터 최대 51% 할인",
-          "url": "https://view.asiae.co.kr/article/2026061908330712065"
+          "title": "오늘의 패션&뷰티 - GS샵 전략",
+          "url": "http://www.financialreview.co.kr/news/articleView.html?idxno=43006"
         },
         {
-          "title": "GS샵, 역시즌 특가 행사 전개",
-          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113304"
+          "title": "민주 유통가 - CJ올리브영·GS리테일",
+          "url": "http://www.iminju.net/news/articleView.html?idxno=165553"
+        }
+      ]
+    },
+    {
+      "category": "상품전략",
+      "title": "유통채널별<br>맞춤 상품 기획",
+      "items": [
+        {
+          "keyword": "세분화 기획",
+          "desc": "<b>500g 소포장</b> 선물세트 공동구매 등 다양한 구성"
+        },
+        {
+          "keyword": "프리미엄화",
+          "desc": "제주 흑돼지 양념육 '프리미엄 미트' 출시로 <b>고급화</b>"
+        },
+        {
+          "keyword": "유연성",
+          "desc": "마트·온라인몰·홈쇼핑 각 채널 <b>특화</b> 대응"
+        }
+      ],
+      "footer": "획일화에서 맞춤화로, 채널별 소비자 특성 파악이 핵심",
+      "sources": [
+        {
+          "title": "미트아일랜드, AFPRO 2026서 제주 흑돼지",
+          "url": "https://kr.aving.net/news/articleView.html?idxno=1811818"
+        }
+      ]
+    },
+    {
+      "category": "성장·실적",
+      "title": "겨울 의류 수요<br>고물가 극복 포인트",
+      "items": [
+        {
+          "keyword": "타겟층",
+          "desc": "<b>합리적 가격</b> 겨울 의류 구매 수요 증가 중"
+        },
+        {
+          "keyword": "상품 믹스",
+          "desc": "자체 패션브랜드(스테파넬, 쏘울) <b>중점 운영</b>"
+        },
+        {
+          "keyword": "시즌 전략",
+          "desc": "시즌별 수요 예측 기반 <b>기획상품</b> 구성"
+        }
+      ],
+      "footer": "고물가 시대, 가성비 상품으로 구매력 있는 고객층 확보 중",
+      "sources": [
+        {
+          "title": "민주 유통가 - CJ올리브영·GS리테일",
+          "url": "http://www.iminju.net/news/articleView.html?idxno=165553"
+        }
+      ]
+    },
+    {
+      "category": "인플루언서",
+      "title": "셀러브리티 라이브쇼핑<br>여전히 핵심 채널",
+      "items": [
+        {
+          "keyword": "임성근",
+          "desc": "'흑백요리사2' 출연 셰프, <b>홈쇼핑 라이브</b> 진행"
+        },
+        {
+          "keyword": "신뢰도",
+          "desc": "한식 경력 <b>40년+</b> 국가공인 조리기능장 활용"
+        },
+        {
+          "keyword": "파급력",
+          "desc": "개인채널 병행으로 <b>다채널</b> 영향력 확대"
+        }
+      ],
+      "footer": "검증된 셀러브리티의 라이브커머스 출연으로 신뢰도·판매율 제고",
+      "sources": [
+        {
+          "title": "임성근, 파주 식당 개업 또 연기",
+          "url": "https://www.sportschosun.com/entertainment/2026-06-19/202606190100135090008817"
+        },
+        {
+          "title": "임성근, 개업 카운트다운 멈췄다",
+          "url": "https://www.tvreport.co.kr/entertainment/article/1055199/"
         }
       ]
     }
