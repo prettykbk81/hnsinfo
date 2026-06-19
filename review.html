@@ -109,7 +109,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
       </div>
     </div>
     <div style="text-align:center;">
-      <button class="btn-analyze" id="btnAnalyze" onclick="analyzeReviews()">AI 리뷰 분석 시작</button>
+      <button class="btn-analyze" id="btnAnalyze" onclick="analyzeReviews()" style="display:none;">AI 리뷰 다시 분석</button>
     </div>
   </div>
 
@@ -210,6 +210,9 @@ async function selectProduct(product) {
     document.getElementById('blogCount').textContent = '(0건)';
     document.getElementById('blogList').innerHTML = '<div style="padding:16px;color:#888;text-align:center;">블로그 후기를 찾지 못했습니다.</div>';
   }
+
+  // 자동으로 AI 분석 시작
+  analyzeReviews();
 }
 
 async function analyzeReviews() {
@@ -282,7 +285,9 @@ async function analyzeReviews() {
       (e.message.indexOf('fetch') > -1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
       '</div>';
   } finally {
-    btn.disabled = false; btn.textContent = 'AI 리뷰 분석 시작';
+    btn.disabled = false;
+    btn.textContent = 'AI 리뷰 다시 분석';
+    btn.style.display = 'inline-block';
   }
 }
 </script>
