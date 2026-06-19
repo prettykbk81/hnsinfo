@@ -98,17 +98,49 @@ def _fetch_review_score(goods_code: str) -> dict:
         score_m = re.search(r'class="fontType1">(\d+)</em>', r.text)
         count_m = re.search(r'상품평\s*(\d[\d,]*)\s*건', r.text)
         level_m = re.search(r'class="fontType2\s*">([^<]+)<', r.text)
+        ratings = re.findall(r'class="flag\s+(?:red|blue|green|gray)">([^<]+)<', r.text)
+        dist = {}
+        for rt in ratings:
+            rt = rt.strip()
+            dist[rt] = dist.get(rt, 0) + 1
         return {
             "score": score_m.group(1) if score_m else "",
             "count": count_m.group(1) if count_m else "0",
             "level": level_m.group(1).strip() if level_m else "",
+            "distribution": dist,
         }
     except Exception:
         return {"score": "", "count": "0", "level": ""}
 
 
+def _fetch_blog_body(url: str) -> str:
+    """블로그 본문 텍스트 추출 (최대 800자)"""
+    try:
+        r = req_lib.get(url, verify=False, timeout=8, headers=_HEADERS_UA)
+        t = r.text
+        iframe_m = re.search(r'src="(https?://blog\.naver\.com/PostView[^"]+)"', t)
+        if iframe_m:
+            r2 = req_lib.get(iframe_m.group(1), verify=False, timeout=8, headers=_HEADERS_UA)
+            t = r2.text
+        for cls in ['se-main-container', 'post-view', 'post_ct', 'se_textView']:
+            idx = t.find(cls)
+            if idx > 0:
+                chunk = t[idx:idx+8000]
+                text = re.sub(r'<[^>]+>', ' ', chunk)
+                text = re.sub(r'\s+', ' ', text).strip()
+                if len(text) > 50:
+                    return text[:800]
+        text = re.sub(r'<script[\s\S]*?</script>', '', t)
+        text = re.sub(r'<style[\s\S]*?</style>', '', text)
+        text = re.sub(r'<[^>]+>', ' ', text)
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text[:800] if len(text) > 50 else ""
+    except Exception:
+        return ""
+
+
 def _search_naver_blog(keyword: str, display: int = 10) -> list[dict]:
-    """네이버 블로그에서 상품 후기 검색"""
+    """네이버 블로그에서 상품 후기 검색 + 본문 추출"""
     if not NAVER_ID or not NAVER_SECRET:
         return []
     try:
@@ -126,10 +158,12 @@ def _search_naver_blog(keyword: str, display: int = 10) -> list[dict]:
         for item in r.json().get("items", []):
             title = re.sub(r"<[^>]+>", "", item.get("title", "")).strip()
             desc = re.sub(r"<[^>]+>", "", item.get("description", "")).strip()
+            link = item.get("link", "")
+            body = _fetch_blog_body(link)
             results.append({
                 "title": title,
-                "desc": desc,
-                "link": item.get("link", ""),
+                "desc": body if body else desc,
+                "link": link,
                 "date": item.get("postdate", ""),
                 "blogger": item.get("bloggername", ""),
             })

@@ -48,17 +48,45 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .blog-item .b-meta{font-size:10px;color:#aaa;margin-top:3px;}
 /* 분석 결과 */
 .result{display:none;}
-.result-body{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;}
-.result-body b{color:#e8192c;}
 .ai-loading{text-align:center;padding:30px;color:#888;}
 .ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#e8192c;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.ai-cursor{display:inline-block;width:2px;height:14px;background:#e8192c;animation:blink .6s infinite;}
-@keyframes blink{50%{opacity:0;}}
 .error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
 .btn-analyze{background:#e8192c;color:#fff;border:none;padding:11px 32px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:14px;}
 .btn-analyze:hover{background:#c8001f;}
 .btn-analyze:disabled{background:#999;cursor:not-allowed;}
+
+/* 종합 평가 헤더 */
+.review-header{background:linear-gradient(135deg,#e8192c,#c8001f);color:#fff;padding:24px 28px;border-radius:10px;margin-bottom:14px;display:flex;align-items:center;gap:20px;}
+.rh-score{font-size:48px;font-weight:900;line-height:1;}
+.rh-score small{font-size:18px;font-weight:400;opacity:.7;}
+.rh-info{flex:1;}
+.rh-info h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+.rh-info p{font-size:12px;opacity:.8;}
+.rh-stars{font-size:20px;letter-spacing:2px;}
+
+/* 분석 카드 그리드 */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.analysis-card{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-top:3px solid #ddd;}
+.analysis-card.good{border-top-color:#16a34a;} .analysis-card.bad{border-top-color:#dc2626;}
+.analysis-card.delivery{border-top-color:#2563eb;} .analysis-card.value{border-top-color:#d97706;}
+.analysis-card.tip{border-top-color:#7c3aed;} .analysis-card.diff{border-top-color:#0d9488;}
+.ac-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.ac-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.ac-icon.good{background:#f0fdf4;} .ac-icon.bad{background:#fef2f2;}
+.ac-icon.delivery{background:#eff6ff;} .ac-icon.value{background:#fffbeb;}
+.ac-icon.tip{background:#f5f3ff;} .ac-icon.diff{background:#f0fdfa;}
+.ac-title{font-size:14px;font-weight:700;color:#333;}
+.ac-list{list-style:none;padding:0;margin:0;}
+.ac-list li{padding:6px 0 6px 14px;border-left:3px solid #eee;margin-bottom:4px;font-size:12.5px;line-height:1.6;color:#555;}
+.analysis-card.good .ac-list li{border-left-color:#bbf7d0;}
+.analysis-card.bad .ac-list li{border-left-color:#fecaca;}
+.analysis-card.delivery .ac-list li{border-left-color:#bfdbfe;}
+.analysis-card.value .ac-list li{border-left-color:#fef08a;}
+.analysis-card.tip .ac-list li{border-left-color:#ddd6fe;}
+.analysis-card.diff .ac-list li{border-left-color:#99f6e4;}
+.result-fallback{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0;}
+@media(max-width:600px){.analysis-grid{grid-template-columns:1fr;}.review-header{flex-direction:column;text-align:center;}}
 .step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#e8192c;color:#fff;border-radius:50%;font-size:11px;font-weight:700;}
 @media(max-width:600px){.product-grid{grid-template-columns:repeat(2,1fr);}.sp-row{flex-direction:column;}}
 </style>
@@ -114,9 +142,8 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
   </div>
 
   <!-- STEP 3: 분석 결과 -->
-  <div class="section result" id="step3">
-    <h2><span class="step-badge">3</span> AI 분석 결과</h2>
-    <div class="result-body" id="resultBody"></div>
+  <div class="result" id="step3">
+    <div id="resultBody"></div>
   </div>
 </div>
 
@@ -188,10 +215,29 @@ async function selectProduct(product) {
   var blogs = results[1];
   _blogReviews = blogs;
 
-  // 만족도 표시
+  _scoreData = score;
   if (score.score) {
     document.getElementById('spScore').innerHTML = '&#11088; 만족도 ' + score.score + '점 (' + score.level + ')';
-    document.getElementById('spReviews').textContent = '상품평 ' + score.count + '건';
+    var distHtml = '상품평 ' + score.count + '건';
+    if (score.distribution) {
+      var labels = ['매우만족','만족','보통','불만족','매우불만족'];
+      var colors = ['#16a34a','#22c55e','#eab308','#f97316','#dc2626'];
+      var total = 0; labels.forEach(function(l){total += (score.distribution[l]||0);});
+      if (total > 0) {
+        distHtml += '<div style="display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;margin-top:6px;">';
+        labels.forEach(function(l,i){
+          var v = score.distribution[l]||0;
+          if(v>0) distHtml += '<div style="width:'+((v/total)*100)+'%;background:'+colors[i]+';"></div>';
+        });
+        distHtml += '</div><div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;">';
+        labels.forEach(function(l,i){
+          var v = score.distribution[l]||0;
+          if(v>0) distHtml += '<span style="font-size:10px;color:'+colors[i]+';font-weight:600;">'+l+' '+v+'</span>';
+        });
+        distHtml += '</div>';
+      }
+    }
+    document.getElementById('spReviews').innerHTML = distHtml;
   } else {
     document.getElementById('spScore').textContent = '만족도 정보 없음';
   }
@@ -215,13 +261,16 @@ async function selectProduct(product) {
   analyzeReviews();
 }
 
+var _scoreData = {};
+var _retried = false;
+
 async function analyzeReviews() {
   if (!_selectedProduct) return;
   var section = document.getElementById('step3');
   var body = document.getElementById('resultBody');
   var btn = document.getElementById('btnAnalyze');
   section.style.display = 'block';
-  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 리뷰를 분석 중입니다...</div>';
+  body.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>Claude가 블로그 후기를 분석 중입니다...<br><span style="font-size:11px;color:#aaa;">본문을 읽고 장점/단점/배송/가성비를 정리합니다</span></div></div>';
   btn.disabled = true; btn.textContent = '분석 중...';
   section.scrollIntoView({behavior:'smooth', block:'start'});
 
@@ -229,67 +278,126 @@ async function analyzeReviews() {
     return '[후기' + (i+1) + '] ' + b.title + '\n' + b.desc;
   }).join('\n\n');
 
-  var scoreInfo = document.getElementById('spScore').textContent;
-  var countInfo = document.getElementById('spReviews').textContent;
-
   var prompt = '당신은 홈쇼핑 상품 리뷰 분석 전문가입니다.\n\n';
-  prompt += '상품명: ' + _selectedProduct.name + '\n';
-  prompt += '판매처: 홈앤쇼핑\n';
-  if (scoreInfo) prompt += '홈앤쇼핑 ' + scoreInfo + ' / ' + countInfo + '\n';
-  prompt += '\n아래는 네이버 블로그에서 수집한 고객 후기입니다:\n\n';
-  prompt += reviewText || '(후기 데이터 없음 - 일반적인 분석을 해주세요)';
-  prompt += '\n\n위 후기를 분석하여 다음 항목별로 정리해주세요:\n\n';
-  prompt += '1. 종합 평가 (한 줄 요약 + 5점 만점 추천 점수)\n';
-  prompt += '2. 좋은 점 (고객들이 만족한 포인트 3~5개)\n';
-  prompt += '3. 아쉬운 점 (고객들이 불만족한 포인트)\n';
-  prompt += '4. 배송/포장 평가\n';
-  prompt += '5. 가성비 평가\n';
-  prompt += '6. MD 개선 제안 (상품 담당자에게 제안하는 액션 아이템 3가지)\n';
-  prompt += '7. 경쟁 상품 대비 차별점\n\n';
-  prompt += '각 항목은 구체적 후기 내용을 인용하며 작성해주세요.';
+  prompt += '상품명: ' + _selectedProduct.name + '\n판매처: 홈앤쇼핑\n';
+  if (_scoreData.score) prompt += '홈앤쇼핑 만족도: ' + _scoreData.score + '점 (' + _scoreData.level + '), 상품평 ' + _scoreData.count + '건\n';
+  prompt += '\n아래는 네이버 블로그에서 수집한 고객 후기 본문입니다:\n\n';
+  prompt += reviewText || '(후기 없음 - 일반적 분석을 해주세요)';
+  prompt += '\n\n위 후기를 분석하여 반드시 아래 JSON 형식으로만 응답하세요 (다른 텍스트 없이):\n';
+  prompt += '{\n';
+  prompt += '  "score": 4.2,\n';
+  prompt += '  "summary": "종합 평가 한 줄 (30자 내외)",\n';
+  prompt += '  "good": ["장점1 (구체적 후기 인용)", "장점2", "장점3"],\n';
+  prompt += '  "bad": ["단점1", "단점2"],\n';
+  prompt += '  "delivery": ["배송/포장 관련 의견1", "의견2"],\n';
+  prompt += '  "value": ["가성비 관련 의견1", "의견2"],\n';
+  prompt += '  "tip": ["MD 개선 제안1", "제안2", "제안3"]\n';
+  prompt += '}\n';
+  prompt += '규칙: score는 5점만점 소수점 1자리, good은 3~5개, bad/delivery/value는 2~3개, tip은 3개';
 
   try {
     var resp = await fetch(PROXY + '/api/summarize', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({prompt: prompt}),
     });
     if (!resp.ok) throw new Error('프록시 서버 연결 실패');
 
-    body.innerHTML = '';
-    var textNode = document.createTextNode('');
-    var cursor = document.createElement('span');
-    cursor.className = 'ai-cursor';
-    body.appendChild(textNode);
-    body.appendChild(cursor);
-
+    var fullText = '';
     var reader = resp.body.getReader();
     var decoder = new TextDecoder();
     var buffer = '';
     while (true) {
       var chunk = await reader.read();
       if (chunk.done) break;
-      buffer += decoder.decode(chunk.value, {stream: true});
+      buffer += decoder.decode(chunk.value, {stream:true});
       var lines = buffer.split('\n');
       buffer = lines.pop();
       for (var line of lines) {
         if (!line.startsWith('data: ')) continue;
-        var payload = line.slice(6);
-        if (payload === '[DONE]') { cursor.remove(); break; }
-        try { textNode.textContent += JSON.parse(payload).text; } catch(e) {}
+        var p = line.slice(6);
+        if (p === '[DONE]') break;
+        try { fullText += JSON.parse(p).text; } catch(e) {}
       }
     }
-    cursor.remove();
+
+    var analysis = tryParseReview(fullText);
+    if (analysis) {
+      renderAnalysis(analysis);
+    } else if (!_retried) {
+      _retried = true;
+      setTimeout(analyzeReviews, 300);
+      return;
+    } else {
+      body.innerHTML = '<div class="section"><div class="result-fallback">' + fullText.replace(/</g,'&lt;') + '</div></div>';
+    }
   } catch(e) {
-    body.innerHTML = '<div class="error">' +
-      (e.message.indexOf('fetch') > -1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
-      '</div>';
+    body.innerHTML = '<div class="section"><div class="error">' +
+      (e.message.indexOf('fetch')>-1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) + '</div></div>';
   } finally {
     btn.disabled = false;
     btn.textContent = 'AI 리뷰 다시 분석';
     btn.style.display = 'inline-block';
+    _retried = false;
   }
 }
+
+function tryParseReview(text) {
+  var m = text.match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  var raw = m[0].replace(/,\s*([\]}])/g,'$1');
+  try { return JSON.parse(raw); } catch(e) {}
+  var fixed = raw.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){return ': "'+a+' '+b+'"';});
+  try { return JSON.parse(fixed); } catch(e) {}
+  return null;
+}
+
+function renderAnalysis(a) {
+  var body = document.getElementById('resultBody');
+  var stars = '';
+  var full = Math.floor(a.score||0);
+  var half = (a.score||0) - full >= 0.5;
+  for(var i=0;i<5;i++) stars += i<full?'★':(i===full&&half?'★':'☆');
+
+  var html = '';
+  // 종합 헤더
+  html += '<div class="review-header">';
+  html += '<div class="rh-score">'+(a.score||'?')+'<small>/5</small></div>';
+  html += '<div class="rh-info"><div class="rh-stars">'+stars+'</div>';
+  html += '<h3>'+(a.summary||'')+'</h3>';
+  html += '<p>블로그 후기 '+_blogReviews.length+'건 분석 기반</p></div></div>';
+
+  // 카드 그리드
+  html += '<div class="analysis-grid">';
+  html += makeCard('good','👍','장점','#16a34a', a.good);
+  html += makeCard('bad','👎','단점','#dc2626', a.bad);
+  html += makeCard('delivery','📦','배송/포장','#2563eb', a.delivery);
+  html += makeCard('value','💰','가성비','#d97706', a.value);
+  html += '</div>';
+
+  // MD 제안 (풀 폭)
+  html += '<div class="section" style="margin-top:0;">';
+  html += '<h2 style="color:#7c3aed;"><span style="margin-right:6px;">💡</span>MD 개선 제안</h2>';
+  html += '<ul style="list-style:none;padding:0;">';
+  (a.tip||[]).forEach(function(t,i){
+    html += '<li style="padding:10px 14px;margin-bottom:6px;background:#f5f3ff;border-radius:6px;border-left:4px solid #7c3aed;font-size:13px;color:#444;">';
+    html += '<strong style="color:#7c3aed;">'+(i+1)+'.</strong> '+esc(t)+'</li>';
+  });
+  html += '</ul></div>';
+
+  body.innerHTML = html;
+}
+
+function makeCard(cls, icon, title, color, items) {
+  var h = '<div class="analysis-card '+cls+'">';
+  h += '<div class="ac-header"><div class="ac-icon '+cls+'">'+icon+'</div>';
+  h += '<div class="ac-title">'+title+'</div></div>';
+  h += '<ul class="ac-list">';
+  (items||['분석 데이터 없음']).forEach(function(it){ h += '<li>'+esc(it)+'</li>'; });
+  h += '</ul></div>';
+  return h;
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
 </html>
