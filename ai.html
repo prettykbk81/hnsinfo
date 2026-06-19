@@ -452,6 +452,12 @@ body {
     </div>
     <div class="card-body">
 
+      <div style="margin-bottom:14px;">
+        <button id="btnSchedule" onclick="loadSchedule()" style="background:#0369a1;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">📺 오늘 방송 편성표</button>
+        <span style="font-size:11px;color:#999;margin-left:8px;">편성표에서 상품을 클릭하면 자동으로 검색됩니다</span>
+      </div>
+      <div id="scheduleArea" style="display:none;margin-bottom:14px;max-height:320px;overflow-y:auto;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;"></div>
+
       <div class="form-grid">
         <div class="fgroup">
           <label>상품명 *</label>
@@ -807,6 +813,46 @@ async function handleRequest(request) {
 </div>
 
 <script>
+var PROXY = 'http://localhost:8502';
+
+/* ── 편성표 ── */
+async function loadSchedule() {
+  var area = document.getElementById('scheduleArea');
+  if (area.style.display === 'block') { area.style.display = 'none'; return; }
+  area.style.display = 'block';
+  area.innerHTML = '<div style="text-align:center;padding:20px;color:#888;"><div style="width:24px;height:24px;border:3px solid #ddd;border-top-color:#0369a1;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;"></div>편성표 로딩 중...</div>';
+  try {
+    var r = await fetch(PROXY + '/api/schedule');
+    if (!r.ok) throw new Error('연결 실패');
+    var items = await r.json();
+    if (!items.length) { area.innerHTML = '<div style="padding:16px;color:#888;text-align:center;">편성표 데이터가 없습니다.</div>'; return; }
+    var now = new Date();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    var html = '';
+    items.forEach(function(it) {
+      var sp = it.time_start.split(':');
+      var startMin = parseInt(sp[0]) * 60 + parseInt(sp[1]);
+      var ep = it.time_end.split(':');
+      var endMin = parseInt(ep[0]) * 60 + parseInt(ep[1]);
+      var isLive = nowMin >= startMin && nowMin < endMin;
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;" onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'transparent\'" onclick="pickSchedule(\'' + (it.name||'').replace(/'/g,"\\'") + '\')">';
+      html += '<div style="font-size:12px;font-weight:700;color:' + (isLive ? '#e8192c' : '#0369a1') + ';min-width:90px;">' + (isLive ? '● LIVE ' : '') + it.time_start + ' ~ ' + it.time_end + '</div>';
+      if (it.image) html += '<img src="' + it.image + '" style="width:50px;height:50px;border-radius:6px;object-fit:cover;" onerror="this.style.display=\'none\'">';
+      html += '<div style="font-size:12.5px;font-weight:600;color:#333;flex:1;">' + (it.name||'') + '</div>';
+      html += '<div style="font-size:10px;color:#e8192c;font-weight:700;">선택 →</div>';
+      html += '</div>';
+    });
+    area.innerHTML = html;
+  } catch(e) {
+    area.innerHTML = '<div style="padding:16px;color:#c0392b;text-align:center;">편성표를 불러올 수 없습니다.<br><small>streamlit run app.py를 먼저 실행해주세요.</small></div>';
+  }
+}
+
+function pickSchedule(name) {
+  document.getElementById('f-product').value = name;
+  document.getElementById('scheduleArea').style.display = 'none';
+}
+
 /* ── CONFIG ── */
 const cfg = {
   get apiKey()  { return localStorage.getItem('hns_claude_key') || ''; },
