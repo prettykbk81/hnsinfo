@@ -284,6 +284,33 @@
     }
     .tetris-btn:hover { background: #5b21b6; transform: scale(1.08); }
 
+    /* ── 추천게임 버튼 ── */
+    .space-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 224px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0369a1, #0ea5e9);
+      color: #fff;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(3,105,161,0.5);
+      transition: background 0.15s, transform 0.12s;
+      z-index: 100;
+      line-height: 1.3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .space-btn:hover { background: linear-gradient(135deg, #024e7c, #0369a1); transform: scale(1.08); }
+
     /* ── 너구리 버튼 ── */
     .nookrigi-btn {
       position: fixed;
@@ -811,6 +838,14 @@
     </p>
   </footer>
 
+  <!-- 추천게임 버튼 -->
+  <button class="space-btn" onclick="openSpaceGame()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L8 10H2l5 4-2 8 7-5 7 5-2-8 5-4h-6z" fill="white" fill-opacity="0.9"/>
+    </svg>
+    <span>GAME<br/>추천</span>
+  </button>
+
   <!-- 너구리 버튼 -->
   <button class="nookrigi-btn" onclick="openNookrigi()">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -907,6 +942,14 @@
       var left=Math.round((screen.width-w)/2);
       var top=Math.round((screen.height-h)/2);
       window.open('nookrigi.html','nookrigi_game',
+        'width='+w+',height='+h+',left='+left+',top='+top+
+        ',resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no');
+    }
+    function openSpaceGame() {
+      var w = 1024, h = 768;
+      var left = Math.round((screen.width - w) / 2);
+      var top = Math.round((screen.height - h) / 2);
+      window.open('spacegame.html', 'space_game',
         'width='+w+',height='+h+',left='+left+',top='+top+
         ',resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no');
     }
