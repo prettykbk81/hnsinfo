@@ -67,6 +67,16 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .tip-section h3{font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;}
 .tip-item{padding:8px 12px;margin-bottom:5px;background:#f5f3ff;border-radius:6px;border-left:4px solid #7c3aed;font-size:12px;color:#444;}
 .result-fallback{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#333;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0;}
+/* 편성표 */
+.sch-list{max-height:320px;overflow-y:auto;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;}
+.sch-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;}
+.sch-item:hover{background:#fff5f5;}
+.sch-item:last-child{border-bottom:none;}
+.sch-time{font-size:12px;font-weight:700;color:#0369a1;min-width:90px;flex-shrink:0;}
+.sch-time .live{color:#e8192c;}
+.sch-img{width:50px;height:50px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#eee;}
+.sch-name{font-size:12.5px;font-weight:600;color:#333;flex:1;}
+.sch-pick{font-size:10px;color:#e8192c;font-weight:700;white-space:nowrap;}
 @media(max-width:600px){.analysis-grid{grid-template-columns:1fr;}.product-row{flex-wrap:wrap;}}
 </style>
 </head>
@@ -83,6 +93,13 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 <div class="wrap">
   <div class="section">
     <h2><span class="step-badge">1</span> 상품 검색</h2>
+    <div style="margin-bottom:10px;">
+      <button id="btnSchedule" onclick="loadSchedule()" style="background:#0369a1;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">
+        📺 오늘 방송 편성표
+      </button>
+      <span style="font-size:11px;color:#999;margin-left:8px;">편성표에서 상품을 클릭하면 자동으로 검색됩니다</span>
+    </div>
+    <div id="scheduleArea" style="display:none;margin-bottom:14px;"></div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="검색어를 입력하세요 (예: 홍삼, 선풍기, 한라봉)" onkeypress="if(event.keyCode===13)searchAll()">
       <button id="btnSearch" onclick="searchAll()">검색 &amp; 분석</button>
@@ -95,6 +112,53 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 
 <script>
 var PROXY = 'http://localhost:8502';
+
+async function loadSchedule() {
+  var area = document.getElementById('scheduleArea');
+  var btn = document.getElementById('btnSchedule');
+  if (area.style.display === 'block') { area.style.display = 'none'; return; }
+  area.style.display = 'block';
+  area.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>편성표를 불러오는 중...</div>';
+  btn.disabled = true;
+  try {
+    var r = await fetch(PROXY + '/api/schedule');
+    if (!r.ok) throw new Error('연결 실패');
+    var items = await r.json();
+    if (!items.length) { area.innerHTML = '<div style="padding:16px;color:#888;text-align:center;">편성표 데이터가 없습니다.</div>'; return; }
+
+    var now = new Date();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+
+    var html = '<div class="sch-list">';
+    items.forEach(function(it) {
+      var tParts = it.time_start.split(':');
+      var startMin = parseInt(tParts[0]) * 60 + parseInt(tParts[1]);
+      var eParts = it.time_end.split(':');
+      var endMin = parseInt(eParts[0]) * 60 + parseInt(eParts[1]);
+      var isLive = nowMin >= startMin && nowMin < endMin;
+
+      html += '<div class="sch-item" onclick="pickScheduleItem(\'' + esc(it.name).replace(/'/g,"\\'") + '\')">';
+      html += '<div class="sch-time">' + (isLive ? '<span class="live">● LIVE </span>' : '') + it.time_start + ' ~ ' + it.time_end + '</div>';
+      if (it.image) html += '<img class="sch-img" src="' + it.image + '" onerror="this.style.display=\'none\'">';
+      html += '<div class="sch-name">' + esc(it.name) + '</div>';
+      html += '<div class="sch-pick">선택 →</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    area.innerHTML = html;
+  } catch(e) {
+    area.innerHTML = '<div class="error">편성표를 불러올 수 없습니다. streamlit run app.py를 먼저 실행해주세요.</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function pickScheduleItem(name) {
+  document.getElementById('searchInput').value = name;
+  document.getElementById('scheduleArea').style.display = 'none';
+  searchAll();
+}
+
 var DIST_COLORS = {'매우만족':'#16a34a','만족':'#22c55e','보통':'#eab308','불만족':'#f97316','매우불만족':'#dc2626'};
 
 async function searchAll() {

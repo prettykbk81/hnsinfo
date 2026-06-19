@@ -172,6 +172,42 @@ def _search_naver_blog(keyword: str, display: int = 10) -> list[dict]:
         return []
 
 
+def _fetch_schedule(date_str: str = "") -> list[dict]:
+    """홈앤쇼핑 TV 편성표 가져오기"""
+    import datetime
+    if not date_str:
+        date_str = datetime.datetime.now().strftime("%Y%m%d")
+    try:
+        r = req_lib.get(
+            "https://www.hnsmall.com/display/tvschedule-list",
+            params={"broadDay": date_str},
+            verify=False, timeout=10, headers=_HEADERS_UA,
+        )
+        r.raise_for_status()
+        t = r.text
+        items = []
+        for m in re.finditer(
+            r'<li\s+class="item">([\s\S]*?)</li>', t
+        ):
+            block = m.group(1)
+            time_m = re.search(r'<b>(\d{1,2}:\d{2})</b>\s*~\s*(\d{1,2}:\d{2})', block)
+            name_m = re.search(r'<b>[\d:]+</b>\s*~\s*[\d:]+</span>([^<]+)<', block)
+            code_m = re.search(r"goGoods\('(\d+)'", block)
+            img_m = re.search(r'<img\s+src="(//image[^"]+)"', block)
+            if not time_m:
+                continue
+            items.append({
+                "time_start": time_m.group(1),
+                "time_end": time_m.group(2),
+                "name": name_m.group(1).strip() if name_m else "",
+                "code": code_m.group(1) if code_m else "",
+                "image": ("https:" + img_m.group(1)) if img_m else "",
+            })
+        return items
+    except Exception:
+        return []
+
+
 class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(200)
@@ -191,6 +227,11 @@ class Handler(BaseHTTPRequestHandler):
             code = params.get("code", [""])[0]
             score = _fetch_review_score(code) if code else {}
             self._json_response(score)
+
+        elif parsed.path == "/api/schedule":
+            date = params.get("date", [""])[0]
+            items = _fetch_schedule(date)
+            self._json_response(items)
 
         elif parsed.path == "/api/search-reviews":
             q = params.get("q", [""])[0]
