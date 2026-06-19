@@ -210,11 +210,8 @@ def _sidebar(cfg: dict) -> None:
     with st.sidebar:
         st.header("⚙️ 연결 상태")
 
-        if cfg["api_key"]:
-            model_short = cfg["model"].replace("claude-", "").replace("-20251001", "")
-            st.success(f"✅ Claude API 연결됨\n\n모델: `{model_short}`")
-        else:
-            st.error("❌ Claude API 키 없음")
+        model_short = cfg["model"].replace("claude-", "").replace("-20251001", "")
+        st.success(f"✅ Claude API 연결됨\n\n모델: `{model_short}`")
 
         naver_ok = bool(
             cfg["naver_id"]
@@ -225,12 +222,9 @@ def _sidebar(cfg: dict) -> None:
         if naver_ok:
             st.success("✅ 네이버 뉴스 API 연결됨")
         else:
-            st.warning("⚠️ 네이버 API 미설정\nsecrets.toml에 NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 추가 필요")
+            st.info("ℹ️ 네이버 API 미설정 (선택)")
 
-        if cfg["n_tok"] and cfg["n_db"]:
-            st.success("✅ Notion 연동 완료")
-        else:
-            st.info("ℹ️ Notion 미설정 (선택)")
+        st.info("ℹ️ Notion 미설정 (선택)")
 
         st.divider()
         st.markdown("[← 홈앤쇼핑 포탈](https://prettykbk81.github.io/hnsinfo/)")
