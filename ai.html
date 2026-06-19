@@ -479,12 +479,14 @@ body {
           <input type="text" id="f-price" placeholder="예) 29,900원 / 3개 세트">
         </div>
         <div class="fgroup">
+        </div>
+        <div class="fgroup full">
           <label>핵심 특징 ①</label>
-          <input type="text" id="f-feat1" placeholder="예) 무농약 인증">
+          <input type="text" id="f-feat1" placeholder="예) 무농약 인증 — 편성표 선택 시 기술서에서 자동 추출">
         </div>
         <div class="fgroup full">
           <label>핵심 특징 ②</label>
-          <input type="text" id="f-feat2" placeholder="예) 착즙 100% 무첨가">
+          <input type="text" id="f-feat2" placeholder="예) 착즙 100% 무첨가 — 편성표 선택 시 기술서에서 자동 추출">
         </div>
       </div>
 
@@ -835,7 +837,7 @@ async function loadSchedule() {
       var ep = it.time_end.split(':');
       var endMin = parseInt(ep[0]) * 60 + parseInt(ep[1]);
       var isLive = nowMin >= startMin && nowMin < endMin;
-      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;" onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'transparent\'" onclick="pickSchedule(\'' + (it.name||'').replace(/'/g,"\\'") + '\')">';
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;" onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'transparent\'" onclick="pickSchedule(\'' + (it.name||'').replace(/'/g,"\\'") + '\',\'' + (it.code||'') + '\')">';
       html += '<div style="font-size:12px;font-weight:700;color:' + (isLive ? '#e8192c' : '#0369a1') + ';min-width:90px;">' + (isLive ? '● LIVE ' : '') + it.time_start + ' ~ ' + it.time_end + '</div>';
       if (it.image) html += '<img src="' + it.image + '" style="width:50px;height:50px;border-radius:6px;object-fit:cover;" onerror="this.style.display=\'none\'">';
       html += '<div style="font-size:12.5px;font-weight:600;color:#333;flex:1;">' + (it.name||'') + '</div>';
@@ -848,9 +850,66 @@ async function loadSchedule() {
   }
 }
 
-function pickSchedule(name) {
+async function pickSchedule(name, code) {
   document.getElementById('f-product').value = name;
   document.getElementById('scheduleArea').style.display = 'none';
+
+  if (!code) return;
+
+  // 상품 상세 정보 자동 로드
+  document.getElementById('f-price').value = '로딩 중...';
+  try {
+    var r = await fetch(PROXY + '/api/product-detail?code=' + code);
+    var d = await r.json();
+    if (d.price) document.getElementById('f-price').value = d.price;
+    else document.getElementById('f-price').value = '';
+
+    // 기술서에서 Claude로 핵심 특징 추출
+    if (d.description) {
+      document.getElementById('f-feat1').value = '기술서 분석 중...';
+      document.getElementById('f-feat2').value = '';
+      var pr = await fetch(PROXY + '/api/summarize', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({prompt:
+          '아래 홈쇼핑 상품 기술서에서 핵심 특징 2개를 뽑아주세요.\n\n' +
+          '상품명: ' + name + '\n기술서: ' + d.description + '\n\n' +
+          '반드시 JSON으로만 응답: {"feat1":"특징1 (15자 이내)","feat2":"특징2 (15자 이내)","category":"food|beauty|fashion|appliance|home 중 택1"}'
+        }),
+      });
+      var fullText = '';
+      var reader = pr.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, {stream:true});
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          var p = line.slice(6);
+          if (p === '[DONE]') break;
+          try { fullText += JSON.parse(p).text; } catch(e) {}
+        }
+      }
+      var m = fullText.match(/\{[\s\S]*\}/);
+      if (m) {
+        var parsed = JSON.parse(m[0].replace(/,\s*([\]}])/g,'$1'));
+        if (parsed.feat1) document.getElementById('f-feat1').value = parsed.feat1;
+        if (parsed.feat2) document.getElementById('f-feat2').value = parsed.feat2;
+        if (parsed.category) {
+          var sel = document.getElementById('f-category');
+          for (var i=0; i<sel.options.length; i++) {
+            if (sel.options[i].value === parsed.category) { sel.selectedIndex = i; break; }
+          }
+        }
+      }
+    }
+  } catch(e) {
+    document.getElementById('f-price').value = '';
+    document.getElementById('f-feat1').value = '';
+  }
 }
 
 /* ── CONFIG ── */

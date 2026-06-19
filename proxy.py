@@ -172,6 +172,43 @@ def _search_naver_blog(keyword: str, display: int = 10) -> list[dict]:
         return []
 
 
+def _fetch_product_detail(goods_code: str) -> dict:
+    """상품 상세 정보(가격, 카테고리, 기술서 특징) 가져오기"""
+    result = {"price": "", "category": "", "feat1": "", "feat2": ""}
+    try:
+        r = req_lib.get(
+            f"https://www.hnsmall.com/display/goods.do?goods_code={goods_code}",
+            verify=False, timeout=10, headers=_HEADERS_UA,
+        )
+        t = r.text
+        price_m = re.search(r'<strong>(\d[\d,]+)</strong>\s*<span\s+class="won">', t)
+        if price_m:
+            result["price"] = price_m.group(1) + "원"
+        name_m = re.search(r'class="tit"[^>]*>([^<]+)<', t[40000:50000])
+        if name_m:
+            result["name"] = name_m.group(1).strip()
+        cat_m = re.search(r'asideOption[\s\S]{0,200}?<p\s+class="tit">([^<]+)<', t)
+        if cat_m:
+            nm = cat_m.group(1).strip()
+    except Exception:
+        pass
+
+    try:
+        desc_url = f"https://image.hnsmall.com/images/itemdesc/pc/goods/describePage/{goods_code}"
+        r2 = req_lib.get(desc_url, verify=False, timeout=8, headers=_HEADERS_UA)
+        text = re.sub(r'<script[\s\S]*?</script>', '', r2.text)
+        text = re.sub(r'<style[\s\S]*?</style>', '', text)
+        text = re.sub(r'<[^>]+>', ' ', text)
+        text = re.sub(r'&nbsp;', ' ', text)
+        text = re.sub(r'\s+', ' ', text).strip()
+        if len(text) > 20:
+            result["description"] = text[:600]
+    except Exception:
+        pass
+
+    return result
+
+
 def _fetch_schedule(date_str: str = "") -> list[dict]:
     """홈앤쇼핑 TV 편성표 가져오기"""
     import datetime
@@ -232,6 +269,11 @@ class Handler(BaseHTTPRequestHandler):
             date = params.get("date", [""])[0]
             items = _fetch_schedule(date)
             self._json_response(items)
+
+        elif parsed.path == "/api/product-detail":
+            code = params.get("code", [""])[0]
+            detail = _fetch_product_detail(code) if code else {}
+            self._json_response(detail)
 
         elif parsed.path == "/api/search-reviews":
             q = params.get("q", [""])[0]
