@@ -9,86 +9,65 @@
 body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
 .page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
 .page-title{font-size:16px;font-weight:700;color:#111;}
-.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;transition:background .15s;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;}
 .home-btn:hover{background:#f0f0f0;color:#e8192c;}
-.wrap{max-width:900px;margin:24px auto;padding:0 16px;}
+.wrap{max-width:960px;margin:24px auto;padding:0 16px;}
 .section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
 .section h2{font-size:14px;font-weight:700;color:#e8192c;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-/* 검색 */
 .search-bar{display:flex;gap:8px;}
 .search-bar input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;}
 .search-bar input:focus{outline:none;border-color:#e8192c;}
 .search-bar button{background:#e8192c;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;}
-.search-bar button:hover{background:#c8001f;}
-.search-bar button:disabled{background:#999;cursor:not-allowed;}
+.search-bar button:hover{background:#c8001f;} .search-bar button:disabled{background:#999;cursor:not-allowed;}
 .hint{font-size:11px;color:#999;margin-top:6px;}
-/* 상품 그리드 */
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;}
-.product-card{border:2px solid #eee;border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s;text-align:center;background:#fff;}
-.product-card:hover{border-color:#e8192c;box-shadow:0 2px 12px rgba(232,25,44,.15);transform:translateY(-2px);}
-.product-card.selected{border-color:#e8192c;background:#fff5f5;}
-.product-card img{width:100%;aspect-ratio:1;object-fit:cover;background:#f5f5f5;}
-.product-card .p-name{padding:8px 6px 4px;font-size:11.5px;font-weight:600;color:#333;line-height:1.4;height:48px;overflow:hidden;}
-.product-card .p-price{padding:0 6px 8px;font-size:13px;font-weight:800;color:#e8192c;}
-/* 선택된 상품 정보 */
-.selected-product{display:none;margin-top:16px;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #eee;}
-.sp-row{display:flex;gap:16px;align-items:flex-start;}
-.sp-img{width:120px;height:120px;border-radius:8px;object-fit:cover;background:#eee;flex-shrink:0;}
-.sp-info{flex:1;}
-.sp-name{font-size:15px;font-weight:700;color:#111;margin-bottom:6px;}
-.sp-price{font-size:14px;color:#e8192c;font-weight:700;margin-bottom:8px;}
-.sp-score{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#fff5f5;border-radius:12px;font-size:12px;font-weight:600;color:#e8192c;}
-.sp-reviews{font-size:11px;color:#888;margin-top:6px;}
-/* 블로그 후기 */
-.blog-list{margin-top:14px;}
-.blog-item{padding:10px 12px;border-bottom:1px solid #f0f0f0;font-size:12px;line-height:1.6;}
-.blog-item:last-child{border-bottom:none;}
-.blog-item .b-title{font-weight:600;color:#333;}
-.blog-item .b-desc{color:#666;margin-top:2px;}
-.blog-item .b-meta{font-size:10px;color:#aaa;margin-top:3px;}
-/* 분석 결과 */
-.result{display:none;}
 .ai-loading{text-align:center;padding:30px;color:#888;}
 .ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#e8192c;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
-.btn-analyze{background:#e8192c;color:#fff;border:none;padding:11px 32px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:14px;}
-.btn-analyze:hover{background:#c8001f;}
-.btn-analyze:disabled{background:#999;cursor:not-allowed;}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#e8192c;color:#fff;border-radius:50%;font-size:11px;font-weight:700;}
 
-/* 종합 평가 헤더 */
-.review-header{background:linear-gradient(135deg,#e8192c,#c8001f);color:#fff;padding:24px 28px;border-radius:10px;margin-bottom:14px;display:flex;align-items:center;gap:20px;}
-.rh-score{font-size:48px;font-weight:900;line-height:1;}
-.rh-score small{font-size:18px;font-weight:400;opacity:.7;}
-.rh-info{flex:1;}
-.rh-info h3{font-size:16px;font-weight:700;margin-bottom:4px;}
-.rh-info p{font-size:12px;opacity:.8;}
-.rh-stars{font-size:20px;letter-spacing:2px;}
+/* 상품 리스트 */
+.product-list{margin-top:16px;}
+.product-row{display:flex;gap:14px;padding:14px;border:1.5px solid #eee;border-radius:10px;margin-bottom:10px;align-items:center;background:#fff;transition:border-color .15s;}
+.product-row:hover{border-color:#e8192c;}
+.pr-img{width:80px;height:80px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f5f5f5;}
+.pr-info{flex:1;min-width:0;}
+.pr-name{font-size:13px;font-weight:700;color:#111;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pr-price{font-size:14px;font-weight:800;color:#e8192c;margin-bottom:4px;}
+.pr-score-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pr-score{font-size:12px;font-weight:700;padding:3px 8px;border-radius:10px;}
+.pr-score.high{background:#f0fdf4;color:#16a34a;}
+.pr-score.mid{background:#fffbeb;color:#d97706;}
+.pr-score.low{background:#fef2f2;color:#dc2626;}
+.pr-score.none{background:#f5f5f5;color:#999;}
+.pr-count{font-size:11px;color:#888;}
+.pr-dist{display:flex;gap:1px;height:6px;border-radius:3px;overflow:hidden;width:120px;}
+.pr-loading{font-size:11px;color:#aaa;font-style:italic;}
 
-/* 분석 카드 그리드 */
+/* 종합 분석 결과 */
+.summary-header{background:linear-gradient(135deg,#e8192c,#c8001f);color:#fff;padding:24px 28px;border-radius:10px;margin-bottom:14px;}
+.summary-header h1{font-size:20px;font-weight:800;margin-bottom:4px;}
+.summary-header p{font-size:12px;opacity:.75;}
 .analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.analysis-card{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-top:3px solid #ddd;}
+.analysis-card{background:#fff;border-radius:10px;padding:18px 20px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-top:3px solid #ddd;}
 .analysis-card.good{border-top-color:#16a34a;} .analysis-card.bad{border-top-color:#dc2626;}
 .analysis-card.delivery{border-top-color:#2563eb;} .analysis-card.value{border-top-color:#d97706;}
-.analysis-card.tip{border-top-color:#7c3aed;} .analysis-card.diff{border-top-color:#0d9488;}
-.ac-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.ac-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.ac-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ac-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
 .ac-icon.good{background:#f0fdf4;} .ac-icon.bad{background:#fef2f2;}
 .ac-icon.delivery{background:#eff6ff;} .ac-icon.value{background:#fffbeb;}
-.ac-icon.tip{background:#f5f3ff;} .ac-icon.diff{background:#f0fdfa;}
-.ac-title{font-size:14px;font-weight:700;color:#333;}
+.ac-title{font-size:13px;font-weight:700;color:#333;}
 .ac-list{list-style:none;padding:0;margin:0;}
-.ac-list li{padding:6px 0 6px 14px;border-left:3px solid #eee;margin-bottom:4px;font-size:12.5px;line-height:1.6;color:#555;}
+.ac-list li{padding:5px 0 5px 12px;border-left:3px solid #eee;margin-bottom:3px;font-size:12px;line-height:1.6;color:#555;}
 .analysis-card.good .ac-list li{border-left-color:#bbf7d0;}
 .analysis-card.bad .ac-list li{border-left-color:#fecaca;}
 .analysis-card.delivery .ac-list li{border-left-color:#bfdbfe;}
 .analysis-card.value .ac-list li{border-left-color:#fef08a;}
-.analysis-card.tip .ac-list li{border-left-color:#ddd6fe;}
-.analysis-card.diff .ac-list li{border-left-color:#99f6e4;}
-.result-fallback{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0;}
-@media(max-width:600px){.analysis-grid{grid-template-columns:1fr;}.review-header{flex-direction:column;text-align:center;}}
-.step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#e8192c;color:#fff;border-radius:50%;font-size:11px;font-weight:700;}
-@media(max-width:600px){.product-grid{grid-template-columns:repeat(2,1fr);}.sp-row{flex-direction:column;}}
+.tip-section{background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:14px;}
+.tip-section h3{font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;}
+.tip-item{padding:8px 12px;margin-bottom:5px;background:#f5f3ff;border-radius:6px;border-left:4px solid #7c3aed;font-size:12px;color:#444;}
+.result-fallback{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#333;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0;}
+@media(max-width:600px){.analysis-grid{grid-template-columns:1fr;}.product-row{flex-wrap:wrap;}}
 </style>
 </head>
 <body>
@@ -102,208 +81,123 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 </div>
 
 <div class="wrap">
-  <!-- STEP 1: 검색 -->
   <div class="section">
     <h2><span class="step-badge">1</span> 상품 검색</h2>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="상품명을 입력하세요 (예: 한라봉, 선풍기, 홍삼)" onkeypress="if(event.keyCode===13)searchProduct()">
-      <button id="btnSearch" onclick="searchProduct()">검색</button>
+      <input type="text" id="searchInput" placeholder="검색어를 입력하세요 (예: 홍삼, 선풍기, 한라봉)" onkeypress="if(event.keyCode===13)searchAll()">
+      <button id="btnSearch" onclick="searchAll()">검색 &amp; 분석</button>
     </div>
-    <div class="hint">※ 홈앤쇼핑(hnsmall.com) 판매 상품을 검색합니다</div>
-    <div class="product-grid" id="productGrid"></div>
+    <div class="hint">※ 홈앤쇼핑 상품 검색 → 각 상품 만족도 수집 → 블로그 후기 분석까지 한번에 진행됩니다</div>
   </div>
 
-  <!-- STEP 2: 상품 정보 + 후기 -->
-  <div class="section" id="step2" style="display:none;">
-    <h2><span class="step-badge">2</span> 상품 정보 &amp; 블로그 후기</h2>
-    <div class="selected-product" id="selectedProduct" style="display:block;">
-      <div class="sp-row">
-        <img class="sp-img" id="spImg" src="" alt="">
-        <div class="sp-info">
-          <div class="sp-name" id="spName"></div>
-          <div class="sp-price" id="spPrice"></div>
-          <div class="sp-score" id="spScore"></div>
-          <div class="sp-reviews" id="spReviews"></div>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:14px;">
-      <h2 style="font-size:13px;color:#555;margin-bottom:8px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="#16a34a" stroke-width="2" rx="2"/><path d="M8 8h8M8 12h5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/></svg>
-        네이버 블로그 후기 <span id="blogCount" style="color:#aaa;font-weight:400;"></span>
-      </h2>
-      <div class="blog-list" id="blogList">
-        <div class="ai-loading"><div class="ai-spinner"></div>블로그 후기를 검색 중...</div>
-      </div>
-    </div>
-    <div style="text-align:center;">
-      <button class="btn-analyze" id="btnAnalyze" onclick="analyzeReviews()" style="display:none;">AI 리뷰 다시 분석</button>
-    </div>
-  </div>
-
-  <!-- STEP 3: 분석 결과 -->
-  <div class="result" id="step3">
-    <div id="resultBody"></div>
-  </div>
+  <div id="resultArea"></div>
 </div>
 
 <script>
 var PROXY = 'http://localhost:8502';
-var _selectedProduct = null;
-var _blogReviews = [];
+var DIST_COLORS = {'매우만족':'#16a34a','만족':'#22c55e','보통':'#eab308','불만족':'#f97316','매우불만족':'#dc2626'};
 
-async function searchProduct() {
+async function searchAll() {
   var q = document.getElementById('searchInput').value.trim();
-  if (!q) { alert('상품명을 입력해주세요.'); return; }
-  var grid = document.getElementById('productGrid');
+  if (!q) { alert('검색어를 입력해주세요.'); return; }
+  var area = document.getElementById('resultArea');
   var btn = document.getElementById('btnSearch');
-  grid.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑에서 검색 중...</div>';
   btn.disabled = true; btn.textContent = '검색 중...';
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step3').style.display = 'none';
+  area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑에서 상품을 검색하고 있습니다...</div></div>';
 
   try {
+    // 1. 상품 검색
     var r = await fetch(PROXY + '/api/search-product?q=' + encodeURIComponent(q));
     if (!r.ok) throw new Error('프록시 연결 실패');
     var products = await r.json();
-    if (!products.length) {
-      grid.innerHTML = '<div style="padding:20px;color:#888;text-align:center;">검색 결과가 없습니다.</div>';
-      return;
-    }
-    grid.innerHTML = products.map(function(p) {
-      return '<div class="product-card" onclick=\'selectProduct(' + JSON.stringify(p).replace(/'/g,"&#39;") + ')\'>'
-        + '<img src="' + p.image + '" alt="" onerror="this.src=\'https://via.placeholder.com/200?text=No+Image\'">'
-        + '<div class="p-name">' + p.name + '</div>'
-        + (p.price ? '<div class="p-price">' + p.price + '원</div>' : '')
-        + '</div>';
-    }).join('');
-  } catch(e) {
-    grid.innerHTML = '<div class="error">' +
-      (e.message.indexOf('fetch') > -1 || e.message.indexOf('Failed') > -1
-        ? 'streamlit run app.py 를 먼저 실행해주세요.'
-        : e.message) + '</div>';
-  } finally {
-    btn.disabled = false; btn.textContent = '검색';
-  }
-}
+    if (!products.length) { area.innerHTML = '<div class="section" style="text-align:center;color:#888;padding:40px;">검색 결과가 없습니다.</div>'; return; }
 
-async function selectProduct(product) {
-  _selectedProduct = product;
-  // 카드 선택 표시
-  document.querySelectorAll('.product-card').forEach(function(c) { c.classList.remove('selected'); });
-  event.currentTarget.classList.add('selected');
-
-  // STEP 2 표시
-  var step2 = document.getElementById('step2');
-  step2.style.display = 'block';
-  document.getElementById('spImg').src = product.image;
-  document.getElementById('spName').textContent = product.name;
-  document.getElementById('spPrice').textContent = product.price ? product.price + '원' : '';
-  document.getElementById('spScore').textContent = '만족도 로딩 중...';
-  document.getElementById('spReviews').textContent = '';
-  document.getElementById('blogList').innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>후기를 수집 중...</div>';
-  document.getElementById('step3').style.display = 'none';
-
-  step2.scrollIntoView({behavior:'smooth', block:'start'});
-
-  // 만족도 + 블로그 후기 동시 로드
-  var scorePromise = fetch(PROXY + '/api/product-score?code=' + product.code).then(function(r){return r.json();}).catch(function(){return {};});
-  var blogPromise = fetch(PROXY + '/api/search-reviews?q=' + encodeURIComponent('홈앤쇼핑 ' + product.name + ' 후기') + '&n=10').then(function(r){return r.json();}).catch(function(){return [];});
-
-  var results = await Promise.all([scorePromise, blogPromise]);
-  var score = results[0];
-  var blogs = results[1];
-  _blogReviews = blogs;
-
-  _scoreData = score;
-  if (score.score) {
-    document.getElementById('spScore').innerHTML = '&#11088; 만족도 ' + score.score + '점 (' + score.level + ')';
-    var distHtml = '상품평 ' + score.count + '건';
-    if (score.distribution) {
-      var labels = ['매우만족','만족','보통','불만족','매우불만족'];
-      var colors = ['#16a34a','#22c55e','#eab308','#f97316','#dc2626'];
-      var total = 0; labels.forEach(function(l){total += (score.distribution[l]||0);});
-      if (total > 0) {
-        distHtml += '<div style="display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;margin-top:6px;">';
-        labels.forEach(function(l,i){
-          var v = score.distribution[l]||0;
-          if(v>0) distHtml += '<div style="width:'+((v/total)*100)+'%;background:'+colors[i]+';"></div>';
-        });
-        distHtml += '</div><div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;">';
-        labels.forEach(function(l,i){
-          var v = score.distribution[l]||0;
-          if(v>0) distHtml += '<span style="font-size:10px;color:'+colors[i]+';font-weight:600;">'+l+' '+v+'</span>';
-        });
-        distHtml += '</div>';
-      }
-    }
-    document.getElementById('spReviews').innerHTML = distHtml;
-  } else {
-    document.getElementById('spScore').textContent = '만족도 정보 없음';
-  }
-
-  // 블로그 후기 표시
-  if (blogs.length) {
-    document.getElementById('blogCount').textContent = '(' + blogs.length + '건)';
-    document.getElementById('blogList').innerHTML = blogs.map(function(b) {
-      return '<div class="blog-item">'
-        + '<div class="b-title">' + b.title + '</div>'
-        + '<div class="b-desc">' + b.desc + '</div>'
-        + '<div class="b-meta">' + b.blogger + ' · ' + b.date + ' <a href="' + b.link + '" target="_blank" style="color:#e8192c;">원문 보기</a></div>'
-        + '</div>';
-    }).join('');
-  } else {
-    document.getElementById('blogCount').textContent = '(0건)';
-    document.getElementById('blogList').innerHTML = '<div style="padding:16px;color:#888;text-align:center;">블로그 후기를 찾지 못했습니다.</div>';
-  }
-
-  // 자동으로 AI 분석 시작
-  analyzeReviews();
-}
-
-var _scoreData = {};
-var _retried = false;
-
-async function analyzeReviews() {
-  if (!_selectedProduct) return;
-  var section = document.getElementById('step3');
-  var body = document.getElementById('resultBody');
-  var btn = document.getElementById('btnAnalyze');
-  section.style.display = 'block';
-  body.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>Claude가 블로그 후기를 분석 중입니다...<br><span style="font-size:11px;color:#aaa;">본문을 읽고 장점/단점/배송/가성비를 정리합니다</span></div></div>';
-  btn.disabled = true; btn.textContent = '분석 중...';
-  section.scrollIntoView({behavior:'smooth', block:'start'});
-
-  var reviewText = _blogReviews.map(function(b, i) {
-    return '[후기' + (i+1) + '] ' + b.title + '\n' + b.desc;
-  }).join('\n\n');
-
-  var prompt = '당신은 홈쇼핑 상품 리뷰 분석 전문가입니다.\n\n';
-  prompt += '상품명: ' + _selectedProduct.name + '\n판매처: 홈앤쇼핑\n';
-  if (_scoreData.score) prompt += '홈앤쇼핑 만족도: ' + _scoreData.score + '점 (' + _scoreData.level + '), 상품평 ' + _scoreData.count + '건\n';
-  prompt += '\n아래는 네이버 블로그에서 수집한 고객 후기 본문입니다:\n\n';
-  prompt += reviewText || '(후기 없음 - 일반적 분석을 해주세요)';
-  prompt += '\n\n위 후기를 분석하여 반드시 아래 JSON 형식으로만 응답하세요 (다른 텍스트 없이):\n';
-  prompt += '{\n';
-  prompt += '  "score": 4.2,\n';
-  prompt += '  "summary": "종합 평가 한 줄 (30자 내외)",\n';
-  prompt += '  "good": ["장점1 (구체적 후기 인용)", "장점2", "장점3"],\n';
-  prompt += '  "bad": ["단점1", "단점2"],\n';
-  prompt += '  "delivery": ["배송/포장 관련 의견1", "의견2"],\n';
-  prompt += '  "value": ["가성비 관련 의견1", "의견2"],\n';
-  prompt += '  "tip": ["MD 개선 제안1", "제안2", "제안3"]\n';
-  prompt += '}\n';
-  prompt += '규칙: score는 5점만점 소수점 1자리, good은 3~5개, bad/delivery/value는 2~3개, tip은 3개';
-
-  try {
-    var resp = await fetch(PROXY + '/api/summarize', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({prompt: prompt}),
+    // 2. 상품 리스트 렌더 (로딩 상태)
+    area.innerHTML = '<div class="section"><h2><span class="step-badge">2</span> 검색된 상품 (' + products.length + '개) — 만족도 수집 중...</h2><div class="product-list" id="productList"></div></div><div id="analysisArea"></div>';
+    var list = document.getElementById('productList');
+    products.forEach(function(p, i) {
+      list.innerHTML += '<div class="product-row" id="pr-' + i + '">'
+        + '<img class="pr-img" src="' + p.image + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><rect fill=%22%23f5f5f5%22 width=%2280%22 height=%2280%22/><text x=%2240%22 y=%2244%22 text-anchor=%22middle%22 fill=%22%23ccc%22 font-size=%2212%22>No Image</text></svg>\'">'
+        + '<div class="pr-info">'
+        + '<div class="pr-name">' + esc(p.name) + '</div>'
+        + (p.price ? '<div class="pr-price">' + p.price + '원</div>' : '')
+        + '<div class="pr-score-wrap" id="score-' + i + '"><span class="pr-loading">만족도 로딩 중...</span></div>'
+        + '</div></div>';
     });
-    if (!resp.ok) throw new Error('프록시 서버 연결 실패');
 
+    // 3. 각 상품 만족도 병렬 수집
+    var scorePromises = products.map(function(p) {
+      return fetch(PROXY + '/api/product-score?code=' + p.code).then(function(r){return r.json();}).catch(function(){return {};});
+    });
+    var scores = await Promise.all(scorePromises);
+
+    scores.forEach(function(sc, i) {
+      var el = document.getElementById('score-' + i);
+      if (!el) return;
+      if (sc.score) {
+        var cls = parseInt(sc.score) >= 80 ? 'high' : parseInt(sc.score) >= 60 ? 'mid' : 'low';
+        var html = '<span class="pr-score ' + cls + '">' + sc.score + '점 ' + (sc.level||'') + '</span>';
+        html += '<span class="pr-count">상품평 ' + sc.count + '건</span>';
+        if (sc.distribution) {
+          var total = 0;
+          Object.values(sc.distribution).forEach(function(v){total+=v;});
+          if (total > 0) {
+            html += '<div class="pr-dist">';
+            ['매우만족','만족','보통','불만족','매우불만족'].forEach(function(l){
+              var v = sc.distribution[l]||0;
+              if(v>0) html += '<div style="width:'+((v/total)*100)+'%;background:'+(DIST_COLORS[l]||'#ccc')+';"></div>';
+            });
+            html += '</div>';
+          }
+        }
+        el.innerHTML = html;
+      } else {
+        el.innerHTML = '<span class="pr-score none">만족도 정보 없음</span>';
+      }
+      products[i]._score = sc;
+    });
+
+    // 4. 블로그 후기 수집 + AI 분석
+    document.querySelector('#resultArea .section h2').innerHTML = '<span class="step-badge">2</span> 검색된 상품 (' + products.length + '개)';
+    var analysisArea = document.getElementById('analysisArea');
+    analysisArea.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>블로그 후기를 수집하고 AI가 분석 중입니다...</div></div>';
+
+    var blogR = await fetch(PROXY + '/api/search-reviews?q=' + encodeURIComponent('홈앤쇼핑 ' + q + ' 후기 리뷰') + '&n=10');
+    var blogs = await blogR.json();
+
+    // 상품별 요약 텍스트 구성
+    var promptData = products.map(function(p, i) {
+      var sc = p._score || {};
+      return (i+1) + '. ' + p.name + ' (' + (p.price||'가격미정') + '원)'
+        + (sc.score ? ' — 만족도 ' + sc.score + '점(' + sc.level + '), 상품평 ' + sc.count + '건' : '');
+    }).join('\n');
+
+    var blogText = blogs.map(function(b, i) {
+      return '[블로그' + (i+1) + '] ' + b.title + '\n' + b.desc;
+    }).join('\n\n');
+
+    var prompt = '당신은 홈쇼핑 상품 리뷰 분석 전문가입니다.\n\n';
+    prompt += '검색어: "' + q + '"\n\n';
+    prompt += '홈앤쇼핑에서 검색된 상품 목록:\n' + promptData + '\n\n';
+    prompt += '네이버 블로그 후기:\n' + blogText + '\n\n';
+    prompt += '위 정보를 종합 분석하여 반드시 아래 JSON으로만 응답하세요:\n';
+    prompt += '{\n';
+    prompt += '  "summary": "전체 검색 결과 종합 평가 (40자 내외)",\n';
+    prompt += '  "best_pick": "가장 추천하는 상품명 1개",\n';
+    prompt += '  "best_reason": "추천 이유 (30자 내외)",\n';
+    prompt += '  "good": ["장점1 (구체적 후기 인용 포함)", "장점2", "장점3", "장점4"],\n';
+    prompt += '  "bad": ["단점/아쉬운점1", "단점2", "단점3"],\n';
+    prompt += '  "delivery": ["배송/포장 관련1", "관련2"],\n';
+    prompt += '  "value": ["가성비 관련1", "관련2"],\n';
+    prompt += '  "tip": ["MD 개선제안1", "제안2", "제안3"]\n';
+    prompt += '}';
+
+    var aiR = await fetch(PROXY + '/api/summarize', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({prompt:prompt}),
+    });
     var fullText = '';
-    var reader = resp.body.getReader();
+    var reader = aiR.body.getReader();
     var decoder = new TextDecoder();
     var buffer = '';
     while (true) {
@@ -320,79 +214,76 @@ async function analyzeReviews() {
       }
     }
 
-    var analysis = tryParseReview(fullText);
+    var analysis = tryParse(fullText);
     if (analysis) {
-      renderAnalysis(analysis);
-    } else if (!_retried) {
-      _retried = true;
-      setTimeout(analyzeReviews, 300);
-      return;
+      renderAnalysis(analysis, q, products.length, blogs.length);
     } else {
-      body.innerHTML = '<div class="section"><div class="result-fallback">' + fullText.replace(/</g,'&lt;') + '</div></div>';
+      analysisArea.innerHTML = '<div class="section"><div class="result-fallback">' + esc(fullText) + '</div></div>';
     }
+
   } catch(e) {
-    body.innerHTML = '<div class="section"><div class="error">' +
-      (e.message.indexOf('fetch')>-1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) + '</div></div>';
+    area.innerHTML = '<div class="section"><div class="error">' +
+      (e.message.indexOf('fetch')>-1||e.message.indexOf('Failed')>-1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : esc(e.message)) + '</div></div>';
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'AI 리뷰 다시 분석';
-    btn.style.display = 'inline-block';
-    _retried = false;
+    btn.disabled = false; btn.textContent = '검색 & 분석';
   }
 }
 
-function tryParseReview(text) {
+function tryParse(text) {
   var m = text.match(/\{[\s\S]*\}/);
   if (!m) return null;
   var raw = m[0].replace(/,\s*([\]}])/g,'$1');
   try { return JSON.parse(raw); } catch(e) {}
-  var fixed = raw.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){return ': "'+a+' '+b+'"';});
-  try { return JSON.parse(fixed); } catch(e) {}
+  raw = raw.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){return ': "'+a+' '+b+'"';});
+  try { return JSON.parse(raw); } catch(e) {}
   return null;
 }
 
-function renderAnalysis(a) {
-  var body = document.getElementById('resultBody');
-  var stars = '';
-  var full = Math.floor(a.score||0);
-  var half = (a.score||0) - full >= 0.5;
-  for(var i=0;i<5;i++) stars += i<full?'★':(i===full&&half?'★':'☆');
-
+function renderAnalysis(a, query, productCount, blogCount) {
+  var area = document.getElementById('analysisArea');
   var html = '';
-  // 종합 헤더
-  html += '<div class="review-header">';
-  html += '<div class="rh-score">'+(a.score||'?')+'<small>/5</small></div>';
-  html += '<div class="rh-info"><div class="rh-stars">'+stars+'</div>';
-  html += '<h3>'+(a.summary||'')+'</h3>';
-  html += '<p>블로그 후기 '+_blogReviews.length+'건 분석 기반</p></div></div>';
 
-  // 카드 그리드
-  html += '<div class="analysis-grid">';
-  html += makeCard('good','👍','장점','#16a34a', a.good);
-  html += makeCard('bad','👎','단점','#dc2626', a.bad);
-  html += makeCard('delivery','📦','배송/포장','#2563eb', a.delivery);
-  html += makeCard('value','💰','가성비','#d97706', a.value);
+  // 종합 헤더
+  html += '<div class="summary-header">';
+  html += '<h1>"' + esc(query) + '" 종합 리뷰 분석</h1>';
+  html += '<p>홈앤쇼핑 상품 ' + productCount + '개 + 블로그 후기 ' + blogCount + '건 분석</p>';
+  html += '<p style="margin-top:8px;font-size:13px;opacity:.9;">' + esc(a.summary||'') + '</p>';
+  if (a.best_pick) {
+    html += '<div style="margin-top:10px;padding:8px 14px;background:rgba(255,255,255,.15);border-radius:6px;display:inline-block;">';
+    html += '<span style="font-size:11px;opacity:.7;">BEST PICK</span><br>';
+    html += '<strong style="font-size:15px;">🏆 ' + esc(a.best_pick) + '</strong>';
+    if (a.best_reason) html += '<span style="font-size:12px;opacity:.8;margin-left:8px;">' + esc(a.best_reason) + '</span>';
+    html += '</div>';
+  }
   html += '</div>';
 
-  // MD 제안 (풀 폭)
-  html += '<div class="section" style="margin-top:0;">';
-  html += '<h2 style="color:#7c3aed;"><span style="margin-right:6px;">💡</span>MD 개선 제안</h2>';
-  html += '<ul style="list-style:none;padding:0;">';
-  (a.tip||[]).forEach(function(t,i){
-    html += '<li style="padding:10px 14px;margin-bottom:6px;background:#f5f3ff;border-radius:6px;border-left:4px solid #7c3aed;font-size:13px;color:#444;">';
-    html += '<strong style="color:#7c3aed;">'+(i+1)+'.</strong> '+esc(t)+'</li>';
-  });
-  html += '</ul></div>';
+  // 분석 카드
+  html += '<div class="analysis-grid">';
+  html += makeCard('good','👍','장점', a.good);
+  html += makeCard('bad','👎','단점 / 아쉬운 점', a.bad);
+  html += makeCard('delivery','📦','배송 / 포장', a.delivery);
+  html += makeCard('value','💰','가성비', a.value);
+  html += '</div>';
 
-  body.innerHTML = html;
+  // MD 제안
+  if (a.tip && a.tip.length) {
+    html += '<div class="tip-section"><h3>💡 MD 개선 제안</h3>';
+    a.tip.forEach(function(t, i) {
+      html += '<div class="tip-item"><strong style="color:#7c3aed;">' + (i+1) + '.</strong> ' + esc(t) + '</div>';
+    });
+    html += '</div>';
+  }
+
+  area.innerHTML = html;
+  area.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function makeCard(cls, icon, title, color, items) {
-  var h = '<div class="analysis-card '+cls+'">';
-  h += '<div class="ac-header"><div class="ac-icon '+cls+'">'+icon+'</div>';
-  h += '<div class="ac-title">'+title+'</div></div>';
+function makeCard(cls, icon, title, items) {
+  var h = '<div class="analysis-card ' + cls + '">';
+  h += '<div class="ac-header"><div class="ac-icon ' + cls + '">' + icon + '</div>';
+  h += '<div class="ac-title">' + title + '</div></div>';
   h += '<ul class="ac-list">';
-  (items||['분석 데이터 없음']).forEach(function(it){ h += '<li>'+esc(it)+'</li>'; });
+  (items||['분석 데이터 없음']).forEach(function(it){ h += '<li>' + esc(it) + '</li>'; });
   h += '</ul></div>';
   return h;
 }
