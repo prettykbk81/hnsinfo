@@ -430,7 +430,6 @@ body {
   </div>
 
   <div class="hero-btns">
-    <button class="btn-hero btn-settings" onclick="openModal()">⚙️ API 설정</button>
     <a href="https://prettykbk81.github.io/hnsinfo/" class="btn-hero btn-back">← 포탈로</a>
   </div>
 </div>
@@ -825,20 +824,16 @@ function updateStatus() {
   const bar = document.getElementById('statusBar');
   const chips = [];
 
-  if (cfg.apiKey) {
-    chips.push(`<div class="chip chip-ok"><div class="chip-dot"></div>Claude API 연결됨</div>`);
-  } else {
-    chips.push(`<div class="chip chip-off"><div class="chip-dot"></div>Claude API 미설정</div>`);
-  }
-
-  if (cfg.nTok && cfg.nDb && cfg.nProxy) {
-    chips.push(`<div class="chip chip-ok"><div class="chip-dot"></div>Notion 연동 완료</div>`);
-  } else if (cfg.nTok || cfg.nDb) {
-    chips.push(`<div class="chip chip-err"><div class="chip-dot"></div>Notion 일부 미설정</div>`);
-  } else {
-    chips.push(`<div class="chip chip-off"><div class="chip-dot"></div>Notion 미설정</div>`);
-  }
-
+  // Claude API: proxy.py(localhost:8502)로 연결 확인
+  fetch('http://localhost:8502/api/search-product?q=test', {method:'GET'}).then(function(){
+    document.getElementById('claudeChip').className = 'chip chip-ok';
+    document.getElementById('claudeChip').innerHTML = '<div class="chip-dot"></div>Claude API 연결됨';
+  }).catch(function(){
+    document.getElementById('claudeChip').className = 'chip chip-off';
+    document.getElementById('claudeChip').innerHTML = '<div class="chip-dot"></div>Claude API 미연결 (프록시 확인)';
+  });
+  chips.push(`<div class="chip chip-ok" id="claudeChip"><div class="chip-dot"></div>Claude API 연결됨</div>`);
+  chips.push(`<div class="chip chip-off"><div class="chip-dot"></div>Notion 미설정 (선택)</div>`);
   chips.push(`<div class="chip chip-ok"><div class="chip-dot"></div>GitHub Actions 배포 준비됨</div>`);
   bar.innerHTML = chips.join('');
 
