@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>업무 보고서 자동 생성기 · 홈앤쇼핑 AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -12,7 +13,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .page-title{font-size:16px;font-weight:700;color:#111;}
 .home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;width:34px;height:34px;border-radius:6px;transition:background .15s;justify-content:center;}
 .home-btn:hover{background:#f0f0f0;color:#e8192c;}
-.wrap{max-width:860px;margin:24px auto;padding:0 16px;}
+.wrap{max-width:920px;margin:24px auto;padding:0 16px;}
 .section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
 .section h2{font-size:14px;font-weight:700;color:#0369a1;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;}
@@ -22,24 +23,62 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:#0369a1;}
 textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;}
 .hint{font-size:11px;color:#999;margin-top:4px;}
 .btn-area{text-align:center;margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-.btn-run{background:#0369a1;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
-.btn-run:hover{background:#024e7c;}
-.btn-run:disabled{background:#999;cursor:not-allowed;}
+.btn-run{background:#0369a1;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
+.btn-run:hover{background:#024e7c;} .btn-run:disabled{background:#999;cursor:not-allowed;}
 .btn-copy{background:#333;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
-.btn-copy:hover{background:#111;}
-.btn-word{background:#2b579a;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;transition:background .15s;}
-.btn-word:hover{background:#1e3f6f;}
-.btn-ppt{background:#d24726;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;transition:background .15s;}
-.btn-ppt:hover{background:#a83820;}
-.result{display:none;}
-.result h2{color:#0369a1;}
-.result-body{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;border:1px solid #e0e0e0;border-radius:8px;padding:20px;background:#fafafa;}
-.ai-loading{text-align:center;padding:30px;color:#888;}
-.ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#0369a1;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+.btn-word{background:#2b579a;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
+.btn-ppt{background:#d24726;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
+.btn-copy:hover{background:#111;} .btn-word:hover{background:#1e3f6f;} .btn-ppt:hover{background:#a83820;}
+
+/* 로딩 */
+.ai-loading{text-align:center;padding:50px;color:#888;}
+.ai-spinner{width:36px;height:36px;border:3px solid #ddd;border-top-color:#0369a1;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.ai-cursor{display:inline-block;width:2px;height:14px;background:#0369a1;animation:blink .6s infinite;}
-@keyframes blink{50%{opacity:0;}}
 .error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
+
+/* ── 비주얼 리포트 ── */
+.report{display:none;}
+.report-header{background:linear-gradient(135deg,#0369a1,#0284c7);color:#fff;padding:28px 32px;border-radius:10px;margin-bottom:16px;}
+.report-header h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.report-header .rh-sub{font-size:12px;opacity:.7;}
+
+/* 메트릭 카드 */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.metric-card{background:#fff;border-radius:10px;padding:18px 16px;box-shadow:0 1px 6px rgba(0,0,0,.06);text-align:center;border-top:3px solid #0369a1;}
+.metric-card.up{border-top-color:#16a34a;} .metric-card.down{border-top-color:#dc2626;}
+.mc-icon{font-size:24px;margin-bottom:6px;}
+.mc-value{font-size:22px;font-weight:800;color:#111;}
+.mc-label{font-size:11px;color:#888;margin-top:2px;}
+.mc-change{font-size:12px;font-weight:700;margin-top:4px;}
+.mc-change.up{color:#16a34a;} .mc-change.down{color:#dc2626;} .mc-change.neutral{color:#888;}
+
+/* 차트 */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.chart-box{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.chart-box h3{font-size:13px;font-weight:700;color:#333;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.chart-box h3::before{content:'';display:inline-block;width:4px;height:14px;background:#0369a1;border-radius:2px;}
+.chart-box canvas{max-height:220px;}
+
+/* 섹션 */
+.report-section{background:#fff;border-radius:10px;padding:22px 26px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.report-section h3{font-size:14px;font-weight:700;color:#0369a1;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e0f2fe;display:flex;align-items:center;gap:8px;}
+.rs-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.report-section ul{margin:0;padding-left:0;list-style:none;}
+.report-section li{padding:8px 0 8px 22px;border-left:3px solid #e0f2fe;margin-bottom:4px;line-height:1.7;font-size:13px;color:#444;}
+.report-section li strong{color:#0369a1;}
+.report-section p{line-height:1.8;font-size:13px;color:#444;margin-bottom:6px;}
+
+/* 액션/플랜 */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.action-box{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.action-box h3{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.action-box.issues h3{color:#dc2626;} .action-box.plans h3{color:#16a34a;}
+.action-box ol{margin:0;padding-left:20px;}
+.action-box li{padding:4px 0;font-size:12.5px;line-height:1.6;color:#444;}
+
+.report-footer{text-align:center;font-size:10px;color:#aaa;padding:12px 0;border-top:1px solid #eee;margin-top:8px;}
+
+@media(max-width:700px){.metrics{grid-template-columns:repeat(2,1fr);}.charts-row,.action-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -53,305 +92,396 @@ textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-rad
 </div>
 
 <div class="wrap">
-  <div class="section">
+  <!-- 입력 폼 -->
+  <div class="section" id="formSection">
     <h2>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#0369a1" stroke-width="2" stroke-linejoin="round"/><polyline points="14,2 14,8 20,8" stroke="#0369a1" stroke-width="2"/></svg>
       보고서 설정
     </h2>
     <div class="form-row">
-      <div>
-        <label for="rType">보고서 유형</label>
-        <select id="rType">
-          <option value="주간업무보고">주간업무보고</option>
-          <option value="월간실적보고">월간실적보고</option>
-          <option value="기획보고">기획보고</option>
-          <option value="회의록 정리">회의록 정리</option>
-          <option value="업무 인수인계서">업무 인수인계서</option>
-        </select>
-      </div>
-      <div>
-        <label for="rTarget">보고 대상</label>
-        <select id="rTarget">
-          <option value="팀장">팀장</option>
-          <option value="실장/부서장">실장/부서장</option>
-          <option value="임원">임원</option>
-          <option value="경영진">경영진</option>
-        </select>
-      </div>
+      <div><label for="rType">보고서 유형</label>
+        <select id="rType"><option value="주간업무보고">주간업무보고</option><option value="월간실적보고">월간실적보고</option><option value="기획보고">기획보고</option><option value="회의록 정리">회의록 정리</option><option value="업무 인수인계서">업무 인수인계서</option></select></div>
+      <div><label for="rTarget">보고 대상</label>
+        <select id="rTarget"><option value="팀장">팀장</option><option value="실장/부서장">실장/부서장</option><option value="임원">임원</option><option value="경영진">경영진</option></select></div>
     </div>
     <div class="form-row">
-      <div>
-        <label for="rPeriod">보고 기간</label>
-        <input type="text" id="rPeriod" placeholder="예) 2026.06.09 ~ 06.13">
-      </div>
-      <div>
-        <label for="rDept">부서/팀</label>
-        <input type="text" id="rDept" placeholder="예) 영업기획팀">
-      </div>
+      <div><label for="rPeriod">보고 기간</label><input type="text" id="rPeriod" placeholder="예) 2026.06.16 ~ 06.20"></div>
+      <div><label for="rDept">부서/팀</label><input type="text" id="rDept" placeholder="예) 영업기획팀"></div>
     </div>
     <label for="rContent">핵심 내용 (키워드 또는 메모)</label>
-    <textarea id="rContent" placeholder="보고서에 들어갈 내용을 간단히 적어주세요.&#10;&#10;예)&#10;- 6월 2주차 매출 전주대비 12% 상승&#10;- 식품 카테고리 신규 입점사 3개 확보&#10;- 라이브커머스 시범 방송 2회 진행, 평균 시청 3,200명&#10;- 다음 주 목표: 여름 시즌 기획전 준비"></textarea>
-    <div class="hint">※ 키워드만 나열해도 AI가 문장으로 완성합니다</div>
-    <div class="btn-area">
-      <button class="btn-run" id="btnRun" onclick="generate()">보고서 생성</button>
-    </div>
+    <textarea id="rContent" placeholder="보고서에 들어갈 내용을 간단히 적어주세요.&#10;&#10;예)&#10;- 6월 3주차 매출 42.3억 (전주대비 +12%)&#10;- 식품 35%, 뷰티 25%, 가전 22%, 패션 18%&#10;- 신규 입점사 3개 확보 (건강식품 2, 뷰티 1)&#10;- 라이브커머스 시범 방송 2회, 평균 시청 3,200명&#10;- 다음 주: 여름 시즌 기획전 준비"></textarea>
+    <div class="hint">※ 수치를 포함하면 자동으로 차트와 인포그래픽이 생성됩니다</div>
+    <div class="btn-area"><button class="btn-run" id="btnRun" onclick="generate()">보고서 생성</button></div>
   </div>
 
-  <div class="section result" id="resultSection">
-    <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#0369a1" stroke-width="2"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#0369a1" stroke-width="1.5" stroke-linecap="round"/></svg>
-      생성된 보고서
-    </h2>
-    <div class="result-body" id="resultBody"></div>
-    <div class="btn-area" id="exportBtns" style="margin-top:16px;">
-      <button class="btn-copy" id="btnCopy" onclick="copyResult()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2" stroke="#fff" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#fff" stroke-width="2"/></svg>
-        복사하기
-      </button>
-      <button class="btn-word" id="btnWord" onclick="exportWord()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:4px;"><path d="M4 4h16v16H4z" stroke="#fff" stroke-width="2" rx="2"/><path d="M7 8l2.5 8L12 10l2.5 6L17 8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Word 저장
-      </button>
-      <button class="btn-ppt" id="btnPpt" onclick="exportPPT()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:4px;"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 17v3M16 17v3M5 20h14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M9 7h3a2 2 0 0 1 0 4H9V7z" stroke="#fff" stroke-width="1.5"/></svg>
-        PPT 저장
-      </button>
-    </div>
+  <!-- 로딩 -->
+  <div id="loadingArea" style="display:none;">
+    <div class="section"><div class="ai-loading"><div class="ai-spinner"></div>Claude가 인포그래픽 보고서를 작성 중입니다...</div></div>
+  </div>
+
+  <!-- 비주얼 리포트 -->
+  <div class="report" id="reportArea"></div>
+
+  <!-- 내보내기 버튼 -->
+  <div class="btn-area" id="exportBtns" style="display:none;margin-bottom:24px;">
+    <button class="btn-copy" id="btnCopy" style="display:inline-flex;" onclick="copyText()">복사하기</button>
+    <button class="btn-word" id="btnWord" style="display:inline-flex;" onclick="exportWord()">Word 저장</button>
+    <button class="btn-ppt" id="btnPpt" style="display:inline-flex;" onclick="exportPPT()">PPT 저장</button>
   </div>
 </div>
 
 <script>
-var _reportMeta = {};
+var PROXY = 'http://localhost:8502';
+var _report = null;
+var _meta = {};
+var _chartInstances = [];
+var COLORS = ['#0369a1','#e8192c','#16a34a','#d97706','#7c3aed','#0d9488','#db2777','#ea580c'];
+var ICONS = ['📊','💰','📦','🛒','📈','🎯','👥','⭐','🚀','📋','💡','🔥'];
 
 async function generate() {
   var type = document.getElementById('rType').value;
   var target = document.getElementById('rTarget').value;
   var period = document.getElementById('rPeriod').value.trim();
-  var dept = document.getElementById('rDept').value.trim();
+  var dept = document.getElementById('rDept').value.trim() || '영업기획팀';
   var content = document.getElementById('rContent').value.trim();
   if (!content) { alert('핵심 내용을 입력해주세요.'); return; }
 
-  _reportMeta = {type:type, target:target, period:period, dept:dept||'영업기획팀'};
+  _meta = {type:type, target:target, period:period, dept:dept};
 
-  var section = document.getElementById('resultSection');
-  var body = document.getElementById('resultBody');
-  var btn = document.getElementById('btnRun');
-  section.style.display = 'block';
-  hideExportBtns();
-  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Claude가 보고서를 작성 중입니다...</div>';
-  btn.disabled = true; btn.textContent = '생성 중...';
+  document.getElementById('btnRun').disabled = true;
+  document.getElementById('btnRun').textContent = '생성 중...';
+  document.getElementById('loadingArea').style.display = 'block';
+  document.getElementById('reportArea').style.display = 'none';
+  document.getElementById('exportBtns').style.display = 'none';
+  _chartInstances.forEach(function(c){c.destroy();}); _chartInstances=[];
 
-  var prompt = '당신은 홈앤쇼핑 ' + (dept || '영업기획팀') + ' 소속 직원입니다.\n\n';
-  prompt += '다음 정보로 ' + type + '를 작성해주세요:\n\n';
-  prompt += '보고서 유형: ' + type + '\n';
-  prompt += '보고 대상: ' + target + '\n';
+  var prompt = '당신은 홈앤쇼핑 ' + dept + ' 소속 보고서 작성 전문가입니다.\n\n';
+  prompt += '다음 정보로 ' + type + '를 JSON 형식으로 작성해주세요.\n\n';
+  prompt += '보고서 유형: ' + type + '\n보고 대상: ' + target + '\n';
   if (period) prompt += '보고 기간: ' + period + '\n';
-  if (dept) prompt += '부서: ' + dept + '\n';
-  prompt += '\n핵심 내용:\n' + content + '\n\n';
-  prompt += '작성 규칙:\n';
-  prompt += '- ' + target + '에게 보고하는 공식 문서 톤으로 작성\n';
-  prompt += '- 한국 대기업/홈쇼핑 회사 보고서 형식에 맞게\n';
-  prompt += '- 수치가 있으면 강조하고, 전주/전월 대비 변화율 포함\n';
-  prompt += '- 마지막에 "향후 계획" 또는 "요청사항" 섹션 포함\n';
-  prompt += '- 불필요한 인사말 없이 바로 본론으로\n';
-  prompt += '- 읽기 쉽게 구조화 (제목, 소제목, 번호 활용)';
+  prompt += '부서: ' + dept + '\n\n핵심 내용:\n' + content + '\n\n';
+  prompt += '반드시 아래 JSON 형식으로만 응답하세요 (다른 텍스트 없이):\n';
+  prompt += '{\n';
+  prompt += '  "title": "보고서 제목",\n';
+  prompt += '  "subtitle": "부제목 (기간 등)",\n';
+  prompt += '  "metrics": [\n';
+  prompt += '    {"label": "핵심지표명", "value": "42.3억", "change": "+12%", "trend": "up", "icon": "💰"},\n';
+  prompt += '    {"label": "지표2", "value": "값", "change": "변화율", "trend": "up|down|neutral", "icon": "이모지"}\n';
+  prompt += '  ],\n';
+  prompt += '  "chart1": {\n';
+  prompt += '    "type": "bar",\n';
+  prompt += '    "title": "차트 제목",\n';
+  prompt += '    "labels": ["항목1","항목2","항목3"],\n';
+  prompt += '    "datasets": [{"label": "범례", "data": [10,20,30]}]\n';
+  prompt += '  },\n';
+  prompt += '  "chart2": {\n';
+  prompt += '    "type": "doughnut",\n';
+  prompt += '    "title": "차트 제목",\n';
+  prompt += '    "labels": ["A","B","C"],\n';
+  prompt += '    "data": [40,35,25]\n';
+  prompt += '  },\n';
+  prompt += '  "sections": [\n';
+  prompt += '    {"title": "섹션 제목", "icon": "📋", "items": ["내용1", "내용2", "내용3"]}\n';
+  prompt += '  ],\n';
+  prompt += '  "issues": ["이슈/요청사항 1", "이슈 2"],\n';
+  prompt += '  "plans": ["향후 계획 1", "계획 2"]\n';
+  prompt += '}\n\n';
+  prompt += '규칙:\n';
+  prompt += '- metrics는 핵심 수치 3~4개 (입력에 수치가 없으면 적절히 추정)\n';
+  prompt += '- chart1은 bar/line 중 택1, chart2는 doughnut/pie 중 택1\n';
+  prompt += '- 차트 데이터는 입력 수치 기반. 수치가 부족하면 합리적으로 추정\n';
+  prompt += '- sections는 2~4개 섹션\n';
+  prompt += '- ' + target + '에게 보고하는 공식 문서 톤\n';
+  prompt += '- icon은 적절한 이모지 사용';
 
   try {
-    var resp = await fetch('http://localhost:8502/api/summarize', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+    var resp = await fetch(PROXY + '/api/summarize', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({prompt: prompt}),
     });
-    if (!resp.ok) throw new Error('프록시 서버 연결 실패');
+    if (!resp.ok) throw new Error('프록시 연결 실패');
 
-    body.innerHTML = '';
-    var textNode = document.createTextNode('');
-    var cursor = document.createElement('span');
-    cursor.className = 'ai-cursor';
-    body.appendChild(textNode);
-    body.appendChild(cursor);
-
+    var fullText = '';
     var reader = resp.body.getReader();
     var decoder = new TextDecoder();
     var buffer = '';
     while (true) {
       var chunk = await reader.read();
       if (chunk.done) break;
-      buffer += decoder.decode(chunk.value, {stream: true});
+      buffer += decoder.decode(chunk.value, {stream:true});
       var lines = buffer.split('\n');
       buffer = lines.pop();
       for (var line of lines) {
         if (!line.startsWith('data: ')) continue;
         var payload = line.slice(6);
-        if (payload === '[DONE]') { cursor.remove(); break; }
-        try { textNode.textContent += JSON.parse(payload).text; } catch(e) {}
+        if (payload === '[DONE]') break;
+        try { fullText += JSON.parse(payload).text; } catch(e) {}
       }
     }
-    cursor.remove();
-    showExportBtns();
+
+    var jsonMatch = fullText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('보고서 생성 실패 - 다시 시도해주세요');
+    _report = JSON.parse(jsonMatch[0]);
+    renderReport(_report);
   } catch(e) {
-    body.innerHTML = '<div class="error">' +
-      (e.message.indexOf('fetch') > -1 ? 'app.py(Streamlit)가 실행되지 않았습니다.<br>streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
-      '</div>';
+    document.getElementById('loadingArea').innerHTML =
+      '<div class="section"><div class="error">' +
+      (e.message.indexOf('fetch')>-1||e.message.indexOf('Failed')>-1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
+      '</div></div>';
   } finally {
-    btn.disabled = false; btn.textContent = '보고서 생성';
+    document.getElementById('btnRun').disabled = false;
+    document.getElementById('btnRun').textContent = '보고서 생성';
   }
 }
 
-function hideExportBtns() {
-  ['btnCopy','btnWord','btnPpt'].forEach(function(id){document.getElementById(id).style.display='none';});
-}
-function showExportBtns() {
-  ['btnCopy','btnWord','btnPpt'].forEach(function(id){document.getElementById(id).style.display='inline-flex';});
-}
+function renderReport(r) {
+  document.getElementById('loadingArea').style.display = 'none';
+  var area = document.getElementById('reportArea');
+  area.style.display = 'block';
+  area.innerHTML = '';
 
-function copyResult() {
-  navigator.clipboard.writeText(document.getElementById('resultBody').textContent).then(function() {
-    var btn = document.getElementById('btnCopy');
-    btn.innerHTML = '복사 완료!';
-    setTimeout(function() { btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2" stroke="#fff" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#fff" stroke-width="2"/></svg>복사하기'; }, 1500);
-  });
-}
+  // 헤더
+  area.innerHTML += '<div class="report-header"><h1>' + esc(r.title||'') + '</h1><div class="rh-sub">' + esc(r.subtitle||'') + ' | ' + esc(_meta.dept) + ' | 보고 대상: ' + esc(_meta.target) + '</div></div>';
 
-/* ── 텍스트 → 구조 파싱 ── */
-function parseReport(text) {
-  var lines = text.split('\n');
-  var sections = [];
-  var current = null;
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    var trimmed = line.trim();
-    if (!trimmed) continue;
-    // 대제목: # 또는 ===, 또는 [ ] 로 감싼 제목
-    if (/^#{1,2}\s/.test(trimmed) || /^\[.+\]/.test(trimmed) && trimmed.length < 60) {
-      current = {title: trimmed.replace(/^#{1,2}\s*/, '').replace(/[\[\]]/g,'').trim(), items: []};
-      sections.push(current);
-    }
-    // 소제목: ### 또는 숫자. 로 시작
-    else if (/^#{3}\s/.test(trimmed) || /^\d+\.\s/.test(trimmed) && trimmed.length < 80 && !trimmed.match(/^\d+\.\s.{40,}/)) {
-      if (!current) { current = {title: '', items: []}; sections.push(current); }
-      current.items.push({type:'subtitle', text: trimmed.replace(/^#{3}\s*/, '').replace(/^\d+\.\s*/, '').trim()});
-    }
-    // 글머리: - 또는 •
-    else if (/^[-•·]\s/.test(trimmed)) {
-      if (!current) { current = {title: '', items: []}; sections.push(current); }
-      current.items.push({type:'bullet', text: trimmed.replace(/^[-•·]\s*/, '').trim()});
-    }
-    // 일반 텍스트
-    else {
-      if (!current) { current = {title: '', items: []}; sections.push(current); }
-      current.items.push({type:'text', text: trimmed});
-    }
+  // 메트릭 카드
+  if (r.metrics && r.metrics.length) {
+    var mhtml = '<div class="metrics">';
+    r.metrics.forEach(function(m) {
+      var cls = m.trend==='up'?' up':m.trend==='down'?' down':'';
+      var arrow = m.trend==='up'?'&#9650; ':m.trend==='down'?'&#9660; ':'';
+      mhtml += '<div class="metric-card'+cls+'">';
+      mhtml += '<div class="mc-icon">'+(m.icon||'📊')+'</div>';
+      mhtml += '<div class="mc-value">'+esc(m.value||'')+'</div>';
+      mhtml += '<div class="mc-label">'+esc(m.label||'')+'</div>';
+      if(m.change) mhtml += '<div class="mc-change'+cls+'">'+arrow+esc(m.change)+'</div>';
+      mhtml += '</div>';
+    });
+    mhtml += '</div>';
+    area.innerHTML += mhtml;
   }
-  return sections;
+
+  // 차트
+  if (r.chart1 || r.chart2) {
+    var chtml = '<div class="charts-row">';
+    if (r.chart1) chtml += '<div class="chart-box"><h3>'+esc(r.chart1.title||'')+'</h3><canvas id="chart1"></canvas></div>';
+    if (r.chart2) chtml += '<div class="chart-box"><h3>'+esc(r.chart2.title||'')+'</h3><canvas id="chart2"></canvas></div>';
+    chtml += '</div>';
+    area.innerHTML += chtml;
+  }
+
+  // 섹션
+  if (r.sections) {
+    r.sections.forEach(function(sec) {
+      var shtml = '<div class="report-section"><h3><span class="rs-icon" style="background:#e0f2fe;">'+(sec.icon||'📋')+'</span>'+esc(sec.title||'')+'</h3>';
+      if (sec.items && sec.items.length) {
+        shtml += '<ul>';
+        sec.items.forEach(function(it){ shtml += '<li>'+esc(it)+'</li>'; });
+        shtml += '</ul>';
+      }
+      shtml += '</div>';
+      area.innerHTML += shtml;
+    });
+  }
+
+  // 이슈 + 향후 계획
+  if ((r.issues && r.issues.length) || (r.plans && r.plans.length)) {
+    var ahtml = '<div class="action-grid">';
+    if (r.issues && r.issues.length) {
+      ahtml += '<div class="action-box issues"><h3>&#9888;&#65039; 이슈 / 요청사항</h3><ol>';
+      r.issues.forEach(function(it){ ahtml += '<li>'+esc(it)+'</li>'; });
+      ahtml += '</ol></div>';
+    }
+    if (r.plans && r.plans.length) {
+      ahtml += '<div class="action-box plans"><h3>&#128640; 향후 계획</h3><ol>';
+      r.plans.forEach(function(it){ ahtml += '<li>'+esc(it)+'</li>'; });
+      ahtml += '</ol></div>';
+    }
+    ahtml += '</div>';
+    area.innerHTML += ahtml;
+  }
+
+  area.innerHTML += '<div class="report-footer">홈앤쇼핑 AI 보고서 자동 생성기 · powered by Claude</div>';
+
+  // 차트 렌더링
+  if (r.chart1) renderChart('chart1', r.chart1);
+  if (r.chart2) renderChart('chart2', r.chart2);
+
+  document.getElementById('exportBtns').style.display = 'flex';
+  area.scrollIntoView({behavior:'smooth'});
 }
 
-/* ── Word (.doc) 저장 ── */
+function renderChart(id, cfg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var type = cfg.type || 'bar';
+  var opts = {responsive:true, maintainAspectRatio:true, plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}};
+
+  var chartData;
+  if (type === 'doughnut' || type === 'pie') {
+    chartData = {labels:cfg.labels||[], datasets:[{data:cfg.data||[], backgroundColor:COLORS.slice(0,cfg.labels.length), borderWidth:2, borderColor:'#fff'}]};
+  } else {
+    var ds = (cfg.datasets||[]).map(function(d,i){
+      return {label:d.label||'', data:d.data||[], backgroundColor:type==='line'?'transparent':COLORS[i]+'cc', borderColor:COLORS[i], borderWidth:2, tension:0.3, fill:type==='line'};
+    });
+    chartData = {labels:cfg.labels||[], datasets:ds};
+    opts.scales = {y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}};
+  }
+
+  var c = new Chart(el, {type:type, data:chartData, options:opts});
+  _chartInstances.push(c);
+}
+
+/* ── 내보내기 ── */
+function copyText() {
+  if (!_report) return;
+  var text = _report.title + '\n' + (_report.subtitle||'') + '\n\n';
+  if (_report.metrics) {
+    _report.metrics.forEach(function(m){ text += m.label+': '+m.value+(m.change?' ('+m.change+')':'')+'\n'; });
+    text += '\n';
+  }
+  if (_report.sections) {
+    _report.sections.forEach(function(s){
+      text += '[ '+s.title+' ]\n';
+      (s.items||[]).forEach(function(it){ text += '- '+it+'\n'; });
+      text += '\n';
+    });
+  }
+  if (_report.issues) { text += '[ 이슈/요청사항 ]\n'; _report.issues.forEach(function(it){text+='- '+it+'\n';}); text+='\n'; }
+  if (_report.plans) { text += '[ 향후 계획 ]\n'; _report.plans.forEach(function(it){text+='- '+it+'\n';}); }
+  navigator.clipboard.writeText(text);
+  var b=document.getElementById('btnCopy'); b.textContent='복사 완료!'; setTimeout(function(){b.textContent='복사하기';},1500);
+}
+
 function exportWord() {
-  var text = document.getElementById('resultBody').textContent;
-  var m = _reportMeta;
-  var title = (m.dept||'') + ' ' + (m.type||'보고서');
-  var sections = parseReport(text);
-
-  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
-  html += '<head><meta charset="utf-8">';
-  html += '<style>';
-  html += 'body{font-family:"맑은 고딕",sans-serif;font-size:11pt;line-height:1.8;color:#333;margin:40px 50px;}';
-  html += 'h1{font-size:18pt;color:#1a1a1a;border-bottom:3px solid #e8192c;padding-bottom:8px;margin:0 0 20px;}';
-  html += 'h2{font-size:13pt;color:#0369a1;margin:18px 0 8px;border-left:4px solid #0369a1;padding-left:10px;}';
-  html += 'h3{font-size:11pt;color:#333;margin:12px 0 6px;font-weight:700;}';
-  html += 'p{margin:4px 0;text-align:justify;}';
-  html += 'ul{margin:4px 0 4px 20px;}';
-  html += 'li{margin:3px 0;}';
-  html += '.meta{font-size:10pt;color:#888;margin-bottom:16px;}';
-  html += '.footer{margin-top:30px;padding-top:12px;border-top:1px solid #ddd;font-size:9pt;color:#aaa;text-align:center;}';
+  if (!_report) return;
+  var r = _report;
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>';
+  html += 'body{font-family:"맑은 고딕";font-size:11pt;line-height:1.8;color:#333;margin:40px 50px;}';
+  html += 'h1{font-size:20pt;color:#0369a1;border-bottom:3px solid #e8192c;padding-bottom:8px;margin:0 0 6px;}';
+  html += '.subtitle{font-size:10pt;color:#888;margin-bottom:20px;}';
+  html += '.metrics-table{width:100%;border-collapse:collapse;margin:16px 0;}';
+  html += '.metrics-table td{border:1px solid #ddd;padding:10px 14px;text-align:center;}';
+  html += '.metrics-table .val{font-size:16pt;font-weight:800;color:#0369a1;}';
+  html += '.metrics-table .lbl{font-size:9pt;color:#888;}';
+  html += '.metrics-table .chg{font-size:10pt;font-weight:700;}';
+  html += '.up{color:#16a34a;} .down{color:#dc2626;}';
+  html += 'h2{font-size:13pt;color:#0369a1;margin:20px 0 8px;border-left:4px solid #0369a1;padding-left:10px;}';
+  html += 'h3{font-size:11pt;color:#333;margin:14px 0 6px;}';
+  html += 'ul{margin:4px 0 4px 20px;} li{margin:4px 0;line-height:1.7;}';
+  html += '.footer{margin-top:30px;padding-top:10px;border-top:1px solid #ddd;font-size:9pt;color:#aaa;text-align:center;}';
   html += '</style></head><body>';
+  html += '<h1>'+esc(r.title||'')+'</h1><div class="subtitle">'+esc(r.subtitle||'')+' | '+esc(_meta.dept)+' | 보고 대상: '+esc(_meta.target)+'</div>';
 
-  html += '<h1>' + escHtml(title) + '</h1>';
-  html += '<div class="meta">';
-  if (m.period) html += '보고 기간: ' + escHtml(m.period) + '<br>';
-  html += '보고 대상: ' + escHtml(m.target||'') + ' | 부서: ' + escHtml(m.dept||'') + '</div>';
-
-  for (var s = 0; s < sections.length; s++) {
-    var sec = sections[s];
-    if (sec.title) html += '<h2>' + escHtml(sec.title) + '</h2>';
-    for (var j = 0; j < sec.items.length; j++) {
-      var it = sec.items[j];
-      if (it.type === 'subtitle') html += '<h3>' + escHtml(it.text) + '</h3>';
-      else if (it.type === 'bullet') html += '<ul><li>' + escHtml(it.text) + '</li></ul>';
-      else html += '<p>' + escHtml(it.text) + '</p>';
-    }
+  if (r.metrics && r.metrics.length) {
+    html += '<table class="metrics-table"><tr>';
+    r.metrics.forEach(function(m){
+      var cls = m.trend==='up'?' up':m.trend==='down'?' down':'';
+      html += '<td><div class="val">'+esc(m.value||'')+'</div><div class="lbl">'+esc(m.label||'')+'</div>';
+      if(m.change) html += '<div class="chg'+cls+'">'+esc(m.change)+'</div>';
+      html += '</td>';
+    });
+    html += '</tr></table>';
   }
 
-  html += '<div class="footer">홈앤쇼핑 AI 보고서 자동 생성기 · powered by Claude</div>';
-  html += '</body></html>';
+  if (r.sections) r.sections.forEach(function(s){
+    html += '<h2>'+esc(s.title||'')+'</h2><ul>';
+    (s.items||[]).forEach(function(it){ html += '<li>'+esc(it)+'</li>'; });
+    html += '</ul>';
+  });
+  if (r.issues && r.issues.length) { html += '<h2>이슈 / 요청사항</h2><ul>'; r.issues.forEach(function(it){html+='<li>'+esc(it)+'</li>';}); html+='</ul>'; }
+  if (r.plans && r.plans.length) { html += '<h2>향후 계획</h2><ul>'; r.plans.forEach(function(it){html+='<li>'+esc(it)+'</li>';}); html+='</ul>'; }
+  html += '<div class="footer">홈앤쇼핑 AI 보고서 자동 생성기 · powered by Claude</div></body></html>';
 
-  var blob = new Blob(['﻿' + html], {type: 'application/msword;charset=utf-8'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = title.replace(/\s+/g,'_') + '_' + today() + '.doc';
-  a.click();
-  URL.revokeObjectURL(url);
+  var blob = new Blob(['﻿'+html],{type:'application/msword;charset=utf-8'});
+  var a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download = (r.title||'보고서').replace(/\s+/g,'_')+'_'+today()+'.doc'; a.click();
 }
 
-/* ── PPT (.pptx) 저장 ── */
 function exportPPT() {
-  var text = document.getElementById('resultBody').textContent;
-  var m = _reportMeta;
-  var title = (m.dept||'') + ' ' + (m.type||'보고서');
-  var sections = parseReport(text);
-
+  if (!_report) return;
+  var r = _report;
   var pptx = new PptxGenJS();
-  pptx.layout = 'LAYOUT_WIDE';
-  pptx.author = '홈앤쇼핑 AI';
+  pptx.layout = 'LAYOUT_WIDE'; pptx.author = '홈앤쇼핑 AI';
 
-  // 표지 슬라이드
-  var cover = pptx.addSlide();
-  cover.background = {fill: 'E8192C'};
-  cover.addText(title, {x:0.8, y:1.5, w:'90%', h:1.2, fontSize:36, fontFace:'맑은 고딕', color:'FFFFFF', bold:true});
-  var subText = (m.period ? m.period + '\n' : '') + (m.dept||'') + ' | 보고 대상: ' + (m.target||'');
-  cover.addText(subText, {x:0.8, y:3.0, w:'90%', h:0.8, fontSize:16, fontFace:'맑은 고딕', color:'FFD0D5'});
-  cover.addText('홈앤쇼핑 AI 보고서 자동 생성기', {x:0.8, y:5.0, w:'90%', h:0.4, fontSize:11, fontFace:'맑은 고딕', color:'FFFFFF', italic:true, transparency:40});
+  // 표지
+  var s0 = pptx.addSlide();
+  s0.background = {fill:'0369A1'};
+  s0.addText(r.title||'', {x:0.8,y:1.8,w:'85%',h:1,fontSize:36,fontFace:'맑은 고딕',color:'FFFFFF',bold:true});
+  s0.addText((r.subtitle||'')+'\n'+_meta.dept+' | 보고 대상: '+_meta.target, {x:0.8,y:3.2,w:'85%',h:0.8,fontSize:15,fontFace:'맑은 고딕',color:'99CCEE'});
+  s0.addShape(pptx.ShapeType.rect,{x:0.8,y:3.0,w:2,h:0.04,fill:{color:'E8192C'}});
+
+  // 메트릭 슬라이드
+  if (r.metrics && r.metrics.length) {
+    var s1 = pptx.addSlide();
+    addSlideHeader(s1, '핵심 지표 요약');
+    var mw = 2.8, mg = 0.3, startX = (13.33 - (r.metrics.length*mw + (r.metrics.length-1)*mg))/2;
+    r.metrics.forEach(function(m,i) {
+      var x = startX + i*(mw+mg);
+      s1.addShape(pptx.ShapeType.roundRect,{x:x,y:1.8,w:mw,h:2.8,fill:{color:'F8FAFC'},rectRadius:0.15,line:{color:'E0E0E0',width:1}});
+      s1.addText(m.icon||'📊',{x:x,y:1.95,w:mw,h:0.5,fontSize:24,align:'center'});
+      s1.addText(m.value||'',{x:x,y:2.45,w:mw,h:0.6,fontSize:28,fontFace:'맑은 고딕',color:'111111',bold:true,align:'center'});
+      s1.addText(m.label||'',{x:x,y:3.05,w:mw,h:0.4,fontSize:11,color:'888888',align:'center'});
+      if (m.change) {
+        var cc = m.trend==='up'?'16A34A':m.trend==='down'?'DC2626':'888888';
+        s1.addText(m.change,{x:x,y:3.45,w:mw,h:0.4,fontSize:13,fontFace:'맑은 고딕',color:cc,bold:true,align:'center'});
+      }
+    });
+  }
+
+  // 차트 슬라이드 (표 형태로)
+  [r.chart1, r.chart2].forEach(function(ch) {
+    if (!ch) return;
+    var sc = pptx.addSlide();
+    addSlideHeader(sc, ch.title||'차트');
+    if (ch.type==='doughnut'||ch.type==='pie') {
+      sc.addChart(pptx.charts.DOUGHNUT, [{name:'',labels:ch.labels||[],values:ch.data||[]}],
+        {x:2,y:1.5,w:5,h:4,showPercent:true,showTitle:false,chartColors:COLORS.slice(0,ch.labels.length).map(function(c){return c.replace('#','');})});
+    } else {
+      var datasets = (ch.datasets||[]).map(function(d,i){return {name:d.label||'',labels:ch.labels||[],values:d.data||[]};});
+      sc.addChart(pptx.charts.BAR, datasets,
+        {x:1,y:1.5,w:8,h:4,showTitle:false,chartColors:['0369A1','E8192C','16A34A','D97706'],catAxisOrientation:'minMax',valAxisOrientation:'minMax'});
+    }
+  });
 
   // 내용 슬라이드
-  for (var s = 0; s < sections.length; s++) {
-    var sec = sections[s];
-    if (!sec.title && sec.items.length === 0) continue;
+  if (r.sections) r.sections.forEach(function(sec) {
+    var ss = pptx.addSlide();
+    addSlideHeader(ss, (sec.icon||'')+ ' ' + (sec.title||''));
+    var rows = (sec.items||[]).map(function(it,i){
+      return {text:it, options:{fontSize:13,fontFace:'맑은 고딕',color:'333333',bullet:{type:'bullet'},spaceBefore:6}};
+    });
+    if (rows.length) ss.addText(rows, {x:0.8,y:1.4,w:'85%',h:4,valign:'top',lineSpacing:24});
+  });
 
-    var slide = pptx.addSlide();
-    // 상단 빨간 바
-    slide.addShape(pptx.ShapeType.rect, {x:0, y:0, w:'100%', h:0.08, fill:{color:'E8192C'}});
-    // 제목
-    var slideTitle = sec.title || '상세 내용';
-    slide.addText(slideTitle, {x:0.6, y:0.3, w:'90%', h:0.6, fontSize:24, fontFace:'맑은 고딕', color:'1A1A1A', bold:true});
-    // 구분선
-    slide.addShape(pptx.ShapeType.rect, {x:0.6, y:0.9, w:1.5, h:0.04, fill:{color:'E8192C'}});
-
-    // 내용
-    var bodyRows = [];
-    for (var j = 0; j < sec.items.length; j++) {
-      var it = sec.items[j];
-      if (it.type === 'subtitle') {
-        bodyRows.push({text: it.text, options: {fontSize:15, fontFace:'맑은 고딕', color:'0369A1', bold:true, bullet:false, spaceBefore:12}});
-      } else if (it.type === 'bullet') {
-        bodyRows.push({text: it.text, options: {fontSize:13, fontFace:'맑은 고딕', color:'333333', bullet:{type:'bullet', style:'arabicPeriod'}, indentLevel:0, spaceBefore:4}});
-      } else {
-        bodyRows.push({text: it.text, options: {fontSize:13, fontFace:'맑은 고딕', color:'444444', bullet:false, spaceBefore:4}});
-      }
+  // 이슈 + 계획 슬라이드
+  if ((r.issues&&r.issues.length)||(r.plans&&r.plans.length)) {
+    var sf = pptx.addSlide();
+    addSlideHeader(sf, '이슈 및 향후 계획');
+    var leftY = 1.4;
+    if (r.issues && r.issues.length) {
+      sf.addText('이슈 / 요청사항', {x:0.8,y:leftY,w:5.5,h:0.4,fontSize:14,fontFace:'맑은 고딕',color:'DC2626',bold:true});
+      leftY += 0.5;
+      var ir = r.issues.map(function(it){return{text:it,options:{fontSize:12,bullet:true,spaceBefore:4,color:'444444'}};});
+      sf.addText(ir, {x:0.8,y:leftY,w:5.5,h:2.5,valign:'top'});
     }
-    if (bodyRows.length) {
-      slide.addText(bodyRows, {x:0.6, y:1.15, w:'85%', h:4.2, valign:'top', lineSpacing:22});
+    if (r.plans && r.plans.length) {
+      sf.addText('향후 계획', {x:7,y:1.4,w:5.5,h:0.4,fontSize:14,fontFace:'맑은 고딕',color:'16A34A',bold:true});
+      var pr = r.plans.map(function(it){return{text:it,options:{fontSize:12,bullet:true,spaceBefore:4,color:'444444'}};});
+      sf.addText(pr, {x:7,y:1.9,w:5.5,h:2.5,valign:'top'});
     }
-    // 페이지 번호
-    slide.addText((s+2)+'', {x:'93%', y:'93%', w:0.5, h:0.3, fontSize:10, color:'AAAAAA', align:'right'});
   }
 
-  pptx.writeFile({fileName: title.replace(/\s+/g,'_') + '_' + today() + '.pptx'});
+  pptx.writeFile({fileName:(r.title||'보고서').replace(/\s+/g,'_')+'_'+today()+'.pptx'});
 }
 
-function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function today() { var d=new Date(); return d.getFullYear()+''+(d.getMonth()+1<10?'0':'')+(d.getMonth()+1)+(d.getDate()<10?'0':'')+d.getDate(); }
+function addSlideHeader(slide, title) {
+  slide.addShape(PptxGenJS.ShapeType ? PptxGenJS.ShapeType.rect : 'rect', {x:0,y:0,w:'100%',h:0.06,fill:{color:'E8192C'}});
+  slide.addText(title, {x:0.6,y:0.25,w:'85%',h:0.55,fontSize:22,fontFace:'맑은 고딕',color:'111111',bold:true});
+  slide.addShape(PptxGenJS.ShapeType ? PptxGenJS.ShapeType.rect : 'rect', {x:0.6,y:0.85,w:1.2,h:0.035,fill:{color:'0369A1'}});
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function today(){var d=new Date();return d.getFullYear()+''+(d.getMonth()+1<10?'0':'')+(d.getMonth()+1)+(d.getDate()<10?'0':'')+d.getDate();}
 </script>
 </body>
 </html>
