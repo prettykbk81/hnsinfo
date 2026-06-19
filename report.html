@@ -219,11 +219,17 @@ async function generate() {
       }
     }
 
-    var jsonMatch = fullText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('보고서 생성 실패 - 다시 시도해주세요');
-    _report = JSON.parse(jsonMatch[0]);
+    _report = tryParseJSON(fullText);
+    if (!_report) throw new Error('JSON 파싱 실패 - 다시 시도합니다...');
     renderReport(_report);
   } catch(e) {
+    if (e.message.indexOf('JSON')>-1 && !_retried) {
+      _retried = true;
+      document.getElementById('loadingArea').querySelector('.ai-loading').innerHTML =
+        '<div class="ai-spinner"></div>JSON 오류 발생, 자동 재시도 중...';
+      setTimeout(generate, 500);
+      return;
+    }
     document.getElementById('loadingArea').innerHTML =
       '<div class="section"><div class="error">' +
       (e.message.indexOf('fetch')>-1||e.message.indexOf('Failed')>-1 ? 'streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
@@ -231,7 +237,35 @@ async function generate() {
   } finally {
     document.getElementById('btnRun').disabled = false;
     document.getElementById('btnRun').textContent = '보고서 생성';
+    _retried = false;
   }
+}
+var _retried = false;
+
+function tryParseJSON(text) {
+  var m = text.match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  var raw = m[0];
+  // 1차: 그대로 파싱
+  try { return JSON.parse(raw); } catch(e) {}
+  // 2차: trailing comma 제거
+  var cleaned = raw.replace(/,\s*([\]}])/g, '$1');
+  try { return JSON.parse(cleaned); } catch(e) {}
+  // 3차: 줄바꿈이 포함된 문자열 값 수정
+  cleaned = cleaned.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){ return ': "'+a+' '+b+'"'; });
+  try { return JSON.parse(cleaned); } catch(e) {}
+  // 4차: 잘린 JSON 복구 - 닫는 괄호 추가
+  var opens = (cleaned.match(/[\[{]/g)||[]).length;
+  var closes = (cleaned.match(/[\]}]/g)||[]).length;
+  var tail = cleaned;
+  for (var i = 0; i < opens - closes; i++) {
+    var lastOpen = Math.max(tail.lastIndexOf('['), tail.lastIndexOf('{'));
+    tail += (tail[lastOpen] === '[') ? ']' : '}';
+  }
+  // trailing comma 한번 더
+  tail = tail.replace(/,\s*([\]}])/g, '$1');
+  try { return JSON.parse(tail); } catch(e) {}
+  return null;
 }
 
 function renderReport(r) {
