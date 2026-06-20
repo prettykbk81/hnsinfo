@@ -1,136 +1,136 @@
 {
-  "date": "2026년 06월 19일",
-  "date_en": "JUNE 19, 2026",
+  "date": "2026년 06월 20일",
+  "date_en": "JUNE 20, 2026",
   "left": [
     {
-      "category": "실적·성장",
-      "title": "창립 15주년 기념<br>프리미엄 여행 특수",
+      "category": "성장",
+      "title": "황금연휴 시즌 <br>해외여행 공략",
       "items": [
         {
-          "keyword": "기념 이벤트",
-          "desc": "<b>창립 15주년</b>을 맞아 해외여행 패키지 연이어 편성"
+          "keyword": "타겟",
+          "desc": "여름 휴가철 + <b>추석 황금연휴</b> 고객"
         },
         {
-          "keyword": "현금 지원",
-          "desc": "방송 중 <b>실시간 추첨</b>으로 현금 여행지원금·상품권 제공"
+          "keyword": "편성",
+          "desc": "<b>20일 토요일 밤</b> 프리미엄 여행패키지 <b>연이어 방송</b>"
         },
         {
-          "keyword": "타겟층",
-          "desc": "여름 휴가철·추석 <b>황금연휴</b> 앞둔 고객 공략"
+          "keyword": "카테고리",
+          "desc": "동유럽·싱가포르 등 <b>유럽·아시아</b> 상품"
         }
       ],
-      "footer": "기념 이벤트를 활용한 시즈널 매출 확대 전략",
+      "footer": "휴가 수요 증가 시기에 집중 편성으로 고객 유입 극대화",
       "sources": [
         {
-          "title": "홈앤쇼핑 창립 15주년 프리미엄 여행 방송",
-          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
-        }
-      ]
-    },
-    {
-      "category": "상품·전략",
-      "title": "4성급 호텔 3연박<br>'NO' 차별화 상품",
-      "items": [
-        {
-          "keyword": "숙박",
-          "desc": "<b>월드 체인 4성급 호텔</b> 전 일정 구성으로 프리미엄화"
-        },
-        {
-          "keyword": "추가비용 제거",
-          "desc": "<b>NO 단체쇼핑, NO 유류세 차액</b> 조건으로 비용 부담 완화"
-        },
-        {
-          "keyword": "자유일정",
-          "desc": "<b>1일 자유시간</b> 제공으로 자유여행의 장점 결합"
-        }
-      ],
-      "footer": "패키지 편의성 + 자유여행 자율성 결합한 하이브리드 상품",
-      "sources": [
-        {
-          "title": "동유럽·싱가포르 여행 상품 연속 방송",
-          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113345"
-        },
-        {
-          "title": "휴가준비 유럽·아시아 방송",
-          "url": "https://www.newsis.com/view/NISX20260619_0003676006"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "패키지여행 수요 증가<br>홈쇼핑 업계 확대",
-      "items": [
-        {
-          "keyword": "시장 확대",
-          "desc": "패키지여행 <b>편의성과 자유여행 장점 결합</b> 상품 인기"
-        },
-        {
-          "keyword": "채널 다각화",
-          "desc": "<b>TV홈쇼핑·모바일앱·라이브커머스</b> 등 전채널 운영"
-        },
-        {
-          "keyword": "업계 동향",
-          "desc": "홈쇼핑업계 <b>해외여행 상품 편성 확대</b> 추세"
-        }
-      ],
-      "footer": "여행 수요 증가에 따른 홈쇼핑 유통채널 경쟁 심화",
-      "sources": [
-        {
-          "title": "황금연휴 여행객 공략 상품 선",
+          "title": "황금연휴 앞두고 여행객 공략",
           "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201764"
         }
       ]
     },
     {
-      "category": "경영·운영",
-      "title": "20일 토요일 밤<br>연이은 특집 방송",
+      "category": "상품 혁신",
+      "title": "패키지+자유여행 <br>하이브리드 상품",
       "items": [
         {
-          "keyword": "방송 일정",
-          "desc": "오는 <b>20일 토요일 밤</b> 여행 상품 특집 방송 편성"
+          "keyword": "4성급호텔",
+          "desc": "<b>전 일정을 월드 체인 4성급</b>으로 구성"
         },
         {
-          "keyword": "상품군",
-          "desc": "동유럽·싱가포르 등 <b>유럽·아시아 명품</b> 여행 상품"
+          "keyword": "자유도",
+          "desc": "1일 <b>자유시간</b> + 3연박 제공"
         },
         {
-          "keyword": "편성 전략",
-          "desc": "<b>여행 히트 상품 총결산</b>으로 시너지 극대화"
+          "keyword": "비용절감",
+          "desc": "<b>NO 단체쇼핑</b>, <b>NO 유류세 차액</b>"
         }
       ],
-      "footer": "골든타임 토요일 밤 연이은 편성으로 도달률 극대화",
+      "footer": "편의성과 자유도를 결합한 신개념 여행상품이 인기 중",
       "sources": [
         {
-          "title": "유럽·아시아 명품 여행 상품 단독 편성",
+          "title": "유럽·아시아 명품 여행 상품",
           "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005215"
         },
         {
-          "title": "여름 히트 상품 집합 여행 특집",
+          "title": "동유럽·싱가포르 여행 상품 연속 방송",
+          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113345"
+        }
+      ]
+    },
+    {
+      "category": "마케팅",
+      "title": "창립 15주년 <br>프로모션 강화",
+      "items": [
+        {
+          "keyword": "기념행사",
+          "desc": "창립 <b>15주년</b> 기념 특별 방송 운영"
+        },
+        {
+          "keyword": "경품제도",
+          "desc": "<b>실시간 추첨</b>으로 현금 여행지원금·상품권 제공"
+        },
+        {
+          "keyword": "채널확대",
+          "desc": "TV홈쇼핑·모바일앱·라이브커머스 <b>전채널</b> 운영"
+        }
+      ],
+      "footer": "기념행사와 다채로운 경품으로 브랜드 충성도 강화",
+      "sources": [
+        {
+          "title": "창립 15주년 현금 여행지원금 제공",
+          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
+        }
+      ]
+    },
+    {
+      "category": "실적",
+      "title": "여름 히트 상품 <br>총결산 프로젝트",
+      "items": [
+        {
+          "keyword": "특집기획",
+          "desc": "<b>여름 히트 상품을 집합</b>한 여행 특집방송"
+        },
+        {
+          "keyword": "시간대",
+          "desc": "20일 <b>밤 시간대</b> 타깃 집중 편성"
+        },
+        {
+          "keyword": "상품군",
+          "desc": "해외여행 + <b>시즈널 상품</b> 조합 판매"
+        }
+      ],
+      "footer": "시즈널 수요와 여행 상품을 결합한 매출 극대화 전략",
+      "sources": [
+        {
+          "title": "여름 히트 상품 집합한 여행 특집",
           "url": "https://www.ziksir.com/news/articleView.html?idxno=137435"
         }
       ]
     },
     {
-      "category": "할인·프로모션",
-      "title": "최대 51% 할인<br>전채널 동시 진행",
+      "category": "경쟁력",
+      "title": "홈쇼핑업계 <br>여행상품 확대",
       "items": [
         {
-          "keyword": "할인율",
-          "desc": "패션브랜드 재고 소진 지원으로 <b>최대 51% 할인</b> 제공"
+          "keyword": "업계동향",
+          "desc": "<b>홈쇼핑업계 전반</b> 여행상품 편성 확대 중"
         },
         {
-          "keyword": "운영채널",
-          "desc": "<b>TV홈쇼핑·모바일앱·라이브커머스</b> 전채널 운영"
+          "keyword": "수요증가",
+          "desc": "해외여행 수요 증가로 여행사·유통사 <b>협력강화</b>"
         },
         {
-          "keyword": "목표",
-          "desc": "고객에게 <b>합리적 쇼핑 기회</b> 제공하며 재고 소진"
+          "keyword": "할인경쟁",
+          "desc": "최대 <b>51% 할인</b> 등 프로모션 강화"
         }
       ],
-      "footer": "브랜드 파트너십 강화와 고객 만족도 동시 달성 전략",
+      "footer": "휴가시즌 선점으로 시장 내 홈쇼핑의 위상 강화 중",
       "sources": [
         {
-          "title": "국내외 패션 브랜드 재고 소진 지원",
+          "title": "유럽·아시아 명품 여행 상품",
+          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005215"
+        },
+        {
+          "title": "유통레이더 할인 혜택 제공",
           "url": "https://daily.hankooki.com/news/articleView.html?idxno=1378043"
         }
       ]
@@ -138,143 +138,131 @@
   ],
   "right": [
     {
-      "category": "실적",
-      "title": "홈쇼핑, 방송업계서<br>2위 점유율 확보",
+      "category": "실적·성장",
+      "title": "홈쇼핑 채널의<br>강력한 실적",
       "items": [
         {
-          "keyword": "시장점유율",
-          "desc": "홈쇼핑PP 18.0% 기록, <b>지상파(17.8%)를 추월</b>"
+          "keyword": "김치 매출",
+          "desc": "<b>연 180억 원</b> 기록, 온라인 1위 지속"
         },
         {
-          "keyword": "IPTV 선두",
-          "desc": "IPTV가 27.3%로 1위, 홈쇼핑은 그 뒤를 추격"
+          "keyword": "누적 매출",
+          "desc": "누적 <b>3,100억 원</b> 달성 (홈쇼핑 전 채널)"
         },
         {
-          "keyword": "CP 급성장",
-          "desc": "CP는 2016년 2.2%에서 6.5%로 상승 중"
+          "keyword": "시장 영향력",
+          "desc": "국내 주요 홈쇼핑 모두에서 판매 확대"
         }
       ],
-      "footer": "온라인 기반 채널의 성장이 가속화되는 구조 변화",
+      "footer": "홈쇼핑은 여전히 강력한 매출 채널로 기능 중",
       "sources": [
         {
-          "title": "방송광고 2조원 붕괴 눈앞",
-          "url": "https://www.ddaily.co.kr/page/view/2026061918045250328"
-        },
-        {
-          "title": "2025년 방송사 매출 18.6조",
-          "url": "https://www.edaily.co.kr/news/newspath.asp?newsid=05723606645483360"
+          "title": "3100억 CEO 홍진경의 성공 철학",
+          "url": "https://www.wikitree.co.kr/articles/1142114"
         }
       ]
     },
     {
-      "category": "실적",
-      "title": "방송업계 3년 연속<br>매출 감소 경보",
+      "category": "트렌드",
+      "title": "고물가 시대,<br>할인 경쟁 심화",
       "items": [
         {
-          "keyword": "총매출",
-          "desc": "2025년 방송사 매출 <b>18.6조원</b> (3년 연속 감소)"
+          "keyword": "할인 규모",
+          "desc": "패션·의류 최대 <b>51% 할인</b> 진행"
         },
         {
-          "keyword": "광고매출",
-          "desc": "방송광고 전년 대비 <b>12~17% 급락</b>"
+          "keyword": "채널 다중화",
+          "desc": "TV·모바일앱·라이브커머스 동시 전개"
         },
         {
-          "keyword": "영업이익",
-          "desc": "전체 방송사 영업이익 3.1조원 (전년比 9,719억원 감소)"
+          "keyword": "시즌 전략",
+          "desc": "시즌오프·역시즌 행사 <b>동시 운영</b>"
         }
       ],
-      "footer": "산업 전반의 구조적 침체…신규 성장동력 필요",
+      "footer": "단순 할인에서 다채널 동시 프로모션으로 진화",
       "sources": [
         {
-          "title": "성장 멈춘 방송시장, 3년 연속 감소",
-          "url": "https://www.newsis.com/view/NISX20260619_0003676447"
-        },
-        {
-          "title": "JTBC, 이래서 힘들었나",
-          "url": "https://www.mt.co.kr/tech/2026/06/19/2026061917373752064"
+          "title": "고물가에 할인전 확대하는 유통가",
+          "url": "http://www.sisafocus.co.kr/news/articleView.html?idxno=361596"
         }
       ]
     },
     {
-      "category": "경쟁 구도",
-      "title": "IPTV·PP와의<br>삼각 경쟁 심화",
+      "category": "트렌드",
+      "title": "친환경·자체브랜드<br>차별화 경쟁",
       "items": [
         {
-          "keyword": "IPTV 선도",
-          "desc": "27.3% 점유율로 방송업계 <b>압도적 1위</b> 확보"
+          "keyword": "채널 다각화",
+          "desc": "홈쇼핑·온라인으로 <b>자체브랜드 경쟁력</b> 확보"
         },
         {
-          "keyword": "일반PP 경쟁",
-          "desc": "일반PP 19.2%로 홈쇼핑과 <b>거의 격차 없음</b>"
+          "keyword": "사업 확장",
+          "desc": "OEM·ODM으로 B2B 시장 진출 확대"
         },
         {
-          "keyword": "지상파 추락",
-          "desc": "지상파 17.8%, 광고매출 <b>-17% 급락</b>"
+          "keyword": "리스크 감소",
+          "desc": "특정 유통 의존도 <b>낮추고 안정성</b> 강화"
         }
       ],
-      "footer": "온라인·플랫폼 채널 중심으로 구도 재편 중",
+      "footer": "홈쇼핑 채널 의존도 탈피, 수직계열화 전략 가속",
       "sources": [
         {
-          "title": "2025년 지상파 방송광고매출, 전년 대비 -17%",
-          "url": "https://www.mediaus.co.kr/news/articleView.html?idxno=317372"
-        },
-        {
-          "title": "방송광고 2조원 붕괴 눈앞",
-          "url": "https://www.ddaily.co.kr/page/view/2026061918045250328"
+          "title": "친환경이 돈 되는 시대",
+          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=461668"
         }
       ]
     },
     {
-      "category": "전략",
-      "title": "제작비 효율성<br>경쟁 우위 보유",
+      "category": "정책·규제",
+      "title": "라이브커머스<br>새로운 활용처 확대",
       "items": [
         {
-          "keyword": "투자효율성",
-          "desc": "홈쇼핑 37.2% (PP 제외시 51.4%), <b>지상파 77.4% 대비 효율적</b>"
+          "keyword": "혁신 사례",
+          "desc": "<b>라이브 잡커머스</b> 등장, 채용까지 확대"
         },
         {
-          "keyword": "낮은 원가율",
-          "desc": "홈쇼핑은 <b>높은 마진율 구조</b> 유지 가능"
+          "keyword": "콘텐츠 형식",
+          "desc": "홈쇼핑 형식 차용, 실시간 인터뷰 방식"
         },
         {
-          "keyword": "콘텐츠사업자",
-          "desc": "CP는 42.9% 투자로 빠른 성장 달성"
+          "keyword": "시장 기회",
+          "desc": "기존 채널을 <b>새로운 목적</b>으로 활용"
         }
       ],
-      "footer": "제작비 효율성이 높아 경기 침체에 강한 사업 모델",
+      "footer": "라이브커머스는 홈쇼핑 플랫폼으로서 무한한 가능성",
       "sources": [
         {
-          "title": "2025년 방송사 매출 18.6조",
-          "url": "https://www.edaily.co.kr/news/newspath.asp?newsid=05723606645483360"
-        },
-        {
-          "title": "JTBC, 이래서 힘들었나",
-          "url": "https://www.mt.co.kr/tech/2026/06/19/2026061917373752064"
+          "title": "피씨엔, SSAFY 채용박람회 참가",
+          "url": "https://zdnet.co.kr/view/?no=20260620110544"
         }
       ]
     },
     {
-      "category": "기회",
-      "title": "유통채널 다각화<br>성장 가능성",
+      "category": "경쟁사·인물",
+      "title": "홈쇼핑 스타의<br>영향력 여전",
       "items": [
         {
-          "keyword": "MD 확대",
-          "desc": "홈쇼핑·온라인몰·백화점 MD <b>47명 참여</b> 확대 중"
+          "keyword": "여왕 최화정",
+          "desc": "'홈쇼핑 여왕' 호칭, <b>높은 영향력</b> 유지"
         },
         {
-          "keyword": "B2B 협력",
-          "desc": "중소기업과 상담회 통해 <b>591억 규모 상담</b> 진행"
+          "keyword": "콘텐츠화",
+          "desc": "유튜브 등 2차 미디어에서 <b>재조명</b> 확대"
         },
         {
-          "keyword": "오프라인 강화",
-          "desc": "대형마트·백화점 등 <b>다채널 유통 확대</b> 추진"
+          "keyword": "브랜드 가치",
+          "desc": "스타 개인이 <b>채널 자산</b>으로 기능"
         }
       ],
-      "footer": "온·오프라인 융합 유통 확대로 신성장동력 창출 가능",
+      "footer": "홈쇼핑 진행자의 개인브랜드가 콘텐츠 자산화되는 추세",
       "sources": [
         {
-          "title": "충북도, 대·중소기업 구매상담회 개최",
-          "url": "https://www.gukjenews.com/news/articleView.html?idxno=3612945"
+          "title": "홈쇼핑 여왕 최화정 대기실 급습",
+          "url": "http://www.osen.co.kr/article/G1112825144"
+        },
+        {
+          "title": "김신영 역대급 주사 공개",
+          "url": "https://sports.donga.com/ent/article/all/20260620/134148280/1"
         }
       ]
     }
