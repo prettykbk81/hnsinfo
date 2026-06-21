@@ -1,54 +1,58 @@
 {
-  "date": "2026년 06월 20일",
-  "date_en": "JUNE 20, 2026",
+  "date": "2026년 06월 21일",
+  "date_en": "JUNE 21, 2026",
   "left": [
     {
-      "category": "성장",
-      "title": "황금연휴 시즌 <br>해외여행 공략",
+      "category": "실적·성장",
+      "title": "창립 15주년 기념<br>프리미엄 여행 공략",
       "items": [
         {
-          "keyword": "타겟",
-          "desc": "여름 휴가철 + <b>추석 황금연휴</b> 고객"
+          "keyword": "시즌타이밍",
+          "desc": "여름 휴가·추석 연휴 앞두고 <b>수요 집중</b>"
         },
         {
-          "keyword": "편성",
-          "desc": "<b>20일 토요일 밤</b> 프리미엄 여행패키지 <b>연이어 방송</b>"
+          "keyword": "상품 다양성",
+          "desc": "<b>유럽·아시아</b> 프리미엠 패키지 <b>연속 편성</b>"
         },
         {
-          "keyword": "카테고리",
-          "desc": "동유럽·싱가포르 등 <b>유럽·아시아</b> 상품"
+          "keyword": "고객 리워드",
+          "desc": "실시간 추첨 현금지원금·상품권 <b>대규모 제공</b>"
         }
       ],
-      "footer": "휴가 수요 증가 시기에 집중 편성으로 고객 유입 극대화",
+      "footer": "황금연휴 수요 집중으로 관광상품 매출 확대 기대",
       "sources": [
         {
-          "title": "황금연휴 앞두고 여행객 공략",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201764"
+          "title": "여름·추석 휴가 준비하세요",
+          "url": "https://www.thepublic.kr/news/articleView.html?idxno=308444"
+        },
+        {
+          "title": "창립 15주년 맞아 여행객 공략",
+          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
         }
       ]
     },
     {
-      "category": "상품 혁신",
-      "title": "패키지+자유여행 <br>하이브리드 상품",
+      "category": "상품전략",
+      "title": "차별화된 여행상품<br>'제로 요금' 컨셉",
       "items": [
         {
-          "keyword": "4성급호텔",
-          "desc": "<b>전 일정을 월드 체인 4성급</b>으로 구성"
+          "keyword": "호텔등급",
+          "desc": "<b>월드체인 4성급</b> 호텔 전일정 운영"
+        },
+        {
+          "keyword": "추가비용",
+          "desc": "<b>NO 단체쇼핑</b> + <b>NO 유류세 차액</b>"
         },
         {
           "keyword": "자유도",
-          "desc": "1일 <b>자유시간</b> + 3연박 제공"
-        },
-        {
-          "keyword": "비용절감",
-          "desc": "<b>NO 단체쇼핑</b>, <b>NO 유류세 차액</b>"
+          "desc": "4성급 3박 + <b>1일 자유시간</b> 제공"
         }
       ],
-      "footer": "편의성과 자유도를 결합한 신개념 여행상품이 인기 중",
+      "footer": "패키지여행 편의성 + 자유여행 장점 결합 차별화",
       "sources": [
         {
-          "title": "유럽·아시아 명품 여행 상품",
-          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005215"
+          "title": "휴가준비 하세요 유럽·아시아 방송",
+          "url": "https://www.newsis.com/view/NISX20260619_0003676006"
         },
         {
           "title": "동유럽·싱가포르 여행 상품 연속 방송",
@@ -57,212 +61,220 @@
       ]
     },
     {
-      "category": "마케팅",
-      "title": "창립 15주년 <br>프로모션 강화",
+      "category": "채널전략",
+      "title": "멀티채널 운영으로<br>고객 접점 확대",
       "items": [
         {
-          "keyword": "기념행사",
-          "desc": "창립 <b>15주년</b> 기념 특별 방송 운영"
+          "keyword": "편성일정",
+          "desc": "<b>20일 토요일 밤</b> 명품여행 <b>연이어 편성</b>"
         },
         {
-          "keyword": "경품제도",
-          "desc": "<b>실시간 추첨</b>으로 현금 여행지원금·상품권 제공"
+          "keyword": "채널구성",
+          "desc": "TV홈쇼핑·모바일앱·라이브커머스 <b>전채널</b>"
         },
         {
-          "keyword": "채널확대",
-          "desc": "TV홈쇼핑·모바일앱·라이브커머스 <b>전채널</b> 운영"
+          "keyword": "시간효율",
+          "desc": "프리미엄 상품을 <b>30초 내</b> 임직원 파악"
         }
       ],
-      "footer": "기념행사와 다채로운 경품으로 브랜드 충성도 강화",
+      "footer": "다채널 동시 운영으로 고객 수용성 및 매출 극대화",
       "sources": [
         {
-          "title": "창립 15주년 현금 여행지원금 제공",
+          "title": "유통가 오늘 SK인텔릭스 현대리바트",
+          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005215"
+        },
+        {
+          "title": "유통레이더 전채널 운영 현황",
+          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1378043"
+        }
+      ]
+    },
+    {
+      "category": "시장트렌드",
+      "title": "여행상품 수요 증가<br>홈쇼핑업계 확대편성",
+      "items": [
+        {
+          "keyword": "수요층",
+          "desc": "여름휴가·황금연휴 <b>여행객 급증</b>"
+        },
+        {
+          "keyword": "상품특징",
+          "desc": "패키지·자유여행 <b>하이브리드 상품</b> 인기"
+        },
+        {
+          "keyword": "업계동향",
+          "desc": "홈쇼핑업체 관광상품 <b>편성 대폭 확대</b>"
+        }
+      ],
+      "footer": "계절성 수요를 반영한 관광상품 편성 경쟁 심화 중",
+      "sources": [
+        {
+          "title": "황금연휴 앞두고 여행객 공략",
+          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201764"
+        },
+        {
+          "title": "유통가 오늘 홈앤쇼핑 여행상품",
           "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
         }
       ]
     },
     {
-      "category": "실적",
-      "title": "여름 히트 상품 <br>총결산 프로젝트",
+      "category": "경쟁우위",
+      "title": "고객신뢰 기반<br>프리미엄 포지셔닝",
       "items": [
         {
-          "keyword": "특집기획",
-          "desc": "<b>여름 히트 상품을 집합</b>한 여행 특집방송"
+          "keyword": "기념행사",
+          "desc": "창립 <b>15주년</b> 고객감사 대규모 지원금"
         },
         {
-          "keyword": "시간대",
-          "desc": "20일 <b>밤 시간대</b> 타깃 집중 편성"
+          "keyword": "신뢰도",
+          "desc": "<b>월드체인 4성급</b> 검증된 호텔 파트너십"
         },
         {
-          "keyword": "상품군",
-          "desc": "해외여행 + <b>시즈널 상품</b> 조합 판매"
+          "keyword": "가성비",
+          "desc": "명품여행 <b>투명한 요금체계</b>로 신뢰성 확보"
         }
       ],
-      "footer": "시즈널 수요와 여행 상품을 결합한 매출 극대화 전략",
+      "footer": "15년 고객신뢰를 바탕으로 프리미엄 시장 선점",
       "sources": [
         {
-          "title": "여름 히트 상품 집합한 여행 특집",
-          "url": "https://www.ziksir.com/news/articleView.html?idxno=137435"
-        }
-      ]
-    },
-    {
-      "category": "경쟁력",
-      "title": "홈쇼핑업계 <br>여행상품 확대",
-      "items": [
-        {
-          "keyword": "업계동향",
-          "desc": "<b>홈쇼핑업계 전반</b> 여행상품 편성 확대 중"
+          "title": "여름·추석 휴가 준비하세요 창립15주년",
+          "url": "https://www.thepublic.kr/news/articleView.html?idxno=308444"
         },
         {
-          "keyword": "수요증가",
-          "desc": "해외여행 수요 증가로 여행사·유통사 <b>협력강화</b>"
-        },
-        {
-          "keyword": "할인경쟁",
-          "desc": "최대 <b>51% 할인</b> 등 프로모션 강화"
-        }
-      ],
-      "footer": "휴가시즌 선점으로 시장 내 홈쇼핑의 위상 강화 중",
-      "sources": [
-        {
-          "title": "유럽·아시아 명품 여행 상품",
-          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005215"
-        },
-        {
-          "title": "유통레이더 할인 혜택 제공",
-          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1378043"
+          "title": "굿모닝 19일 유통가 소식 홈앤쇼핑",
+          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
         }
       ]
     }
   ],
   "right": [
     {
-      "category": "실적·성장",
-      "title": "홈쇼핑 채널의<br>강력한 실적",
+      "category": "성장",
+      "title": "글로벌 3각 축 완성<br>형지I&C 확장 본격화",
       "items": [
         {
-          "keyword": "김치 매출",
-          "desc": "<b>연 180억 원</b> 기록, 온라인 1위 지속"
+          "keyword": "일본 시장",
+          "desc": "<b>온·오프라인 결합</b> 옴니패션 전략 추진 중"
         },
         {
-          "keyword": "누적 매출",
-          "desc": "누적 <b>3,100억 원</b> 달성 (홈쇼핑 전 채널)"
+          "keyword": "중국 시장",
+          "desc": "상하이 <b>민관 네트워크</b> 구축으로 글로벌 입지 강화"
         },
         {
-          "keyword": "시장 영향력",
-          "desc": "국내 주요 홈쇼핑 모두에서 판매 확대"
+          "keyword": "유럽 진출",
+          "desc": "3대 글로벌 거점 구축으로 <b>사업 다각화</b>"
         }
       ],
-      "footer": "홈쇼핑은 여전히 강력한 매출 채널로 기능 중",
+      "footer": "홈쇼핑 기업의 글로벌 팽창 가속화 신호",
       "sources": [
         {
-          "title": "3100억 CEO 홍진경의 성공 철학",
-          "url": "https://www.wikitree.co.kr/articles/1142114"
+          "title": "형지I&C 글로벌 네트워크 구축",
+          "url": "http://www.ktnews.com/news/articleView.html?idxno=146694"
         }
       ]
     },
     {
-      "category": "트렌드",
-      "title": "고물가 시대,<br>할인 경쟁 심화",
+      "category": "실적",
+      "title": "중소기업 연계 구매<br>600억 규모 상담 성과",
       "items": [
         {
-          "keyword": "할인 규모",
-          "desc": "패션·의류 최대 <b>51% 할인</b> 진행"
+          "keyword": "상담 규모",
+          "desc": "홈쇼핑 등 온·오프라인 <b>600억 규모</b> 구매상담 체결"
         },
         {
-          "keyword": "채널 다중화",
-          "desc": "TV·모바일앱·라이브커머스 동시 전개"
+          "keyword": "참여 규모",
+          "desc": "MD 47명, 중소기업 <b>71개사</b> 1대1 매칭 성공"
         },
-        {
-          "keyword": "시즌 전략",
-          "desc": "시즌오프·역시즌 행사 <b>동시 운영</b>"
-        }
-      ],
-      "footer": "단순 할인에서 다채널 동시 프로모션으로 진화",
-      "sources": [
-        {
-          "title": "고물가에 할인전 확대하는 유통가",
-          "url": "http://www.sisafocus.co.kr/news/articleView.html?idxno=361596"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "친환경·자체브랜드<br>차별화 경쟁",
-      "items": [
         {
           "keyword": "채널 다각화",
-          "desc": "홈쇼핑·온라인으로 <b>자체브랜드 경쟁력</b> 확보"
-        },
-        {
-          "keyword": "사업 확장",
-          "desc": "OEM·ODM으로 B2B 시장 진출 확대"
-        },
-        {
-          "keyword": "리스크 감소",
-          "desc": "특정 유통 의존도 <b>낮추고 안정성</b> 강화"
+          "desc": "백화점·마트·온라인몰 <b>4개 채널</b> 동시 진출"
         }
       ],
-      "footer": "홈쇼핑 채널 의존도 탈피, 수직계열화 전략 가속",
+      "footer": "홈쇼핑, 중소기업 유통 생태계의 핵심 채널로 역할 강화",
       "sources": [
         {
-          "title": "친환경이 돈 되는 시대",
-          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=461668"
+          "title": "충북도 대중소기업 구매상담회",
+          "url": "http://www.dynews.co.kr/news/articleView.html?idxno=854950"
+        },
+        {
+          "title": "충북도 구매상담회 591억 성과",
+          "url": "https://www.ccdn.co.kr/news/articleView.html?idxno=1084188"
+        }
+      ]
+    },
+    {
+      "category": "트렌드",
+      "title": "시니어 모델 수요<br>급증하는 실버 시장",
+      "items": [
+        {
+          "keyword": "수요 증가",
+          "desc": "광고·홈쇼핑·금융권 <b>시니어 모델 수요 확대</b>"
+        },
+        {
+          "keyword": "타겟층 다양화",
+          "desc": "건강기능식품·보험 등 <b>실버맞춤 상품</b> 성장"
+        },
+        {
+          "keyword": "콘텐츠 확대",
+          "desc": "50·60대 타겟 <b>콘텐츠 제작</b> 활발화"
+        }
+      ],
+      "footer": "고령화 시대, 시니어 소비층 공략이 새로운 성장동력",
+      "sources": [
+        {
+          "title": "동명대 시니어 패션모델과정",
+          "url": "http://www.metroseoul.co.kr/article/20260621500100"
         }
       ]
     },
     {
       "category": "정책·규제",
-      "title": "라이브커머스<br>새로운 활용처 확대",
+      "title": "소비자 권리 교육<br>AI 시대 대응 강화",
       "items": [
         {
-          "keyword": "혁신 사례",
-          "desc": "<b>라이브 잡커머스</b> 등장, 채용까지 확대"
+          "keyword": "교육 강화",
+          "desc": "GS리테일 홈쇼핑 <b>소비자 권리 교육</b> 프로그램 확대"
         },
         {
-          "keyword": "콘텐츠 형식",
-          "desc": "홈쇼핑 형식 차용, 실시간 인터뷰 방식"
+          "keyword": "수상 규모",
+          "desc": "공정거래위원장상 등 <b>14개 수상작</b> 선정·지원"
         },
         {
-          "keyword": "시장 기회",
-          "desc": "기존 채널을 <b>새로운 목적</b>으로 활용"
+          "keyword": "지원금 규모",
+          "desc": "수상팀에 <b>총 1000만원</b> 상금 지급"
         }
       ],
-      "footer": "라이브커머스는 홈쇼핑 플랫폼으로서 무한한 가능성",
+      "footer": "AI 소비시대, 소비자 보호 강화가 경쟁력 요소로 부상",
       "sources": [
         {
-          "title": "피씨엔, SSAFY 채용박람회 참가",
-          "url": "https://zdnet.co.kr/view/?no=20260620110544"
+          "title": "GS리테일 권리 교육 강화",
+          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5032625"
         }
       ]
     },
     {
-      "category": "경쟁사·인물",
-      "title": "홈쇼핑 스타의<br>영향력 여전",
+      "category": "트렌드",
+      "title": "신중한 소비 확산<br>'똑똑한 살림' 시대",
       "items": [
         {
-          "keyword": "여왕 최화정",
-          "desc": "'홈쇼핑 여왕' 호칭, <b>높은 영향력</b> 유지"
+          "keyword": "구매 심리",
+          "desc": "감정적 구매 지양, <b>필요한 물건만</b> 선택 증가"
         },
         {
-          "keyword": "콘텐츠화",
-          "desc": "유튜브 등 2차 미디어에서 <b>재조명</b> 확대"
+          "keyword": "타겟층",
+          "desc": "50·60대 안방 구석에 <b>미사용품 방치</b> 현상 확산"
         },
         {
-          "keyword": "브랜드 가치",
-          "desc": "스타 개인이 <b>채널 자산</b>으로 기능"
+          "keyword": "시사점",
+          "desc": "홈쇼핑 유혹 마케팅에서 <b>신뢰도 경영</b>으로 전환 필요"
         }
       ],
-      "footer": "홈쇼핑 진행자의 개인브랜드가 콘텐츠 자산화되는 추세",
+      "footer": "홈쇼핑, 감정적 자극에서 가치 전달 중심으로 재편성 중",
       "sources": [
         {
-          "title": "홈쇼핑 여왕 최화정 대기실 급습",
-          "url": "http://www.osen.co.kr/article/G1112825144"
-        },
-        {
-          "title": "김신영 역대급 주사 공개",
-          "url": "https://sports.donga.com/ent/article/all/20260620/134148280/1"
+          "title": "5060세대 홈쇼핑 구매 습관 변화",
+          "url": "https://www.wikitree.co.kr/articles/1142462"
         }
       ]
     }
