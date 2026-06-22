@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>방송영상 분석 · 홈앤쇼핑 AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#0f172a;color:#e2e8f0;font-size:13px;min-height:100vh;}
+.page-header{background:#1e293b;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #334155;box-shadow:0 1px 8px rgba(0,0,0,.3);}
+.page-title{font-size:16px;font-weight:700;color:#f1f5f9;display:flex;align-items:center;gap:8px;}
+.page-title .badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.5px;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#94a3b8;display:flex;align-items:center;width:34px;height:34px;border-radius:6px;justify-content:center;}
+.home-btn:hover{background:#334155;color:#fff;}
+.wrap{max-width:960px;margin:24px auto;padding:0 16px;}
+
+/* 입력 모드 선택 */
+.mode-tabs{display:flex;gap:0;margin-bottom:16px;background:#1e293b;border-radius:10px;overflow:hidden;border:1px solid #334155;}
+.mode-tab{flex:1;padding:12px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:#94a3b8;transition:all .15s;border:none;background:transparent;font-family:inherit;}
+.mode-tab.active{background:#0d9488;color:#fff;}
+.mode-tab:hover:not(.active){background:#334155;color:#e2e8f0;}
+
+/* 섹션 */
+.section{background:#1e293b;border-radius:10px;padding:24px 28px;margin-bottom:16px;border:1px solid #334155;}
+.section h2{font-size:14px;font-weight:700;color:#0d9488;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+textarea{width:100%;height:180px;padding:14px;border:1.5px solid #334155;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.7;background:#0f172a;color:#e2e8f0;}
+textarea:focus{outline:none;border-color:#0d9488;}
+.hint{font-size:11px;color:#64748b;margin-top:4px;}
+
+/* 음성 입력 */
+.audio-area{text-align:center;padding:30px;border:2px dashed #334155;border-radius:10px;margin-bottom:14px;}
+.audio-area.recording{border-color:#ef4444;background:rgba(239,68,68,.05);}
+.btn-record{background:#ef4444;color:#fff;border:none;padding:14px 32px;border-radius:50px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+.btn-record:hover{background:#dc2626;}
+.btn-record.recording{animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4);}50%{box-shadow:0 0 0 12px rgba(239,68,68,0);}}
+.file-upload{margin-top:14px;}
+.file-upload input{display:none;}
+.file-upload label{display:inline-block;padding:10px 20px;background:#334155;color:#e2e8f0;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;}
+.file-upload label:hover{background:#475569;}
+.upload-name{font-size:11px;color:#64748b;margin-top:6px;}
+
+/* 분석 버튼 */
+.btn-area{text-align:center;margin-top:16px;}
+.btn-analyze{background:linear-gradient(90deg,#0d9488,#0f766e);color:#fff;border:none;padding:13px 40px;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;}
+.btn-analyze:hover{opacity:.85;} .btn-analyze:disabled{opacity:.5;cursor:not-allowed;}
+
+/* STT 결과 */
+.stt-result{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;margin-bottom:14px;display:none;}
+.stt-result h3{font-size:12px;color:#0d9488;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.stt-text{font-size:13px;line-height:1.8;color:#cbd5e1;white-space:pre-wrap;}
+
+/* 분석 결과 */
+.result-header{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:10px;padding:20px 24px;margin-bottom:14px;display:flex;align-items:center;gap:16px;}
+.risk-badge{padding:10px 18px;border-radius:10px;font-size:16px;font-weight:900;text-align:center;min-width:80px;}
+.risk-safe{background:rgba(16,185,129,.15);color:#34d399;border:2px solid rgba(16,185,129,.3);}
+.risk-caution{background:rgba(251,191,36,.15);color:#fbbf24;border:2px solid rgba(251,191,36,.3);}
+.risk-violation{background:rgba(239,68,68,.15);color:#f87171;border:2px solid rgba(239,68,68,.3);}
+.risk-info{flex:1;}
+.risk-info h3{font-size:16px;font-weight:800;margin-bottom:4px;}
+.risk-info p{font-size:12px;color:#94a3b8;}
+
+/* 위반 카드 */
+.violation-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.violation-card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:16px 20px;border-left:4px solid #ef4444;}
+.violation-card.caution{border-left-color:#fbbf24;}
+.vc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.vc-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;}
+.vc-badge.law{background:rgba(239,68,68,.15);color:#f87171;}
+.vc-badge.word{background:rgba(251,191,36,.15);color:#fbbf24;}
+.vc-text{font-size:13px;color:#f87171;font-weight:700;}
+.vc-reason{font-size:12px;color:#94a3b8;margin-top:4px;line-height:1.6;}
+.vc-suggest{font-size:12px;color:#34d399;margin-top:6px;padding:8px 12px;background:rgba(16,185,129,.08);border-radius:6px;}
+.vc-suggest::before{content:'💡 수정 제안: ';font-weight:700;}
+
+/* 금칙어 */
+.forbidden-section{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:16px 20px;margin-bottom:14px;}
+.forbidden-section h3{font-size:13px;font-weight:700;color:#fbbf24;margin-bottom:10px;}
+.fw-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.fw-chip{padding:5px 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:16px;font-size:12px;color:#fbbf24;font-weight:600;}
+
+.loading{text-align:center;padding:40px;color:#64748b;}
+.spinner{width:32px;height:32px;border:3px solid #334155;border-top-color:#0d9488;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error{color:#f87171;font-weight:600;padding:16px;text-align:center;}
+.result-fallback{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#cbd5e1;padding:16px;background:#0f172a;border-radius:8px;border:1px solid #334155;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#0d9488" stroke-width="2"/><path d="M8 17v3M16 17v3M5 20h14" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/><path d="M8 10l3 3 5-5" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    방송영상 분석 <span class="badge">AI 심의</span>
+  </span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+  <!-- 모드 선택 -->
+  <div class="mode-tabs">
+    <button class="mode-tab active" onclick="switchMode('text')">📝 텍스트 입력</button>
+    <button class="mode-tab" onclick="switchMode('audio')">🎙️ 음성/파일 분석</button>
+  </div>
+
+  <!-- 텍스트 입력 모드 -->
+  <div class="section" id="textMode">
+    <h2>📝 방송 멘트 입력</h2>
+    <textarea id="mentInput" placeholder="쇼호스트 멘트를 입력하거나 붙여넣으세요.&#10;&#10;예)&#10;여러분 이 제품은 정말 100% 효과가 보장됩니다!&#10;지금 이 가격은 오늘이 마지막이에요, 다시는 없습니다!&#10;이 홍삼은 혈압을 낮추고 암도 예방할 수 있어요.&#10;세계 최초로 개발된 특허 성분이 들어가 있습니다."></textarea>
+    <div class="hint">※ 쇼호스트 발화 내용을 입력하면 금칙어 + 법령 위반을 즉시 분석합니다</div>
+  </div>
+
+  <!-- 음성 입력 모드 -->
+  <div class="section" id="audioMode" style="display:none;">
+    <h2>🎙️ 음성 / 영상 파일 분석</h2>
+    <div class="audio-area" id="audioArea">
+      <button class="btn-record" id="btnRecord" onclick="toggleRecord()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+        마이크 녹음 시작
+      </button>
+      <div class="file-upload">
+        <input type="file" id="audioFile" accept="audio/*,video/*" onchange="onFileSelect(this)">
+        <label for="audioFile">📁 음성/영상 파일 업로드</label>
+        <div class="upload-name" id="fileName">mp3, mp4, wav, m4a 지원</div>
+      </div>
+    </div>
+    <div class="hint">※ OpenAI Whisper API로 음성을 텍스트로 변환 후 분석합니다</div>
+    <div class="stt-result" id="sttResult">
+      <h3><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="#0d9488" stroke-width="2"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="19" x2="12" y2="23" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/></svg> STT 변환 결과</h3>
+      <div class="stt-text" id="sttText"></div>
+    </div>
+  </div>
+
+  <div class="btn-area">
+    <button class="btn-analyze" id="btnAnalyze" onclick="analyze()">🔍 AI 심의 분석 시작</button>
+  </div>
+
+  <!-- 분석 결과 -->
+  <div id="resultArea"></div>
+</div>
+
+<script>
+var PROXY = 'http://localhost:8502';
+var _currentMode = 'text';
+var _sttText = '';
+var _mediaRecorder = null;
+var _audioChunks = [];
+
+function switchMode(mode) {
+  _currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(function(t){t.classList.remove('active');});
+  event.target.classList.add('active');
+  document.getElementById('textMode').style.display = mode==='text' ? 'block' : 'none';
+  document.getElementById('audioMode').style.display = mode==='audio' ? 'block' : 'none';
+}
+
+function onFileSelect(input) {
+  if (input.files.length) {
+    document.getElementById('fileName').textContent = input.files[0].name + ' (' + (input.files[0].size/1024/1024).toFixed(1) + 'MB)';
+  }
+}
+
+async function toggleRecord() {
+  var btn = document.getElementById('btnRecord');
+  var area = document.getElementById('audioArea');
+  if (_mediaRecorder && _mediaRecorder.state === 'recording') {
+    _mediaRecorder.stop();
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg> 마이크 녹음 시작';
+    btn.classList.remove('recording');
+    area.classList.remove('recording');
+    return;
+  }
+  try {
+    var stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    _audioChunks = [];
+    _mediaRecorder = new MediaRecorder(stream);
+    _mediaRecorder.ondataavailable = function(e){_audioChunks.push(e.data);};
+    _mediaRecorder.onstop = function(){
+      var blob = new Blob(_audioChunks, {type:'audio/webm'});
+      var file = new File([blob], 'recording.webm', {type:'audio/webm'});
+      var dt = new DataTransfer();
+      dt.items.add(file);
+      document.getElementById('audioFile').files = dt.files;
+      document.getElementById('fileName').textContent = 'recording.webm (' + (blob.size/1024).toFixed(0) + 'KB)';
+      stream.getTracks().forEach(function(t){t.stop();});
+    };
+    _mediaRecorder.start();
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg> 녹음 중... 클릭하여 중지';
+    btn.classList.add('recording');
+    area.classList.add('recording');
+  } catch(e) {
+    alert('마이크 접근 권한이 필요합니다.');
+  }
+}
+
+async function transcribeAudio(file) {
+  var formData = new FormData();
+  formData.append('file', file);
+  formData.append('model', 'whisper-1');
+  formData.append('language', 'ko');
+
+  var res = await fetch('http://localhost:8502/api/whisper', {
+    method: 'POST',
+    body: formData,
+  });
+  if (!res.ok) throw new Error('Whisper API 연결 실패 (proxy에 OPENAI_API_KEY 등록 필요)');
+  var data = await res.json();
+  return data.text || '';
+}
+
+async function analyze() {
+  var area = document.getElementById('resultArea');
+  var btn = document.getElementById('btnAnalyze');
+  var text = '';
+
+  btn.disabled = true; btn.textContent = '분석 중...';
+
+  if (_currentMode === 'audio') {
+    var file = document.getElementById('audioFile').files[0];
+    if (!file) { alert('음성 파일을 업로드하거나 녹음해주세요.'); btn.disabled=false; btn.textContent='🔍 AI 심의 분석 시작'; return; }
+    area.innerHTML = '<div class="loading"><div class="spinner"></div>Whisper로 음성을 텍스트로 변환 중...</div>';
+    try {
+      text = await transcribeAudio(file);
+      _sttText = text;
+      document.getElementById('sttResult').style.display = 'block';
+      document.getElementById('sttText').textContent = text;
+    } catch(e) {
+      area.innerHTML = '<div class="section"><div class="error">' + esc(e.message) + '</div></div>';
+      btn.disabled=false; btn.textContent='🔍 AI 심의 분석 시작'; return;
+    }
+  } else {
+    text = document.getElementById('mentInput').value.trim();
+    if (!text) { alert('방송 멘트를 입력해주세요.'); btn.disabled=false; btn.textContent='🔍 AI 심의 분석 시작'; return; }
+  }
+
+  area.innerHTML = '<div class="loading"><div class="spinner"></div>Claude AI가 금칙어 + 법령 위반을 분석 중...</div>';
+
+  var prompt = '당신은 한국 홈쇼핑 방송 심의 전문가입니다.\n';
+  prompt += '오늘 날짜: ' + new Date().toLocaleDateString('ko-KR') + '\n\n';
+  prompt += '아래 방송 멘트를 분석하여 법령 위반 여부를 판단하세요.\n\n';
+  prompt += '[적용 법령]\n';
+  prompt += '1. 방송법 (방송심의에 관한 규정)\n';
+  prompt += '2. 표시·광고의 공정화에 관한 법률\n';
+  prompt += '3. 전자상거래 등에서의 소비자보호에 관한 법률\n';
+  prompt += '4. 식품등의 표시·광고에 관한 법률\n';
+  prompt += '5. 건강기능식품에 관한 법률\n';
+  prompt += '6. 의료기기법\n\n';
+  prompt += '[금칙어 패턴]\n';
+  prompt += '- 단정적 표현: "100% 효과", "완치", "치료", "무조건"\n';
+  prompt += '- 근거 없는 비교: "최고", "유일한", "세계 최초"\n';
+  prompt += '- 과대광고: "기적", "마법", "놀라운 효과"\n';
+  prompt += '- 시간 압박: "지금 아니면 못 삽니다", "마지막 기회"\n';
+  prompt += '- 의료 표현: "암 예방", "혈압 낮춰", "다이어트 효과"\n\n';
+  prompt += '[방송 멘트]\n' + text + '\n\n';
+  prompt += '반드시 아래 JSON으로만 응답하세요:\n';
+  prompt += '{\n';
+  prompt += '  "risk_level": "safe|caution|violation",\n';
+  prompt += '  "risk_label": "안전|주의|위반",\n';
+  prompt += '  "violations": [\n';
+  prompt += '    {"text":"위반 문구","law":"위반 법령명","reason":"위반 사유 (30자)","suggestion":"수정 제안 (30자)"}\n';
+  prompt += '  ],\n';
+  prompt += '  "forbidden_words": ["감지된 금칙어"],\n';
+  prompt += '  "summary": "전체 평가 한 줄 (40자)"\n';
+  prompt += '}';
+
+  try {
+    var resp = await fetch(PROXY + '/api/summarize', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({prompt:prompt}),
+    });
+    if (!resp.ok) throw new Error('프록시 연결 실패');
+
+    var fullText = '';
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, {stream:true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        var p = line.slice(6);
+        if (p === '[DONE]') break;
+        try { fullText += JSON.parse(p).text; } catch(e) {}
+      }
+    }
+
+    var result = tryParse(fullText);
+    if (result) renderResult(result);
+    else area.innerHTML = '<div class="section"><div class="result-fallback">' + esc(fullText) + '</div></div>';
+  } catch(e) {
+    area.innerHTML = '<div class="section"><div class="error">' +
+      (e.message.indexOf('fetch')>-1 ? 'proxy.py가 실행되지 않았습니다.' : esc(e.message)) + '</div></div>';
+  } finally {
+    btn.disabled = false; btn.textContent = '🔍 AI 심의 분석 시작';
+  }
+}
+
+function tryParse(text) {
+  var m = text.match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  var raw = m[0].replace(/,\s*([\]}])/g,'$1');
+  try { return JSON.parse(raw); } catch(e) {}
+  return null;
+}
+
+function renderResult(r) {
+  var area = document.getElementById('resultArea');
+  var riskCls = r.risk_level==='safe'?'risk-safe':r.risk_level==='caution'?'risk-caution':'risk-violation';
+  var riskIcon = r.risk_level==='safe'?'✅':r.risk_level==='caution'?'⚠️':'🚨';
+  var riskTitle = r.risk_level==='safe'?'안전':r.risk_level==='caution'?'주의 필요':'위반 감지';
+
+  var html = '';
+
+  // 리스크 헤더
+  html += '<div class="result-header">';
+  html += '<div class="risk-badge '+riskCls+'">'+riskIcon+'<br>'+riskTitle+'</div>';
+  html += '<div class="risk-info"><h3>'+esc(r.summary||'')+'</h3>';
+  html += '<p>위반 항목 '+(r.violations||[]).length+'건 · 금칙어 '+(r.forbidden_words||[]).length+'건 감지</p></div>';
+  html += '</div>';
+
+  // 위반 목록
+  if (r.violations && r.violations.length) {
+    html += '<div class="violation-list">';
+    r.violations.forEach(function(v) {
+      html += '<div class="violation-card">';
+      html += '<div class="vc-header"><span class="vc-badge law">'+esc(v.law||'')+'</span></div>';
+      html += '<div class="vc-text">"'+esc(v.text||'')+'"</div>';
+      html += '<div class="vc-reason">'+esc(v.reason||'')+'</div>';
+      if (v.suggestion) html += '<div class="vc-suggest">'+esc(v.suggestion)+'</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // 금칙어
+  if (r.forbidden_words && r.forbidden_words.length) {
+    html += '<div class="forbidden-section"><h3>⚠️ 감지된 금칙어</h3>';
+    html += '<div class="fw-chips">';
+    r.forbidden_words.forEach(function(w){ html += '<div class="fw-chip">'+esc(w)+'</div>'; });
+    html += '</div></div>';
+  }
+
+  // 안전한 경우
+  if (r.risk_level === 'safe' && (!r.violations || !r.violations.length)) {
+    html += '<div class="section" style="text-align:center;padding:40px;">';
+    html += '<div style="font-size:48px;margin-bottom:12px;">✅</div>';
+    html += '<div style="font-size:16px;font-weight:700;color:#34d399;">금칙어 및 법령 위반이 감지되지 않았습니다</div>';
+    html += '<div style="font-size:12px;color:#64748b;margin-top:6px;">안심하고 방송을 진행하셔도 됩니다</div>';
+    html += '</div>';
+  }
+
+  area.innerHTML = html;
+  area.scrollIntoView({behavior:'smooth'});
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>

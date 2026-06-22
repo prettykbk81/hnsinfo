@@ -1,280 +1,272 @@
 {
-  "date": "2026년 06월 21일",
-  "date_en": "JUNE 21, 2026",
+  "date": "2026년 06월 22일",
+  "date_en": "JUNE 22, 2026",
   "left": [
     {
       "category": "실적·성장",
-      "title": "창립 15주년 기념<br>프리미엄 여행 공략",
+      "title": "쿠쿠 협력 신제품<br>에코웨일 큐브 론칭",
       "items": [
         {
-          "keyword": "시즌타이밍",
-          "desc": "여름 휴가·추석 연휴 앞두고 <b>수요 집중</b>"
+          "keyword": "방송채널",
+          "desc": "'김경란의 취향찬란' <b>대표 셀럽 프로그램</b>에서 독점 선봬"
         },
         {
-          "keyword": "상품 다양성",
-          "desc": "<b>유럽·아시아</b> 프리미엠 패키지 <b>연속 편성</b>"
+          "keyword": "타이밍",
+          "desc": "여름철 <b>음식물 악취·위생</b> 관심 상승시기에 타겟팅"
         },
         {
-          "keyword": "고객 리워드",
-          "desc": "실시간 추첨 현금지원금·상품권 <b>대규모 제공</b>"
+          "keyword": "기술력",
+          "desc": "눌음 방지·<b>2세대 코팅</b>으로 차별화된 솔루션 제시"
         }
       ],
-      "footer": "황금연휴 수요 집중으로 관광상품 매출 확대 기대",
+      "footer": "계절 수요 맞춤형 프리미엄 생활가전으로 신규 고객층 확보",
       "sources": [
         {
-          "title": "여름·추석 휴가 준비하세요",
-          "url": "https://www.thepublic.kr/news/articleView.html?idxno=308444"
+          "title": "홈앤쇼핑, 쿠쿠 음식물처리기 '에코웨일 큐브' 선봬",
+          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
         },
         {
-          "title": "창립 15주년 맞아 여행객 공략",
-          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
+          "title": "여름철 악취·벌레 걱정 줄인다... 홈앤쇼핑 신제품 방송",
+          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201891"
         }
       ]
     },
     {
-      "category": "상품전략",
-      "title": "차별화된 여행상품<br>'제로 요금' 컨셉",
+      "category": "트렌드",
+      "title": "소비자 수요 반영<br>신제품 다채로움",
       "items": [
         {
-          "keyword": "호텔등급",
-          "desc": "<b>월드체인 4성급</b> 호텔 전일정 운영"
+          "keyword": "매일혁신",
+          "desc": "<b>매일 새로움</b> 추구하는 소비자 쇼핑 트렌드 확대 중"
         },
         {
-          "keyword": "추가비용",
-          "desc": "<b>NO 단체쇼핑</b> + <b>NO 유류세 차액</b>"
+          "keyword": "제품다양화",
+          "desc": "음식물처리기·간식류 등 <b>카테고리 확장</b> 전략 추진"
         },
         {
-          "keyword": "자유도",
-          "desc": "4성급 3박 + <b>1일 자유시간</b> 제공"
+          "keyword": "시즈널마케팅",
+          "desc": "여름 신제품 'Summer Refresher' 등 <b>계절상품</b> 강화"
         }
       ],
-      "footer": "패키지여행 편의성 + 자유여행 장점 결합 차별화",
+      "footer": "변화하는 소비심리 선점으로 홈앤쇼핑의 매력도 강화",
       "sources": [
         {
-          "title": "휴가준비 하세요 유럽·아시아 방송",
-          "url": "https://www.newsis.com/view/NISX20260619_0003676006"
-        },
-        {
-          "title": "동유럽·싱가포르 여행 상품 연속 방송",
-          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113345"
+          "title": "[POP!신제품] 크리스피크림 도넛 Summer Refresher",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124375"
         }
       ]
     },
     {
-      "category": "채널전략",
-      "title": "멀티채널 운영으로<br>고객 접점 확대",
+      "category": "성장",
+      "title": "셀럽 프로그램<br>집중 자산화",
       "items": [
         {
-          "keyword": "편성일정",
-          "desc": "<b>20일 토요일 밤</b> 명품여행 <b>연이어 편성</b>"
-        },
-        {
-          "keyword": "채널구성",
-          "desc": "TV홈쇼핑·모바일앱·라이브커머스 <b>전채널</b>"
-        },
-        {
-          "keyword": "시간효율",
-          "desc": "프리미엄 상품을 <b>30초 내</b> 임직원 파악"
-        }
-      ],
-      "footer": "다채널 동시 운영으로 고객 수용성 및 매출 극대화",
-      "sources": [
-        {
-          "title": "유통가 오늘 SK인텔릭스 현대리바트",
-          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005215"
-        },
-        {
-          "title": "유통레이더 전채널 운영 현황",
-          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1378043"
-        }
-      ]
-    },
-    {
-      "category": "시장트렌드",
-      "title": "여행상품 수요 증가<br>홈쇼핑업계 확대편성",
-      "items": [
-        {
-          "keyword": "수요층",
-          "desc": "여름휴가·황금연휴 <b>여행객 급증</b>"
-        },
-        {
-          "keyword": "상품특징",
-          "desc": "패키지·자유여행 <b>하이브리드 상품</b> 인기"
-        },
-        {
-          "keyword": "업계동향",
-          "desc": "홈쇼핑업체 관광상품 <b>편성 대폭 확대</b>"
-        }
-      ],
-      "footer": "계절성 수요를 반영한 관광상품 편성 경쟁 심화 중",
-      "sources": [
-        {
-          "title": "황금연휴 앞두고 여행객 공략",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201764"
-        },
-        {
-          "title": "유통가 오늘 홈앤쇼핑 여행상품",
-          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
-        }
-      ]
-    },
-    {
-      "category": "경쟁우위",
-      "title": "고객신뢰 기반<br>프리미엄 포지셔닝",
-      "items": [
-        {
-          "keyword": "기념행사",
-          "desc": "창립 <b>15주년</b> 고객감사 대규모 지원금"
+          "keyword": "핵심채널",
+          "desc": "'<b>김경란의 취향찬란</b>' 대표 셀럽 프로그램으로 집중"
         },
         {
           "keyword": "신뢰도",
-          "desc": "<b>월드체인 4성급</b> 검증된 호텔 파트너십"
+          "desc": "저명인사 프로그램으로 <b>브랜드 신뢰도</b> 강화 효과"
         },
         {
-          "keyword": "가성비",
-          "desc": "명품여행 <b>투명한 요금체계</b>로 신뢰성 확보"
+          "keyword": "독점성",
+          "desc": "주요 신제품 <b>단독 론칭</b>으로 차별화된 가치 제공"
         }
       ],
-      "footer": "15년 고객신뢰를 바탕으로 프리미엄 시장 선점",
+      "footer": "셀럽 프로그램을 통한 프리미엄 포지셔닝으로 고객 충성도 확보",
       "sources": [
         {
-          "title": "여름·추석 휴가 준비하세요 창립15주년",
-          "url": "https://www.thepublic.kr/news/articleView.html?idxno=308444"
+          "title": "[유통가 오늘] 쿠팡이츠·다이소·홈앤쇼핑·한샘",
+          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005379"
         },
         {
-          "title": "굿모닝 19일 유통가 소식 홈앤쇼핑",
-          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288342"
+          "title": "농심 육포깡 출시 1주 100만 봉, 한샘 팝업스토어",
+          "url": "https://www.sisaon.co.kr/news/articleView.html?idxno=202018"
+        }
+      ]
+    },
+    {
+      "category": "포지셔닝",
+      "title": "프리미엄 생활가전<br>신선함 담당",
+      "items": [
+        {
+          "keyword": "타겟층",
+          "desc": "위생·편의성 민감한 <b>MZ 고객층</b> 맞춤 전략"
+        },
+        {
+          "keyword": "기능성",
+          "desc": "음식물 쓰레기 <b>악취·벌레 관리</b> 솔루션 제공"
+        },
+        {
+          "keyword": "시장성",
+          "desc": "여름철 <b>계절 수요 증가</b> 가전 카테고리 확대"
+        }
+      ],
+      "footer": "라이프스타일 개선 제품으로 신규 고객 확보 및 매출 다각화",
+      "sources": [
+        {
+          "title": "여름철 악취·벌레 걱정 줄인다... 홈앤쇼핑 신제품 방송",
+          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201891"
+        }
+      ]
+    },
+    {
+      "category": "정보",
+      "title": "오늘(24일) 저녁<br>8시 45분 방송 예정",
+      "items": [
+        {
+          "keyword": "방송일시",
+          "desc": "<b>오늘 오후 8시 45분</b> '김경란의 취향찬란'에서 론칭"
+        },
+        {
+          "keyword": "제품명",
+          "desc": "쿠쿠 '<b>에코웨일 큐브</b>' 음식물처리기"
+        },
+        {
+          "keyword": "기대효과",
+          "desc": "<b>음식물 관리 혁신</b>으로 여름철 판매 증대 전망"
+        }
+      ],
+      "footer": "오늘 방송을 통해 프리미엄 가전 카테고리 신성장 드라이브 시작",
+      "sources": [
+        {
+          "title": "홈앤쇼핑, 쿠쿠 음식물처리기 '에코웨일 큐브' 선봬",
+          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
+        },
+        {
+          "title": "[유통소식] 롯데·올영·네이버 등 주요 뉴스",
+          "url": "http://www.4th.kr/news/articleView.html?idxno=2113509"
         }
       ]
     }
   ],
   "right": [
     {
-      "category": "성장",
-      "title": "글로벌 3각 축 완성<br>형지I&C 확장 본격화",
-      "items": [
-        {
-          "keyword": "일본 시장",
-          "desc": "<b>온·오프라인 결합</b> 옴니패션 전략 추진 중"
-        },
-        {
-          "keyword": "중국 시장",
-          "desc": "상하이 <b>민관 네트워크</b> 구축으로 글로벌 입지 강화"
-        },
-        {
-          "keyword": "유럽 진출",
-          "desc": "3대 글로벌 거점 구축으로 <b>사업 다각화</b>"
-        }
-      ],
-      "footer": "홈쇼핑 기업의 글로벌 팽창 가속화 신호",
-      "sources": [
-        {
-          "title": "형지I&C 글로벌 네트워크 구축",
-          "url": "http://www.ktnews.com/news/articleView.html?idxno=146694"
-        }
-      ]
-    },
-    {
-      "category": "실적",
-      "title": "중소기업 연계 구매<br>600억 규모 상담 성과",
-      "items": [
-        {
-          "keyword": "상담 규모",
-          "desc": "홈쇼핑 등 온·오프라인 <b>600억 규모</b> 구매상담 체결"
-        },
-        {
-          "keyword": "참여 규모",
-          "desc": "MD 47명, 중소기업 <b>71개사</b> 1대1 매칭 성공"
-        },
-        {
-          "keyword": "채널 다각화",
-          "desc": "백화점·마트·온라인몰 <b>4개 채널</b> 동시 진출"
-        }
-      ],
-      "footer": "홈쇼핑, 중소기업 유통 생태계의 핵심 채널로 역할 강화",
-      "sources": [
-        {
-          "title": "충북도 대중소기업 구매상담회",
-          "url": "http://www.dynews.co.kr/news/articleView.html?idxno=854950"
-        },
-        {
-          "title": "충북도 구매상담회 591억 성과",
-          "url": "https://www.ccdn.co.kr/news/articleView.html?idxno=1084188"
-        }
-      ]
-    },
-    {
       "category": "트렌드",
-      "title": "시니어 모델 수요<br>급증하는 실버 시장",
+      "title": "겸용상품 대세<br>'멀티기능'이 핫",
       "items": [
         {
-          "keyword": "수요 증가",
-          "desc": "광고·홈쇼핑·금융권 <b>시니어 모델 수요 확대</b>"
+          "keyword": "기후 대응",
+          "desc": "<b>폭염·장마 번갈아</b> 기후에 맞춘 겸용상품 판매 호조"
         },
         {
-          "keyword": "타겟층 다양화",
-          "desc": "건강기능식품·보험 등 <b>실버맞춤 상품</b> 성장"
+          "keyword": "샌동화·제습기",
+          "desc": "롯데홈쇼핑 <b>샌동화, 제습·건조기</b> 등 동시 대응 상품 인기"
         },
         {
-          "keyword": "콘텐츠 확대",
-          "desc": "50·60대 타겟 <b>콘텐츠 제작</b> 활발화"
+          "keyword": "소비 심리",
+          "desc": "한 제품으로 <b>다양한 용도</b> 해결하는 가성비형 선호"
         }
       ],
-      "footer": "고령화 시대, 시니어 소비층 공략이 새로운 성장동력",
+      "footer": "기후변화로 멀티기능 상품이 신 트렌드로 부상 중",
       "sources": [
         {
-          "title": "동명대 시니어 패션모델과정",
-          "url": "http://www.metroseoul.co.kr/article/20260621500100"
+          "title": "하나로 멀티 기능 겸용상품 인기",
+          "url": "http://www.srtimes.kr/news/articleView.html?idxno=205820"
+        }
+      ]
+    },
+    {
+      "category": "경쟁사동향",
+      "title": "NS홈쇼핑 K-뷰티<br>협력사 생태계 강화",
+      "items": [
+        {
+          "keyword": "브랜드존 개설",
+          "desc": "부산 뷰티플레이에 <b>'NS 브랜드존'</b> 오픈 완료"
+        },
+        {
+          "keyword": "중소기업 지원",
+          "desc": "협력사 <b>판로 확대 및 브랜드</b> 경쟁력 강화 지원"
+        },
+        {
+          "keyword": "지역 거점 확대",
+          "desc": "부산 거점으로 <b>K-뷰티 판매 기반</b> 확장 추진"
+        }
+      ],
+      "footer": "경쟁사의 협력사 지원 강화로 차별화 전략 경쟁 심화",
+      "sources": [
+        {
+          "title": "NS홈쇼핑 뷰티플레이 부산점 브랜드존",
+          "url": "https://www.swtvnews.com/news/newsview.php?ncode=1065597538419352"
+        },
+        {
+          "title": "NS홈쇼핑 K뷰티 상생 징검다리 자처",
+          "url": "https://www.kfenews.co.kr/news/articleView.html?idxno=659119"
+        }
+      ]
+    },
+    {
+      "category": "실적·성장",
+      "title": "CJ온스타일 론칭<br>제품 전량 조기 품절",
+      "items": [
+        {
+          "keyword": "론칭 성공",
+          "desc": "CJ온스타일 홈쇼핑 첫 방송에서 <b>전량 조기 품절</b> 기록"
+        },
+        {
+          "keyword": "확대 전략",
+          "desc": "추가 방송 및 <b>GS홈쇼핑 7월</b> 론칭으로 유통 채널 확대"
+        },
+        {
+          "keyword": "건강식품",
+          "desc": "고물가·여름철 맞춤 <b>건강 웰케어</b> 제품 수요 증가"
+        }
+      ],
+      "footer": "강한 상품력으로 초기 론칭 성공, 다채널 확대 단계",
+      "sources": [
+        {
+          "title": "더 든든하고 건강하게 실속 마케팅 붐",
+          "url": "http://www.dailypop.kr/news/articleView.html?idxno=99921"
         }
       ]
     },
     {
       "category": "정책·규제",
-      "title": "소비자 권리 교육<br>AI 시대 대응 강화",
+      "title": "케이블TV 위기<br>홈쇼핑 수수료 감소",
       "items": [
         {
-          "keyword": "교육 강화",
-          "desc": "GS리테일 홈쇼핑 <b>소비자 권리 교육</b> 프로그램 확대"
+          "keyword": "수입 감소",
+          "desc": "2030년 수신료 매출 <b>2,200억 원 감소</b> 전망"
         },
         {
-          "keyword": "수상 규모",
-          "desc": "공정거래위원장상 등 <b>14개 수상작</b> 선정·지원"
+          "keyword": "송출수수료 ↓",
+          "desc": "홈쇼핑 <b>송출수수료 매출 감소</b> 추세 심화 중"
         },
         {
-          "keyword": "지원금 규모",
-          "desc": "수상팀에 <b>총 1000만원</b> 상금 지급"
+          "keyword": "비용 압박 ↑",
+          "desc": "프로그램 사용료 <b>2011년 2,300억→2024년 3,475억</b>"
         }
       ],
-      "footer": "AI 소비시대, 소비자 보호 강화가 경쟁력 요소로 부상",
+      "footer": "방송채널의 수익 악화로 홈쇼핑 비용 부담 구조 변화 예상",
       "sources": [
         {
-          "title": "GS리테일 권리 교육 강화",
-          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5032625"
+          "title": "케이블TV 위기 현실화 2030년 매출 감소 전망",
+          "url": "https://www.m-i.kr/news/articleView.html?idxno=1384088"
         }
       ]
     },
     {
-      "category": "트렌드",
-      "title": "신중한 소비 확산<br>'똑똑한 살림' 시대",
+      "category": "정책·규제",
+      "title": "AI·알고리즘 시대<br>소비자 권리 강화",
       "items": [
         {
-          "keyword": "구매 심리",
-          "desc": "감정적 구매 지양, <b>필요한 물건만</b> 선택 증가"
+          "keyword": "교육 확대",
+          "desc": "<b>소비자교육 콘텐츠 공모전</b> 시상으로 인식 제고"
         },
         {
-          "keyword": "타겟층",
-          "desc": "50·60대 안방 구석에 <b>미사용품 방치</b> 현상 확산"
+          "keyword": "상금 규모",
+          "desc": "14개 수상작에 <b>총 1,000만 원</b> 규모 상금 지급"
         },
         {
-          "keyword": "시사점",
-          "desc": "홈쇼핑 유혹 마케팅에서 <b>신뢰도 경영</b>으로 전환 필요"
+          "keyword": "참여 기업",
+          "desc": "GS리테일 등 유통사 <b>공정거래 감시 강화</b>"
         }
       ],
-      "footer": "홈쇼핑, 감정적 자극에서 가치 전달 중심으로 재편성 중",
+      "footer": "소비자 권리 강화 움직임으로 홈쇼핑 투명성 강제 예상",
       "sources": [
         {
-          "title": "5060세대 홈쇼핑 구매 습관 변화",
-          "url": "https://www.wikitree.co.kr/articles/1142462"
+          "title": "AI알고리즘 시대 소비자 권리 소비자교육 공모전",
+          "url": "https://www.sportschosun.com/life/2026-06-22/202606220100153280010065"
         }
       ]
     }
