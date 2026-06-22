@@ -11,7 +11,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .page-title{font-size:16px;font-weight:700;color:#111;}
 .home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;width:34px;height:34px;border-radius:6px;transition:background .15s;justify-content:center;}
 .home-btn:hover{background:#f0f0f0;color:#e8192c;}
-.wrap{max-width:860px;margin:24px auto;padding:0 16px;}
+.wrap{max-width:920px;margin:24px auto;padding:0 16px;}
 .section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
 .section h2{font-size:14px;font-weight:700;color:#0d9488;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
 .cat-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
@@ -22,21 +22,60 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .focus-input input{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;}
 .focus-input input:focus{outline:none;border-color:#0d9488;}
 .btn-area{text-align:center;margin-top:14px;}
-.btn-run{background:#0d9488;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
-.btn-run:hover{background:#0a766d;}
-.btn-run:disabled{background:#999;cursor:not-allowed;}
-.news-source{margin-top:14px;padding:12px 16px;background:#f8f8f8;border-radius:6px;font-size:11px;color:#888;line-height:1.6;}
-.news-source b{color:#555;}
-.result{display:none;}
-.result h2{color:#0d9488;}
-.result-body{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#333;}
-.result-body b{color:#0d9488;}
-.ai-loading{text-align:center;padding:30px;color:#888;}
-.ai-spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#0d9488;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+.btn-run{background:#0d9488;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
+.btn-run:hover{background:#0a766d;} .btn-run:disabled{background:#999;cursor:not-allowed;}
+.news-source{margin-top:14px;padding:12px 16px;background:#f0fdfa;border-radius:6px;font-size:11px;color:#0d9488;line-height:1.6;border:1px solid #99f6e4;}
+.ai-loading{text-align:center;padding:40px;color:#888;}
+.ai-spinner{width:32px;height:32px;border:3px solid #ddd;border-top-color:#0d9488;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.ai-cursor{display:inline-block;width:2px;height:14px;background:#0d9488;animation:blink .6s infinite;}
-@keyframes blink{50%{opacity:0;}}
 .error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
+
+/* 리포트 헤더 */
+.report-header{background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;padding:28px 32px;border-radius:10px;margin-bottom:16px;}
+.report-header h1{font-size:22px;font-weight:800;margin-bottom:4px;}
+.report-header .rh-date{font-size:12px;opacity:.7;}
+.report-header .rh-summary{font-size:14px;margin-top:10px;line-height:1.7;opacity:.9;}
+
+/* 트렌드 TOP 카드 */
+.trend-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.trend-card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-top:3px solid #0d9488;position:relative;}
+.trend-card .tc-rank{position:absolute;top:12px;right:14px;font-size:28px;font-weight:900;color:rgba(13,148,136,.12);}
+.trend-card .tc-label{font-size:10px;font-weight:700;color:#0d9488;letter-spacing:.5px;margin-bottom:6px;}
+.trend-card .tc-title{font-size:15px;font-weight:800;color:#111;margin-bottom:8px;line-height:1.3;}
+.trend-card .tc-desc{font-size:12px;color:#666;line-height:1.6;}
+
+/* 분석 섹션 */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.analysis-card{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-left:4px solid #ddd;}
+.analysis-card.industry{border-left-color:#2563eb;} .analysis-card.competitor{border-left-color:#dc2626;}
+.analysis-card.consumer{border-left-color:#d97706;} .analysis-card.insight{border-left-color:#7c3aed;}
+.ac-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.ac-icon{font-size:20px;}
+.ac-title{font-size:14px;font-weight:700;color:#333;}
+.ac-list{list-style:none;padding:0;margin:0;}
+.ac-list li{padding:6px 0 6px 14px;border-left:3px solid #e0e0e0;margin-bottom:4px;font-size:12.5px;line-height:1.6;color:#555;}
+.analysis-card.industry .ac-list li{border-left-color:#bfdbfe;}
+.analysis-card.competitor .ac-list li{border-left-color:#fecaca;}
+.analysis-card.consumer .ac-list li{border-left-color:#fef08a;}
+.analysis-card.insight .ac-list li{border-left-color:#ddd6fe;}
+
+/* 시사점 */
+.insight-section{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:16px;}
+.insight-section h3{font-size:14px;font-weight:700;color:#7c3aed;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.insight-item{display:flex;gap:12px;padding:12px 14px;margin-bottom:8px;background:#f5f3ff;border-radius:8px;border-left:4px solid #7c3aed;}
+.insight-num{font-size:22px;font-weight:900;color:#7c3aed;flex-shrink:0;width:30px;}
+.insight-text{font-size:13px;color:#444;line-height:1.6;}
+
+/* 다음주 */
+.nextweek{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:16px;border-top:3px solid #0d9488;}
+.nextweek h3{font-size:14px;font-weight:700;color:#0d9488;margin-bottom:10px;}
+.nextweek ul{list-style:none;padding:0;}
+.nextweek li{padding:6px 0;font-size:13px;color:#444;display:flex;align-items:flex-start;gap:6px;}
+.nextweek li::before{content:'▸';color:#0d9488;font-weight:700;flex-shrink:0;}
+
+.report-footer{text-align:center;font-size:10px;color:#aaa;padding:12px 0;}
+.result-fallback{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#333;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0;}
+@media(max-width:700px){.trend-cards,.analysis-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -55,7 +94,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       트렌드 분석 설정
     </h2>
-    <label style="margin-bottom:8px;">관심 업종 (복수 선택 가능)</label>
+    <label style="margin-bottom:8px;font-weight:600;color:#555;">관심 업종 (복수 선택 가능)</label>
     <div class="cat-chips" id="chips">
       <button class="cat-chip active" data-cat="전체">전체</button>
       <button class="cat-chip" data-cat="식품/건강">식품/건강</button>
@@ -65,7 +104,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
       <button class="cat-chip" data-cat="라이브커머스">라이브커머스</button>
     </div>
     <div class="focus-input">
-      <label for="focusTopic">추가 관심 키워드 (선택)</label>
+      <label for="focusTopic" style="font-weight:600;color:#555;">추가 관심 키워드 (선택)</label>
       <input type="text" id="focusTopic" placeholder="예) MZ세대, 프리미엄, 가성비">
     </div>
     <div class="btn-area">
@@ -74,116 +113,207 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
     <div class="news-source" id="newsSource" style="display:none;"></div>
   </div>
 
-  <div class="section result" id="resultSection">
-    <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 20h20M5 20V10M9 20V4M13 20V14M17 20V8M21 20V2" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/></svg>
-      트렌드 리포트
-    </h2>
-    <div class="result-body" id="resultBody"></div>
-  </div>
+  <div id="resultArea"></div>
 </div>
 
 <script>
-// 칩 토글
+var PROXY = 'http://localhost:8502';
+
 document.getElementById('chips').addEventListener('click', function(e) {
   var chip = e.target.closest('.cat-chip');
   if (!chip) return;
   if (chip.dataset.cat === '전체') {
-    document.querySelectorAll('.cat-chip').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelectorAll('.cat-chip').forEach(function(c){c.classList.remove('active');});
     chip.classList.add('active');
   } else {
     document.querySelector('.cat-chip[data-cat="전체"]').classList.remove('active');
     chip.classList.toggle('active');
-    if (!document.querySelector('.cat-chip.active')) {
+    if (!document.querySelector('.cat-chip.active'))
       document.querySelector('.cat-chip[data-cat="전체"]').classList.add('active');
-    }
   }
 });
 
 async function analyzeTrend() {
   var cats = [];
-  document.querySelectorAll('.cat-chip.active').forEach(function(c) { cats.push(c.dataset.cat); });
+  document.querySelectorAll('.cat-chip.active').forEach(function(c){cats.push(c.dataset.cat);});
   var focus = document.getElementById('focusTopic').value.trim();
-
-  var section = document.getElementById('resultSection');
-  var body = document.getElementById('resultBody');
+  var area = document.getElementById('resultArea');
   var btn = document.getElementById('btnRun');
   var newsSource = document.getElementById('newsSource');
-  section.style.display = 'block';
-  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>최신 뉴스를 불러오고 분석 중입니다...</div>';
   btn.disabled = true; btn.textContent = '분석 중...';
+  area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>뉴스 데이터를 불러오고 트렌드를 분석 중입니다...</div></div>';
 
-  // daily_news.json에서 최신 뉴스 데이터 로드
+  // daily_news.json에서 뉴스 데이터 로드
   var newsContext = '';
+  var newsDate = '';
   try {
     var newsResp = await fetch('daily_news.json?t=' + Date.now());
     if (newsResp.ok) {
       var newsData = await newsResp.json();
+      newsDate = newsData.date || '';
       var allCards = (newsData.left || []).concat(newsData.right || []);
       newsContext = allCards.map(function(c) {
-        var items = (c.items || []).map(function(it) { return it.keyword + ': ' + it.desc; }).join('\n');
-        return '[' + c.category + '] ' + (c.title || '').replace(/<br>/g, ' ') + '\n' + items;
+        var items = (c.items || []).map(function(it){return it.keyword+': '+(it.desc||'').replace(/<[^>]+>/g,'');}).join('\n');
+        var sources = (c.sources||[]).map(function(s){return s.title;}).join(', ');
+        return '[' + c.category + '] ' + (c.title||'').replace(/<br>/g,' ') + '\n' + items + (sources ? '\n출처: '+sources : '');
       }).join('\n\n');
-      newsSource.innerHTML = '<b>뉴스 데이터:</b> ' + (newsData.date || '') + ' 기준 카드뉴스 ' + allCards.length + '건 활용';
+      newsSource.innerHTML = '📰 <b>뉴스 데이터:</b> ' + newsDate + ' 기준 카드뉴스 ' + allCards.length + '건 기반 분석';
       newsSource.style.display = 'block';
     }
   } catch(e) {}
 
-  var prompt = '당신은 홈쇼핑/이커머스 산업 트렌드 분석 전문가입니다.\n\n';
-  if (newsContext) {
-    prompt += '아래는 오늘의 홈쇼핑 관련 최신 뉴스 요약입니다:\n\n' + newsContext + '\n\n';
+  if (!newsDate) {
+    var d = new Date();
+    newsDate = d.getFullYear() + '년 ' + ('0'+(d.getMonth()+1)).slice(-2) + '월 ' + ('0'+d.getDate()).slice(-2) + '일';
   }
+
+  var prompt = '당신은 홈쇼핑/이커머스 산업 트렌드 분석 전문가입니다.\n';
+  prompt += '오늘 날짜: ' + newsDate + '\n';
+  prompt += '반드시 ' + newsDate + ' 기준으로 작성하세요. 2024년이 아닙니다.\n\n';
+
+  if (newsContext) {
+    prompt += '아래는 ' + newsDate + ' 홈쇼핑 관련 최신 뉴스입니다. 이 뉴스를 기반으로 분석하세요:\n\n' + newsContext + '\n\n';
+  }
+
   prompt += '분석 대상 업종: ' + cats.join(', ') + '\n';
   if (focus) prompt += '추가 관심 키워드: ' + focus + '\n';
-  prompt += '\n다음 형식으로 홈쇼핑 트렌드 리포트를 작성해주세요:\n\n';
-  prompt += '1. 이번 주 핵심 트렌드 TOP 3 (각각 제목 + 2~3줄 설명)\n';
-  prompt += '2. 업종별 동향 (선택된 업종 중심)\n';
-  prompt += '3. 경쟁사 주요 움직임\n';
-  prompt += '4. 소비자 트렌드 변화 (MZ세대, 시니어 등)\n';
-  prompt += '5. 홈앤쇼핑에 대한 전략적 시사점 3가지\n';
-  prompt += '6. 다음 주 주목할 포인트\n\n';
-  prompt += '수치와 구체적 사례를 포함해서, 경영진에게 보고할 수 있는 수준으로 작성해주세요.';
+  prompt += '\n반드시 아래 JSON 형식으로만 응답하세요 (다른 텍스트 없이):\n';
+  prompt += '{\n';
+  prompt += '  "date": "' + newsDate + '",\n';
+  prompt += '  "summary": "이번 주 홈쇼핑 업계 종합 요약 (50자 내외)",\n';
+  prompt += '  "trends": [\n';
+  prompt += '    {"rank":1, "title":"트렌드 제목 (15자)", "desc":"설명 (60자 내외, 수치와 사례 포함)"},\n';
+  prompt += '    {"rank":2, "title":"트렌드 제목", "desc":"설명"},\n';
+  prompt += '    {"rank":3, "title":"트렌드 제목", "desc":"설명"}\n';
+  prompt += '  ],\n';
+  prompt += '  "industry": ["업종별 동향1 (뉴스 기반 구체적)", "동향2", "동향3"],\n';
+  prompt += '  "competitor": ["경쟁사 움직임1", "움직임2", "움직임3"],\n';
+  prompt += '  "consumer": ["소비자 트렌드1", "트렌드2", "트렌드3"],\n';
+  prompt += '  "insights": [\n';
+  prompt += '    {"title":"시사점 제목 (10자)", "desc":"홈앤쇼핑에 대한 전략적 시사점 (40자)"},\n';
+  prompt += '    {"title":"시사점2", "desc":"설명"},\n';
+  prompt += '    {"title":"시사점3", "desc":"설명"}\n';
+  prompt += '  ],\n';
+  prompt += '  "next_week": ["다음 주 주목할 포인트1", "포인트2", "포인트3"]\n';
+  prompt += '}\n';
+  prompt += '규칙: 뉴스 기사에 있는 실제 내용과 수치를 인용하세요. 날짜는 반드시 ' + newsDate + ' 기준입니다.';
 
   try {
-    var resp = await fetch('http://localhost:8502/api/summarize', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({prompt: prompt}),
+    var resp = await fetch(PROXY + '/api/summarize', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({prompt:prompt}),
     });
-    if (!resp.ok) throw new Error('프록시 서버 연결 실패');
+    if (!resp.ok) throw new Error('프록시 연결 실패');
 
-    body.innerHTML = '';
-    var textNode = document.createTextNode('');
-    var cursor = document.createElement('span');
-    cursor.className = 'ai-cursor';
-    body.appendChild(textNode);
-    body.appendChild(cursor);
-
+    var fullText = '';
     var reader = resp.body.getReader();
     var decoder = new TextDecoder();
     var buffer = '';
     while (true) {
       var chunk = await reader.read();
       if (chunk.done) break;
-      buffer += decoder.decode(chunk.value, {stream: true});
+      buffer += decoder.decode(chunk.value, {stream:true});
       var lines = buffer.split('\n');
       buffer = lines.pop();
       for (var line of lines) {
         if (!line.startsWith('data: ')) continue;
-        var payload = line.slice(6);
-        if (payload === '[DONE]') { cursor.remove(); break; }
-        try { textNode.textContent += JSON.parse(payload).text; } catch(e) {}
+        var p = line.slice(6);
+        if (p === '[DONE]') break;
+        try { fullText += JSON.parse(p).text; } catch(e) {}
       }
     }
-    cursor.remove();
+
+    var report = tryParse(fullText);
+    if (report) {
+      renderReport(report);
+    } else {
+      area.innerHTML = '<div class="section"><div class="result-fallback">' + esc(fullText) + '</div></div>';
+    }
   } catch(e) {
-    body.innerHTML = '<div class="error">' +
-      (e.message.indexOf('fetch') > -1 ? 'app.py(Streamlit)가 실행되지 않았습니다.<br>streamlit run app.py 를 먼저 실행해주세요.' : e.message) +
-      '</div>';
+    area.innerHTML = '<div class="section"><div class="error">' +
+      (e.message.indexOf('fetch')>-1 ? 'proxy.py가 실행되지 않았습니다.' : esc(e.message)) + '</div></div>';
   } finally {
     btn.disabled = false; btn.textContent = '트렌드 리포트 생성';
   }
 }
+
+function tryParse(text) {
+  var m = text.match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  var raw = m[0].replace(/,\s*([\]}])/g,'$1');
+  try { return JSON.parse(raw); } catch(e) {}
+  raw = raw.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){return ': "'+a+' '+b+'"';});
+  try { return JSON.parse(raw); } catch(e) {}
+  return null;
+}
+
+function renderReport(r) {
+  var area = document.getElementById('resultArea');
+  var html = '';
+
+  // 헤더
+  html += '<div class="report-header">';
+  html += '<div class="rh-date">TREND REPORT · ' + esc(r.date||'') + '</div>';
+  html += '<h1>홈쇼핑 트렌드 리포트</h1>';
+  html += '<div class="rh-summary">' + esc(r.summary||'') + '</div>';
+  html += '</div>';
+
+  // TOP 3 트렌드
+  if (r.trends && r.trends.length) {
+    html += '<div class="trend-cards">';
+    r.trends.forEach(function(t) {
+      html += '<div class="trend-card">';
+      html += '<div class="tc-rank">#' + t.rank + '</div>';
+      html += '<div class="tc-label">TREND #' + t.rank + '</div>';
+      html += '<div class="tc-title">' + esc(t.title||'') + '</div>';
+      html += '<div class="tc-desc">' + esc(t.desc||'') + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // 4섹션 그리드
+  html += '<div class="analysis-grid">';
+  html += makeSection('industry', '📊', '업종별 동향', r.industry);
+  html += makeSection('competitor', '🏢', '경쟁사 움직임', r.competitor);
+  html += makeSection('consumer', '👥', '소비자 트렌드', r.consumer);
+  html += '</div>';
+
+  // 전략적 시사점
+  if (r.insights && r.insights.length) {
+    html += '<div class="insight-section"><h3>💡 홈앤쇼핑 전략적 시사점</h3>';
+    r.insights.forEach(function(ins, i) {
+      html += '<div class="insight-item">';
+      html += '<div class="insight-num">' + (i+1) + '</div>';
+      html += '<div class="insight-text"><strong>' + esc(ins.title||'') + '</strong><br>' + esc(ins.desc||'') + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // 다음 주
+  if (r.next_week && r.next_week.length) {
+    html += '<div class="nextweek"><h3>📅 다음 주 주목 포인트</h3><ul>';
+    r.next_week.forEach(function(n) { html += '<li>' + esc(n) + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  html += '<div class="report-footer">홈앤쇼핑 AI 트렌드 리포트 · 네이버 뉴스 × Claude AI · ' + esc(r.date||'') + '</div>';
+  area.innerHTML = html;
+  area.scrollIntoView({behavior:'smooth'});
+}
+
+function makeSection(cls, icon, title, items) {
+  var h = '<div class="analysis-card ' + cls + '">';
+  h += '<div class="ac-header"><div class="ac-icon">' + icon + '</div>';
+  h += '<div class="ac-title">' + title + '</div></div>';
+  h += '<ul class="ac-list">';
+  (items||['데이터 없음']).forEach(function(it){ h += '<li>' + esc(it) + '</li>'; });
+  h += '</ul></div>';
+  return h;
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
 </html>
