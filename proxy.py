@@ -270,6 +270,22 @@ class Handler(BaseHTTPRequestHandler):
             items = _fetch_schedule(date)
             self._json_response(items)
 
+        elif parsed.path == "/api/generate-news":
+            self._json_response({"status": "started"})
+            import subprocess, sys
+            script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generate_news.py")
+            subprocess.Popen([sys.executable, script], creationflags=0x08000000 if os.name == 'nt' else 0)
+
+        elif parsed.path == "/api/news-date":
+            try:
+                base = os.path.dirname(os.path.abspath(__file__))
+                with open(os.path.join(base, "daily_news.json"), encoding="utf-8") as f:
+                    import json as _json
+                    data = _json.load(f)
+                    self._json_response({"date": data.get("date", "")})
+            except Exception:
+                self._json_response({"date": ""})
+
         elif parsed.path == "/api/product-detail":
             code = params.get("code", [""])[0]
             detail = _fetch_product_detail(code) if code else {}
@@ -286,6 +302,11 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         parsed = urlparse(self.path)
+
+        if parsed.path == "/api/whisper":
+            self._handle_whisper()
+            return
+
         if parsed.path != "/api/summarize":
             self.send_error(404)
             return
@@ -319,6 +340,44 @@ class Handler(BaseHTTPRequestHandler):
 
         self.wfile.write(b"data: [DONE]\n\n")
         self.wfile.flush()
+
+    def _handle_whisper(self):
+        """로컬 Whisper STT 처리"""
+        import tempfile
+        content_type = self.headers.get("Content-Type", "")
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_length)
+
+        boundary = content_type.split("boundary=")[-1].encode()
+        parts = body.split(b"--" + boundary)
+
+        audio_data = None
+        for part in parts:
+            if b"filename=" in part:
+                header_end = part.find(b"\r\n\r\n")
+                if header_end > 0:
+                    audio_data = part[header_end + 4:].rstrip(b"\r\n--")
+                    break
+
+        if not audio_data:
+            self._json_response({"error": "음성 파일이 없습니다"})
+            return
+
+        try:
+            import whisper
+            with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as f:
+                f.write(audio_data)
+                tmp_path = f.name
+
+            model = whisper.load_model("base")
+            result = model.transcribe(tmp_path, language="ko")
+            os.unlink(tmp_path)
+
+            self._json_response({"text": result.get("text", "")})
+        except ImportError:
+            self._json_response({"error": "whisper 미설치. pip install openai-whisper 실행 필요"})
+        except Exception as e:
+            self._json_response({"error": str(e)})
 
     def _json_response(self, data):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")

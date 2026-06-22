@@ -1,0 +1,18 @@
+name: Keep Alive (스케줄 비활성화 방지)
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'  # 매주 월요일 UTC 12:00
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "keepalive $(date)" >> .github/keepalive.log
+      - uses: EndBug/add-and-commit@v9
+        with:
+          message: 'keepalive'
+          add: '.github/keepalive.log'
+          default_author: github_actions
+        continue-on-error: true
