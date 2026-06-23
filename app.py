@@ -17,7 +17,16 @@ import requests
 import streamlit as st
 
 PROXY_PORT = 8502
+PROXY_URL = f"http://localhost:{PROXY_PORT}"
 _PROXY_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "proxy.py")
+
+CAT_VALUE_TO_LABEL = {
+    "food": "식품 · 건강",
+    "beauty": "뷰티 · 스킨케어",
+    "fashion": "패션 · 의류",
+    "appliance": "생활가전",
+    "home": "홈리빙 · 인테리어",
+}
 
 
 # ───────────────────────────────────────────────────────────
@@ -113,6 +122,61 @@ def _make_client(api_key: str) -> anthropic.Anthropic:
         api_key=api_key,
         http_client=httpx.Client(verify=False),
     )
+
+
+# ───────────────────────────────────────────────────────────
+# 프록시 API 호출 — 편성표 / 상품 검색 / 상세
+# ───────────────────────────────────────────────────────────
+def _proxy_get(path: str, params: dict | None = None) -> list | dict:
+    r = requests.get(f"{PROXY_URL}{path}", params=params, timeout=10)
+    r.raise_for_status()
+    return r.json()
+
+
+def _extract_features(api_key: str, model: str, name: str, description: str) -> dict:
+    """기술서에서 Claude로 핵심 특징·카테고리 추출"""
+    client = _make_client(api_key)
+    msg = client.messages.create(
+        model=model,
+        max_tokens=256,
+        messages=[{"role": "user", "content": (
+            "아래 홈쇼핑 상품 기술서에서 핵심 특징 2개를 뽑아주세요.\n\n"
+            f"상품명: {name}\n기술서: {description}\n\n"
+            '반드시 JSON으로만 응답: {"feat1":"특징1 (15자 이내)",'
+            '"feat2":"특징2 (15자 이내)",'
+            '"category":"food|beauty|fashion|appliance|home 중 택1"}'
+        )}],
+    )
+    text = msg.content[0].text.strip()
+    m = re.search(r"\{[\s\S]*\}", text)
+    if m:
+        return json.loads(m.group())
+    return {}
+
+
+def _select_product(code: str, name: str, price: str,
+                    api_key: str, model: str) -> None:
+    """상품 선택 시 session_state에 자동 입력 값 저장"""
+    st.session_state["sel_product"] = name
+    st.session_state["sel_price"] = price or ""
+    st.session_state["sel_feat1"] = ""
+    st.session_state["sel_feat2"] = ""
+    st.session_state["sel_category"] = ""
+
+    if not code:
+        return
+    try:
+        detail = _proxy_get("/api/product-detail", {"code": code})
+        if detail.get("price") and not price:
+            st.session_state["sel_price"] = detail["price"]
+        desc = detail.get("description", "")
+        if desc and api_key:
+            feat = _extract_features(api_key, model, name, desc)
+            st.session_state["sel_feat1"] = feat.get("feat1", "")
+            st.session_state["sel_feat2"] = feat.get("feat2", "")
+            st.session_state["sel_category"] = feat.get("category", "")
+    except Exception:
+        pass
 
 
 # ───────────────────────────────────────────────────────────
@@ -260,22 +324,101 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
+    # ── 편성표 / 상품 검색 ──
+    with st.container(border=True):
+        st.subheader("🔎 편성표 · 상품 검색")
+        st.caption("상품을 선택하면 아래 입력란에 자동으로 채워집니다")
+
+        tab_schedule, tab_search = st.tabs(["📺 오늘 방송 편성표", "🔍 상품 검색"])
+
+        with tab_schedule:
+            if st.button("편성표 불러오기", key="btn_schedule"):
+                with st.spinner("편성표 로딩 중..."):
+                    try:
+                        st.session_state["schedule"] = _proxy_get("/api/schedule")
+                    except Exception:
+                        st.error("편성표를 불러올 수 없습니다. proxy 실행 여부를 확인하세요.")
+                        st.session_state["schedule"] = []
+
+            for i, item in enumerate(st.session_state.get("schedule", [])):
+                label = f"**{item['time_start']} ~ {item['time_end']}**  {item.get('name', '')}"
+                if st.button(label, key=f"sch_{i}", use_container_width=True):
+                    with st.spinner(f"'{item['name']}' 상품 정보 분석 중..."):
+                        _select_product(
+                            item.get("code", ""), item.get("name", ""), "",
+                            api_key, model,
+                        )
+                    st.rerun()
+
+        with tab_search:
+            sq1, sq2 = st.columns([4, 1])
+            with sq1:
+                search_q = st.text_input(
+                    "검색어", placeholder="홈앤쇼핑 상품명 검색 (예: 홍삼, 선풍기)",
+                    label_visibility="collapsed", key="search_q",
+                )
+            with sq2:
+                search_clicked = st.button("검색", key="btn_search", use_container_width=True)
+
+            if search_clicked and search_q:
+                with st.spinner("검색 중..."):
+                    try:
+                        st.session_state["search_results"] = _proxy_get(
+                            "/api/search-product", {"q": search_q},
+                        )
+                    except Exception:
+                        st.error("검색 실패. proxy 실행 여부를 확인하세요.")
+                        st.session_state["search_results"] = []
+
+            for i, p in enumerate(st.session_state.get("search_results", [])):
+                price_txt = f"  ·  **{p['price']}원**" if p.get("price") else ""
+                label = f"{p.get('name', '')}{price_txt}"
+                if st.button(label, key=f"sr_{i}", use_container_width=True):
+                    with st.spinner(f"'{p['name']}' 상품 정보 분석 중..."):
+                        _select_product(
+                            p.get("code", ""), p.get("name", ""), p.get("price", ""),
+                            api_key, model,
+                        )
+                    st.rerun()
+
+    # ── 선택된 상품 정보로 기본값 세팅 ──
+    sel_product = st.session_state.get("sel_product", "")
+    sel_price = st.session_state.get("sel_price", "")
+    sel_feat1 = st.session_state.get("sel_feat1", "")
+    sel_feat2 = st.session_state.get("sel_feat2", "")
+    sel_cat_value = st.session_state.get("sel_category", "")
+    sel_cat_label = CAT_VALUE_TO_LABEL.get(sel_cat_value, "")
+    cat_index = CATEGORIES.index(sel_cat_label) if sel_cat_label in CATEGORIES else 0
+
+    # ── 상품 정보 입력 폼 ──
     with st.container(border=True):
         st.subheader("📦 상품 정보 입력")
 
         col1, col2 = st.columns(2)
         with col1:
-            product = st.text_input("상품명 *", placeholder="예) 제주 한라봉 주스", max_chars=40)
+            product = st.text_input(
+                "상품명 *", value=sel_product,
+                placeholder="예) 제주 한라봉 주스", max_chars=40,
+            )
         with col2:
-            cat = st.selectbox("카테고리 *", options=CATEGORIES)
+            cat = st.selectbox("카테고리 *", options=CATEGORIES, index=cat_index)
 
         col3, col4 = st.columns(2)
         with col3:
-            price = st.text_input("가격대", placeholder="예) 29,900원 / 3개 세트")
+            price = st.text_input(
+                "가격대", value=sel_price,
+                placeholder="예) 29,900원 / 3개 세트",
+            )
         with col4:
-            feat1 = st.text_input("핵심 특징 ①", placeholder="예) 무농약 인증")
+            feat1 = st.text_input(
+                "핵심 특징 ①", value=sel_feat1,
+                placeholder="예) 무농약 인증",
+            )
 
-        feat2 = st.text_input("핵심 특징 ②", placeholder="예) 착즙 100% 무첨가")
+        feat2 = st.text_input(
+            "핵심 특징 ②", value=sel_feat2,
+            placeholder="예) 착즙 100% 무첨가",
+        )
 
         clicked = st.button("✨ Claude AI로 카피 생성", type="primary", use_container_width=True)
 
