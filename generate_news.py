@@ -18,7 +18,9 @@ import os
 import re
 import requests
 import urllib3
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+KST = timezone(timedelta(hours=9))
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -207,8 +209,8 @@ def _card_html(card: dict, date: str) -> str:
 
 
 def build_html(left_cards: list[dict], right_cards: list[dict]) -> str:
-    today    = datetime.now().strftime('%B %d, %Y').upper()
-    today_kr = datetime.now().strftime('%Y년 %m월 %d일')
+    today    = datetime.now(KST).strftime('%B %d, %Y').upper()
+    today_kr = datetime.now(KST).strftime('%Y년 %m월 %d일')
 
     left_html  = '\n'.join(_card_html(c, today) for c in left_cards[:3])
     right_html = '\n'.join(_card_html(c, today) for c in right_cards[:3])
@@ -373,8 +375,8 @@ if __name__ == '__main__':
 
     out_json = os.path.join(base, 'daily_news.json')
     payload = {
-        'date':    datetime.now().strftime('%Y년 %m월 %d일'),
-        'date_en': datetime.now().strftime('%B %d, %Y').upper(),
+        'date':    datetime.now(KST).strftime('%Y년 %m월 %d일'),
+        'date_en': datetime.now(KST).strftime('%B %d, %Y').upper(),
         'left':    left_cards[:5],
         'right':   right_cards[:5],
     }

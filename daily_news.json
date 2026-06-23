@@ -1,25 +1,25 @@
 {
-  "date": "2026년 06월 23일",
-  "date_en": "JUNE 23, 2026",
+  "date": "2026년 06월 24일",
+  "date_en": "JUNE 24, 2026",
   "left": [
     {
-      "category": "성장·실적",
-      "title": "중소기업 판로 지원으로<br>브랜드 발굴 성공",
+      "category": "성장",
+      "title": "중소기업 판로 지원,<br>차별화 전략 강화",
       "items": [
         {
           "keyword": "판로 지원",
-          "desc": "<b>중소기업 최대 고민 '판로'</b>를 홈쇼핑 채널로 해결"
+          "desc": "성능 차별화 <b>중소기업 제품</b>의 주요 판로로 확대"
         },
         {
           "keyword": "상품 발굴",
-          "desc": "성능 차별화 중소기업 제품을 <b>주요 판로</b>로 확보"
+          "desc": "상품 발굴부터 <b>수출까지</b> 통합 지원 체계"
         },
         {
-          "keyword": "수출 연계",
-          "desc": "상품 발굴부터 수출까지 <b>원스톱 지원</b> 체계"
+          "keyword": "브랜드 성장",
+          "desc": "낮은 인지도 극복, <b>홈쇼핑 플랫폼 활용</b>"
         }
       ],
-      "footer": "판로 약점을 보유한 중소기업의 신뢰받는 파트너",
+      "footer": "중소기업 파트너십 강화로 상생 생태계 구축 중",
       "sources": [
         {
           "title": "상품 발굴·수출까지 한번에",
@@ -28,110 +28,106 @@
       ]
     },
     {
-      "category": "상품·카테고리",
-      "title": "기능성 헤어케어<br>조기 품절 신드롬",
+      "category": "실적",
+      "title": "기능성 헤어케어,<br>라이브커머스 성공사례",
       "items": [
         {
           "keyword": "조기 품절",
-          "desc": "센트아우라 샴푸 <b>첫 방송에서 즉시 품절</b>"
+          "desc": "센트아우라 샴푸 <b>첫 방송 조기 소진</b>"
         },
         {
-          "keyword": "수요 확대",
-          "desc": "홈쇼핑·라이브커머스로 <b>기능성 제품 관심증가</b>"
+          "keyword": "추가 편성",
+          "desc": "소비자 관심 확대로 <b>6월 22일 재방송</b>"
         },
         {
-          "keyword": "재편성",
-          "desc": "초기 판매 성공으로 <b>6월 22일 추가 라이브</b> 편성"
+          "keyword": "트렌드",
+          "desc": "<b>기능성 헤어케어</b> 수요 확대 추세"
         }
       ],
-      "footer": "기능성 뷰티 제품 시장에서 홈쇼핑 채널의 강력한 영향력",
+      "footer": "라이브커머스 중심 기능성 제품 판매 가능성 입증",
       "sources": [
         {
-          "title": "센트아우라 샴푸 첫 방송 품절",
-          "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
+          "title": "센트아우라 샴푸 롯데홈쇼핑 론칭",
+          "url": "https://www.e2news.com/news/articleView.html?idxno=331569"
         },
         {
-          "title": "추가 라이브 편성 결정",
+          "title": "추가 라이브 방송 편성",
           "url": "https://www.itbiznews.com/news/articleView.html?idxno=216921"
         }
       ]
     },
     {
-      "category": "프로그램 운영",
-      "title": "'김경란의 취향찬란'<br>주요 신제품 런칭 플랫폼",
+      "category": "상품",
+      "title": "프리미엄 가전,<br>신기술 제품 확대",
       "items": [
         {
-          "keyword": "대표 프로그램",
-          "desc": "홈앤쇼핑 <b>대표 프로그램에서 신제품</b> 집중 론칭"
+          "keyword": "신제품 론칭",
+          "desc": "쿠쿠 <b>에코웨일 큐브 음식물처리기</b> 출시"
         },
         {
-          "keyword": "쿠쿠 제휴",
-          "desc": "에코웨일 큐브 음식물처리기 <b>6월 24일 방송</b>"
+          "keyword": "기술 혁신",
+          "desc": "눌음 방지·코팅 손상 최소화 <b>2세대 기술</b>"
         },
         {
-          "keyword": "신제품 선보임",
-          "desc": "<b>2세대 코팅 기술</b> 등 차별화된 기능 강조"
+          "keyword": "채널 전략",
+          "desc": "프리미엄 프로그램 '<b>취향찬란</b>'으로 타게팅"
         }
       ],
-      "footer": "신제품 론칭의 최적 채널로 확립된 홈앤쇼핑의 위치",
+      "footer": "고객 니즈 반영한 혁신 가전으로 프리미엄 포지셔닝",
       "sources": [
         {
-          "title": "쿠쿠 음식물처리기 선봬",
+          "title": "쿠쿠 에코웨일 큐브 선봬",
           "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
+        }
+      ]
+    },
+    {
+      "category": "리더십",
+      "title": "산학연 허브형 리더,<br>ESG 경영 실현",
+      "items": [
+        {
+          "keyword": "산학연 협력",
+          "desc": "삼성·현대·포스코 등 <b>주요 대기업 자문</b>"
         },
         {
-          "title": "신제품 트렌드 반영 운영",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124375"
+          "keyword": "거버넌스",
+          "desc": "현대모비스·킨텍스 등 <b>사외이사 역임</b>"
+        },
+        {
+          "keyword": "ESG 포럼",
+          "desc": "윤경ESG포럼 <b>공동대표</b>로 리더십"
+        }
+      ],
+      "footer": "경영진의 다양한 산업 경험이 기업 성장 동력",
+      "sources": [
+        {
+          "title": "사람 중심 기업가 정신",
+          "url": "https://www.etoday.co.kr/news/view/2596314"
         }
       ]
     },
     {
       "category": "정책·규제",
-      "title": "임직원 이력 관리<br>투명성 강화 필요",
+      "title": "임직원 이력서 관리,<br>투명성 강화 필요",
       "items": [
         {
           "keyword": "이력 관리",
-          "desc": "홈앤쇼핑 근무 이력 <b>누락 사건 발생</b>"
+          "desc": "전직 경력 누락 사건으로 <b>투명성 이슈</b>"
         },
         {
-          "keyword": "투명성 강화",
-          "desc": "임직원 이력 기재 <b>엄격한 검증</b> 필요"
+          "keyword": "컴플라이언스",
+          "desc": "<b>이력서 기재 의무</b> 재확인 및 감시 강화"
         },
         {
-          "keyword": "신뢰 제고",
-          "desc": "기업 이미지 보호 위해 <b>내부 규정 강화</b>"
+          "keyword": "기업 신뢰",
+          "desc": "임직원 행동 기준 <b>명확화</b> 필요"
         }
       ],
-      "footer": "기업 신뢰도 향상을 위한 내부 관리체계 재점검 필요",
+      "footer": "기업 신뢰도 유지를 위한 투명한 인사 관리 시스템 구축",
       "sources": [
         {
-          "title": "취임 중 이력 누락 논란",
+          "title": "김포도시공사 사장 자격 미달 논란",
           "url": "https://www.viva100.com/article/20260623500005"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "다채로운 신제품으로<br>소비자 트렌드 선도",
-      "items": [
-        {
-          "keyword": "신제품 다양화",
-          "desc": "뷰티부터 생활용품까지 <b>카테고리 확대</b>"
-        },
-        {
-          "keyword": "트렌드 반영",
-          "desc": "소비자 '새로움 추구' 욕구 <b>적극 반영</b>"
-        },
-        {
-          "keyword": "시즈널 제품",
-          "desc": "여름 신제품 등 <b>계절성 상품 기획</b>"
-        }
-      ],
-      "footer": "빠른 트렌드 감지와 신제품 론칭으로 시장 리더십 유지",
-      "sources": [
-        {
-          "title": "여름 신제품 출시 동향",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124375"
         }
       ]
     }
@@ -139,134 +135,138 @@
   "right": [
     {
       "category": "경쟁사 동향",
-      "title": "NS홈쇼핑, 홈플러스<br>익스프레스 인수 완료",
+      "title": "NS홈쇼핑,<br>홈플러스 익스프레스 인수",
       "items": [
         {
-          "keyword": "인수 규모",
-          "desc": "<b>1,206억 원</b>에 홈플러스 익스프레스 인수"
+          "keyword": "전략적 인수",
+          "desc": "<b>SSM 사업 진출</b>로 온·오프라인 통합 생태계 구축"
         },
         {
-          "keyword": "전략적 의미",
-          "desc": "오프라인 유통망 확보로 <b>O2O 사업 강화</b>"
+          "keyword": "체질 개선",
+          "desc": "기존 홈쇼핑 사업의 한계 극복 위한 <b>신사업 영역 확대</b>"
         },
         {
-          "keyword": "임직원 통합",
-          "desc": "판교 사옥에서 임직원 환영행사 개최, <b>한 팀 구성</b>"
+          "keyword": "조기 정상화",
+          "desc": "임직원 환영식 개최, <b>본격적 통합 작업</b> 착수"
         }
       ],
-      "footer": "하림그룹 계열사의 공격적 확장이 시장 재편 신호",
+      "footer": "경쟁사의 영역 확장 전략, 업계 패러다임 변화 신호",
       "sources": [
         {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수 대금 완납",
-          "url": "http://www.yonhapnewstv.co.kr/news/MYH20260623183915tsT"
+          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수",
+          "url": "https://biz.heraldcorp.com/article/10785945?ref=naver"
         },
         {
-          "title": "NS홈쇼핑과 홈플러스 익스프레스는 이제 한 팀",
-          "url": "https://www.sedaily.com/article/20059245?ref=naver"
-        }
-      ]
-    },
-    {
-      "category": "정책·규제",
-      "title": "TV홈쇼핑 업계,<br>소비자 신뢰 강화 움직임",
-      "items": [
-        {
-          "keyword": "협회 연대",
-          "desc": "TV홈쇼핑협회와 건기식협회 <b>MOU 체결</b>"
-        },
-        {
-          "keyword": "주요 상품군",
-          "desc": "건강기능식품이 홈쇼핑 <b>주요 상품</b>으로 확립"
-        },
-        {
-          "keyword": "목표",
-          "desc": "판매방송 건전화와 <b>소비자 신뢰도 제고</b>"
-        }
-      ],
-      "footer": "규제 강화에 선제적으로 대응하는 업계 신뢰 전략",
-      "sources": [
-        {
-          "title": "한국TV홈쇼핑협회·건기식협회, MOU 체결",
-          "url": "https://www.newsis.com/view/NISX20260623_0003680686"
-        },
-        {
-          "title": "TV홈쇼핑협회·건기식협회, 판매방송 건전화 협력",
-          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1379174"
-        }
-      ]
-    },
-    {
-      "category": "실적·성장",
-      "title": "홈플러스 청산 위기,<br>시장 재편 신호탄",
-      "items": [
-        {
-          "keyword": "청산가치",
-          "desc": "조사위 추정 청산가치 <b>약 3조7천억 원</b>"
-        },
-        {
-          "keyword": "계속기업가치",
-          "desc": "계속기업가치는 <b>2조5천억 원</b>으로 평가 절하"
-        },
-        {
-          "keyword": "본입찰 결과",
-          "desc": "<b>응찰 기업 0개</b>, 시장 신뢰도 심각 하락"
-        }
-      ],
-      "footer": "홈쇼핑 시장에서 유통 구조 개편의 분수령 도래",
-      "sources": [
-        {
-          "title": "투쟁은 시간낭비... 홈플러스 사태, 이제 솔직해지자",
-          "url": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003245332"
+          "title": "NS홈쇼핑, 홈플러스 익스프레스와 '원 팀' 출범",
+          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113489"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "연예인 홈쇼핑 출연<br>마케팅 활발화",
+      "title": "여름철 수요 집중<br>롯데홈쇼핑 공략",
       "items": [
         {
-          "keyword": "연예인 활용",
-          "desc": "미스트롯4 우승자 이소나, <b>홈쇼핑 활동 확대</b>"
+          "keyword": "계절상품",
+          "desc": "보양식·계절가전 중심의 <b>특별 기획전</b> 운영 중"
         },
         {
           "keyword": "채널 다각화",
-          "desc": "시상, 투표, 홈쇼핑 등 <b>다양한 무대 활동</b>"
+          "desc": "TV와 온라인몰 <b>동시 전개</b>로 접근성 극대화"
         },
         {
-          "keyword": "팬 확보",
-          "desc": "네오스타상 투표에서 <b>상위권 진입</b>, 지지층 확대"
+          "keyword": "건강관리",
+          "desc": "무더위 앞둔 시점, <b>건강 수요</b> 적극 포장"
         }
       ],
-      "footer": "연예인 IP 활용으로 홈쇼핑 신뢰도와 시청률 동시 확보",
+      "footer": "계절 수요 변화에 민첩한 기획전 운영이 경쟁력",
       "sources": [
         {
-          "title": "이소나, 강원경찰청 교통안전 홍보대사 위촉",
-          "url": "https://www.topstarnews.net/news/articleView.html?idxno=16108318"
+          "title": "롯데홈쇼핑, 보양식·계절가전 특별전",
+          "url": "https://view.asiae.co.kr/article/2026062309055699863"
         }
       ]
     },
     {
-      "category": "경쟁사 동향",
-      "title": "유통 전문 기업,<br>플랫폼 확장 경쟁",
+      "category": "해외 진출",
+      "title": "형지I&C,<br>일본 홈쇼핑 진출 본격화",
       "items": [
         {
-          "keyword": "무신사 성과",
-          "desc": "성수·홍대 매장 방문객 <b>31만 명</b> 달성"
+          "keyword": "일본 진출",
+          "desc": "일본 대표채널 '숍채널' 진출 타진 중"
         },
         {
-          "keyword": "확장 전략",
-          "desc": "온라인 플랫폼 기반 <b>오프라인 확대</b>"
+          "keyword": "수출 목표",
+          "desc": "8월 발주 시작, <b>11월 본격 수출</b> 일정 수립"
         },
         {
-          "keyword": "시장 변화",
-          "desc": "전통 홈쇼핑 vs MZ세대 <b>채널 분산</b>"
+          "keyword": "아시아 거점",
+          "desc": "상하이 전초기지 삼아 <b>글로벌 확대</b> 추진"
         }
       ],
-      "footer": "신세대 소비자 확보 경쟁이 심화되는 가운데 채널 다각화 필수",
+      "footer": "아시아·유럽을 잇는 홈쇼핑 제품 수출 허브 구축 중",
       "sources": [
         {
-          "title": "무신사 '무진장' 흥행, 성수·홍대 매장 방문객 31만명",
-          "url": "https://www.mydaily.co.kr/page/view/2026062319061491941"
+          "title": "형지I&C, 상하이 전초기지 삼아 아시아·유럽 공략",
+          "url": "https://news.dealsitetv.com/articles/172264"
+        }
+      ]
+    },
+    {
+      "category": "기업 가치",
+      "title": "NS홈쇼핑,<br>사회공헌 1억원 지원",
+      "items": [
+        {
+          "keyword": "장학금 지원",
+          "desc": "순직·공상 경찰관 자녀에 <b>5,000만원</b> 지원"
+        },
+        {
+          "keyword": "소방공제회",
+          "desc": "대한소방공제회 후원금 <b>5,000만원</b> 기부"
+        },
+        {
+          "keyword": "사회책임",
+          "desc": "호국보훈의 달 맞춰 <b>YES, NS!</b> 캠페인 확대"
+        }
+      ],
+      "footer": "사회공헌을 통한 기업 신뢰도 및 브랜드 가치 강화",
+      "sources": [
+        {
+          "title": "NS홈쇼핑, 순직 경찰관 자녀·소방관 등에 1억원 지원",
+          "url": "https://www.edaily.co.kr/news/newspath.asp?newsid=02889686645485000"
+        },
+        {
+          "title": "NS홈쇼핑, 경찰·소방 가족 지원",
+          "url": "https://www.newsis.com/view/NISX20260624_0003680935"
+        }
+      ]
+    },
+    {
+      "category": "업계 인사이트",
+      "title": "홈쇼핑 업계,<br>다원화 전략 전개 중",
+      "items": [
+        {
+          "keyword": "기획상품",
+          "desc": "계절 수요 중심의 <b>타겟 마케팅</b> 강화 추세"
+        },
+        {
+          "keyword": "사업 다각화",
+          "desc": "온라인·SSM·수출 등 <b>영역 확장 경쟁</b> 심화"
+        },
+        {
+          "keyword": "브랜드 강화",
+          "desc": "상품력+사회공헌으로 <b>차별화</b> 추구 중"
+        }
+      ],
+      "footer": "경쟁 심화 속 상품·채널·가치 모두를 강화하는 시대로 전환",
+      "sources": [
+        {
+          "title": "롯데홈쇼핑, 보양식·계절가전 특별전",
+          "url": "https://view.asiae.co.kr/article/2026062309055699863"
+        },
+        {
+          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수 완료",
+          "url": "https://biz.heraldcorp.com/article/10785945?ref=naver"
         }
       ]
     }
