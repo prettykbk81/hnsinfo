@@ -422,8 +422,8 @@ body {
 <!-- ══ HERO ══ -->
 <div class="hero">
   <div class="hero-tag">Claude's Vibe Coding · 2026.06</div>
-  <h1>홈쇼핑 <em>AI 카피 메이커</em></h1>
-  <p>Claude API + Notion MCP + GitHub Actions 완전 연동<br>상품 정보만 입력하면 카피 생성 → Notion 저장 → 자동 배포까지</p>
+  <h1>홈앤쇼핑 <em>MD&amp;협력사 전략미팅 상품정보</em></h1>
+  <p>상품명만 검색하면 핵심 정보를 AI가 자동 분석합니다</p>
 
   <div class="status-bar" id="statusBar">
     <!-- JS로 채워짐 -->
@@ -439,24 +439,32 @@ body {
 <div class="page">
 
   <!-- ══ TOOL ══ -->
-  <div class="sec-label">VIBE CODING TOOL</div>
-  <div class="sec-h2">AI 카피 생성 도구</div>
-  <div class="sec-sub">Claude AI가 실시간으로 홈쇼핑 카피를 작성합니다</div>
+  <div class="sec-label">STRATEGY MEETING TOOL</div>
+  <div class="sec-h2">상품 핵심 정보 및 키워드 분석</div>
+  <div class="sec-sub">AI가 실시간으로 홈앤쇼핑 상품 정보를 작성합니다</div>
 
   <div class="card">
     <div class="card-head head-red">
       <div class="card-head-info">
         <h2>🛍️ 상품 정보 입력</h2>
-        <p>AI 생성은 Claude API 키 필요 · 템플릿 생성은 오프라인 가능</p>
+        <p>편성표 또는 상품 검색으로 자동 입력됩니다</p>
       </div>
     </div>
     <div class="card-body">
 
-      <div style="margin-bottom:14px;">
+      <div style="margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <button id="btnSchedule" onclick="loadSchedule()" style="background:#0369a1;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">📺 오늘 방송 편성표</button>
-        <span style="font-size:11px;color:#999;margin-left:8px;">편성표에서 상품을 클릭하면 자동으로 검색됩니다</span>
+        <button onclick="toggleProductSearch()" style="background:#e8192c;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">🔍 상품 검색</button>
+        <span style="font-size:11px;color:#999;">상품을 클릭하면 자동으로 정보가 입력됩니다</span>
       </div>
       <div id="scheduleArea" style="display:none;margin-bottom:14px;max-height:320px;overflow-y:auto;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;"></div>
+      <div id="searchArea" style="display:none;margin-bottom:14px;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <input type="text" id="searchQuery" placeholder="홈앤쇼핑 상품명 검색 (예: 홍삼, 선풍기)" style="flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;font-family:inherit;background:#fafafa;color:#222;" onkeypress="if(event.keyCode===13)searchProducts()">
+          <button onclick="searchProducts()" style="background:#e8192c;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;">검색</button>
+        </div>
+        <div id="searchResults" style="max-height:300px;overflow-y:auto;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;"></div>
+      </div>
 
       <div class="form-grid">
         <div class="fgroup">
@@ -911,6 +919,105 @@ async function pickSchedule(name, code) {
     document.getElementById('f-feat1').value = '';
   }
 }
+
+/* ── 상품 검색 ── */
+function toggleProductSearch() {
+  var area = document.getElementById('searchArea');
+  area.style.display = area.style.display === 'none' ? 'block' : 'none';
+  if (area.style.display === 'block') {
+    document.getElementById('searchQuery').focus();
+    document.getElementById('scheduleArea').style.display = 'none';
+  }
+}
+
+async function searchProducts() {
+  var q = document.getElementById('searchQuery').value.trim();
+  if (!q) return;
+  var results = document.getElementById('searchResults');
+  results.innerHTML = '<div style="text-align:center;padding:20px;color:#888;"><div style="width:24px;height:24px;border:3px solid #ddd;border-top-color:#e8192c;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;"></div>검색 중...</div>';
+
+  try {
+    var r = await fetch(PROXY + '/api/search-product?q=' + encodeURIComponent(q));
+    if (!r.ok) throw new Error('연결 실패');
+    var products = await r.json();
+    if (!products.length) { results.innerHTML = '<div style="padding:16px;color:#888;text-align:center;">검색 결과가 없습니다.</div>'; return; }
+
+    var html = '';
+    products.forEach(function(p) {
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;" onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'transparent\'" onclick="selectProduct(\'' + (p.code||'') + '\',\'' + esc(p.name).replace(/'/g,"\\'") + '\',\'' + esc(p.price||'').replace(/'/g,"\\'") + '\')">';
+      html += '<img src="' + p.image + '" style="width:50px;height:50px;border-radius:6px;object-fit:cover;" onerror="this.style.display=\'none\'">';
+      html += '<div style="flex:1;min-width:0;"><div style="font-size:12.5px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(p.name) + '</div>';
+      if (p.price) html += '<div style="font-size:12px;color:#e8192c;font-weight:700;">' + p.price + '원</div>';
+      html += '</div>';
+      html += '<div style="font-size:10px;color:#e8192c;font-weight:700;flex-shrink:0;">선택 →</div>';
+      html += '</div>';
+    });
+    results.innerHTML = html;
+  } catch(e) {
+    results.innerHTML = '<div style="padding:16px;color:#c0392b;text-align:center;">검색 실패. proxy.py 실행 여부를 확인하세요.</div>';
+  }
+}
+
+async function selectProduct(code, name, price) {
+  document.getElementById('f-product').value = name;
+  if (price) document.getElementById('f-price').value = price;
+  document.getElementById('searchArea').style.display = 'none';
+
+  if (!code) return;
+
+  document.getElementById('f-feat1').value = '정보 분석 중...';
+  document.getElementById('f-feat2').value = '';
+
+  try {
+    var r = await fetch(PROXY + '/api/product-detail?code=' + code);
+    var d = await r.json();
+    if (d.price && !price) document.getElementById('f-price').value = d.price;
+
+    if (d.description) {
+      var pr = await fetch(PROXY + '/api/summarize', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({prompt:
+          '아래 홈쇼핑 상품 기술서에서 핵심 특징 2개를 뽑아주세요.\n\n' +
+          '상품명: ' + name + '\n기술서: ' + d.description + '\n\n' +
+          '반드시 JSON으로만 응답: {"feat1":"특징1 (15자 이내)","feat2":"특징2 (15자 이내)","category":"food|beauty|fashion|appliance|home 중 택1"}'
+        }),
+      });
+      var fullText = '';
+      var reader = pr.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, {stream:true});
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          var p = line.slice(6);
+          if (p === '[DONE]') break;
+          try { fullText += JSON.parse(p).text; } catch(e) {}
+        }
+      }
+      var m = fullText.match(/\{[\s\S]*\}/);
+      if (m) {
+        var parsed = JSON.parse(m[0].replace(/,\s*([\]}])/g,'$1'));
+        if (parsed.feat1) document.getElementById('f-feat1').value = parsed.feat1;
+        if (parsed.feat2) document.getElementById('f-feat2').value = parsed.feat2;
+        if (parsed.category) {
+          var sel = document.getElementById('f-category');
+          for (var i=0; i<sel.options.length; i++) {
+            if (sel.options[i].value === parsed.category) { sel.selectedIndex = i; break; }
+          }
+        }
+      }
+    }
+  } catch(e) {
+    document.getElementById('f-feat1').value = '';
+  }
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 /* ── CONFIG ── */
 const cfg = {
