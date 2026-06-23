@@ -3,135 +3,135 @@
   "date_en": "JUNE 23, 2026",
   "left": [
     {
-      "category": "실적·성장",
-      "title": "홈앤쇼핑, 여름 시즈널<br>상품 공략 강화",
+      "category": "성장·실적",
+      "title": "중소기업 판로 지원으로<br>동반성장 실현",
       "items": [
         {
-          "keyword": "음식물처리기",
-          "desc": "<b>쿠쿠 에코웨일 큐브</b>를 '김경란의 취향찬란'에서 24일 방송"
+          "keyword": "판로 개척",
+          "desc": "<b>중소기업의 최대 고민</b>인 판로를 홈쇼핑이 직접 해결"
         },
         {
-          "keyword": "시즈널 전략",
-          "desc": "여름철 악취·벌레 걱정 <b>줄이는 기능</b>으로 수요층 공략"
+          "keyword": "상품 발굴",
+          "desc": "성능 차별화 중소기업 제품을 적극 발굴·입점 추진"
         },
         {
-          "keyword": "프로그램 활용",
-          "desc": "대표 셀럽 프로그램으로 <b>타겟팅 강화</b> 중"
+          "keyword": "수출까지",
+          "desc": "홈쇼핑 플랫폼을 통해 <b>국내 판매 후 해외 수출</b> 연계"
         }
       ],
-      "footer": "시즈널 니즈에 맞춘 기획방송으로 여름 실적 확보 전략",
+      "footer": "판로 문제 해결로 중소기업의 성장 파트너 역할 수행",
       "sources": [
         {
-          "title": "홈앤쇼핑, 쿠쿠 음식물처리기 선봬",
-          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
-        }
-      ]
-    },
-    {
-      "category": "경쟁사 동향",
-      "title": "롯데홈쇼핑의<br>뷰티 상품 강세",
-      "items": [
-        {
-          "keyword": "페르니코리아",
-          "desc": "'센트아우라 샴푸' 6월 5일 <b>첫 방송에서 조기 품절</b>"
-        },
-        {
-          "keyword": "수요 확대",
-          "desc": "기능성 헤어케어 제품에 대한 <b>소비자 관심 확대</b>"
-        },
-        {
-          "keyword": "추가 편성",
-          "desc": "22일 <b>주요 홈쇼핑 채널</b>에 라이브 방송 추가 편성"
-        }
-      ],
-      "footer": "경쟁사의 뷰티 카테고리 성장으로 시장 주도권 경쟁 심화 중",
-      "sources": [
-        {
-          "title": "페르니코리아 센트아우라 샴푸 품절",
-          "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
-        },
-        {
-          "title": "롯데홈쇼핑 론칭 방송 성료",
-          "url": "https://www.itbiznews.com/news/articleView.html?idxno=216921"
-        }
-      ]
-    },
-    {
-      "category": "정책·규제",
-      "title": "자사 임직원<br>개인정보 관리 우려",
-      "items": [
-        {
-          "keyword": "이력서 누락",
-          "desc": "김포도시공사 이형록 사장이 <b>前홈앤쇼핑 경력 미기재</b>"
-        },
-        {
-          "keyword": "비위 의혹",
-          "desc": "홈앤쇼핑 대외협력본부장 당시 <b>공금횡령 혐의</b>"
-        },
-        {
-          "keyword": "신뢰도 저하",
-          "desc": "임직원 신원 관리 관련 <b>제도 점검 필요</b>"
-        }
-      ],
-      "footer": "임직원 신원관리 및 컴플라이언스 강화로 기업 신뢰도 재구축 필요",
-      "sources": [
-        {
-          "title": "김포도시공사 사장 자격 미달 논란",
-          "url": "https://www.viva100.com/article/20260623500005"
+          "title": "상품 발굴·수출까지 한번에",
+          "url": "https://www.mk.co.kr/article/12080938"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "라이브커머스<br>판매 채널 다각화",
+      "title": "기능성 헤어케어 제품<br>홈쇼핑서 대선풍",
       "items": [
         {
-          "keyword": "라이브방송",
-          "desc": "롯데홈쇼핑 첫 방송 <b>조기 품절</b> 사례로 성장 가속"
+          "keyword": "론칭 성공",
+          "desc": "페르니코리아 센트아우라 샴푸, 롯데홈쇼핑 <b>첫 방송 조기 품절</b>"
         },
         {
-          "keyword": "채널 다중화",
-          "desc": "<b>주요 홈쇼핑 채널</b> 동시 진출로 도달 범위 확대 추세"
+          "keyword": "수요 확대",
+          "desc": "라이브커머스 중심으로 기능성 헤어케어 <b>소비자 관심 증가</b>"
         },
         {
-          "keyword": "소비자 수요",
-          "desc": "기능성 상품 중심으로 <b>라이브커머스 집중</b>"
+          "keyword": "추가 편성",
+          "desc": "첫 방송 성공 후 <b>6월 22일 추가 라이브 방송</b> 진행"
         }
       ],
-      "footer": "단일 채널 의존에서 다채널 라이브 방송 전략으로 전환 중",
+      "footer": "기능성 뷰티 제품이 홈쇼핑 주요 성장 카테고리로 부상",
       "sources": [
         {
-          "title": "페르니코리아 추가 라이브 방송 편성",
+          "title": "센트아우라 샴푸 롯데홈쇼핑 론칭 품절",
+          "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
+        },
+        {
+          "title": "추가 라이브 방송 6월 22일 편성",
           "url": "https://www.thedrive.co.kr/news/newsview.php?ncode=1065602972969198"
         }
       ]
     },
     {
-      "category": "성장",
-      "title": "프리미엄 홈쇼핑<br>프로그램 강화",
+      "category": "상품 기획",
+      "title": "프리미엄 생활가전으로<br>차별화 전략 추진",
       "items": [
         {
-          "keyword": "김경란 프로그램",
-          "desc": "'취향찬란'으로 <b>셀럽 기반 고객층</b> 확보 중"
+          "keyword": "신제품 출시",
+          "desc": "쿠쿠 에코웨일 큐브 음식물처리기 <b>6월 24일 론칭</b>"
         },
         {
-          "keyword": "상품 큐레이션",
-          "desc": "쿠쿠·크리스피크림 등 <b>프리미엄 브랜드</b> 집중 방송"
+          "keyword": "기술력 강조",
+          "desc": "눌음 방지 기능, <b>2세대 코팅</b> 등 혁신 기능 보유"
         },
         {
-          "keyword": "시너지 효과",
-          "desc": "대표 프로그램으로 <b>브랜드 신뢰도·매출 동시 상승</b>"
+          "keyword": "프로그램 편성",
+          "desc": "대표 프로그램 '김경란의 취향찬란'에서 <b>황금시간대 방송</b>"
         }
       ],
-      "footer": "셀럽 프로그램 강화로 고급 고객층 확대 및 브랜드 파워 강화 중",
+      "footer": "기술력 있는 프리미엄 제품의 차별화된 판매 전략 수립",
       "sources": [
         {
-          "title": "홈앤쇼핑 쿠쿠 음식물처리기 선봬",
+          "title": "쿠쿠 에코웨일 큐브 선봬",
           "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
+        }
+      ]
+    },
+    {
+      "category": "시장 확대",
+      "title": "라이브커머스 확산으로<br>채널 다각화 가속",
+      "items": [
+        {
+          "keyword": "채널 다양화",
+          "desc": "롯데홈쇼핑, 홈앤쇼핑 등 <b>다중 홈쇼핑 채널</b> 병행 판매"
         },
         {
-          "title": "크리스피크림 신제품 방송",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124375"
+          "keyword": "라이브 강화",
+          "desc": "초기 론칭 후 <b>추가 라이브 방송 편성</b>으로 판매 극대화"
+        },
+        {
+          "keyword": "시너지",
+          "desc": "홈쇼핑+라이브커머스 <b>복합 채널 전략</b>으로 리치 확대"
+        }
+      ],
+      "footer": "전통 홈쇼핑과 라이브커머스 채널 통합으로 고객 접점 극대화",
+      "sources": [
+        {
+          "title": "라이브 추가 편성으로 판매 확대",
+          "url": "https://www.thedrive.co.kr/news/newsview.php?ncode=1065602972969198"
+        },
+        {
+          "title": "센트아우라 롯데홈쇼핑 론칭 방송 성료",
+          "url": "https://www.itbiznews.com/news/articleView.html?idxno=216921"
+        }
+      ]
+    },
+    {
+      "category": "조직·인사",
+      "title": "임원 인사 투명성<br>강화 필요",
+      "items": [
+        {
+          "keyword": "이력서 누락",
+          "desc": "김포도시공사 이형록 사장, 홈앤쇼핑 재직 이력 <b>누락 논란</b>"
+        },
+        {
+          "keyword": "자격 검증",
+          "desc": "공금횡령 공범 혐의 관련 <b>자격 미달 지적</b>"
+        },
+        {
+          "keyword": "신뢰 회복",
+          "desc": "임원 인사 과정의 <b>투명성 및 검증 체계</b> 강화 필요"
+        }
+      ],
+      "footer": "조직 신뢰도 제고를 위한 인사 프로세스 개선 시급",
+      "sources": [
+        {
+          "title": "이형록 사장 자격 미달 논란",
+          "url": "https://www.viva100.com/article/20260623500005"
         }
       ]
     }
@@ -139,126 +139,134 @@
   "right": [
     {
       "category": "경쟁사 동향",
-      "title": "신한 vs 삼성<br>PLCC 전쟁 심화",
+      "title": "NS홈쇼핑, 홈플러스<br>익스프레스 인수 완료",
       "items": [
         {
-          "keyword": "시장점유율",
-          "desc": "<b>0.3%p 차</b>로 1위 경쟁 격화 중"
+          "keyword": "인수금액",
+          "desc": "<b>1,206억 원</b>으로 슈퍼사업 진출"
         },
         {
-          "keyword": "올해 출시",
-          "desc": "PLCC 총 <b>7개</b> 신규 카드 출시"
+          "keyword": "거래완료",
+          "desc": "22일 본계약 체결 후 영업양수도 완료"
         },
         {
-          "keyword": "협업 확대",
-          "desc": "무신사 등 주요 브랜드와 협업 성공"
+          "keyword": "시너지",
+          "desc": "온라인 홈쇼핑과 오프라인 유통 결합"
         }
       ],
-      "footer": "개인신판 시장에서 신한-삼성 격차 0.3%p까지 좁혀져, 차별화된 제휴 전략 필수",
+      "footer": "경쟁사의 공격적 확장…시장 재편 신호",
       "sources": [
         {
-          "title": "신한 vs 삼성, 개인신판 점유율",
-          "url": "https://www.newsway.co.kr/news/view?ud=2026062312263960146"
-        }
-      ]
-    },
-    {
-      "category": "실적·성장",
-      "title": "홈쇼핑 연예인<br>월 2억 벌이 시대",
-      "items": [
-        {
-          "keyword": "월수익",
-          "desc": "한 달에 <b>2억 원</b> 매출 기록"
+          "title": "NS홈쇼핑, 익스프레스 인수 완료",
+          "url": "http://www.srtimes.kr/news/articleView.html?idxno=205930"
         },
         {
-          "keyword": "쇼 횟수",
-          "desc": "하루 <b>6회</b> 홈쇼핑 진행 수준"
-        },
-        {
-          "keyword": "수요층",
-          "desc": "출산 후 복귀 연예인들의 주요 수입원"
-        }
-      ],
-      "footer": "유명 연예인 활용한 홈쇼핑 프로그램이 높은 매출 창출, 콘텐츠 가치 증대",
-      "sources": [
-        {
-          "title": "김지선, 생활고 딛고 한 달에 2억 벌어",
-          "url": "https://www.heraldmuse.com/article/10785228?ref=naver"
+          "title": "익스프레스 팔았지만…홈플러스 운명",
+          "url": "https://www.mk.co.kr/article/12081035"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "계절 맞춤형<br>상품 편성 확대",
+      "title": "여름철 식품 대전<br>집중 마케팅",
       "items": [
         {
-          "keyword": "폭염 대응",
-          "desc": "백캉스·에어컨 등 여름 수요 선점"
+          "keyword": "롯데전략",
+          "desc": "25일~다음달 9일 보양식·간편식 집중 판매"
         },
         {
-          "keyword": "장마 대응",
-          "desc": "제습기·제습용품 동시 판매 진행"
+          "keyword": "데이터기반",
+          "desc": "최근 <b>3년간 판매데이터</b> 분석한 전략"
         },
         {
-          "keyword": "채널 전략",
-          "desc": "롯데홈쇼핑 자체 판매데이터 기반 편성"
+          "keyword": "경쟁강화",
+          "desc": "유통가 전방위 할인 공세 가동"
         }
       ],
-      "footer": "날씨·계절 연동 빠른 상품 편성으로 수요 선점, 데이터 기반 전략 강화",
+      "footer": "시즌별 소비 데이터 기반 전략…경쟁 심화",
       "sources": [
         {
-          "title": "폭염엔 백캉스, 장마엔 제습기",
-          "url": "https://www.m-i.kr/news/articleView.html?idxno=1384321"
+          "title": "유통가의 막판 스퍼트 할인 공세",
+          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5033551"
         }
       ]
     },
     {
       "category": "성장",
-      "title": "PB 브랜드<br>연속 매진 돌풍",
+      "title": "형지I&C, 글로벌<br>공급망 구축 가속",
       "items": [
         {
-          "keyword": "완판 기록",
-          "desc": "현대홈쇼핑 '황정민쇼'서 <b>5회 연속</b> 매진"
+          "keyword": "일본진출",
+          "desc": "<b>8월 발주, 11월 론칭</b> 프리미엄 홈쇼핑"
         },
         {
-          "keyword": "상품",
-          "desc": "프리미엄 두유 '곡물도감' 가파른 성장"
+          "keyword": "다국적망",
+          "desc": "일본·중국·유럽·개성공단 연결"
         },
         {
-          "keyword": "전략",
-          "desc": "프리미엄 PB 상품으로 차별화 경쟁"
+          "keyword": "전략적",
+          "desc": "글로벌 수급 시스템으로 경쟁력 강화"
         }
       ],
-      "footer": "자체 개발 프리미엄 브랜드의 연속 매진으로 PB 사업의 성장 가능성 입증",
+      "footer": "아시아·유럽 연결…글로벌 플레이어로 도약",
       "sources": [
         {
-          "title": "곡물도감, 현대홈쇼핑서 5회 연속 매진",
-          "url": "https://www.asiatoday.co.kr/kn/view.php?key=20260623001326299"
+          "title": "형지I&C, 글로벌 공급망 구축",
+          "url": "http://www.ktnews.com/news/articleView.html?idxno=146733"
         }
       ]
     },
     {
-      "category": "해외 진출",
-      "title": "홈쇼핑<br>일본 공략 시동",
+      "category": "정책·규제",
+      "title": "건강기능식품<br>판매 규범화",
       "items": [
         {
-          "keyword": "진출 시기",
-          "desc": "프리미엄 홈쇼핑 <b>11월 진출</b> 목표"
+          "keyword": "협회협약",
+          "desc": "TV홈쇼핑협회·건강기능식품협회 MOU 체결"
         },
         {
-          "keyword": "로드맵",
-          "desc": "<b>8월</b>부터 일본 수출 로드맵 시동"
+          "keyword": "핵심상품",
+          "desc": "건강기능식품이 홈쇼핑 산업의 <b>주력상품</b>화"
         },
         {
-          "keyword": "전략 상품",
-          "desc": "여성복 브랜드 캐리스노트로 시장 공략"
+          "keyword": "신뢰제고",
+          "desc": "판매방송 건전성 강화로 소비자 신뢰 구축"
         }
       ],
-      "footer": "홈쇼핑 업계의 해외 진출 확대, 글로벌 성장 기반 마련 중",
+      "footer": "규제 강화…건강식품 판매 투명성 요구",
       "sources": [
         {
-          "title": "형지I&C, 캐리스노트 앞세워 일본 공략",
-          "url": "https://www.joongangenews.com/news/articleView.html?idxno=527464"
+          "title": "건강기능식품 판매방송 건전성 협약",
+          "url": "http://www.ftoday.co.kr/news/articleView.html?idxno=360949"
+        }
+      ]
+    },
+    {
+      "category": "리스크",
+      "title": "홈플러스 본사<br>회생 'D-10' 위기",
+      "items": [
+        {
+          "keyword": "긴박상황",
+          "desc": "익스프레스 분리 후 <b>본사 회생</b> 남음"
+        },
+        {
+          "keyword": "책임소재",
+          "desc": "MBK·김병주 회장 책임 있는 결단 필요"
+        },
+        {
+          "keyword": "협력업체",
+          "desc": "신뢰·매출 회복 통한 정상화 기반 중요"
+        }
+      ],
+      "footer": "계열 내 영업실적 재편…업계 재구조화 가속",
+      "sources": [
+        {
+          "title": "홈플러스 운명 가를 D-10",
+          "url": "https://www.mk.co.kr/article/12081035"
+        },
+        {
+          "title": "메리츠금융, 홈플러스 회생 전망",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124559"
         }
       ]
     }
