@@ -522,7 +522,11 @@ body {
 
       <div class="gen-row">
         <button class="btn-gen btn-ai" id="btnAI" onclick="generate('ai')">✨ 고객이 사고 싶게 만드는 AI 상품 전략 분석 생성</button>
-        <button class="btn-gen btn-tmpl" onclick="generate('tmpl')">📝 템플릿 생성</button>
+        <button class="btn-gen" id="btnToggleOffline" onclick="toggleOfflineMode()" style="flex:0 0 auto;padding:13px 14px;background:#f3f4f6;color:#555;border:1.5px solid #e5e7eb;font-size:16px;" title="AI 미연결 시 오프라인 생성">▼</button>
+      </div>
+      <div id="offlineRow" style="display:none;margin-top:8px;">
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">💡 AI 연결이 안 될 때 오프라인으로 생성합니다</div>
+        <button class="btn-gen btn-tmpl" onclick="generate('tmpl')" style="width:100%;padding:13px;">📝 AI 미연결 시 오프라인 템플릿 생성</button>
       </div>
 
       <div class="loading-bar" id="loadingBar">
@@ -828,6 +832,19 @@ async function pickSchedule(name, code) {
   } catch(e) {
     document.getElementById('f-price').value = '';
     document.getElementById('f-feat1').value = '';
+  }
+}
+
+/* ── 오프라인 모드 토글 ── */
+function toggleOfflineMode() {
+  var row = document.getElementById('offlineRow');
+  var btn = document.getElementById('btnToggleOffline');
+  if (row.style.display === 'none') {
+    row.style.display = 'block';
+    btn.textContent = '▲';
+  } else {
+    row.style.display = 'none';
+    btn.textContent = '▼';
   }
 }
 
