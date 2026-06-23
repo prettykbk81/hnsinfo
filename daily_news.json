@@ -1,292 +1,276 @@
 {
-  "date": "2026년 06월 22일",
-  "date_en": "JUNE 22, 2026",
+  "date": "2026년 06월 23일",
+  "date_en": "JUNE 23, 2026",
   "left": [
     {
       "category": "실적·성장",
-      "title": "셀럽 프로그램 중심 <br>신제품 론칭 확대",
+      "title": "홈앤쇼핑, 여름 프리미엄<br>가전 판매 강화",
       "items": [
         {
-          "keyword": "김경란의 취향찬란",
-          "desc": "<b>대표 셀럽 프로그램</b>을 통한 신제품 론칭으로 브랜드 신뢰도 강화"
+          "keyword": "쿠쿠 협력",
+          "desc": "<b>에코웨일 큐브</b> 음식물처리기<br>대표 셀럽 프로그램 '취향찬란'에 편성"
         },
         {
-          "keyword": "음식물처리기 론칭",
-          "desc": "쿠쿠 에코웨일 큐브를 24일 방송으로 론칭, 여름철 수요 공략"
+          "keyword": "시장 대응",
+          "desc": "여름철 악취·위생 관리 수요 증대<br>기온 상승 시즌 타겟 공략"
         },
         {
-          "keyword": "다중채널 전략",
-          "desc": "셀럽 프로그램 + 라이브커머스 결합으로 <b>타겟층 확대</b>"
+          "keyword": "판매 채널",
+          "desc": "6월 24일 저녁 8시 45분<br>프라임 타임대 방송 진행"
         }
       ],
-      "footer": "셀럽 프로그램 강화로 프리미엄 고객층 확보 및 매출 확대",
+      "footer": "계절성 수요에 민첩하게 대응하는 홈쇼핑의 강점 부각",
       "sources": [
         {
-          "title": "홈앤쇼핑, 쿠쿠 음식물처리기",
+          "title": "홈앤쇼핑, 쿠쿠 음식물처리기 선봬",
           "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
         },
         {
-          "title": "여름철 악취·벌레 걱정",
+          "title": "여름철 악취·벌레 걱정 줄인다",
           "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201891"
         }
       ]
     },
     {
-      "category": "트렌드",
-      "title": "홈쇼핑 중심 <br>헤어케어 확산",
+      "category": "경쟁사 동향",
+      "title": "롯데홈쇼핑, 뷰티 제품<br>조기 품절 성과",
       "items": [
         {
-          "keyword": "센트아우라 샴푸",
-          "desc": "기능성 헤어케어 제품이 <b>롯데홈쇼핑 첫 방송 조기 품절</b> 달성"
+          "keyword": "론칭 성공",
+          "desc": "<b>센트아우라 샴푸</b> 첫 방송<br>준비 물량 조기 소진 기록"
         },
         {
-          "keyword": "추가 방송 편성",
-          "desc": "6월 5일 첫 방송 후 수요 증가로 <b>6월 22일 추가 라이브 방송</b> 확대"
+          "keyword": "추가 편성",
+          "desc": "6월 5일 첫 방송 후<br>6월 22일 주요 채널 재방송"
         },
         {
-          "keyword": "소비자 관심 확대",
-          "desc": "홈쇼핑·라이브커머스 중심 기능성 헤어케어 관심 급증"
+          "keyword": "모델 활용",
+          "desc": "배우 한지혜 브랜드 모델<br>인지도 높은 셀럽 영입"
         }
       ],
-      "footer": "기능성 뷰티 제품의 홈쇼핑 채널 수요 증가로 카테고리 확대 기회",
+      "footer": "경쟁사의 공략적 제품 선정과 적극적 재방송 전략 주목",
       "sources": [
         {
-          "title": "센트아우라 샴푸 롯데홈쇼핑 론칭",
+          "title": "센트아우라 샴푸, 롯데홈쇼핑 론칭",
           "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
         },
         {
-          "title": "센트아우라 샴푸 추가 방송 편성",
+          "title": "센트아우라 샴푸, 추가 편성",
           "url": "https://www.thedrive.co.kr/news/newsview.php?ncode=1065602972969198"
         }
       ]
     },
     {
-      "category": "실적·성장",
-      "title": "라이브방송 <br>추가 편성 전략",
+      "category": "시장 트렌드",
+      "title": "홈쇼핑, 기능성<br>헤어케어 수요 급증",
       "items": [
         {
-          "keyword": "조기 품절 달성",
-          "desc": "센트아우라 샴푸 첫 방송에서 준비 물량 <b>조기 소진</b> 성공"
+          "keyword": "시장 확대",
+          "desc": "홈쇼핑·라이브커머스 중심<br>기능성 헤어케어 관심 확대 중"
         },
         {
-          "keyword": "수요 재확인",
-          "desc": "품절로 인한 소비자 관심 재확인 후 <b>추가 라이브 방송 편성</b>"
+          "keyword": "판매 채널",
+          "desc": "롯데홈쇼핑 중심 성과<br>다중 채널 동시 진출 추세"
         },
         {
-          "keyword": "판매 확대 기회",
-          "desc": "초기 성공 제품을 통한 <b>반복 구매 유도 및 고객 확보</b>"
+          "keyword": "소비 전환",
+          "desc": "온라인 쇼핑 비중 증가<br>라이브 방송 구매 확산"
         }
       ],
-      "footer": "성공 제품의 추가 방송으로 판매량 극대화 및 재구매율 강화",
+      "footer": "실시간 방송 구매의 확대로 홈쇼핑 업계의 성장 동력 강화",
       "sources": [
         {
-          "title": "센트아우라 첫 방송 품절 기록",
+          "title": "센트아우라 샴푸 롯데홈쇼핑 품절",
           "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
-        },
-        {
-          "title": "추가 라이브 방송 편성",
-          "url": "https://www.itbiznews.com/news/articleView.html?idxno=216921"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "계절 맞춤형 <br>생활가전 수요 증가",
-      "items": [
-        {
-          "keyword": "여름철 니즈",
-          "desc": "기온 상승으로 음식물 쓰레기 악취·위생 관심 <b>급증</b>"
-        },
-        {
-          "keyword": "신기술 제품",
-          "desc": "2세대 눌음 방지 기능 등 <b>기술 강화 제품</b> 수요 증가"
-        },
-        {
-          "keyword": "계절 마케팅",
-          "desc": "여름철 시즌 특성을 반영한 <b>타이밍 최적화 론칭</b>"
-        }
-      ],
-      "footer": "계절 변화에 따른 소비자 니즈를 빠르게 캐치한 상품 론칭 전략 성공",
-      "sources": [
-        {
-          "title": "여름철 악취·벌레 걱정 줄인다",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=201891"
-        },
-        {
-          "title": "쿠쿠 에코웨일 큐브 선봬",
-          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
         }
       ]
     },
     {
       "category": "정책·규제",
-      "title": "멀티채널 유통 <br>전략 가속화",
+      "title": "홈앤쇼핑 경영진<br>부정행위 논란",
       "items": [
         {
-          "keyword": "홈쇼핑 집중",
-          "desc": "롯데홈쇼핑, 홈앤쇼핑 등 <b>주요 채널 다중 편성</b> 확대 추세"
+          "keyword": "인사 이슈",
+          "desc": "이형록 김포도시공사 사장<br>취임 3년 자격 논란 지속"
         },
         {
-          "keyword": "라이브커머스 연동",
-          "desc": "기존 홈쇼핑 + 라이브커머스 <b>하이브리드 전략</b> 추진"
+          "keyword": "이력서 누락",
+          "desc": "홈앤쇼핑 재직 사실 누락<br>대외협력본부장 당시 공금 혐의"
         },
         {
-          "keyword": "브랜드 협력 강화",
-          "desc": "유명 배우 모델링, 셀럽 프로그램으로 <b>브랜드 파워 확대</b>"
+          "keyword": "신뢰 위기",
+          "desc": "공식 이력서 허위 기재<br>투명성 문제 제기"
         }
       ],
-      "footer": "TV홈쇼핑 중심에서 멀티채널 통합 유통 전략으로의 패러다임 전환",
+      "footer": "홈앤쇼핑 출신 경영진의 부정행위는 업계 신뢰도에 영향",
       "sources": [
         {
-          "title": "페르니코리아 센트아우라 추가 편성",
-          "url": "https://www.thedrive.co.kr/news/newsview.php?ncode=1065602972969198"
+          "title": "김포도시공사 사장 자격 미달 논란",
+          "url": "https://www.viva100.com/article/20260623500005"
+        }
+      ]
+    },
+    {
+      "category": "경쟁전략",
+      "title": "홈쇼핑 3사, 셀럽<br>프로그램으로 차별화",
+      "items": [
+        {
+          "keyword": "홈앤쇼핑",
+          "desc": "<b>'취향찬란'</b> 프로그램<br>김경란 셀럽 중심 고급 포지셔닝"
         },
         {
-          "title": "유통가 오늘 홈앤쇼핑 쿠쿠",
-          "url": "https://www.cnbnews.com/news/articleView.html?idxno=1005379"
+          "keyword": "롯데홈쇼핑",
+          "desc": "<b>한지혜 모델</b> 뷰티 상품<br>영상미·감성 마케팅 강조"
+        },
+        {
+          "keyword": "차별 전략",
+          "desc": "셀럽 프로그램으로<br>타사와 경쟁력 확보 중"
+        }
+      ],
+      "footer": "셀럽 프로그램은 홈쇼핑 고객 충성도 확보의 핵심 경쟁 수단",
+      "sources": [
+        {
+          "title": "홈앤쇼핑, 쿠쿠 신제품 방송",
+          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
+        },
+        {
+          "title": "센트아우라 샴푸 롯데홈쇼핑 론칭",
+          "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
         }
       ]
     }
   ],
   "right": [
     {
+      "category": "트렌드",
+      "title": "여름 식품 수요 폭증<br>보양식 주문 연평균 2배",
+      "items": [
+        {
+          "keyword": "보양식",
+          "desc": "<b>주문량 연평균 2배 증가</b>로 여름철 주력 상품화"
+        },
+        {
+          "keyword": "간편식",
+          "desc": "외식 물가 부담으로 수요 급증, 편성 비중 확대"
+        },
+        {
+          "keyword": "제철과일",
+          "desc": "TV·온라인 채널 연계 편성으로 시너지 창출"
+        }
+      ],
+      "footer": "무더위+물가 부담 = 홈쇼핑 식품 판매 기회 확대",
+      "sources": [
+        {
+          "title": "롯데홈쇼핑 여름 식품 행사",
+          "url": "https://www.thepowernews.co.kr/view.php?ud=202606231114334477de3f0aa1be_7"
+        },
+        {
+          "title": "보양식 주문 2배 증가",
+          "url": "http://www.lawissue.co.kr/view.php?ud=202606231113023887204ead0791_12"
+        }
+      ]
+    },
+    {
+      "category": "시장 확대",
+      "title": "지역 상품 판로 다각화<br>온·오프라인 통합 전략",
+      "items": [
+        {
+          "keyword": "라이브커머스",
+          "desc": "지역 농수축산물 판촉의 새로운 채널화"
+        },
+        {
+          "keyword": "유튜브 협업",
+          "desc": "신부 등 영향력 있는 인물과 콜라보 진행"
+        },
+        {
+          "keyword": "매장 입점",
+          "desc": "신세계사이먼 등 대형몰 오프라인 진출"
+        }
+      ],
+      "footer": "홈쇼핑 + 오프라인 결합으로 지역 경제 활성화 견인",
+      "sources": [
+        {
+          "title": "서귀포 온·오프라인 판로 다각화",
+          "url": "https://www.jejumaeil.net/news/articleView.html?idxno=402114"
+        }
+      ]
+    },
+    {
+      "category": "성장",
+      "title": "해외 진출 가속화<br>일본 프리미엄 시장 공략",
+      "items": [
+        {
+          "keyword": "일본 진출",
+          "desc": "<b>여성복 브랜드 캐리스노트</b> 11월 론칭 목표"
+        },
+        {
+          "keyword": "숍채널",
+          "desc": "일본 프리미엄 홈쇼핑 플랫폼을 주요 유통채널 확보"
+        },
+        {
+          "keyword": "한류 상품",
+          "desc": "K-패션의 일본 시장 성장성에 주목"
+        }
+      ],
+      "footer": "아시아 프리미엄 시장 공략으로 매출 다각화 추진",
+      "sources": [
+        {
+          "title": "형지I&C 일본 홈쇼핑 진출",
+          "url": "https://www.widedaily.com/news/articleView.html?idxno=296260"
+        }
+      ]
+    },
+    {
       "category": "경쟁사 동향",
       "title": "NS홈쇼핑, 홈플러스<br>익스프레스 인수 완료",
       "items": [
         {
-          "keyword": "인수 완료",
-          "desc": "NS홈쇼핑이 홈플러스 익스프레스 <b>영업권 인수 대금 완납</b>"
+          "keyword": "M&A 완료",
+          "desc": "홈플러스 익스프레스 사업부 정상 인수 체결"
         },
         {
-          "keyword": "사업 확장",
-          "desc": "SSM 시장 진출로 <b>오프라인 유통망 강화</b>"
+          "keyword": "점포 확장",
+          "desc": "SSM 채널을 통한 오프라인 네트워크 강화"
         },
         {
-          "keyword": "시너지 기대",
-          "desc": "지역 특산물 발굴, <b>농수산물 판로 확대</b> 추진"
+          "keyword": "신뢰 회복",
+          "desc": "상품 공급 안정화로 고객신뢰 회복 추진"
         }
       ],
-      "footer": "경쟁사의 공격적 다각화 전략, 차별화된 대응 필요",
+      "footer": "경쟁사 온·오프라인 통합 전략 강화, 대응 필요",
       "sources": [
         {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스 영업권 인수",
-          "url": "https://www.econovill.com/news/articleView.html?idxno=743091"
+          "title": "NS홈쇼핑 홈플러스 익스프레스 인수",
+          "url": "https://economist.co.kr/article/view/ecn202606230020"
         },
         {
-          "title": "홈플러스 익스프레스, NS홈쇼핑 자회사 새출발",
-          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5033150"
+          "title": "NS홈쇼핑 정상화 시동",
+          "url": "http://www.updownnews.co.kr/news/articleView.html?idxno=317661"
         }
       ]
     },
     {
-      "category": "실적·성장",
-      "title": "셀럽 마케팅으로<br>월 2억 수익 창출",
+      "category": "채널 전략",
+      "title": "멀티채널 판매 전개<br>홈쇼핑+온라인 시너지",
       "items": [
         {
-          "keyword": "셀럽 수익",
-          "desc": "개그우먼 김지선이 홈쇼핑으로 <b>월 2억 원 달성</b>"
+          "keyword": "농협 연계",
+          "desc": "하나로마트·온라인 가격할인·홈쇼핑 방송 동시 진행"
         },
         {
-          "keyword": "다채널 전략",
-          "desc": "TV 프로그램 3개, 라디오 고정 출연 <b>복합 수익화</b>"
+          "keyword": "시식 이벤트",
+          "desc": "대형마트 시식+1+1전단으로 오프라인 고객 유입"
         },
         {
-          "keyword": "콘텐츠 가치",
-          "desc": "피지컬 변화 스토리 기반 <b>높은 시청률 유도</b>"
+          "keyword": "가격 경쟁",
+          "desc": "제주 하우스감귤 등 제철상품 할인 행사 확대"
         }
       ],
-      "footer": "셀럽 스토리텔링이 강력한 판매 수단, 콘텐츠 투자 확대 필요",
+      "footer": "다채널 연동으로 수확철 제철상품 판매 극대화",
       "sources": [
         {
-          "title": "김지선 복근으로 월 2억 수입 달성",
-          "url": "https://www.newsis.com/view/NISX20260622_0003679068"
-        },
-        {
-          "title": "김지선 홈쇼핑으로 월 2억씩 벌어",
-          "url": "https://www.tvreport.co.kr/breaking/article/1056014/"
-        }
-      ]
-    },
-    {
-      "category": "소비 트렌드",
-      "title": "스트레스 해소 수단으로<br>홈쇼핑 급부상",
-      "items": [
-        {
-          "keyword": "충동구매",
-          "desc": "<b>스트레스 해소 목적</b>의 홈쇼핑·쇼핑 증가 추세"
-        },
-        {
-          "keyword": "주의 필요",
-          "desc": "과다 구매로 인한 <b>가계 부담 위험</b> 지적"
-        },
-        {
-          "keyword": "소비심리",
-          "desc": "심리적 욕구 충족 수단으로 <b>역할 확대</b> 중"
-        }
-      ],
-      "footer": "감정 소비 기반 수요 증가, 감성 마케팅 강화 기회",
-      "sources": [
-        {
-          "title": "별자리별 운세-6월 23일",
-          "url": "https://www.ajunews.com/view/20260622110933220"
-        }
-      ]
-    },
-    {
-      "category": "경쟁사 동향",
-      "title": "NS홈쇼핑의<br>신설법인 운영 체계",
-      "items": [
-        {
-          "keyword": "조직 개편",
-          "desc": "홈플러스 익스프레스를 <b>신설법인으로 별도 운영</b>"
-        },
-        {
-          "keyword": "사업 정상화",
-          "desc": "<b>신뢰 회복 및 경쟁력 강화</b>에 집중"
-        },
-        {
-          "keyword": "경영 독립성",
-          "desc": "독립적 법인 구조로 <b>신속한 의사결정</b> 가능"
-        }
-      ],
-      "footer": "경쟁사의 효율적 조직 운영, 우리의 구조 재평가 필요",
-      "sources": [
-        {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수 완료",
-          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5033150"
-        },
-        {
-          "title": "홈플러스 익스프레스 영업양수도 거래 종결",
-          "url": "https://www.econovill.com/news/articleView.html?idxno=743091"
-        }
-      ]
-    },
-    {
-      "category": "산업 동향",
-      "title": "홈쇼핑업계의<br>멀티채널 통합 가속화",
-      "items": [
-        {
-          "keyword": "채널 통합",
-          "desc": "TV·라디오·온라인 등 <b>전방위 채널 운영</b> 확대"
-        },
-        {
-          "keyword": "유통 재편",
-          "desc": "SSM, 온라인 등으로 <b>생활밀착형 사업 전개</b>"
-        },
-        {
-          "keyword": "시너지 전략",
-          "desc": "농수산물 등 카테고리별 <b>전문성 강화</b> 중"
-        }
-      ],
-      "footer": "다채널·다각화 경쟁 심화, 차별화된 포지셔닝 필수",
-      "sources": [
-        {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스 품은 시너지",
-          "url": "https://www.pointdaily.co.kr/news/articleView.html?idxno=309180"
-        },
-        {
-          "title": "홈플러스 익스프레스 새출발",
-          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5033150"
+          "title": "제주농협 하우스감귤 판촉",
+          "url": "https://www.headlinejeju.co.kr/news/articleView.html?idxno=594878"
         }
       ]
     }
