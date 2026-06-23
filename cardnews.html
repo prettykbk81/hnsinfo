@@ -85,12 +85,20 @@ body {
 /* ── 로딩/에러 ── */
 .status { text-align:center; padding:60px 20px; font-size:15px; color:#888; grid-column:1/-1; }
 .spinner {
-  width:36px; height:36px; border:3px solid #ddd;
+  width:40px; height:40px; border:3px solid #ddd;
   border-top-color:#cc2b2b; border-radius:50%;
   animation:spin .8s linear infinite;
-  margin:0 auto 16px;
+  margin:0 auto 20px;
 }
 @keyframes spin { to { transform:rotate(360deg); } }
+.loading-msg {
+  font-size:13px; color:#888; line-height:1.8;
+  animation:fadeInOut 3s ease-in-out infinite;
+}
+@keyframes fadeInOut {
+  0%,100% { opacity:.5; }
+  50% { opacity:1; }
+}
 
 /* ── 컨트롤 ── */
 .ctrl {
@@ -137,7 +145,13 @@ body {
 <div class="page-date" id="pageDate">네이버 뉴스 × Claude AI</div>
 
 <div class="grid-wrap" id="wrap">
-  <div class="status"><div class="spinner"></div>최신 뉴스 카드를 불러오는 중입니다…</div>
+  <div class="status">
+    <div class="spinner"></div>
+    <div class="loading-msg">
+      기존 카드 뉴스를 생성해 놓았으면 생성 자료를 가져오고<br>
+      없으면 신규 검색해서 제공합니다. 잠시만 기다리세요
+    </div>
+  </div>
 </div>
 
 <div id="moreWrap" class="more-wrap" style="display:none;"></div>
@@ -326,7 +340,7 @@ function getTodayStr() {
 
 function loadNews() {
   var wrap = document.getElementById('wrap');
-  wrap.innerHTML = '<div class="status"><div class="spinner"></div>최신 뉴스 카드를 불러오는 중입니다…</div>';
+  wrap.innerHTML = '<div class="status"><div class="spinner"></div><div class="loading-msg">기존 카드 뉴스를 생성해 놓았으면 생성 자료를 가져오고<br>없으면 신규 검색해서 제공합니다. 잠시만 기다리세요</div></div>';
 
   fetch('daily_news.json?t=' + Date.now())
     .then(function(r) { if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
