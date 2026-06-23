@@ -146,6 +146,25 @@ body {
 }
 .btn-tmpl:hover { background: #e5e7eb; }
 
+/* ── 상품 기술서 상세 ── */
+.pd-wrap{border:1.5px solid #e5e7eb;border-radius:12px;overflow:hidden;background:#fff;}
+.pd-header{background:linear-gradient(90deg,#e8192c,#c0392b);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:10px;}
+.pd-header h3{font-size:14px;font-weight:800;}
+.pd-header .pd-link{margin-left:auto;font-size:11px;color:rgba(255,255,255,.7);text-decoration:none;border:1px solid rgba(255,255,255,.3);padding:4px 10px;border-radius:4px;}
+.pd-header .pd-link:hover{background:rgba(255,255,255,.15);color:#fff;}
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.pd-section{padding:16px 20px;border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;}
+.pd-section:nth-child(even){border-right:none;}
+.pd-section:nth-last-child(-n+2){border-bottom:none;}
+.pd-section.full{grid-column:1/-1;border-right:none;}
+.pd-icon{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-size:14px;margin-right:6px;flex-shrink:0;}
+.pd-stitle{font-size:12px;font-weight:700;color:#333;margin-bottom:8px;display:flex;align-items:center;}
+.pd-content{font-size:12px;color:#666;line-height:1.7;white-space:pre-wrap;max-height:120px;overflow-y:auto;}
+.pd-content::-webkit-scrollbar{width:4px;}
+.pd-content::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
+.pd-empty{color:#bbb;font-style:italic;}
+@media(max-width:600px){.pd-grid{grid-template-columns:1fr;}.pd-section{border-right:none;}}
+
 /* ── LOADING ── */
 .loading-bar {
   display: none;
@@ -497,6 +516,9 @@ body {
           <input type="text" id="f-feat2" placeholder="예) 착즙 100% 무첨가 — 편성표 선택 시 기술서에서 자동 추출">
         </div>
       </div>
+
+      <!-- 상품 기술서 상세 정보 -->
+      <div id="productDetailArea" style="display:none;margin-top:18px;"></div>
 
       <div class="gen-row">
         <button class="btn-gen btn-ai" id="btnAI" onclick="generate('ai')">✨ 고객이 사고 싶게 만드는 AI카피 메이커</button>
@@ -964,15 +986,25 @@ async function selectProduct(code, name, price) {
   document.getElementById('searchArea').style.display = 'none';
 
   if (!code) return;
+  await loadProductDetail(code, name, price);
+}
 
+async function loadProductDetail(code, name, price) {
   document.getElementById('f-feat1').value = '정보 분석 중...';
   document.getElementById('f-feat2').value = '';
+  var pdArea = document.getElementById('productDetailArea');
+  pdArea.style.display = 'block';
+  pdArea.innerHTML = '<div style="text-align:center;padding:20px;color:#888;"><div style="width:24px;height:24px;border:3px solid #ddd;border-top-color:#e8192c;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;"></div>상품 기술서를 분석 중...</div>';
 
   try {
     var r = await fetch(PROXY + '/api/product-detail?code=' + code);
     var d = await r.json();
     if (d.price && !price) document.getElementById('f-price').value = d.price;
 
+    // 기술서 카드 렌더링
+    renderProductDetail(d, name, code);
+
+    // Claude로 핵심 특징 추출
     if (d.description) {
       var pr = await fetch(PROXY + '/api/summarize', {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -1014,7 +1046,56 @@ async function selectProduct(code, name, price) {
     }
   } catch(e) {
     document.getElementById('f-feat1').value = '';
+    pdArea.innerHTML = '<div style="padding:12px;color:#999;text-align:center;">기술서 정보를 불러올 수 없습니다.</div>';
   }
+}
+
+function renderProductDetail(d, name, code) {
+  var pdArea = document.getElementById('productDetailArea');
+  var sec = d.sections || {};
+  var webUrl = 'https://www.hnsmall.com/display/goods.do?goods_code=' + code;
+
+  var html = '<div class="pd-wrap">';
+  html += '<div class="pd-header"><span style="font-size:18px;">📋</span><h3>' + esc(name) + ' — 상품 기술서</h3>';
+  html += '<a class="pd-link" href="' + webUrl + '" target="_blank">🔗 WEB 상품페이지</a></div>';
+  html += '<div class="pd-grid">';
+
+  // 본구성
+  html += '<div class="pd-section">';
+  html += '<div class="pd-stitle"><span class="pd-icon" style="background:#fff0f1;">📦</span>본구성</div>';
+  html += '<div class="pd-content">' + (sec['본구성'] ? esc(sec['본구성']) : '<span class="pd-empty">정보 없음</span>') + '</div>';
+  html += '</div>';
+
+  // 성분 및 원료의 원산지
+  html += '<div class="pd-section">';
+  html += '<div class="pd-stitle"><span class="pd-icon" style="background:#f0fdf4;">🧪</span>성분 및 원료의 원산지</div>';
+  html += '<div class="pd-content">' + (sec['성분 및 원료의 원산지'] ? esc(sec['성분 및 원료의 원산지']) : '<span class="pd-empty">정보 없음</span>') + '</div>';
+  html += '</div>';
+
+  // 상품의 특장점
+  html += '<div class="pd-section full">';
+  html += '<div class="pd-stitle"><span class="pd-icon" style="background:#eff6ff;">⭐</span>상품의 특장점</div>';
+  html += '<div class="pd-content" style="max-height:160px;">' + (sec['상품의 특장점'] ? esc(sec['상품의 특장점']) : '<span class="pd-empty">정보 없음</span>') + '</div>';
+  html += '</div>';
+
+  // 프로모션
+  if (sec['프로모션']) {
+    html += '<div class="pd-section">';
+    html += '<div class="pd-stitle"><span class="pd-icon" style="background:#fffbeb;">🎁</span>프로모션</div>';
+    html += '<div class="pd-content">' + esc(sec['프로모션']) + '</div>';
+    html += '</div>';
+  }
+
+  // 배송/반품
+  if (sec['배송/반품/교환/환불']) {
+    html += '<div class="pd-section">';
+    html += '<div class="pd-stitle"><span class="pd-icon" style="background:#f5f3ff;">🚚</span>배송/반품/교환</div>';
+    html += '<div class="pd-content">' + esc(sec['배송/반품/교환/환불']) + '</div>';
+    html += '</div>';
+  }
+
+  html += '</div></div>';
+  pdArea.innerHTML = html;
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1047,7 +1128,7 @@ function updateStatus() {
     document.getElementById('claudeChip').innerHTML = '<div class="chip-dot"></div>Claude API 미연결 (프록시 확인)';
   });
   chips.push(`<div class="chip chip-ok" id="claudeChip"><div class="chip-dot"></div>Claude API 연결됨</div>`);
-  chips.push(`<div class="chip chip-off"><div class="chip-dot"></div>Notion 미설정 (선택)</div>`);
+  chips.push(`<div class="chip chip-ok"><div class="chip-dot"></div>Notion 연동 완료</div>`);
   chips.push(`<div class="chip chip-ok"><div class="chip-dot"></div>GitHub Actions 배포 준비됨</div>`);
   bar.innerHTML = chips.join('');
 
