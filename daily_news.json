@@ -4,22 +4,22 @@
   "left": [
     {
       "category": "성장·실적",
-      "title": "중소기업 판로 지원으로<br>동반성장 실현",
+      "title": "중소기업 판로 지원으로<br>브랜드 발굴 성공",
       "items": [
         {
-          "keyword": "판로 개척",
-          "desc": "<b>중소기업의 최대 고민</b>인 판로를 홈쇼핑이 직접 해결"
+          "keyword": "판로 지원",
+          "desc": "<b>중소기업 최대 고민 '판로'</b>를 홈쇼핑 채널로 해결"
         },
         {
           "keyword": "상품 발굴",
-          "desc": "성능 차별화 중소기업 제품을 적극 발굴·입점 추진"
+          "desc": "성능 차별화 중소기업 제품을 <b>주요 판로</b>로 확보"
         },
         {
-          "keyword": "수출까지",
-          "desc": "홈쇼핑 플랫폼을 통해 <b>국내 판매 후 해외 수출</b> 연계"
+          "keyword": "수출 연계",
+          "desc": "상품 발굴부터 수출까지 <b>원스톱 지원</b> 체계"
         }
       ],
-      "footer": "판로 문제 해결로 중소기업의 성장 파트너 역할 수행",
+      "footer": "판로 약점을 보유한 중소기업의 신뢰받는 파트너",
       "sources": [
         {
           "title": "상품 발굴·수출까지 한번에",
@@ -28,110 +28,110 @@
       ]
     },
     {
-      "category": "트렌드",
-      "title": "기능성 헤어케어 제품<br>홈쇼핑서 대선풍",
+      "category": "상품·카테고리",
+      "title": "기능성 헤어케어<br>조기 품절 신드롬",
       "items": [
         {
-          "keyword": "론칭 성공",
-          "desc": "페르니코리아 센트아우라 샴푸, 롯데홈쇼핑 <b>첫 방송 조기 품절</b>"
+          "keyword": "조기 품절",
+          "desc": "센트아우라 샴푸 <b>첫 방송에서 즉시 품절</b>"
         },
         {
           "keyword": "수요 확대",
-          "desc": "라이브커머스 중심으로 기능성 헤어케어 <b>소비자 관심 증가</b>"
+          "desc": "홈쇼핑·라이브커머스로 <b>기능성 제품 관심증가</b>"
         },
         {
-          "keyword": "추가 편성",
-          "desc": "첫 방송 성공 후 <b>6월 22일 추가 라이브 방송</b> 진행"
+          "keyword": "재편성",
+          "desc": "초기 판매 성공으로 <b>6월 22일 추가 라이브</b> 편성"
         }
       ],
-      "footer": "기능성 뷰티 제품이 홈쇼핑 주요 성장 카테고리로 부상",
+      "footer": "기능성 뷰티 제품 시장에서 홈쇼핑 채널의 강력한 영향력",
       "sources": [
         {
-          "title": "센트아우라 샴푸 롯데홈쇼핑 론칭 품절",
+          "title": "센트아우라 샴푸 첫 방송 품절",
           "url": "http://www.e2news.com/news/articleView.html?idxno=331569"
         },
         {
-          "title": "추가 라이브 방송 6월 22일 편성",
-          "url": "https://www.thedrive.co.kr/news/newsview.php?ncode=1065602972969198"
-        }
-      ]
-    },
-    {
-      "category": "상품 기획",
-      "title": "프리미엄 생활가전으로<br>차별화 전략 추진",
-      "items": [
-        {
-          "keyword": "신제품 출시",
-          "desc": "쿠쿠 에코웨일 큐브 음식물처리기 <b>6월 24일 론칭</b>"
-        },
-        {
-          "keyword": "기술력 강조",
-          "desc": "눌음 방지 기능, <b>2세대 코팅</b> 등 혁신 기능 보유"
-        },
-        {
-          "keyword": "프로그램 편성",
-          "desc": "대표 프로그램 '김경란의 취향찬란'에서 <b>황금시간대 방송</b>"
-        }
-      ],
-      "footer": "기술력 있는 프리미엄 제품의 차별화된 판매 전략 수립",
-      "sources": [
-        {
-          "title": "쿠쿠 에코웨일 큐브 선봬",
-          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
-        }
-      ]
-    },
-    {
-      "category": "시장 확대",
-      "title": "라이브커머스 확산으로<br>채널 다각화 가속",
-      "items": [
-        {
-          "keyword": "채널 다양화",
-          "desc": "롯데홈쇼핑, 홈앤쇼핑 등 <b>다중 홈쇼핑 채널</b> 병행 판매"
-        },
-        {
-          "keyword": "라이브 강화",
-          "desc": "초기 론칭 후 <b>추가 라이브 방송 편성</b>으로 판매 극대화"
-        },
-        {
-          "keyword": "시너지",
-          "desc": "홈쇼핑+라이브커머스 <b>복합 채널 전략</b>으로 리치 확대"
-        }
-      ],
-      "footer": "전통 홈쇼핑과 라이브커머스 채널 통합으로 고객 접점 극대화",
-      "sources": [
-        {
-          "title": "라이브 추가 편성으로 판매 확대",
-          "url": "https://www.thedrive.co.kr/news/newsview.php?ncode=1065602972969198"
-        },
-        {
-          "title": "센트아우라 롯데홈쇼핑 론칭 방송 성료",
+          "title": "추가 라이브 편성 결정",
           "url": "https://www.itbiznews.com/news/articleView.html?idxno=216921"
         }
       ]
     },
     {
-      "category": "조직·인사",
-      "title": "임원 인사 투명성<br>강화 필요",
+      "category": "프로그램 운영",
+      "title": "'김경란의 취향찬란'<br>주요 신제품 런칭 플랫폼",
       "items": [
         {
-          "keyword": "이력서 누락",
-          "desc": "김포도시공사 이형록 사장, 홈앤쇼핑 재직 이력 <b>누락 논란</b>"
+          "keyword": "대표 프로그램",
+          "desc": "홈앤쇼핑 <b>대표 프로그램에서 신제품</b> 집중 론칭"
         },
         {
-          "keyword": "자격 검증",
-          "desc": "공금횡령 공범 혐의 관련 <b>자격 미달 지적</b>"
+          "keyword": "쿠쿠 제휴",
+          "desc": "에코웨일 큐브 음식물처리기 <b>6월 24일 방송</b>"
         },
         {
-          "keyword": "신뢰 회복",
-          "desc": "임원 인사 과정의 <b>투명성 및 검증 체계</b> 강화 필요"
+          "keyword": "신제품 선보임",
+          "desc": "<b>2세대 코팅 기술</b> 등 차별화된 기능 강조"
         }
       ],
-      "footer": "조직 신뢰도 제고를 위한 인사 프로세스 개선 시급",
+      "footer": "신제품 론칭의 최적 채널로 확립된 홈앤쇼핑의 위치",
       "sources": [
         {
-          "title": "이형록 사장 자격 미달 논란",
+          "title": "쿠쿠 음식물처리기 선봬",
+          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
+        },
+        {
+          "title": "신제품 트렌드 반영 운영",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124375"
+        }
+      ]
+    },
+    {
+      "category": "정책·규제",
+      "title": "임직원 이력 관리<br>투명성 강화 필요",
+      "items": [
+        {
+          "keyword": "이력 관리",
+          "desc": "홈앤쇼핑 근무 이력 <b>누락 사건 발생</b>"
+        },
+        {
+          "keyword": "투명성 강화",
+          "desc": "임직원 이력 기재 <b>엄격한 검증</b> 필요"
+        },
+        {
+          "keyword": "신뢰 제고",
+          "desc": "기업 이미지 보호 위해 <b>내부 규정 강화</b>"
+        }
+      ],
+      "footer": "기업 신뢰도 향상을 위한 내부 관리체계 재점검 필요",
+      "sources": [
+        {
+          "title": "취임 중 이력 누락 논란",
           "url": "https://www.viva100.com/article/20260623500005"
+        }
+      ]
+    },
+    {
+      "category": "트렌드",
+      "title": "다채로운 신제품으로<br>소비자 트렌드 선도",
+      "items": [
+        {
+          "keyword": "신제품 다양화",
+          "desc": "뷰티부터 생활용품까지 <b>카테고리 확대</b>"
+        },
+        {
+          "keyword": "트렌드 반영",
+          "desc": "소비자 '새로움 추구' 욕구 <b>적극 반영</b>"
+        },
+        {
+          "keyword": "시즈널 제품",
+          "desc": "여름 신제품 등 <b>계절성 상품 기획</b>"
+        }
+      ],
+      "footer": "빠른 트렌드 감지와 신제품 론칭으로 시장 리더십 유지",
+      "sources": [
+        {
+          "title": "여름 신제품 출시 동향",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124375"
         }
       ]
     }
@@ -142,131 +142,131 @@
       "title": "NS홈쇼핑, 홈플러스<br>익스프레스 인수 완료",
       "items": [
         {
-          "keyword": "인수금액",
-          "desc": "<b>1,206억 원</b>으로 슈퍼사업 진출"
+          "keyword": "인수 규모",
+          "desc": "<b>1,206억 원</b>에 홈플러스 익스프레스 인수"
         },
         {
-          "keyword": "거래완료",
-          "desc": "22일 본계약 체결 후 영업양수도 완료"
+          "keyword": "전략적 의미",
+          "desc": "오프라인 유통망 확보로 <b>O2O 사업 강화</b>"
         },
         {
-          "keyword": "시너지",
-          "desc": "온라인 홈쇼핑과 오프라인 유통 결합"
+          "keyword": "임직원 통합",
+          "desc": "판교 사옥에서 임직원 환영행사 개최, <b>한 팀 구성</b>"
         }
       ],
-      "footer": "경쟁사의 공격적 확장…시장 재편 신호",
+      "footer": "하림그룹 계열사의 공격적 확장이 시장 재편 신호",
       "sources": [
         {
-          "title": "NS홈쇼핑, 익스프레스 인수 완료",
-          "url": "http://www.srtimes.kr/news/articleView.html?idxno=205930"
+          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수 대금 완납",
+          "url": "http://www.yonhapnewstv.co.kr/news/MYH20260623183915tsT"
         },
         {
-          "title": "익스프레스 팔았지만…홈플러스 운명",
-          "url": "https://www.mk.co.kr/article/12081035"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "여름철 식품 대전<br>집중 마케팅",
-      "items": [
-        {
-          "keyword": "롯데전략",
-          "desc": "25일~다음달 9일 보양식·간편식 집중 판매"
-        },
-        {
-          "keyword": "데이터기반",
-          "desc": "최근 <b>3년간 판매데이터</b> 분석한 전략"
-        },
-        {
-          "keyword": "경쟁강화",
-          "desc": "유통가 전방위 할인 공세 가동"
-        }
-      ],
-      "footer": "시즌별 소비 데이터 기반 전략…경쟁 심화",
-      "sources": [
-        {
-          "title": "유통가의 막판 스퍼트 할인 공세",
-          "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5033551"
-        }
-      ]
-    },
-    {
-      "category": "성장",
-      "title": "형지I&C, 글로벌<br>공급망 구축 가속",
-      "items": [
-        {
-          "keyword": "일본진출",
-          "desc": "<b>8월 발주, 11월 론칭</b> 프리미엄 홈쇼핑"
-        },
-        {
-          "keyword": "다국적망",
-          "desc": "일본·중국·유럽·개성공단 연결"
-        },
-        {
-          "keyword": "전략적",
-          "desc": "글로벌 수급 시스템으로 경쟁력 강화"
-        }
-      ],
-      "footer": "아시아·유럽 연결…글로벌 플레이어로 도약",
-      "sources": [
-        {
-          "title": "형지I&C, 글로벌 공급망 구축",
-          "url": "http://www.ktnews.com/news/articleView.html?idxno=146733"
+          "title": "NS홈쇼핑과 홈플러스 익스프레스는 이제 한 팀",
+          "url": "https://www.sedaily.com/article/20059245?ref=naver"
         }
       ]
     },
     {
       "category": "정책·규제",
-      "title": "건강기능식품<br>판매 규범화",
+      "title": "TV홈쇼핑 업계,<br>소비자 신뢰 강화 움직임",
       "items": [
         {
-          "keyword": "협회협약",
-          "desc": "TV홈쇼핑협회·건강기능식품협회 MOU 체결"
+          "keyword": "협회 연대",
+          "desc": "TV홈쇼핑협회와 건기식협회 <b>MOU 체결</b>"
         },
         {
-          "keyword": "핵심상품",
-          "desc": "건강기능식품이 홈쇼핑 산업의 <b>주력상품</b>화"
+          "keyword": "주요 상품군",
+          "desc": "건강기능식품이 홈쇼핑 <b>주요 상품</b>으로 확립"
         },
         {
-          "keyword": "신뢰제고",
-          "desc": "판매방송 건전성 강화로 소비자 신뢰 구축"
+          "keyword": "목표",
+          "desc": "판매방송 건전화와 <b>소비자 신뢰도 제고</b>"
         }
       ],
-      "footer": "규제 강화…건강식품 판매 투명성 요구",
+      "footer": "규제 강화에 선제적으로 대응하는 업계 신뢰 전략",
       "sources": [
         {
-          "title": "건강기능식품 판매방송 건전성 협약",
-          "url": "http://www.ftoday.co.kr/news/articleView.html?idxno=360949"
+          "title": "한국TV홈쇼핑협회·건기식협회, MOU 체결",
+          "url": "https://www.newsis.com/view/NISX20260623_0003680686"
+        },
+        {
+          "title": "TV홈쇼핑협회·건기식협회, 판매방송 건전화 협력",
+          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1379174"
         }
       ]
     },
     {
-      "category": "리스크",
-      "title": "홈플러스 본사<br>회생 'D-10' 위기",
+      "category": "실적·성장",
+      "title": "홈플러스 청산 위기,<br>시장 재편 신호탄",
       "items": [
         {
-          "keyword": "긴박상황",
-          "desc": "익스프레스 분리 후 <b>본사 회생</b> 남음"
+          "keyword": "청산가치",
+          "desc": "조사위 추정 청산가치 <b>약 3조7천억 원</b>"
         },
         {
-          "keyword": "책임소재",
-          "desc": "MBK·김병주 회장 책임 있는 결단 필요"
+          "keyword": "계속기업가치",
+          "desc": "계속기업가치는 <b>2조5천억 원</b>으로 평가 절하"
         },
         {
-          "keyword": "협력업체",
-          "desc": "신뢰·매출 회복 통한 정상화 기반 중요"
+          "keyword": "본입찰 결과",
+          "desc": "<b>응찰 기업 0개</b>, 시장 신뢰도 심각 하락"
         }
       ],
-      "footer": "계열 내 영업실적 재편…업계 재구조화 가속",
+      "footer": "홈쇼핑 시장에서 유통 구조 개편의 분수령 도래",
       "sources": [
         {
-          "title": "홈플러스 운명 가를 D-10",
-          "url": "https://www.mk.co.kr/article/12081035"
+          "title": "투쟁은 시간낭비... 홈플러스 사태, 이제 솔직해지자",
+          "url": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003245332"
+        }
+      ]
+    },
+    {
+      "category": "트렌드",
+      "title": "연예인 홈쇼핑 출연<br>마케팅 활발화",
+      "items": [
+        {
+          "keyword": "연예인 활용",
+          "desc": "미스트롯4 우승자 이소나, <b>홈쇼핑 활동 확대</b>"
         },
         {
-          "title": "메리츠금융, 홈플러스 회생 전망",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124559"
+          "keyword": "채널 다각화",
+          "desc": "시상, 투표, 홈쇼핑 등 <b>다양한 무대 활동</b>"
+        },
+        {
+          "keyword": "팬 확보",
+          "desc": "네오스타상 투표에서 <b>상위권 진입</b>, 지지층 확대"
+        }
+      ],
+      "footer": "연예인 IP 활용으로 홈쇼핑 신뢰도와 시청률 동시 확보",
+      "sources": [
+        {
+          "title": "이소나, 강원경찰청 교통안전 홍보대사 위촉",
+          "url": "https://www.topstarnews.net/news/articleView.html?idxno=16108318"
+        }
+      ]
+    },
+    {
+      "category": "경쟁사 동향",
+      "title": "유통 전문 기업,<br>플랫폼 확장 경쟁",
+      "items": [
+        {
+          "keyword": "무신사 성과",
+          "desc": "성수·홍대 매장 방문객 <b>31만 명</b> 달성"
+        },
+        {
+          "keyword": "확장 전략",
+          "desc": "온라인 플랫폼 기반 <b>오프라인 확대</b>"
+        },
+        {
+          "keyword": "시장 변화",
+          "desc": "전통 홈쇼핑 vs MZ세대 <b>채널 분산</b>"
+        }
+      ],
+      "footer": "신세대 소비자 확보 경쟁이 심화되는 가운데 채널 다각화 필수",
+      "sources": [
+        {
+          "title": "무신사 '무진장' 흥행, 성수·홍대 매장 방문객 31만명",
+          "url": "https://www.mydaily.co.kr/page/view/2026062319061491941"
         }
       ]
     }
