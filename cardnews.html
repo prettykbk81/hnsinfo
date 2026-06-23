@@ -94,25 +94,28 @@ body {
 
 /* ── 컨트롤 ── */
 .ctrl {
-  margin-top:24px; display:flex; gap:10px;
-  align-items:center; flex-wrap:wrap; justify-content:center;
+  margin-top:24px; display:flex; gap:12px;
+  align-items:stretch; flex-wrap:wrap; justify-content:center;
 }
-.btn-home, .btn-print, .btn-refresh {
-  padding:8px 20px; border:none; border-radius:5px;
-  font-size:13px; font-family:inherit; cursor:pointer;
+.ctrl-btn {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; padding:14px 20px; border:none; border-radius:10px;
+  font-family:inherit; cursor:pointer; text-decoration:none;
+  min-width:100px; transition:all .15s;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
-.btn-home {
-  background:#e8192c; color:#fff;
-  display:inline-flex; align-items:center; gap:6px; text-decoration:none;
-}
-.btn-home:hover    { background:#c8001f; }
-.btn-print         { background:#333; color:#fff; }
-.btn-print:hover   { background:#111; }
-.btn-generate       { background:#1a7f37; color:#fff; }
-.btn-generate:hover { background:#14632b; }
-.btn-generate:disabled { background:#888; cursor:not-allowed; }
-.btn-refresh       { background:#555; color:#fff; }
-.btn-refresh:hover { background:#333; }
+.ctrl-btn:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.15); }
+.ctrl-icon { font-size:24px; line-height:1; }
+.ctrl-label { font-size:11px; font-weight:700; letter-spacing:.3px; }
+.ctrl-btn.green { background:#1a7f37; color:#fff; }
+.ctrl-btn.green:hover { background:#14632b; }
+.ctrl-btn.green:disabled { background:#888; cursor:not-allowed; transform:none; }
+.ctrl-btn.gray { background:#555; color:#fff; }
+.ctrl-btn.gray:hover { background:#333; }
+.ctrl-btn.blue { background:#2563eb; color:#fff; }
+.ctrl-btn.blue:hover { background:#1d4ed8; }
+.ctrl-btn.red { background:#cc2b2b; color:#fff; }
+.ctrl-btn.red:hover { background:#a01f1f; }
 
 @media (max-width:900px) { .grid-wrap { grid-template-columns:1fr; } }
 @media print {
@@ -139,13 +142,26 @@ body {
 
 <div id="moreWrap" class="more-wrap" style="display:none;"></div>
 <button class="btn-more" id="btnMore" style="display:none;" onclick="showMore()">
-  + 기사 더보기
+  📰 기사 더보기 +
 </button>
 
 <div class="ctrl">
-  <button class="btn-generate" id="btnGenerate" onclick="generateNews()">⚡ 뉴스 새로 생성</button>
-  <button class="btn-refresh" onclick="loadNews()">↻ 새로고침</button>
-  <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+  <button class="ctrl-btn green" id="btnGenerate" onclick="generateNews()">
+    <span class="ctrl-icon">⚡</span>
+    <span class="ctrl-label">뉴스 새로 생성</span>
+  </button>
+  <button class="ctrl-btn gray" onclick="loadNews()">
+    <span class="ctrl-icon">🔄</span>
+    <span class="ctrl-label">새로고침</span>
+  </button>
+  <button class="ctrl-btn blue" onclick="window.print()">
+    <span class="ctrl-icon">🖨️</span>
+    <span class="ctrl-label">인쇄 / PDF</span>
+  </button>
+  <a class="ctrl-btn red" href="https://prettykbk81.github.io/hnsinfo/daily_news.html" target="_blank">
+    <span class="ctrl-icon">📄</span>
+    <span class="ctrl-label">전체 보기</span>
+  </a>
 </div>
 <div id="statusMsg" style="margin-top:12px;font-size:12px;color:#888;text-align:center;min-height:18px;"></div>
 
