@@ -313,15 +313,26 @@ async function searchAll() {
       products[i]._score = sc;
     });
 
-    // 4. 블로그 후기 수집 + AI 분석
+    // 4. 홈앤쇼핑 상품평 텍스트 + 블로그 후기 수집 + AI 분석
     document.querySelector('#resultArea .section h2').innerHTML = '<span class="step-badge">2</span> 검색된 상품 (' + products.length + '개)';
     var analysisArea = document.getElementById('analysisArea');
-    analysisArea.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑 상품평 + 블로그 후기를 종합 분석 중...</div></div>';
+    analysisArea.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑 상품평(최대 50건) + 블로그 후기를 수집 중...</div></div>';
 
-    var blogR = await fetch(PROXY + '/api/search-reviews?q=' + encodeURIComponent('홈앤쇼핑 ' + q + ' 후기 리뷰') + '&n=10');
+    // 블로그 후기 (보조)
+    var blogR = await fetch(PROXY + '/api/search-reviews?q=' + encodeURIComponent('홈앤쇼핑 ' + q + ' 후기') + '&n=5');
     var blogs = await blogR.json();
 
-    // 상품별 요약 + 홈앤쇼핑 상품평 데이터
+    // 홈앤쇼핑 상품평 텍스트 취합 (전체 상품에서 수집)
+    var allHnsReviews = [];
+    scores.forEach(function(sc) {
+      if (sc.reviews) {
+        sc.reviews.forEach(function(rv) {
+          allHnsReviews.push(rv);
+        });
+      }
+    });
+
+    // 상품별 요약
     var promptData = products.map(function(p, i) {
       var sc = p._score || {};
       var line = (i+1) + '. ' + p.name + ' (' + (p.price||'가격미정') + '원)';
@@ -338,14 +349,38 @@ async function searchAll() {
       return line;
     }).join('\n');
 
+    // 홈앤쇼핑 상품평 텍스트 (최대 50건)
+    var hnsReviewText = '';
+    var textReviews = allHnsReviews.filter(function(rv){return rv.text && rv.text.length > 3;}).slice(0,50);
+    var ratingOnly = allHnsReviews.filter(function(rv){return !rv.text || rv.text.length <= 3;});
+    if (textReviews.length > 0) {
+      hnsReviewText = textReviews.map(function(rv, i) {
+        return '[상품평' + (i+1) + '] (' + rv.rating + ') ' + rv.text;
+      }).join('\n');
+    }
+    var ratingSummary = '';
+    if (ratingOnly.length > 0) {
+      var rDist = {};
+      ratingOnly.forEach(function(rv){rDist[rv.rating] = (rDist[rv.rating]||0)+1;});
+      ratingSummary = Object.keys(rDist).map(function(k){return k+' '+rDist[k]+'건';}).join(', ');
+    }
+
     var blogText = blogs.map(function(b, i) {
       return '[블로그' + (i+1) + '] ' + b.title + '\n' + b.desc;
     }).join('\n\n');
 
     var prompt = '당신은 홈쇼핑 상품 리뷰&상품평 분석 전문가입니다.\n\n';
     prompt += '검색어: "' + q + '"\n\n';
-    prompt += '홈앤쇼핑 상품 목록 및 상품평 (만족도/건수):\n' + promptData + '\n\n';
-    prompt += '네이버 블로그 후기:\n' + blogText + '\n\n';
+    prompt += '홈앤쇼핑 상품 목록 및 만족도:\n' + promptData + '\n\n';
+    if (hnsReviewText) {
+      prompt += '■ 홈앤쇼핑 고객 상품평 (최근 ' + textReviews.length + '건):\n' + hnsReviewText + '\n\n';
+    }
+    if (ratingSummary) {
+      prompt += '■ 텍스트 없는 상품평 분포: ' + ratingSummary + '\n\n';
+    }
+    if (blogText) {
+      prompt += '■ 네이버 블로그 후기 (참고):\n' + blogText + '\n\n';
+    }
     prompt += '위 정보를 종합 분석하여 반드시 아래 JSON으로만 응답하세요:\n';
     prompt += '{\n';
     prompt += '  "summary": "전체 종합 평가 (40자 내외)",\n';

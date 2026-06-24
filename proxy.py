@@ -100,7 +100,7 @@ def _fetch_review_score(goods_code: str) -> dict:
         level_m = re.search(r'class="fontType2\s*">([^<]+)<', r.text)
 
         all_reviews = []
-        for page in range(1, 4):
+        for page in range(1, 6):
             if page == 1:
                 page_text = r.text
             else:
