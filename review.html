@@ -63,6 +63,16 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .analysis-card.bad .ac-list li{border-left-color:#fecaca;}
 .analysis-card.delivery .ac-list li{border-left-color:#bfdbfe;}
 .analysis-card.value .ac-list li{border-left-color:#fef08a;}
+/* 히트맵 */
+.heatmap-wrap{background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:14px;overflow-x:auto;}
+.heatmap-wrap h3{font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.heatmap-wrap .hm-sub{font-size:10px;color:#999;margin-bottom:12px;}
+.hm-table{border-collapse:collapse;font-size:10px;width:100%;min-width:700px;}
+.hm-table th{padding:4px 2px;font-weight:600;color:#888;text-align:center;position:sticky;top:0;background:#fff;}
+.hm-table th:first-child{text-align:left;min-width:90px;font-size:11px;color:#333;}
+.hm-table td{padding:3px 1px;text-align:center;font-size:9px;color:#555;border:1px solid #f5f5f5;}
+.hm-table td:first-child{text-align:left;font-size:10px;font-weight:600;color:#333;padding-left:4px;border:none;white-space:nowrap;}
+.hm-table .hm-total{font-weight:700;color:#7c3aed;background:#f5f3ff;}
 .tip-section{background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:14px;}
 .tip-section h3{font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;}
 .tip-item{padding:8px 12px;margin-bottom:5px;background:#f5f3ff;border-radius:6px;border-left:4px solid #7c3aed;font-size:12px;color:#444;}
@@ -391,8 +401,97 @@ function renderAnalysis(a, query, productCount, blogCount) {
     html += '</div>';
   }
 
+  // 히트맵 영역 (비동기 로드)
+  html += '<div class="heatmap-wrap" id="heatmapArea"><h3>📺 시간 × 채널 편성 히트맵</h3><div class="hm-sub">최근 1개월 편성 추정 · AI 분석 데이터</div><div style="text-align:center;padding:20px;color:#aaa;font-size:12px;"><div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>편성 히트맵 생성 중...</div></div>';
+
   area.innerHTML = html;
   area.scrollIntoView({behavior:'smooth', block:'start'});
+
+  // 히트맵 비동기 생성
+  loadHeatmap(query);
+}
+
+async function loadHeatmap(query) {
+  var prompt = '홈쇼핑 편성 분석 전문가로서 "' + query + '" 상품의 최근 1개월 편성 히트맵 데이터를 추정하세요.\n\n';
+  prompt += 'JSON으로만 응답:\n{"channels":[';
+  prompt += '{"name":"GS샵","hours":[1,3,4,7,7,3,2,4,2,3,2,3,2,2,3,3,3,2,2,2,2,2,1,5]},';
+  prompt += '{"name":"CJ온스타일","hours":[1,2,4,4,6,3,1,2,3,1,2,2,2,3,3,1,3,2,2,2,2,1,3,4]},';
+  prompt += '{"name":"현대홈쇼핑","hours":[24개 시간대별 편성 횟수]},';
+  prompt += '{"name":"롯데홈쇼핑","hours":[...]},';
+  prompt += '{"name":"NS홈쇼핑","hours":[...]},';
+  prompt += '{"name":"홈앤쇼핑","hours":[...]},';
+  prompt += '{"name":"W쇼핑","hours":[...]},';
+  prompt += '{"name":"SK스토아","hours":[...]},';
+  prompt += '{"name":"쇼핑엔티","hours":[...]},';
+  prompt += '{"name":"KT알파쇼핑","hours":[...]}';
+  prompt += ']}\n';
+  prompt += '규칙: hours는 0시~23시 각 시간대별 편성 횟수(0~9). 해당 카테고리의 실제 편성 패턴을 반영하세요.';
+
+  try {
+    var resp = await fetch(PROXY + '/api/summarize', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({prompt:prompt}),
+    });
+    var fullText = '';
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, {stream:true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        var p = line.slice(6);
+        if (p === '[DONE]') break;
+        try { fullText += JSON.parse(p).text; } catch(e) {}
+      }
+    }
+    var m = fullText.match(/\{[\s\S]*\}/);
+    if (m) {
+      var hData = JSON.parse(m[0].replace(/,\s*([\]}])/g,'$1'));
+      renderHeatmap(hData);
+    } else {
+      document.getElementById('heatmapArea').innerHTML += '<div style="color:#aaa;text-align:center;padding:10px;">히트맵 데이터 생성 실패</div>';
+    }
+  } catch(e) {
+    document.getElementById('heatmapArea').innerHTML += '<div style="color:#aaa;text-align:center;padding:10px;">히트맵 로드 실패</div>';
+  }
+}
+
+function renderHeatmap(data) {
+  var channels = data.channels || [];
+  if (!channels.length) return;
+
+  var html = '<h3>📺 시간 × 채널 편성 히트맵</h3>';
+  html += '<div class="hm-sub">최근 1개월 편성 추정 · 셀 진할수록 편성 多 · AI 분석 데이터</div>';
+  html += '<table class="hm-table"><tr><th></th>';
+  for (var h=0; h<24; h++) html += '<th>'+h+'</th>';
+  html += '<th class="hm-total">합계</th></tr>';
+
+  var maxVal = 0;
+  channels.forEach(function(ch) {
+    (ch.hours||[]).forEach(function(v){if(v>maxVal)maxVal=v;});
+  });
+
+  channels.forEach(function(ch) {
+    var hours = ch.hours || [];
+    var total = hours.reduce(function(a,b){return a+b;},0);
+    html += '<tr><td>' + esc(ch.name) + '</td>';
+    for (var h=0; h<24; h++) {
+      var v = hours[h] || 0;
+      var intensity = maxVal > 0 ? v / maxVal : 0;
+      var bg = v === 0 ? '#fff' : 'rgba(124,58,237,' + (0.08 + intensity * 0.55) + ')';
+      var color = intensity > 0.6 ? '#fff' : '#555';
+      html += '<td style="background:'+bg+';color:'+color+';">'+(v||'')+'</td>';
+    }
+    html += '<td class="hm-total">'+total+'</td></tr>';
+  });
+
+  html += '</table>';
+  document.getElementById('heatmapArea').innerHTML = html;
 }
 
 function makeCard(cls, icon, title, items) {
