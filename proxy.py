@@ -171,6 +171,104 @@ def _fetch_review_score(goods_code: str) -> dict:
         return {"score": "", "count": "0", "level": ""}
 
 
+def _search_naver_shop(keyword: str, display: int = 100) -> dict:
+    """네이버 쇼핑 검색 API"""
+    if not NAVER_ID or not NAVER_SECRET:
+        return {}
+    try:
+        r = req_lib.get(
+            "https://openapi.naver.com/v1/search/shop.json",
+            headers={"X-Naver-Client-Id": NAVER_ID, "X-Naver-Client-Secret": NAVER_SECRET},
+            params={"query": keyword, "display": display, "sort": "sim"},
+            verify=False, timeout=10,
+        )
+        r.raise_for_status()
+        data = r.json()
+        items = data.get("items", [])
+
+        prices = [int(it.get("lprice", 0)) for it in items if it.get("lprice")]
+        malls = {}
+        cats = {}
+        brands = {}
+        for it in items:
+            title = re.sub(r"<[^>]+>", "", it.get("title", ""))
+            mall = it.get("mallName", "기타")
+            cat = it.get("category2") or it.get("category1") or "기타"
+            brand = it.get("brand") or "기타"
+            malls[mall] = malls.get(mall, 0) + 1
+            cats[cat] = cats.get(cat, 0) + 1
+            if brand and brand != "기타":
+                brands[brand] = brands.get(brand, 0) + 1
+
+        price_buckets = {"~1만원": 0, "1~3만원": 0, "3~5만원": 0, "5~10만원": 0,
+                         "10~30만원": 0, "30~50만원": 0, "50만원~": 0}
+        for p in prices:
+            if p < 10000: price_buckets["~1만원"] += 1
+            elif p < 30000: price_buckets["1~3만원"] += 1
+            elif p < 50000: price_buckets["3~5만원"] += 1
+            elif p < 100000: price_buckets["5~10만원"] += 1
+            elif p < 300000: price_buckets["10~30만원"] += 1
+            elif p < 500000: price_buckets["30~50만원"] += 1
+            else: price_buckets["50만원~"] += 1
+
+        top_malls = sorted(malls.items(), key=lambda x: -x[1])[:10]
+        top_brands = sorted(brands.items(), key=lambda x: -x[1])[:10]
+
+        return {
+            "total": data.get("total", 0),
+            "avg_price": int(sum(prices) / len(prices)) if prices else 0,
+            "min_price": min(prices) if prices else 0,
+            "max_price": max(prices) if prices else 0,
+            "brand_count": len(brands),
+            "mall_count": len(malls),
+            "price_buckets": price_buckets,
+            "top_malls": [{"name": k, "count": v} for k, v in top_malls],
+            "categories": dict(sorted(cats.items(), key=lambda x: -x[1])),
+            "top_brands": [{"name": k, "count": v} for k, v in top_brands],
+        }
+    except Exception:
+        return {}
+
+
+def _get_datalab_trend(keyword: str) -> dict:
+    """네이버 DataLab 검색 트렌드 API (90일)"""
+    if not NAVER_ID or not NAVER_SECRET:
+        return {}
+    try:
+        from datetime import datetime, timedelta, timezone
+        KST = timezone(timedelta(hours=9))
+        end = datetime.now(KST)
+        start = end - timedelta(days=90)
+        r = req_lib.post(
+            "https://openapi.naver.com/v1/datalab/search",
+            headers={
+                "X-Naver-Client-Id": NAVER_ID,
+                "X-Naver-Client-Secret": NAVER_SECRET,
+                "Content-Type": "application/json",
+            },
+            json={
+                "startDate": start.strftime("%Y-%m-%d"),
+                "endDate": end.strftime("%Y-%m-%d"),
+                "timeUnit": "week",
+                "keywordGroups": [{"groupName": keyword, "keywords": [keyword]}],
+            },
+            verify=False, timeout=10,
+        )
+        r.raise_for_status()
+        data = r.json()
+        results = data.get("results", [])
+        if results:
+            points = results[0].get("data", [])
+            return {
+                "keyword": keyword,
+                "labels": [p["period"] for p in points],
+                "values": [p["ratio"] for p in points],
+            }
+        return {}
+    except Exception:
+        return {}
+
+
 def _fetch_blog_body(url: str) -> str:
     """블로그 본문 텍스트 추출 (최대 800자)"""
     try:
@@ -348,6 +446,15 @@ class Handler(BaseHTTPRequestHandler):
             code = params.get("code", [""])[0]
             detail = _fetch_product_detail(code) if code else {}
             self._json_response(detail)
+
+        elif parsed.path == "/api/shop-search":
+            q = params.get("q", [""])[0]
+            n = int(params.get("n", ["100"])[0])
+            self._json_response(_search_naver_shop(q, min(n, 100)) if q else {})
+
+        elif parsed.path == "/api/datalab-trend":
+            q = params.get("q", [""])[0]
+            self._json_response(_get_datalab_trend(q) if q else {})
 
         elif parsed.path == "/api/search-reviews":
             q = params.get("q", [""])[0]

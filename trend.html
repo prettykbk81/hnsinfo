@@ -75,7 +75,27 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 
 .report-footer{text-align:center;font-size:10px;color:#aaa;padding:12px 0;}
 .result-fallback{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#333;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #e0e0e0;}
-@media(max-width:700px){.trend-cards,.analysis-grid{grid-template-columns:1fr;}}
+
+/* 시장 분석 대시보드 */
+.market-dash{margin-bottom:16px;}
+.market-metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px;}
+.mm-card{background:#fff;border-radius:8px;padding:12px 10px;box-shadow:0 1px 4px rgba(0,0,0,.05);text-align:center;border-top:2px solid #0d9488;}
+.mm-value{font-size:18px;font-weight:900;color:#0d9488;}
+.mm-value.red{color:#dc2626;} .mm-value.blue{color:#2563eb;}
+.mm-label{font-size:9px;color:#888;margin-top:2px;}
+.mm-sub{font-size:8px;color:#bbb;}
+.market-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.mc-box{background:#fff;border-radius:8px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.mc-box h4{font-size:12px;font-weight:700;color:#333;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.mc-box h4 .badge-api{font-size:8px;color:#0d9488;background:#f0fdfa;padding:2px 6px;border-radius:3px;font-weight:600;}
+.mc-bar{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:11px;}
+.mc-bar-label{width:70px;text-align:right;color:#555;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mc-bar-fill{height:16px;background:#0d9488;border-radius:3px;min-width:2px;transition:width .4s;}
+.mc-bar-val{color:#888;font-size:10px;min-width:25px;}
+.trend-line-box{background:#fff;border-radius:8px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-bottom:14px;}
+.trend-line-box h4{font-size:12px;font-weight:700;color:#333;margin-bottom:8px;}
+
+@media(max-width:700px){.trend-cards,.analysis-grid{grid-template-columns:1fr;}.market-metrics{grid-template-columns:repeat(3,1fr);}.market-charts{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -113,6 +133,12 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
     <div class="news-source" id="newsSource" style="display:none;"></div>
   </div>
 
+  <!-- 시장 분석 대시보드 -->
+  <div id="marketDash" style="display:none;"></div>
+
+  <!-- 검색 트렌드 차트 -->
+  <div id="trendLineArea" style="display:none;"></div>
+
   <div id="resultArea"></div>
 </div>
 
@@ -142,6 +168,10 @@ async function analyzeTrend() {
   var newsSource = document.getElementById('newsSource');
   btn.disabled = true; btn.textContent = '분석 중...';
   area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>뉴스 데이터를 불러오고 트렌드를 분석 중입니다...</div></div>';
+
+  // 시장 분석 대시보드 (병렬 로드)
+  var searchKeyword = focus || cats.join(' ');
+  if (searchKeyword && searchKeyword !== '전체') loadMarketDash(searchKeyword);
 
   // daily_news.json에서 뉴스 데이터 로드
   var newsContext = '';
@@ -311,6 +341,109 @@ function makeSection(cls, icon, title, items) {
   (items||['데이터 없음']).forEach(function(it){ h += '<li>' + esc(it) + '</li>'; });
   h += '</ul></div>';
   return h;
+}
+
+var _trendCharts = [];
+
+async function loadMarketDash(keyword) {
+  var dash = document.getElementById('marketDash');
+  var trendArea = document.getElementById('trendLineArea');
+  dash.style.display = 'block';
+  dash.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>네이버 쇼핑 API로 시장 데이터 수집 중...</div></div>';
+
+  try {
+    // 쇼핑 검색 + DataLab 병렬
+    var [shopResp, trendResp] = await Promise.all([
+      fetch(PROXY + '/api/shop-search?q=' + encodeURIComponent(keyword) + '&n=100').then(function(r){return r.json();}),
+      fetch(PROXY + '/api/datalab-trend?q=' + encodeURIComponent(keyword)).then(function(r){return r.json();}),
+    ]);
+
+    if (shopResp && shopResp.total) renderMarketDash(shopResp, keyword);
+    else dash.style.display = 'none';
+
+    if (trendResp && trendResp.labels) renderTrendLine(trendResp);
+    else trendArea.style.display = 'none';
+  } catch(e) {
+    dash.style.display = 'none';
+  }
+}
+
+function renderMarketDash(d, keyword) {
+  var dash = document.getElementById('marketDash');
+  var html = '<div class="market-dash">';
+
+  // 메트릭 카드 6개
+  html += '<div style="font-size:13px;font-weight:700;color:#0d9488;margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="background:#0d9488;color:#fff;padding:2px 8px;border-radius:4px;font-size:10px;">네이버 쇼핑 API</span> "'+esc(keyword)+'" 검색어 시장 분석</div>';
+  html += '<div class="market-metrics">';
+  html += mmCard(d.total ? d.total.toLocaleString()+'건' : '-', '총 검색건수', '수집 '+Math.min(d.total||0,100)+'개', '');
+  html += mmCard(d.avg_price ? d.avg_price.toLocaleString()+'원' : '-', '평균 가격', '중간값 기반', 'blue');
+  html += mmCard(d.min_price ? d.min_price.toLocaleString()+'원' : '-', '최저가', '', '');
+  html += mmCard(d.brand_count+'개', '브랜드 수', '', '');
+  html += mmCard(d.mall_count+'개', '쇼핑몰 수', '', '');
+  html += mmCard(d.max_price ? d.max_price.toLocaleString()+'원' : '-', '최고가', '', 'red');
+  html += '</div>';
+
+  // 차트 4개 (2x2)
+  html += '<div class="market-charts">';
+
+  // 가격대 분포
+  html += '<div class="mc-box"><h4>💰 가격대별 상품 분포 <span class="badge-api">실시간</span></h4>';
+  var pb = d.price_buckets || {};
+  var pbMax = Math.max.apply(null, Object.values(pb).concat([1]));
+  Object.keys(pb).forEach(function(k){
+    var v = pb[k];
+    html += '<div class="mc-bar"><span class="mc-bar-label">'+k+'</span><div class="mc-bar-fill" style="width:'+Math.round(v/pbMax*100)+'%;background:#0d9488;"></div><span class="mc-bar-val">'+v+'</span></div>';
+  });
+  html += '</div>';
+
+  // Top 10 쇼핑몰
+  html += '<div class="mc-box"><h4>🏪 Top 10 쇼핑몰별 상품 수 <span class="badge-api">실시간</span></h4>';
+  var tmMax = (d.top_malls && d.top_malls[0]) ? d.top_malls[0].count : 1;
+  (d.top_malls||[]).forEach(function(m){
+    html += '<div class="mc-bar"><span class="mc-bar-label">'+esc(m.name)+'</span><div class="mc-bar-fill" style="width:'+Math.round(m.count/tmMax*100)+'%;background:#16a34a;"></div><span class="mc-bar-val">'+m.count+'</span></div>';
+  });
+  html += '</div>';
+
+  // 카테고리 분포
+  html += '<div class="mc-box"><h4>📂 카테고리 분포 <span class="badge-api">실시간</span></h4>';
+  var cats = d.categories || {};
+  var catMax = Math.max.apply(null, Object.values(cats).concat([1]));
+  Object.keys(cats).slice(0,8).forEach(function(k){
+    html += '<div class="mc-bar"><span class="mc-bar-label">'+esc(k)+'</span><div class="mc-bar-fill" style="width:'+Math.round(cats[k]/catMax*100)+'%;background:#2563eb;"></div><span class="mc-bar-val">'+cats[k]+'</span></div>';
+  });
+  html += '</div>';
+
+  // Top 10 브랜드
+  html += '<div class="mc-box"><h4>🏷️ Top 10 브랜드별 상품 수 <span class="badge-api">실시간</span></h4>';
+  var tbMax = (d.top_brands && d.top_brands[0]) ? d.top_brands[0].count : 1;
+  (d.top_brands||[]).forEach(function(b){
+    html += '<div class="mc-bar"><span class="mc-bar-label">'+esc(b.name)+'</span><div class="mc-bar-fill" style="width:'+Math.round(b.count/tbMax*100)+'%;background:#d97706;"></div><span class="mc-bar-val">'+b.count+'</span></div>';
+  });
+  html += '</div>';
+
+  html += '</div></div>';
+  dash.innerHTML = html;
+}
+
+function mmCard(value, label, sub, colorClass) {
+  return '<div class="mm-card"><div class="mm-value '+(colorClass||'')+'">'+value+'</div><div class="mm-label">'+label+'</div>'+(sub?'<div class="mm-sub">'+sub+'</div>':'')+'</div>';
+}
+
+function renderTrendLine(d) {
+  var area = document.getElementById('trendLineArea');
+  area.style.display = 'block';
+  area.innerHTML = '<div class="trend-line-box"><h4>📈 "'+esc(d.keyword)+'" 90일 검색 트렌드 <span style="font-size:9px;color:#0d9488;background:#f0fdfa;padding:2px 6px;border-radius:3px;margin-left:6px;">DataLab API</span></h4><canvas id="trendLineChart" height="120"></canvas></div>';
+
+  _trendCharts.forEach(function(c){c.destroy();}); _trendCharts=[];
+  var ctx = document.getElementById('trendLineChart');
+  if (ctx) {
+    var labels = (d.labels||[]).map(function(l){return l.slice(5);});
+    _trendCharts.push(new Chart(ctx.getContext('2d'), {
+      type:'line',
+      data:{labels:labels, datasets:[{label:'검색 트렌드',data:d.values||[],borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.1)',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#0d9488'}]},
+      options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    }));
+  }
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
