@@ -3,131 +3,147 @@
   "date_en": "JUNE 24, 2026",
   "left": [
     {
-      "category": "성장",
-      "title": "중소기업 판로 지원,<br>차별화 전략 강화",
+      "category": "실적·성장",
+      "title": "여름철 위생가전 수요 <br>공략 전략",
       "items": [
         {
-          "keyword": "판로 지원",
-          "desc": "성능 차별화 <b>중소기업 제품</b>의 주요 판로로 확대"
+          "keyword": "시즈널 마케팅",
+          "desc": "<b>장마·습기 시즌</b> 타겟, 여름철 음식물 쓰레기 관리 수요 증가 포착"
         },
         {
-          "keyword": "상품 발굴",
-          "desc": "상품 발굴부터 <b>수출까지</b> 통합 지원 체계"
+          "keyword": "신제품 출시",
+          "desc": "쿠쿠 '에코웨일 큐브' 음식물처리기 <b>24일 홈앤쇼핑 독점 공개</b>"
         },
         {
-          "keyword": "브랜드 성장",
-          "desc": "낮은 인지도 극복, <b>홈쇼핑 플랫폼 활용</b>"
+          "keyword": "채널 활용",
+          "desc": "<b>셀럽 프로그램</b> '김경란의 취향찬란'으로 타겟 고객층 직접 접근"
         }
       ],
-      "footer": "중소기업 파트너십 강화로 상생 생태계 구축 중",
+      "footer": "시즈널 수요 포착 → 셀럽채널 활용으로 효율적 마케팅",
       "sources": [
         {
-          "title": "상품 발굴·수출까지 한번에",
-          "url": "https://www.mk.co.kr/article/12080938"
+          "title": "쿠쿠, 에코웨일 큐브 홈앤쇼핑서 공개",
+          "url": "http://www.hansbiz.co.kr/news/articleView.html?idxno=846219"
+        },
+        {
+          "title": "여름 가전 정조준… 쿠쿠 승부수",
+          "url": "https://www.asiatime.co.kr/article/20260624500265"
         }
       ]
     },
     {
-      "category": "실적",
-      "title": "기능성 헤어케어,<br>라이브커머스 성공사례",
+      "category": "채널전략",
+      "title": "홈앤쇼핑, 셀럽 프로그램 <br>프리미엄화 추진",
       "items": [
         {
-          "keyword": "조기 품절",
-          "desc": "센트아우라 샴푸 <b>첫 방송 조기 소진</b>"
+          "keyword": "대표채널",
+          "desc": "'김경란의 취향찬란'이 <b>쿠쿠 신제품 론칭</b>의 1순위 플랫폼"
         },
         {
-          "keyword": "추가 편성",
-          "desc": "소비자 관심 확대로 <b>6월 22일 재방송</b>"
+          "keyword": "브랜드 협업",
+          "desc": "대형 가전사(쿠쿠) 신제품 <b>독점 공개</b>로 신뢰도·영향력 강화"
         },
         {
-          "keyword": "트렌드",
-          "desc": "<b>기능성 헤어케어</b> 수요 확대 추세"
+          "keyword": "편성 중점",
+          "desc": "오후 8시 45분 <b>골든타임</b> 배치로 최대 리치 확보"
         }
       ],
-      "footer": "라이브커머스 중심 기능성 제품 판매 가능성 입증",
+      "footer": "프리미엄 셀럽프로그램 강화 = 브랜드 파트너십 심화 신호",
       "sources": [
         {
-          "title": "센트아우라 샴푸 롯데홈쇼핑 론칭",
-          "url": "https://www.e2news.com/news/articleView.html?idxno=331569"
+          "title": "쿠쿠 에코웨일 큐브 취향찬란서 선봬",
+          "url": "https://www.asiatime.co.kr/article/20260624500265"
         },
         {
-          "title": "추가 라이브 방송 편성",
-          "url": "https://www.itbiznews.com/news/articleView.html?idxno=216921"
+          "title": "산업 브리핑 - 쿠쿠 음식물처리기",
+          "url": "http://www.niceeconomy.co.kr/news/articleView.html?idxno=90113"
         }
       ]
     },
     {
-      "category": "상품",
-      "title": "프리미엄 가전,<br>신기술 제품 확대",
+      "category": "트렌드",
+      "title": "가전업계, 위생·건강 <br>가전 주목도 상승",
       "items": [
         {
-          "keyword": "신제품 론칭",
-          "desc": "쿠쿠 <b>에코웨일 큐브 음식물처리기</b> 출시"
+          "keyword": "업계 트렌드",
+          "desc": "본격 장마 앞두고 <b>습기·악취 관리 가전</b> 중요도 증대"
         },
         {
-          "keyword": "기술 혁신",
-          "desc": "눌음 방지·코팅 손상 최소화 <b>2세대 기술</b>"
+          "keyword": "소비 패턴",
+          "desc": "음식물 처리 관리 <b>편의성 중심</b>으로 소비자 관심 집중"
         },
         {
-          "keyword": "채널 전략",
-          "desc": "프리미엄 프로그램 '<b>취향찬란</b>'으로 타게팅"
+          "keyword": "기술 경쟁",
+          "desc": "쿠쿠, <b>독보적 건조·분쇄 기술</b>로 차별화 강조"
         }
       ],
-      "footer": "고객 니즈 반영한 혁신 가전으로 프리미엄 포지셔닝",
+      "footer": "위생·환경 이슈 부상 = 관련 카테고리 수익성 개선 기회",
       "sources": [
         {
-          "title": "쿠쿠 에코웨일 큐브 선봬",
-          "url": "https://www.fetv.co.kr/news/articleView.html?idxno=304848"
+          "title": "가전 트렌드 - 습기·악취 관리 가전",
+          "url": "https://www.ibabynews.com/news/articleView.html?idxno=152323"
+        },
+        {
+          "title": "쿠쿠 음식물처리기 홈앤쇼핑 판매",
+          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
         }
       ]
     },
     {
-      "category": "리더십",
-      "title": "산학연 허브형 리더,<br>ESG 경영 실현",
+      "category": "파트너십",
+      "title": "브랜드파트너사, <br>멀티채널 마케팅 강화",
       "items": [
         {
-          "keyword": "산학연 협력",
-          "desc": "삼성·현대·포스코 등 <b>주요 대기업 자문</b>"
+          "keyword": "채널 다각화",
+          "desc": "쿠쿠, 홈앤쇼핑 방송 + <b>호텔 체험마케팅</b> 동시 추진"
         },
         {
-          "keyword": "거버넌스",
-          "desc": "현대모비스·킨텍스 등 <b>사외이사 역임</b>"
+          "keyword": "제품군 확대",
+          "desc": "음식물처리기 + <b>프리미엄 밥솥</b> 라인업으로 고객접점 확대"
         },
         {
-          "keyword": "ESG 포럼",
-          "desc": "윤경ESG포럼 <b>공동대표</b>로 리더십"
+          "keyword": "접점전략",
+          "desc": "<b>온·오프 채널</b> 연계로 소비자 경험 극대화 시도"
         }
       ],
-      "footer": "경영진의 다양한 산업 경험이 기업 성장 동력",
+      "footer": "쿠쿠 사례, 온오프 채널 시너지 추구 업체들의 벤치마크됨",
       "sources": [
         {
-          "title": "사람 중심 기업가 정신",
-          "url": "https://www.etoday.co.kr/news/view/2596314"
+          "title": "쿠쿠 음식물처리기 홈앤쇼핑 판매",
+          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
+        },
+        {
+          "title": "신상브리핑 - 신세계라이브쇼핑·쿠쿠 협업",
+          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1379293"
         }
       ]
     },
     {
-      "category": "정책·규제",
-      "title": "임직원 이력서 관리,<br>투명성 강화 필요",
+      "category": "경영전략",
+      "title": "홈앤쇼핑, 대형 협력사 <br>신제품 론칭 허브화",
       "items": [
         {
-          "keyword": "이력 관리",
-          "desc": "전직 경력 누락 사건으로 <b>투명성 이슈</b>"
+          "keyword": "플랫폼 역할",
+          "desc": "쿠쿠·신세계·이디야 등 <b>다양한 브랜드 신제품 독점 공개</b>"
         },
         {
-          "keyword": "컴플라이언스",
-          "desc": "<b>이력서 기재 의무</b> 재확인 및 감시 강화"
+          "keyword": "신뢰도 강화",
+          "desc": "프리미엄 브랜드 파트너십으로 <b>신뢰도 있는 쇼핑 플랫폼</b> 이미지"
         },
         {
-          "keyword": "기업 신뢰",
-          "desc": "임직원 행동 기준 <b>명확화</b> 필요"
+          "keyword": "카테고리 확대",
+          "desc": "가전·식품·라이프스타일 등 <b>폭넓은 신제품 포트폴리오</b> 구축 중"
         }
       ],
-      "footer": "기업 신뢰도 유지를 위한 투명한 인사 관리 시스템 구축",
+      "footer": "신제품 론칭 플랫폼 = 미디어·커머스 융합 비즈니스 강화 신호",
       "sources": [
         {
-          "title": "김포도시공사 사장 자격 미달 논란",
-          "url": "https://www.viva100.com/article/20260623500005"
+          "title": "신상브리핑 - GS25·쿠쿠·이디야 신제품",
+          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1379293"
+        },
+        {
+          "title": "쿠쿠 에코웨일 큐브 취향찬란서 선봬",
+          "url": "https://www.asiatime.co.kr/article/20260624500265"
         }
       ]
     }
@@ -135,138 +151,130 @@
   "right": [
     {
       "category": "경쟁사 동향",
-      "title": "NS홈쇼핑,<br>홈플러스 익스프레스 인수",
+      "title": "NS홈쇼핑, 홈플러스<br>익스프레스 인수로<br>시장 재편",
       "items": [
         {
-          "keyword": "전략적 인수",
-          "desc": "<b>SSM 사업 진출</b>로 온·오프라인 통합 생태계 구축"
+          "keyword": "M&A 전략",
+          "desc": "NS홈쇼핑, <b>홈플러스 익스프레스</b> 매각 대금으로 시장 확대"
         },
         {
-          "keyword": "체질 개선",
-          "desc": "기존 홈쇼핑 사업의 한계 극복 위한 <b>신사업 영역 확대</b>"
+          "keyword": "홈플러스 위기",
+          "desc": "기업회생절차 중 <b>2,000억 원</b> 자금난으로 파산 위기"
         },
         {
-          "keyword": "조기 정상화",
-          "desc": "임직원 환영식 개최, <b>본격적 통합 작업</b> 착수"
+          "keyword": "업계 영향",
+          "desc": "홈쇼핑 플레이어 통합 시작, 시장 구조 변화 가속"
         }
       ],
-      "footer": "경쟁사의 영역 확장 전략, 업계 패러다임 변화 신호",
+      "footer": "온라인과 유통채널 결합 전략이 생존의 핵심",
       "sources": [
         {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수",
-          "url": "https://biz.heraldcorp.com/article/10785945?ref=naver"
+          "title": "홈플러스 노사 파산 회피 촉구",
+          "url": "https://www.hankookilbo.com/news/article/A2026062416540003874?did=NA"
         },
         {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스와 '원 팀' 출범",
-          "url": "http://www.newsdream.kr/news/articleView.html?idxno=113489"
+          "title": "ABC뉴스룸 홈플러스 익스프레스",
+          "url": "https://www.ajunews.com/view/20260624142955062"
+        }
+      ]
+    },
+    {
+      "category": "정책·규제",
+      "title": "홈쇼핑 업계<br>보안 위협 심화<br>인력 대응 미흡",
+      "items": [
+        {
+          "keyword": "해킹 증가",
+          "desc": "공영홈쇼핑 등 <b>연간 해킹 시도 증가</b> (2020년 대비)"
+        },
+        {
+          "keyword": "인력 부족",
+          "desc": "공영홈쇼핑 <b>보안인력 6년째 제자리</b> (3명 유지)"
+        },
+        {
+          "keyword": "리스크 관리",
+          "desc": "디지털 위협 증가에 보안 투자 시급한 상황"
+        }
+      ],
+      "footer": "사이버 위협 증가 추세에 선제적 인력 확충 필요",
+      "sources": [
+        {
+          "title": "모두의 창업 유출과 보안인력 현황",
+          "url": "https://www.edaily.co.kr/news/newspath.asp?newsid=05438246645485000"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "여름철 수요 집중<br>롯데홈쇼핑 공략",
+      "title": "맞춤형 고객<br>지원 서비스<br>차별화 경쟁",
       "items": [
         {
-          "keyword": "계절상품",
-          "desc": "보양식·계절가전 중심의 <b>특별 기획전</b> 운영 중"
+          "keyword": "세대별 공략",
+          "desc": "<b>반려가구·시니어</b> 특화 서비스 확대 추세"
         },
         {
-          "keyword": "채널 다각화",
-          "desc": "TV와 온라인몰 <b>동시 전개</b>로 접근성 극대화"
+          "keyword": "로보락 전략",
+          "desc": "현대홈쇼핑, 무상설치·반려동물 관리 등 <b>부가서비스</b> 강화"
         },
         {
-          "keyword": "건강관리",
-          "desc": "무더위 앞둔 시점, <b>건강 수요</b> 적극 포장"
+          "keyword": "고객경험 경쟁",
+          "desc": "제품 판매에서 생활밀착 서비스로 가치 확대"
         }
       ],
-      "footer": "계절 수요 변화에 민첩한 기획전 운영이 경쟁력",
+      "footer": "가전 홈쇼핑, 설치·관리 서비스로 차별화 필수",
       "sources": [
         {
-          "title": "롯데홈쇼핑, 보양식·계절가전 특별전",
-          "url": "https://view.asiae.co.kr/article/2026062309055699863"
+          "title": "로보락 반려가구 시니어 맞춤 서비스",
+          "url": "https://www.ilovepc.co.kr/news/articleView.html?idxno=59820"
         }
       ]
     },
     {
-      "category": "해외 진출",
-      "title": "형지I&C,<br>일본 홈쇼핑 진출 본격화",
+      "category": "실적·성장",
+      "title": "여행 상품<br>홈쇼핑 채널<br>확대되는 판매처",
       "items": [
         {
-          "keyword": "일본 진출",
-          "desc": "일본 대표채널 '숍채널' 진출 타진 중"
+          "keyword": "우수 실적",
+          "desc": "교원투어, 롯데홈쇼핑 남미상품 <b>2,550콜</b> 기록"
         },
         {
-          "keyword": "수출 목표",
-          "desc": "8월 발주 시작, <b>11월 본격 수출</b> 일정 수립"
+          "keyword": "상품 다양화",
+          "desc": "프리미엄 여행상품이 홈쇼핑 <b>주요 실적 드라이버</b>"
         },
         {
-          "keyword": "아시아 거점",
-          "desc": "상하이 전초기지 삼아 <b>글로벌 확대</b> 추진"
+          "keyword": "채널 전략",
+          "desc": "비전자 상품 고가격대 선호도 증가로 홈쇼핑 활용"
         }
       ],
-      "footer": "아시아·유럽을 잇는 홈쇼핑 제품 수출 허브 구축 중",
+      "footer": "홈쇼핑, 생활용품 넘어 프리미엄 상품 시장 개척",
       "sources": [
         {
-          "title": "형지I&C, 상하이 전초기지 삼아 아시아·유럽 공략",
-          "url": "https://news.dealsitetv.com/articles/172264"
+          "title": "교원투어 여행이지 남미상품 흥행",
+          "url": "http://www.smarttimes.co.kr/news/articleView.html?idxno=46678"
         }
       ]
     },
     {
-      "category": "기업 가치",
-      "title": "NS홈쇼핑,<br>사회공헌 1억원 지원",
+      "category": "트렌드",
+      "title": "직접판매 채널<br>다각화로<br>수수료 부담 완화",
       "items": [
         {
-          "keyword": "장학금 지원",
-          "desc": "순직·공상 경찰관 자녀에 <b>5,000만원</b> 지원"
+          "keyword": "놀유니버스",
+          "desc": "<b>SIT 사업 비중 18%</b>로 성장 (1분기 기준)"
         },
         {
-          "keyword": "소방공제회",
-          "desc": "대한소방공제회 후원금 <b>5,000만원</b> 기부"
-        },
-        {
-          "keyword": "사회책임",
-          "desc": "호국보훈의 달 맞춰 <b>YES, NS!</b> 캠페인 확대"
-        }
-      ],
-      "footer": "사회공헌을 통한 기업 신뢰도 및 브랜드 가치 강화",
-      "sources": [
-        {
-          "title": "NS홈쇼핑, 순직 경찰관 자녀·소방관 등에 1억원 지원",
-          "url": "https://www.edaily.co.kr/news/newspath.asp?newsid=02889686645485000"
-        },
-        {
-          "title": "NS홈쇼핑, 경찰·소방 가족 지원",
-          "url": "https://www.newsis.com/view/NISX20260624_0003680935"
-        }
-      ]
-    },
-    {
-      "category": "업계 인사이트",
-      "title": "홈쇼핑 업계,<br>다원화 전략 전개 중",
-      "items": [
-        {
-          "keyword": "기획상품",
-          "desc": "계절 수요 중심의 <b>타겟 마케팅</b> 강화 추세"
+          "keyword": "비용 구조",
+          "desc": "홈쇼핑 수수료 회피, <b>직접 브랜드 전략</b> 활용"
         },
         {
           "keyword": "사업 다각화",
-          "desc": "온라인·SSM·수출 등 <b>영역 확장 경쟁</b> 심화"
-        },
-        {
-          "keyword": "브랜드 강화",
-          "desc": "상품력+사회공헌으로 <b>차별화</b> 추구 중"
+          "desc": "여행·엔터테인먼트로 홈쇼핑 의존도 감소 시도"
         }
       ],
-      "footer": "경쟁 심화 속 상품·채널·가치 모두를 강화하는 시대로 전환",
+      "footer": "판매처 다양화는 마진율 개선의 필수전략",
       "sources": [
         {
-          "title": "롯데홈쇼핑, 보양식·계절가전 특별전",
-          "url": "https://view.asiae.co.kr/article/2026062309055699863"
-        },
-        {
-          "title": "NS홈쇼핑, 홈플러스 익스프레스 인수 완료",
-          "url": "https://biz.heraldcorp.com/article/10785945?ref=naver"
+          "title": "놀유니버스 손흥민 LA 패키지 전략",
+          "url": "https://daily.hankooki.com/news/articleView.html?idxno=1379589"
         }
       ]
     }

@@ -215,89 +215,89 @@
     "패션의류": [
       {
         "keyword": "티셔츠",
-        "total": 57219970
+        "total": 57334401
       },
       {
         "keyword": "반팔티",
-        "total": 21847370
+        "total": 21889044
       },
       {
         "keyword": "원피스",
-        "total": 17787957
+        "total": 17829247
       },
       {
         "keyword": "블라우스",
-        "total": 7965115
+        "total": 7980614
       },
       {
         "keyword": "여름원피스",
-        "total": 3990274
+        "total": 4003309
       }
     ],
     "화장품/미용": [
       {
         "keyword": "쿠션",
-        "total": 12244606
+        "total": 12336312
       },
       {
         "keyword": "토너",
-        "total": 4054586
+        "total": 4065904
       },
       {
         "keyword": "립스틱",
-        "total": 583316
+        "total": 584638
       },
       {
         "keyword": "선크림",
-        "total": 418440
+        "total": 419014
       },
       {
         "keyword": "마스크팩",
-        "total": 353857
+        "total": 354370
       }
     ],
     "식품": [
       {
         "keyword": "과일",
-        "total": 5192748
+        "total": 5210071
       },
       {
         "keyword": "견과류",
-        "total": 719991
+        "total": 721569
       },
       {
         "keyword": "냉면",
-        "total": 345518
+        "total": 346710
       },
       {
         "keyword": "홍삼",
-        "total": 335304
+        "total": 335585
       },
       {
         "keyword": "닭가슴살",
-        "total": 287038
+        "total": 287681
       }
     ],
     "생활/건강": [
       {
         "keyword": "청소기",
-        "total": 5004920
+        "total": 5024858
       },
       {
         "keyword": "에어컨",
-        "total": 3994381
+        "total": 4012209
       },
       {
         "keyword": "선풍기",
-        "total": 3046547
+        "total": 3053312
       },
       {
         "keyword": "화장지",
-        "total": 2134786
+        "total": 2139610
       },
       {
         "keyword": "비타민",
-        "total": 1991170
+        "total": 1993613
       }
     ]
   },
