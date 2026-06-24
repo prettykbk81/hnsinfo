@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>상품 리뷰 분석기 · 홈앤쇼핑 AI</title>
+<title>상품 리뷰&상품평 분석 · 홈앤쇼핑 AI</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -93,7 +93,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 </head>
 <body>
 <div class="page-header">
-  <span class="page-title">상품 리뷰 분석기</span>
+  <span class="page-title">상품 리뷰&상품평 분석</span>
   <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
@@ -297,25 +297,35 @@ async function searchAll() {
     // 4. 블로그 후기 수집 + AI 분석
     document.querySelector('#resultArea .section h2').innerHTML = '<span class="step-badge">2</span> 검색된 상품 (' + products.length + '개)';
     var analysisArea = document.getElementById('analysisArea');
-    analysisArea.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>블로그 후기를 수집하고 AI가 분석 중입니다...</div></div>';
+    analysisArea.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑 상품평 + 블로그 후기를 종합 분석 중...</div></div>';
 
     var blogR = await fetch(PROXY + '/api/search-reviews?q=' + encodeURIComponent('홈앤쇼핑 ' + q + ' 후기 리뷰') + '&n=10');
     var blogs = await blogR.json();
 
-    // 상품별 요약 텍스트 구성
+    // 상품별 요약 + 홈앤쇼핑 상품평 데이터
     var promptData = products.map(function(p, i) {
       var sc = p._score || {};
-      return (i+1) + '. ' + p.name + ' (' + (p.price||'가격미정') + '원)'
-        + (sc.score ? ' — 만족도 ' + sc.score + '점(' + sc.level + '), 상품평 ' + sc.count + '건' : '');
+      var line = (i+1) + '. ' + p.name + ' (' + (p.price||'가격미정') + '원)';
+      if (sc.score) {
+        line += ' — 만족도 ' + sc.score + '점(' + sc.level + '), 상품평 ' + sc.count + '건';
+        if (sc.distribution) {
+          var distParts = [];
+          ['매우만족','만족','보통','불만족','매우불만족'].forEach(function(k){
+            if(sc.distribution[k]) distParts.push(k+' '+sc.distribution[k]+'건');
+          });
+          if (distParts.length) line += ' [' + distParts.join(', ') + ']';
+        }
+      }
+      return line;
     }).join('\n');
 
     var blogText = blogs.map(function(b, i) {
       return '[블로그' + (i+1) + '] ' + b.title + '\n' + b.desc;
     }).join('\n\n');
 
-    var prompt = '당신은 홈쇼핑 상품 리뷰 분석 전문가입니다.\n\n';
+    var prompt = '당신은 홈쇼핑 상품 리뷰&상품평 분석 전문가입니다.\n\n';
     prompt += '검색어: "' + q + '"\n\n';
-    prompt += '홈앤쇼핑에서 검색된 상품 목록:\n' + promptData + '\n\n';
+    prompt += '홈앤쇼핑 상품 목록 및 상품평 (만족도/건수):\n' + promptData + '\n\n';
     prompt += '네이버 블로그 후기:\n' + blogText + '\n\n';
     prompt += '위 정보를 종합 분석하여 반드시 아래 JSON으로만 응답하세요:\n';
     prompt += '{\n';
