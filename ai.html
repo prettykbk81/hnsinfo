@@ -1214,7 +1214,7 @@ async function generate(mode) {
 
   // AI 생성 시 기술서 카드 표시
   if (mode === 'ai' && _lastProductData && _lastProductCode) {
-    await showProductDetailWithAI(_lastProductData, _lastProductName, _lastProductCode);
+    try { await showProductDetailWithAI(_lastProductData, _lastProductName, _lastProductCode); } catch(e) {}
   }
 
   try {
@@ -1223,8 +1223,8 @@ async function generate(mode) {
       try {
         data = await callClaude(product, category, catName, price, feat1, feat2);
       } catch(e1) {
-        if (e1.message.indexOf('파싱') > -1) {
-          document.querySelector('.loading-bar').innerHTML = '<div class="spinner"></div>JSON 오류 발생, 자동 재시도 중...';
+        if (e1.message && e1.message.indexOf('파싱') > -1) {
+          document.getElementById('loadingBar').innerHTML = '<div class="spinner"></div>JSON 오류 발생, 자동 재시도 중...';
           data = await callClaude(product, category, catName, price, feat1, feat2);
         } else { throw e1; }
       }
@@ -1435,26 +1435,34 @@ function renderResults(data) {
   }
 
   // 3. 고객 연령층 차트
-  if (data.demographics) {
-    var labels = Object.keys(data.demographics);
-    var values = Object.values(data.demographics);
-    var ctx1 = document.getElementById('chartDemographics').getContext('2d');
-    _chartInstances.push(new Chart(ctx1, {
-      type:'doughnut', data:{labels:labels, datasets:[{data:values, backgroundColor:['#7c3aed','#2563eb','#e8192c','#d97706','#16a34a'], borderWidth:2, borderColor:'#fff'}]},
-      options:{responsive:true, plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
-    }));
-  }
+  try {
+    if (data.demographics && typeof data.demographics === 'object') {
+      var labels = Object.keys(data.demographics);
+      var values = Object.values(data.demographics);
+      var ctx1 = document.getElementById('chartDemographics');
+      if (ctx1) {
+        _chartInstances.push(new Chart(ctx1.getContext('2d'), {
+          type:'doughnut', data:{labels:labels, datasets:[{data:values, backgroundColor:['#7c3aed','#2563eb','#e8192c','#d97706','#16a34a'], borderWidth:2, borderColor:'#fff'}]},
+          options:{responsive:true, plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+        }));
+      }
+    }
+  } catch(e) { console.log('차트 오류:', e); }
 
   // 4. 편성 시간대 차트
-  if (data.peak_hours) {
-    var hLabels = Object.keys(data.peak_hours);
-    var hValues = Object.values(data.peak_hours);
-    var ctx2 = document.getElementById('chartHours').getContext('2d');
-    _chartInstances.push(new Chart(ctx2, {
-      type:'bar', data:{labels:hLabels, datasets:[{label:'편성 비율(%)', data:hValues, backgroundColor:['#1e293b','#0369a1','#e8192c','#7c3aed'], borderRadius:6}]},
-      options:{responsive:true, scales:{y:{beginAtZero:true,max:50}}, plugins:{legend:{display:false}}}
-    }));
-  }
+  try {
+    if (data.peak_hours && typeof data.peak_hours === 'object') {
+      var hLabels = Object.keys(data.peak_hours);
+      var hValues = Object.values(data.peak_hours);
+      var ctx2 = document.getElementById('chartHours');
+      if (ctx2) {
+        _chartInstances.push(new Chart(ctx2.getContext('2d'), {
+          type:'bar', data:{labels:hLabels, datasets:[{label:'편성 비율(%)', data:hValues, backgroundColor:['#1e293b','#0369a1','#e8192c','#7c3aed'], borderRadius:6}]},
+          options:{responsive:true, scales:{y:{beginAtZero:true,max:50}}, plugins:{legend:{display:false}}}
+        }));
+      }
+    }
+  } catch(e) { console.log('차트 오류:', e); }
 
   // 5. 홈앤쇼핑 판매 현황
   if (data.hns_review_summary && data.hns_review_summary.indexOf('미판매') === -1) {
