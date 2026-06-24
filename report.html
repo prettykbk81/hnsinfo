@@ -594,73 +594,97 @@ function exportPPT() {
   var pptx = new PptxGenJS();
   pptx.layout = 'LAYOUT_WIDE'; pptx.author = '홈앤쇼핑 AI';
 
-  // 표지
-  var s0 = pptx.addSlide();
-  s0.background = {fill:'0369A1'};
-  s0.addText(r.title||'', {x:0.8,y:1.8,w:'85%',h:1,fontSize:36,fontFace:'맑은 고딕',color:'FFFFFF',bold:true});
-  s0.addText((r.subtitle||'')+'\n'+_meta.dept+' | 보고 대상: '+_meta.target, {x:0.8,y:3.2,w:'85%',h:0.8,fontSize:15,fontFace:'맑은 고딕',color:'99CCEE'});
-  s0.addShape(pptx.ShapeType.rect,{x:0.8,y:3.0,w:2,h:0.04,fill:{color:'E8192C'}});
+  // ══ 1장: 표지 + 핵심 지표 ══
+  var s1 = pptx.addSlide();
+  s1.background = {fill:'0F172A'};
+  // 상단 빨간 바
+  s1.addShape(pptx.ShapeType.rect,{x:0,y:0,w:'100%',h:0.08,fill:{color:'E8192C'}});
+  // 제목
+  s1.addText(r.title||'', {x:0.7,y:0.3,w:'90%',h:0.7,fontSize:28,fontFace:'맑은 고딕',color:'FFFFFF',bold:true});
+  s1.addText((r.subtitle||'')+' | '+_meta.dept+' | '+_meta.target, {x:0.7,y:0.95,w:'90%',h:0.35,fontSize:11,color:'8899AA'});
+  // 구분선
+  s1.addShape(pptx.ShapeType.rect,{x:0.7,y:1.35,w:1.5,h:0.03,fill:{color:'0369A1'}});
 
-  // 메트릭 슬라이드
+  // 메트릭 카드 (가로 배치)
   if (r.metrics && r.metrics.length) {
-    var s1 = pptx.addSlide();
-    addSlideHeader(s1, '핵심 지표 요약');
-    var mw = 2.8, mg = 0.3, startX = (13.33 - (r.metrics.length*mw + (r.metrics.length-1)*mg))/2;
+    var mw = 2.7, mg = 0.25;
+    var startX = (13.33 - (r.metrics.length*mw + (r.metrics.length-1)*mg))/2;
     r.metrics.forEach(function(m,i) {
       var x = startX + i*(mw+mg);
-      s1.addShape(pptx.ShapeType.roundRect,{x:x,y:1.8,w:mw,h:2.8,fill:{color:'F8FAFC'},rectRadius:0.15,line:{color:'E0E0E0',width:1}});
-      s1.addText(m.icon||'📊',{x:x,y:1.95,w:mw,h:0.5,fontSize:24,align:'center'});
-      s1.addText(m.value||'',{x:x,y:2.45,w:mw,h:0.6,fontSize:28,fontFace:'맑은 고딕',color:'111111',bold:true,align:'center'});
-      s1.addText(m.label||'',{x:x,y:3.05,w:mw,h:0.4,fontSize:11,color:'888888',align:'center'});
+      var borderColor = m.trend==='up'?'16A34A':m.trend==='down'?'DC2626':'0369A1';
+      s1.addShape(pptx.ShapeType.roundRect,{x:x,y:1.6,w:mw,h:1.6,fill:{color:'1E293B'},rectRadius:0.1,line:{color:borderColor,width:1.5}});
+      s1.addText((m.icon||'')+' '+(m.value||''),{x:x,y:1.7,w:mw,h:0.6,fontSize:20,fontFace:'맑은 고딕',color:'FFFFFF',bold:true,align:'center'});
+      s1.addText(m.label||'',{x:x,y:2.25,w:mw,h:0.3,fontSize:9,color:'8899AA',align:'center'});
       if (m.change) {
-        var cc = m.trend==='up'?'16A34A':m.trend==='down'?'DC2626':'888888';
-        s1.addText(m.change,{x:x,y:3.45,w:mw,h:0.4,fontSize:13,fontFace:'맑은 고딕',color:cc,bold:true,align:'center'});
+        var cc = m.trend==='up'?'4ADE80':m.trend==='down'?'F87171':'94A3B8';
+        s1.addText((m.trend==='up'?'▲ ':m.trend==='down'?'▼ ':'')+m.change,{x:x,y:2.55,w:mw,h:0.3,fontSize:10,color:cc,bold:true,align:'center'});
       }
     });
   }
 
-  // 차트 슬라이드 (표 형태로)
-  [r.chart1, r.chart2].forEach(function(ch) {
-    if (!ch) return;
-    var sc = pptx.addSlide();
-    addSlideHeader(sc, ch.title||'차트');
-    if (ch.type==='doughnut'||ch.type==='pie') {
-      sc.addChart(pptx.charts.DOUGHNUT, [{name:'',labels:ch.labels||[],values:ch.data||[]}],
-        {x:2,y:1.5,w:5,h:4,showPercent:true,showTitle:false,chartColors:COLORS.slice(0,ch.labels.length).map(function(c){return c.replace('#','');})});
-    } else {
-      var datasets = (ch.datasets||[]).map(function(d,i){return {name:d.label||'',labels:ch.labels||[],values:d.data||[]};});
-      sc.addChart(pptx.charts.BAR, datasets,
-        {x:1,y:1.5,w:8,h:4,showTitle:false,chartColors:['0369A1','E8192C','16A34A','D97706'],catAxisOrientation:'minMax',valAxisOrientation:'minMax'});
-    }
-  });
-
-  // 내용 슬라이드
-  if (r.sections) r.sections.forEach(function(sec) {
-    var ss = pptx.addSlide();
-    addSlideHeader(ss, (sec.icon||'')+ ' ' + (sec.title||''));
-    var rows = (sec.items||[]).map(function(it,i){
-      return {text:it, options:{fontSize:13,fontFace:'맑은 고딕',color:'333333',bullet:{type:'bullet'},spaceBefore:6}};
-    });
-    if (rows.length) ss.addText(rows, {x:0.8,y:1.4,w:'85%',h:4,valign:'top',lineSpacing:24});
-  });
-
-  // 이슈 + 계획 슬라이드
-  if ((r.issues&&r.issues.length)||(r.plans&&r.plans.length)) {
-    var sf = pptx.addSlide();
-    addSlideHeader(sf, '이슈 및 향후 계획');
-    var leftY = 1.4;
-    if (r.issues && r.issues.length) {
-      sf.addText('이슈 / 요청사항', {x:0.8,y:leftY,w:5.5,h:0.4,fontSize:14,fontFace:'맑은 고딕',color:'DC2626',bold:true});
-      leftY += 0.5;
-      var ir = r.issues.map(function(it){return{text:it,options:{fontSize:12,bullet:true,spaceBefore:4,color:'444444'}};});
-      sf.addText(ir, {x:0.8,y:leftY,w:5.5,h:2.5,valign:'top'});
-    }
-    if (r.plans && r.plans.length) {
-      sf.addText('향후 계획', {x:7,y:1.4,w:5.5,h:0.4,fontSize:14,fontFace:'맑은 고딕',color:'16A34A',bold:true});
-      var pr = r.plans.map(function(it){return{text:it,options:{fontSize:12,bullet:true,spaceBefore:4,color:'444444'}};});
-      sf.addText(pr, {x:7,y:1.9,w:5.5,h:2.5,valign:'top'});
-    }
+  // 차트 2개 나란히 (있으면)
+  var chartY = 3.5;
+  if (r.chart1) {
+    try {
+      if (r.chart1.type==='doughnut'||r.chart1.type==='pie') {
+        s1.addChart(pptx.charts.DOUGHNUT,[{name:'',labels:r.chart1.labels||[],values:r.chart1.data||[]}],
+          {x:0.5,y:chartY,w:5.5,h:3.5,showPercent:true,showTitle:true,title:r.chart1.title||'',titleFontSize:9,chartColors:COLORS.slice(0,5).map(function(c){return c.replace('#','');})});
+      } else {
+        var ds = (r.chart1.datasets||[]).map(function(d){return{name:d.label||'',labels:r.chart1.labels||[],values:d.data||[]};});
+        s1.addChart(pptx.charts.BAR,ds,{x:0.5,y:chartY,w:5.5,h:3.5,showTitle:true,title:r.chart1.title||'',titleFontSize:9,chartColors:['0369A1','E8192C']});
+      }
+    } catch(e){}
   }
+  if (r.chart2) {
+    try {
+      if (r.chart2.type==='doughnut'||r.chart2.type==='pie') {
+        s1.addChart(pptx.charts.DOUGHNUT,[{name:'',labels:r.chart2.labels||[],values:r.chart2.data||[]}],
+          {x:6.8,y:chartY,w:5.5,h:3.5,showPercent:true,showTitle:true,title:r.chart2.title||'',titleFontSize:9,chartColors:COLORS.slice(0,5).map(function(c){return c.replace('#','');})});
+      } else {
+        var ds2 = (r.chart2.datasets||[]).map(function(d){return{name:d.label||'',labels:r.chart2.labels||[],values:d.data||[]};});
+        s1.addChart(pptx.charts.BAR,ds2,{x:6.8,y:chartY,w:5.5,h:3.5,showTitle:true,title:r.chart2.title||'',titleFontSize:9,chartColors:['0369A1','E8192C']});
+      }
+    } catch(e){}
+  }
+
+  // ══ 2장: 주요 내용 + 이슈 + 계획 ══
+  var s2 = pptx.addSlide();
+  s2.addShape(pptx.ShapeType.rect,{x:0,y:0,w:'100%',h:0.06,fill:{color:'E8192C'}});
+  s2.addText('주요 내용 및 향후 계획',{x:0.5,y:0.2,w:'90%',h:0.45,fontSize:18,fontFace:'맑은 고딕',color:'111111',bold:true});
+  s2.addShape(pptx.ShapeType.rect,{x:0.5,y:0.7,w:1.2,h:0.03,fill:{color:'0369A1'}});
+
+  // 왼쪽: 섹션 내용 함축
+  var leftRows = [];
+  if (r.sections) {
+    r.sections.forEach(function(sec) {
+      leftRows.push({text:(sec.icon||'')+ ' ' + (sec.title||''), options:{fontSize:11,fontFace:'맑은 고딕',color:'0369A1',bold:true,spaceBefore:8}});
+      (sec.items||[]).slice(0,3).forEach(function(it){
+        leftRows.push({text:it, options:{fontSize:9,fontFace:'맑은 고딕',color:'444444',bullet:true,spaceBefore:2,indentLevel:0}});
+      });
+    });
+  }
+  if (leftRows.length) {
+    s2.addText(leftRows, {x:0.5,y:0.9,w:6,h:6,valign:'top',lineSpacing:16});
+  }
+
+  // 오른쪽: 이슈 + 계획
+  var rightY = 0.9;
+  if (r.issues && r.issues.length) {
+    s2.addShape(pptx.ShapeType.roundRect,{x:7,y:rightY,w:5.8,h:0.01,fill:{color:'DC2626'}});
+    s2.addText('⚠️ 이슈 / 요청사항',{x:7,y:rightY+0.1,w:5.8,h:0.35,fontSize:11,fontFace:'맑은 고딕',color:'DC2626',bold:true});
+    var issueRows = r.issues.slice(0,4).map(function(it){return{text:it,options:{fontSize:9,bullet:true,spaceBefore:3,color:'444444'}};});
+    s2.addText(issueRows,{x:7,y:rightY+0.45,w:5.8,h:2.5,valign:'top',lineSpacing:15});
+    rightY += 3.2;
+  }
+  if (r.plans && r.plans.length) {
+    s2.addShape(pptx.ShapeType.roundRect,{x:7,y:rightY,w:5.8,h:0.01,fill:{color:'16A34A'}});
+    s2.addText('🚀 향후 계획',{x:7,y:rightY+0.1,w:5.8,h:0.35,fontSize:11,fontFace:'맑은 고딕',color:'16A34A',bold:true});
+    var planRows = r.plans.slice(0,4).map(function(it,i){return{text:(i+1)+'. '+it,options:{fontSize:9,spaceBefore:3,color:'444444'}};});
+    s2.addText(planRows,{x:7,y:rightY+0.45,w:5.8,h:2.5,valign:'top',lineSpacing:15});
+  }
+
+  // 하단 푸터
+  s2.addText('홈앤쇼핑 AI 보고서 · '+today(),{x:0.5,y:7,w:'90%',h:0.3,fontSize:8,color:'AAAAAA',align:'right'});
 
   pptx.writeFile({fileName:(r.title||'보고서').replace(/\s+/g,'_')+'_'+today()+'.pptx'});
 }
