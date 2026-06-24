@@ -169,9 +169,16 @@ async function analyzeTrend() {
   btn.disabled = true; btn.textContent = '분석 중...';
   area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>뉴스 데이터를 불러오고 트렌드를 분석 중입니다...</div></div>';
 
-  // 시장 분석 대시보드 (병렬 로드)
+  // 시장 분석 대시보드 + DataLab 월간 검색량 (병렬 로드)
   var searchKeyword = focus || (cats.indexOf('전체')>-1 ? '홈쇼핑' : cats.join(' '));
+  var _datalabMonthly = null;
   loadMarketDash(searchKeyword);
+
+  // DataLab 월간 검색량 (AI 프롬프트에 주입)
+  try {
+    var dlResp = await fetch(PROXY + '/api/datalab-trend?q=' + encodeURIComponent(searchKeyword));
+    if (dlResp.ok) _datalabMonthly = await dlResp.json();
+  } catch(e) {}
 
   // daily_news.json에서 뉴스 데이터 로드
   var newsContext = '';
@@ -225,12 +232,19 @@ async function analyzeTrend() {
   prompt += '    {"title":"시사점2", "desc":"설명"},\n';
   prompt += '    {"title":"시사점3", "desc":"설명"}\n';
   prompt += '  ],\n';
-  prompt += '  "monthly_search": {"4월":65,"5월":78,"6월":92},\n';
   prompt += '  "age_distribution": {"10대":5,"20대":15,"30대":25,"40대":28,"50대":18,"60대이상":9},\n';
   prompt += '  "channel_share": {"TV홈쇼핑":35,"라이브커머스":25,"온라인몰":22,"모바일앱":18},\n';
   prompt += '  "next_week": ["다음 주 주목할 포인트1", "포인트2", "포인트3"]\n';
   prompt += '}\n';
-  prompt += '규칙:\n- 뉴스 기사 실제 내용과 수치를 인용\n- trends는 4개\n- monthly_search: 최근 3개월 월별 검색 관심도 (추정)\n- age_distribution: 홈쇼핑 구매 고객 연령 비율 추정\n- channel_share: 채널별 구매 비율 추정\n- 날짜는 ' + newsDate + ' 기준';
+  prompt += '규칙:\n- 뉴스 기사 실제 내용과 수치를 인용\n- trends는 4개\n- age_distribution: 홈쇼핑 구매 고객 연령 비율 추정\n- channel_share: 채널별 구매 비율 추정\n- 날짜는 ' + newsDate + ' 기준';
+
+  // DataLab 실제 검색량 데이터 주입
+  if (_datalabMonthly && _datalabMonthly.labels) {
+    prompt += '\n\n참고 - 네이버 DataLab 실제 검색 트렌드 데이터 (' + searchKeyword + '):\n';
+    for (var di=0; di<_datalabMonthly.labels.length; di++) {
+      prompt += _datalabMonthly.labels[di] + ': ' + Math.round(_datalabMonthly.values[di]) + '\n';
+    }
+  }
 
   try {
     var resp = await fetch(PROXY + '/api/summarize', {
@@ -260,8 +274,14 @@ async function analyzeTrend() {
     var report = tryParse(fullText);
     if (report) {
       renderReport(report);
+    } else if (!window._trendRetried) {
+      window._trendRetried = true;
+      area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>JSON 파싱 오류, 자동 재시도 중...</div></div>';
+      setTimeout(analyzeTrend, 500);
+      return;
     } else {
-      area.innerHTML = '<div class="section"><div class="result-fallback">' + esc(fullText) + '</div></div>';
+      area.innerHTML = '<div class="section"><div class="error">분석 결과 파싱 실패. 다시 시도해주세요.</div></div>';
+      window._trendRetried = false;
     }
   } catch(e) {
     area.innerHTML = '<div class="section"><div class="error">' +
@@ -272,11 +292,26 @@ async function analyzeTrend() {
 }
 
 function tryParse(text) {
-  var m = text.match(/\{[\s\S]*\}/);
+  var cleaned = text.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  var m = cleaned.match(/\{[\s\S]*\}/);
   if (!m) return null;
-  var raw = m[0].replace(/,\s*([\]}])/g,'$1');
+  var raw = m[0];
+  // 1차
   try { return JSON.parse(raw); } catch(e) {}
-  raw = raw.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){return ': "'+a+' '+b+'"';});
+  // 2차: trailing comma
+  raw = raw.replace(/,\s*([\]}])/g,'$1');
+  try { return JSON.parse(raw); } catch(e) {}
+  // 3차: 줄바꿈 문자열
+  raw = raw.replace(/"([^"]*)\n([^"]*)"/g, function(m,a,b){return '"'+a+' '+b+'"';});
+  try { return JSON.parse(raw); } catch(e) {}
+  // 4차: 닫는 괄호 복구
+  var opens = (raw.match(/[\[{]/g)||[]).length;
+  var closes = (raw.match(/[\]}]/g)||[]).length;
+  for (var i=0; i<opens-closes; i++) {
+    var last = Math.max(raw.lastIndexOf('['), raw.lastIndexOf('{'));
+    raw += (raw[last]==='[') ? ']' : '}';
+  }
+  raw = raw.replace(/,\s*([\]}])/g,'$1');
   try { return JSON.parse(raw); } catch(e) {}
   return null;
 }
@@ -326,14 +361,15 @@ function renderReport(r) {
   }
 
   // 차트 영역 (3개)
-  var hasChartData = r.monthly_search || r.age_distribution || r.channel_share;
+  var hasChartData = _datalabMonthly || r.age_distribution || r.channel_share;
   if (hasChartData) {
     html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;" id="aiChartsRow">';
-    if (r.monthly_search) {
-      html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
-      html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">📈 월별 검색 관심도 추이</div>';
-      html += '<canvas id="chartMonthly" height="180"></canvas></div>';
-    }
+    // DataLab 실제 월간 검색량
+    html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
+    html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:4px;">📈 월간 검색 트렌드</div>';
+    html += '<div style="font-size:9px;color:#0d9488;margin-bottom:8px;">네이버 DataLab API · 90일</div>';
+    html += '<canvas id="chartMonthly" height="180"></canvas></div>';
+    if (false) { // monthly_search는 DataLab으로 대체
     if (r.age_distribution) {
       html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
       html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">👥 구매 고객 연령 분포</div>';
@@ -361,13 +397,15 @@ function renderReport(r) {
   // AI 생성 차트 렌더링
   var chartColors = ['#0d9488','#2563eb','#e8192c','#d97706','#7c3aed','#16a34a'];
   try {
-    if (r.monthly_search) {
-      var mLabels = Object.keys(r.monthly_search);
-      var mValues = Object.values(r.monthly_search);
+    // DataLab 실제 월간 검색량
+    if (_datalabMonthly && _datalabMonthly.labels) {
+      var mLabels = _datalabMonthly.labels.map(function(l){return l.slice(5);});
+      var mValues = _datalabMonthly.values.map(function(v){return Math.round(v);});
       var ctx1 = document.getElementById('chartMonthly');
       if (ctx1) new Chart(ctx1.getContext('2d'), {
-        type:'bar', data:{labels:mLabels, datasets:[{label:'검색 관심도',data:mValues,backgroundColor:chartColors.slice(0,mLabels.length),borderRadius:6}]},
-        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+        type:'line',
+        data:{labels:mLabels, datasets:[{label:'검색 트렌드',data:mValues,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.08)',fill:true,tension:0.3,pointRadius:2,pointBackgroundColor:'#0d9488',borderWidth:2}]},
+        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}}}}
       });
     }
     if (r.age_distribution) {
