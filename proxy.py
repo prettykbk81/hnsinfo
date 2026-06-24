@@ -112,26 +112,46 @@ def _fetch_review_score(goods_code: str) -> dict:
                 )
                 page_text = rp.text
 
-            flags = re.findall(r'class="flag\s+\w+">([^<]+)<', page_text)
-            users = re.findall(r'class="user">([^<]+)<', page_text)
-            dates = re.findall(r'class="date">\s*([^\n<]+)', page_text)
-            rate_boxes = re.findall(r'<div class="rateBox">([\s\S]*?)</div>\s*</li>', page_text)
+            items = re.findall(
+                r'<div class="reviewInfo">([\s\S]*?)(?=<div class="reviewInfo">|$)',
+                page_text,
+            )
+            if not items:
+                items_alt = page_text.split('<div class="reviewInfo">')
+                items = items_alt[1:] if len(items_alt) > 1 else []
 
-            for j in range(len(flags)):
+            for item in items:
+                flag_m = re.search(r'class="flag\s+\w+">([^<]+)<', item)
+                if not flag_m:
+                    continue
+                user_m = re.search(r'class="user">([^<]+)<', item)
+                date_m = re.search(r'class="date">\s*([^\n<]+)', item)
+
                 review_text = ""
-                if j < len(rate_boxes):
-                    txt = re.sub(r'<[^>]+>', ' ', rate_boxes[j])
+                rate_m = re.search(r'class="rateBox">([\s\S]*?)</div>', item)
+                if rate_m:
+                    txt = re.sub(r'<[^>]+>', ' ', rate_m.group(1))
                     txt = re.sub(r'닫기', '', txt)
                     txt = re.sub(r'\s+', ' ', txt).strip()
                     if len(txt) > 3:
                         review_text = txt[:300]
+                txt_m = re.search(r'class="txt">([^<]+(?:<BR>[^<]*)*)', item)
+                if txt_m and not review_text:
+                    review_text = re.sub(r'<BR>', ' ', txt_m.group(1)).strip()[:300]
+
+                images = re.findall(
+                    r'src="((?:https?:)?//image\.hnsmall\.com/images/comment/[^"]+)"',
+                    item,
+                )
+
                 all_reviews.append({
-                    "rating": flags[j].strip(),
-                    "user": users[j].strip() if j < len(users) else "",
-                    "date": dates[j].strip() if j < len(dates) else "",
+                    "rating": flag_m.group(1).strip(),
+                    "user": user_m.group(1).strip() if user_m else "",
+                    "date": date_m.group(1).strip() if date_m else "",
                     "text": review_text,
+                    "images": images[:3],
                 })
-            if not flags:
+            if not items:
                 break
 
         dist = {}

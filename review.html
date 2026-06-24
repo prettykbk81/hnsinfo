@@ -324,10 +324,12 @@ async function searchAll() {
 
     // 홈앤쇼핑 상품평 텍스트 취합 (전체 상품에서 수집)
     var allHnsReviews = [];
+    _allCollectedReviews = [];
     scores.forEach(function(sc) {
       if (sc.reviews) {
         sc.reviews.forEach(function(rv) {
           allHnsReviews.push(rv);
+          _allCollectedReviews.push(rv);
         });
       }
     });
@@ -523,10 +525,13 @@ function renderAnalysis(a, query, productCount, blogCount) {
     html += '</table></div>';
   }
 
-  // 종합 장단점
+  // 종합 장단점 + 상품평 이미지
+  var goodImgs = getReviewImages('매우만족,만족', 3);
+  var badImgs = getReviewImages('불만족,매우불만족,보통', 3);
+
   html += '<div class="analysis-grid">';
-  html += makeCard('good','👍','종합 장점', a.good);
-  html += makeCard('bad','👎','종합 단점', a.bad);
+  html += makeCardWithImages('good','👍','종합 장점', a.good, goodImgs);
+  html += makeCardWithImages('bad','👎','종합 단점', a.bad, badImgs);
   html += '</div>';
 
   // MD 제안
@@ -689,6 +694,56 @@ function renderHeatmap(data) {
 
   html += '</table>';
   document.getElementById('heatmapArea').innerHTML = html;
+}
+
+var _allCollectedReviews = [];
+
+function getReviewImages(ratingFilter, maxCount) {
+  var filters = ratingFilter.split(',');
+  var imgs = [];
+  _allCollectedReviews.forEach(function(rv) {
+    if (imgs.length >= maxCount) return;
+    if (!rv.images || !rv.images.length) return;
+    var match = filters.some(function(f){return rv.rating.indexOf(f.trim()) > -1;});
+    if (match) {
+      rv.images.forEach(function(img) {
+        if (imgs.length < maxCount) {
+          var url = img.startsWith('http') ? img : 'https:' + img;
+          imgs.push(url);
+        }
+      });
+    }
+  });
+  if (imgs.length < maxCount) {
+    _allCollectedReviews.forEach(function(rv) {
+      if (imgs.length >= maxCount) return;
+      if (!rv.images || !rv.images.length) return;
+      rv.images.forEach(function(img) {
+        var url = img.startsWith('http') ? img : 'https:' + img;
+        if (imgs.indexOf(url) === -1 && imgs.length < maxCount) imgs.push(url);
+      });
+    });
+  }
+  return imgs;
+}
+
+function makeCardWithImages(cls, icon, title, items, images) {
+  var h = '<div class="analysis-card ' + cls + '">';
+  h += '<div class="ac-header"><div class="ac-icon ' + cls + '">' + icon + '</div>';
+  h += '<div class="ac-title">' + title + '</div></div>';
+  h += '<ul class="ac-list">';
+  (items||['분석 데이터 없음']).forEach(function(it){ h += '<li>' + esc(it) + '</li>'; });
+  h += '</ul>';
+  if (images && images.length) {
+    h += '<div style="display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #eee;">';
+    images.forEach(function(img) {
+      h += '<img src="' + img + '" style="width:calc(33% - 4px);aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid #eee;" onerror="this.style.display=\'none\'">';
+    });
+    h += '</div>';
+    h += '<div style="font-size:9px;color:#aaa;margin-top:4px;">📷 홈앤쇼핑 고객 상품평 첨부 사진</div>';
+  }
+  h += '</div>';
+  return h;
 }
 
 function makeCard(cls, icon, title, items) {
