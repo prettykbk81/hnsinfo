@@ -234,10 +234,17 @@ async function searchAll() {
   area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑에서 상품을 검색하고 있습니다...</div></div>';
 
   try {
-    // 1. 상품 검색
+    // 1. 상품 검색 + 카테고리 필터링
     var r = await fetch(PROXY + '/api/search-product?q=' + encodeURIComponent(q));
     if (!r.ok) throw new Error('프록시 연결 실패');
-    var products = await r.json();
+    var allProducts = await r.json();
+    // 검색어 키워드가 상품명에 포함된 것만 필터
+    var qWords = q.replace(/[[\]()]/g,'').split(/\s+/).filter(function(w){return w.length>=2;});
+    var products = allProducts.filter(function(p) {
+      var name = (p.name||'').toLowerCase();
+      return qWords.some(function(w){return name.indexOf(w.toLowerCase())>-1;});
+    });
+    if (!products.length) products = allProducts;
     if (!products.length) { area.innerHTML = '<div class="section" style="text-align:center;color:#888;padding:40px;">검색 결과가 없습니다.</div>'; return; }
 
     // 2. 상품 리스트 렌더 (로딩 상태)
@@ -265,7 +272,9 @@ async function searchAll() {
       if (sc.score) {
         var cls = parseInt(sc.score) >= 80 ? 'high' : parseInt(sc.score) >= 60 ? 'mid' : 'low';
         var html = '<span class="pr-score ' + cls + '">' + sc.score + '점 ' + (sc.level||'') + '</span>';
-        html += '<span class="pr-count">상품평 ' + sc.count + '건</span>';
+        var countNum = parseInt((sc.count||'0').replace(/,/g,''));
+        var countLabel = countNum >= 10000 ? (countNum/10000).toFixed(1)+'만' : (countNum>=1000 ? (countNum/1000).toFixed(1)+'천' : sc.count);
+        html += '<span class="pr-count" style="font-weight:700;color:#0369a1;">상품평 ' + countLabel + '건</span>';
         if (sc.distribution) {
           var total = 0;
           Object.values(sc.distribution).forEach(function(v){total+=v;});
