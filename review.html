@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>상품 리뷰 분석기 · 홈앤쇼핑 AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
@@ -401,8 +402,14 @@ function renderAnalysis(a, query, productCount, blogCount) {
     html += '</div>';
   }
 
-  // 히트맵 영역 (비동기 로드)
-  html += '<div class="heatmap-wrap" id="heatmapArea"><h3>📺 시간 × 채널 편성 히트맵</h3><div class="hm-sub">최근 1개월 편성 추정 · AI 분석 데이터</div><div style="text-align:center;padding:20px;color:#aaa;font-size:12px;"><div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>편성 히트맵 생성 중...</div></div>';
+  // 편성 분석 영역 (비동기 로드)
+  html += '<div class="heatmap-wrap" id="broadcastCharts">';
+  html += '<h3>📊 최근 1개월 편성 분석</h3><div class="hm-sub">AI 추정 데이터 · 홈쇼핑 채널별 편성 현황</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" id="priceChartsRow">';
+  html += '<div><div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">💰 가격대 분포 (전체)</div><canvas id="chartPriceDist" height="200"></canvas></div>';
+  html += '<div><div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">💰 가격대 × 채널 (누적)</div><canvas id="chartPriceChannel" height="200"></canvas></div>';
+  html += '</div></div>';
+  html += '<div class="heatmap-wrap" id="heatmapArea"><h3>📺 시간 × 채널 편성 히트맵</h3><div class="hm-sub">최근 1개월 편성 추정 · 셀 진할수록 편성 多</div><div style="text-align:center;padding:20px;color:#aaa;font-size:12px;"><div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>편성 데이터 생성 중...</div></div>';
 
   area.innerHTML = html;
   area.scrollIntoView({behavior:'smooth', block:'start'});
@@ -411,21 +418,28 @@ function renderAnalysis(a, query, productCount, blogCount) {
   loadHeatmap(query);
 }
 
+var _reviewCharts = [];
+
 async function loadHeatmap(query) {
-  var prompt = '홈쇼핑 편성 분석 전문가로서 "' + query + '" 상품의 최근 1개월 편성 히트맵 데이터를 추정하세요.\n\n';
-  prompt += 'JSON으로만 응답:\n{"channels":[';
+  _reviewCharts.forEach(function(c){c.destroy();}); _reviewCharts=[];
+
+  // 가격대 차트 데이터 + 히트맵을 하나의 프롬프트로
+  var prompt = '홈쇼핑 편성 분석 전문가로서 "' + query + '" 상품의 최근 1개월 데이터를 추정하세요.\n\n';
+  prompt += 'JSON으로만 응답:\n{"price_dist":{"~3만":45,"3~10만":450,"10~30만":160,"30~100만":70,"100만+":25},';
+  prompt += '"price_by_channel":[';
+  prompt += '{"name":"롯데홈쇼핑","p":[8,20,15,10,5]},{"name":"KT알파쇼핑","p":[5,18,12,8,3]},';
+  prompt += '{"name":"NS홈쇼핑","p":[7,22,14,9,4]},{"name":"GS샵","p":[9,25,16,11,6]},';
+  prompt += '{"name":"CJ온스타일","p":[8,23,15,10,5]},{"name":"현대홈쇼핑","p":[7,20,13,9,4]},';
+  prompt += '{"name":"홈앤쇼핑","p":[3,8,5,3,1]},{"name":"쇼핑엔티","p":[4,10,6,4,2]},';
+  prompt += '{"name":"SK스토아","p":[3,9,5,3,1]},{"name":"W쇼핑","p":[2,7,4,2,1]}],';
+  prompt += '"channels":[';
   prompt += '{"name":"GS샵","hours":[1,3,4,7,7,3,2,4,2,3,2,3,2,2,3,3,3,2,2,2,2,2,1,5]},';
-  prompt += '{"name":"CJ온스타일","hours":[1,2,4,4,6,3,1,2,3,1,2,2,2,3,3,1,3,2,2,2,2,1,3,4]},';
-  prompt += '{"name":"현대홈쇼핑","hours":[24개 시간대별 편성 횟수]},';
-  prompt += '{"name":"롯데홈쇼핑","hours":[...]},';
-  prompt += '{"name":"NS홈쇼핑","hours":[...]},';
-  prompt += '{"name":"홈앤쇼핑","hours":[...]},';
-  prompt += '{"name":"W쇼핑","hours":[...]},';
-  prompt += '{"name":"SK스토아","hours":[...]},';
-  prompt += '{"name":"쇼핑엔티","hours":[...]},';
-  prompt += '{"name":"KT알파쇼핑","hours":[...]}';
-  prompt += ']}\n';
-  prompt += '규칙: hours는 0시~23시 각 시간대별 편성 횟수(0~9). 해당 카테고리의 실제 편성 패턴을 반영하세요.';
+  prompt += '{"name":"CJ온스타일","hours":[24개수치]},{"name":"현대홈쇼핑","hours":[...]},';
+  prompt += '{"name":"롯데홈쇼핑","hours":[...]},{"name":"NS홈쇼핑","hours":[...]},';
+  prompt += '{"name":"홈앤쇼핑","hours":[...]},{"name":"W쇼핑","hours":[...]},';
+  prompt += '{"name":"SK스토아","hours":[...]},{"name":"쇼핑엔티","hours":[...]},';
+  prompt += '{"name":"KT알파쇼핑","hours":[...]}]}\n';
+  prompt += '규칙:\n- price_dist: 해당 상품 카테고리의 가격대별 편성 건수\n- price_by_channel.p: [~3만,3~10만,10~30만,30~100만,100만+] 채널별 가격대 편성수\n- channels.hours: 0시~23시 시간대별 편성 횟수(0~9)\n- 해당 카테고리 실제 편성 패턴 반영';
 
   try {
     var resp = await fetch(PROXY + '/api/summarize', {
@@ -452,6 +466,7 @@ async function loadHeatmap(query) {
     var m = fullText.match(/\{[\s\S]*\}/);
     if (m) {
       var hData = JSON.parse(m[0].replace(/,\s*([\]}])/g,'$1'));
+      renderPriceCharts(hData);
       renderHeatmap(hData);
     } else {
       document.getElementById('heatmapArea').innerHTML += '<div style="color:#aaa;text-align:center;padding:10px;">히트맵 데이터 생성 실패</div>';
@@ -459,6 +474,50 @@ async function loadHeatmap(query) {
   } catch(e) {
     document.getElementById('heatmapArea').innerHTML += '<div style="color:#aaa;text-align:center;padding:10px;">히트맵 로드 실패</div>';
   }
+}
+
+function renderPriceCharts(data) {
+  var priceColors = ['#eab308','#22c55e','#3b82f6','#a855f7','#ec4899'];
+  var priceLabels = ['~3만','3~10만','10~30만','30~100만','100만+'];
+
+  // 1. 가격대 분포 바 차트
+  try {
+    if (data.price_dist) {
+      var labels = Object.keys(data.price_dist);
+      var values = Object.values(data.price_dist);
+      var ctx = document.getElementById('chartPriceDist');
+      if (ctx) {
+        _reviewCharts.push(new Chart(ctx.getContext('2d'), {
+          type:'bar',
+          data:{labels:labels, datasets:[{data:values, backgroundColor:priceColors.slice(0,labels.length), borderRadius:4}]},
+          options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+        }));
+      }
+    }
+  } catch(e){}
+
+  // 2. 가격대 × 채널 누적 바 차트
+  try {
+    if (data.price_by_channel && data.price_by_channel.length) {
+      var chNames = data.price_by_channel.map(function(c){return c.name;});
+      var datasets = priceLabels.map(function(label, idx) {
+        return {
+          label: label,
+          data: data.price_by_channel.map(function(c){return (c.p||[])[idx]||0;}),
+          backgroundColor: priceColors[idx],
+          borderRadius: 2,
+        };
+      });
+      var ctx2 = document.getElementById('chartPriceChannel');
+      if (ctx2) {
+        _reviewCharts.push(new Chart(ctx2.getContext('2d'), {
+          type:'bar',
+          data:{labels:chNames, datasets:datasets},
+          options:{responsive:true, plugins:{legend:{position:'top',labels:{font:{size:10}}}}, scales:{x:{stacked:true,ticks:{font:{size:9}}},y:{stacked:true,beginAtZero:true,grid:{color:'#f0f0f0'}}}}
+        }));
+      }
+    }
+  } catch(e){}
 }
 
 function renderHeatmap(data) {
