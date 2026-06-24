@@ -310,15 +310,22 @@ async function searchAll() {
     prompt += '네이버 블로그 후기:\n' + blogText + '\n\n';
     prompt += '위 정보를 종합 분석하여 반드시 아래 JSON으로만 응답하세요:\n';
     prompt += '{\n';
-    prompt += '  "summary": "전체 검색 결과 종합 평가 (40자 내외)",\n';
-    prompt += '  "best_pick": "가장 추천하는 상품명 1개",\n';
+    prompt += '  "summary": "전체 종합 평가 (40자 내외)",\n';
+    prompt += '  "best_pick": "가장 추천 상품명 1개",\n';
     prompt += '  "best_reason": "추천 이유 (30자 내외)",\n';
-    prompt += '  "good": ["장점1 (구체적 후기 인용 포함)", "장점2", "장점3", "장점4"],\n';
-    prompt += '  "bad": ["단점/아쉬운점1", "단점2", "단점3"],\n';
-    prompt += '  "delivery": ["배송/포장 관련1", "관련2"],\n';
-    prompt += '  "value": ["가성비 관련1", "관련2"],\n';
+    prompt += '  "satisfaction": {"만족":15,"불만족":3},\n';
+    prompt += '  "categories": [\n';
+    prompt += '    {"name":"품질","satisfied":8,"dissatisfied":1,"good":"맛이 좋고 신선하다","bad":"간혹 품질 편차"},\n';
+    prompt += '    {"name":"가격","satisfied":6,"dissatisfied":2,"good":"가격이 저렴하고 가성비 좋다","bad":"타사 대비 약간 비싸다"},\n';
+    prompt += '    {"name":"배송","satisfied":7,"dissatisfied":3,"good":"배송이 빠르고 포장이 꼼꼼","bad":"배송이 늦는 경우가 있다"},\n';
+    prompt += '    {"name":"구성","satisfied":5,"dissatisfied":1,"good":"구성품이 알차다","bad":"수량이 적다"},\n';
+    prompt += '    {"name":"재구매","satisfied":6,"dissatisfied":0,"good":"재구매 의향 높음","bad":""}\n';
+    prompt += '  ],\n';
+    prompt += '  "good": ["장점1 (후기 인용)", "장점2", "장점3"],\n';
+    prompt += '  "bad": ["단점1", "단점2"],\n';
     prompt += '  "tip": ["MD 개선제안1", "제안2", "제안3"]\n';
-    prompt += '}';
+    prompt += '}\n';
+    prompt += '규칙: categories의 satisfied/dissatisfied는 후기에서 추정한 건수. good/bad는 대표 의견 요약.';
 
     var aiR = await fetch(PROXY + '/api/summarize', {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -385,19 +392,66 @@ function renderAnalysis(a, query, productCount, blogCount) {
   }
   html += '</div>';
 
-  // 분석 카드
+  // 만족/불만족 총계
+  if (a.satisfaction) {
+    var sat = a.satisfaction['만족'] || 0;
+    var dis = a.satisfaction['불만족'] || 0;
+    var total = sat + dis;
+    var satPct = total > 0 ? Math.round(sat/total*100) : 100;
+    html += '<div style="display:flex;gap:14px;margin-bottom:14px;">';
+    html += '<div style="flex:1;background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 1px 6px rgba(0,0,0,.06);text-align:center;border-top:3px solid #16a34a;">';
+    html += '<div style="font-size:28px;font-weight:900;color:#16a34a;">'+sat+'<span style="font-size:14px;font-weight:600;">건</span></div>';
+    html += '<div style="font-size:12px;color:#888;">만족 ('+satPct+'%)</div></div>';
+    html += '<div style="flex:1;background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 1px 6px rgba(0,0,0,.06);text-align:center;border-top:3px solid #dc2626;">';
+    html += '<div style="font-size:28px;font-weight:900;color:#dc2626;">'+dis+'<span style="font-size:14px;font-weight:600;">건</span></div>';
+    html += '<div style="font-size:12px;color:#888;">불만족 ('+(100-satPct)+'%)</div></div>';
+    html += '</div>';
+  }
+
+  // 항목별 분석 테이블
+  if (a.categories && a.categories.length) {
+    html += '<div style="background:#fff;border-radius:10px;padding:18px 20px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:14px;">';
+    html += '<div style="font-size:13px;font-weight:700;color:#333;margin-bottom:12px;">📋 항목별 만족/불만족 분석</div>';
+    html += '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+    html += '<tr style="background:#f8f8f8;"><th style="padding:8px 10px;text-align:left;border-bottom:2px solid #ddd;">항목</th><th style="padding:8px;border-bottom:2px solid #ddd;text-align:center;color:#16a34a;">만족</th><th style="padding:8px;border-bottom:2px solid #ddd;text-align:center;color:#dc2626;">불만족</th><th style="padding:8px;border-bottom:2px solid #ddd;">만족 의견</th><th style="padding:8px;border-bottom:2px solid #ddd;">불만족 의견</th></tr>';
+    a.categories.forEach(function(c) {
+      var barTotal = (c.satisfied||0) + (c.dissatisfied||0);
+      var barPct = barTotal > 0 ? Math.round((c.satisfied||0)/barTotal*100) : 100;
+      html += '<tr>';
+      html += '<td style="padding:8px 10px;border-bottom:1px solid #eee;font-weight:700;">'+esc(c.name)+'<div style="height:4px;background:#eee;border-radius:2px;margin-top:4px;"><div style="height:100%;width:'+barPct+'%;background:linear-gradient(90deg,#16a34a,#22c55e);border-radius:2px;"></div></div></td>';
+      html += '<td style="padding:8px;border-bottom:1px solid #eee;text-align:center;font-weight:700;color:#16a34a;">'+(c.satisfied||0)+'건</td>';
+      html += '<td style="padding:8px;border-bottom:1px solid #eee;text-align:center;font-weight:700;color:#dc2626;">'+(c.dissatisfied||0)+'건</td>';
+      html += '<td style="padding:8px;border-bottom:1px solid #eee;color:#16a34a;font-size:11px;">'+esc(c.good||'')+'</td>';
+      html += '<td style="padding:8px;border-bottom:1px solid #eee;color:#dc2626;font-size:11px;">'+esc(c.bad||'-')+'</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // 종합 장단점
   html += '<div class="analysis-grid">';
-  html += makeCard('good','👍','장점', a.good);
-  html += makeCard('bad','👎','단점 / 아쉬운 점', a.bad);
-  html += makeCard('delivery','📦','배송 / 포장', a.delivery);
-  html += makeCard('value','💰','가성비', a.value);
+  html += makeCard('good','👍','종합 장점', a.good);
+  html += makeCard('bad','👎','종합 단점', a.bad);
   html += '</div>';
 
   // MD 제안
   if (a.tip && a.tip.length) {
-    html += '<div class="tip-section"><h3>💡 MD 개선 제안</h3>';
+    var tipIcons = ['🎯','🚀','💎','⭐','🔥'];
+    var tipColors = ['#7c3aed','#2563eb','#e8192c'];
+    html += '<div style="background:#fff;border-radius:10px;padding:22px 24px;box-shadow:0 1px 6px rgba(0,0,0,.06);margin-bottom:14px;border-top:3px solid #7c3aed;">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">';
+    html += '<div style="font-size:15px;font-weight:800;color:#7c3aed;display:flex;align-items:center;gap:6px;">💡 MD 개선 제안</div>';
+    html += '<span style="font-size:10px;color:#dc2626;font-weight:700;background:#fef2f2;padding:3px 8px;border-radius:4px;">※ 상품 리뷰 기반 AI 분석 제안</span>';
+    html += '</div>';
     a.tip.forEach(function(t, i) {
-      html += '<div class="tip-item"><strong style="color:#7c3aed;">' + (i+1) + '.</strong> ' + esc(t) + '</div>';
+      var icon = tipIcons[i] || '💡';
+      var color = tipColors[i % tipColors.length];
+      html += '<div style="display:flex;gap:14px;padding:16px 18px;margin-bottom:10px;background:linear-gradient(135deg,#f5f3ff,#eff6ff);border-radius:10px;border-left:4px solid '+color+';align-items:flex-start;">';
+      html += '<div style="font-size:28px;flex-shrink:0;line-height:1;">'+icon+'</div>';
+      html += '<div style="flex:1;">';
+      html += '<div style="font-size:10px;font-weight:700;color:'+color+';letter-spacing:.5px;margin-bottom:4px;">SUGGESTION '+(i+1)+'</div>';
+      html += '<div style="font-size:13px;color:#333;line-height:1.7;font-weight:600;">'+esc(t)+'</div>';
+      html += '</div></div>';
     });
     html += '</div>';
   }
