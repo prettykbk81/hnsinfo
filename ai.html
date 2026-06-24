@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claude AI 카피 메이커 · 홈앤쇼핑</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -536,24 +537,62 @@ body {
       <div class="error-bar" id="errorBar"></div>
 
       <div class="result-area" id="resultArea">
+        <!-- 상품 이미지 + 기본 정보 -->
+        <div id="r-product-hero" style="display:none;"></div>
+
+        <!-- 타사 홈쇼핑 비교 -->
+        <div class="result-block" id="r-competitors-block" style="display:none;">
+          <div class="result-label">🏢 타사 홈쇼핑 판매 비교</div>
+          <div id="r-competitors"></div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- 고객 연령층 + 편성 시간대 차트 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" id="r-charts-row">
+          <div class="result-block" style="margin:0;">
+            <div class="result-label">👥 구매 고객 연령층 (추정)</div>
+            <canvas id="chartDemographics" height="200"></canvas>
+          </div>
+          <div class="result-block" style="margin:0;">
+            <div class="result-label">📺 카테고리 편성 시간대 (추정)</div>
+            <canvas id="chartHours" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- 홈앤쇼핑 판매 현황 -->
+        <div class="result-block" id="r-hns-block" style="display:none;">
+          <div class="result-label">🛍️ 홈앤쇼핑 판매 현황</div>
+          <div id="r-hns-status"></div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- 카드뉴스 제목 5종 -->
         <div class="result-block">
-          <div class="result-label">📌 카드뉴스 제목 3종</div>
+          <div class="result-label">📌 카드뉴스 제목 5종</div>
           <div class="result-items" id="r-titles"></div>
         </div>
         <div class="divider"></div>
+
+        <!-- 인스타그램 캡션 -->
         <div class="result-block">
           <div class="result-label">📸 인스타그램 캡션</div>
-          <div class="result-items" id="r-caption"></div>
+          <div id="r-caption-visual"></div>
+          <div class="result-items" id="r-caption" style="display:none;"></div>
         </div>
         <div class="divider"></div>
+
+        <!-- 해시태그 -->
         <div class="result-block">
           <div class="result-label">#️⃣ 해시태그 세트</div>
           <div class="result-items" id="r-hashtag"></div>
         </div>
         <div class="divider"></div>
+
+        <!-- 방송 멘트 (참고) -->
         <div class="result-block">
-          <div class="result-label">🎙️ 방송 오프닝 멘트</div>
-          <div class="result-items" id="r-opening"></div>
+          <div class="result-label">🎙️ 방송 멘트 (참고)</div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">※ 사실에 근거한 심의 위반 없는 멘트 제안입니다</div>
+          <div class="result-items" id="r-broadcast"></div>
         </div>
 
         <div class="action-row">
@@ -1198,7 +1237,7 @@ async function generate(mode) {
 
 /* ── CLAUDE API ── */
 async function callClaude(product, category, catName, price, feat1, feat2) {
-  const prompt = `당신은 한국 홈쇼핑 전문 카피라이터입니다. 아래 상품 정보로 마케팅 카피를 작성하세요.
+  const prompt = `당신은 한국 홈쇼핑 전문 MD전략 분석가이자 카피라이터입니다.
 
 상품명: ${product}
 카테고리: ${catName}
@@ -1206,13 +1245,29 @@ async function callClaude(product, category, catName, price, feat1, feat2) {
 핵심 특징1: ${feat1 || '-'}
 핵심 특징2: ${feat2 || '-'}
 
-다음 JSON 형식으로만 응답하세요 (다른 텍스트 없이):
+반드시 아래 JSON 형식으로만 응답하세요:
 {
-  "titles": ["카드뉴스 제목1 (임팩트 있게)", "카드뉴스 제목2 (가격·혜택 강조)", "카드뉴스 제목3 (감성·스토리)"],
-  "caption": "인스타그램 캡션 (이모지 포함, 줄바꿈 사용, 5-7줄, 홈앤쇼핑 링크 안내 포함)",
-  "hashtags": "#홈앤쇼핑 #관련태그1 #관련태그2 (총 18개)",
-  "opening": "TV홈쇼핑 방송 오프닝 멘트 (2-3문장, 친근하고 활기찬 어조, 시청자에게 직접 말하는 형식)"
-}`;
+  "titles": ["제목1 (임팩트)", "제목2 (가격·혜택)", "제목3 (감성)", "제목4 (신뢰·인증)", "제목5 (한정·희소)"],
+  "caption": "인스타그램 캡션 (이모지 포함, 줄바꿈 사용, 7-10줄, 감성적+정보 혼합, 홈앤쇼핑 구매 안내)",
+  "hashtags": "#홈앤쇼핑 #관련태그 (총 20개)",
+  "broadcast": "방송 멘트 제안 (쇼호스트가 구매 고객에게 전달하면 매출에 도움되는 사실에 근거한 심의 위반 없는 멘트, 3-4문장, 구체적 수치와 효능 근거 포함)",
+  "competitors": [
+    {"channel":"GS샵","type":"TV/데이터","status":"판매중/미판매","price":"추정가격"},
+    {"channel":"CJ온스타일","type":"TV","status":"판매중/미판매","price":"추정가격"},
+    {"channel":"현대홈쇼핑","type":"TV","status":"판매중/미판매","price":"추정가격"},
+    {"channel":"롯데홈쇼핑","type":"TV/데이터","status":"판매중/미판매","price":"추정가격"},
+    {"channel":"NS홈쇼핑","type":"TV","status":"판매중/미판매","price":"추정가격"}
+  ],
+  "demographics": {"20대":10,"30대":20,"40대":30,"50대":25,"60대이상":15},
+  "peak_hours": {"새벽(0-6시)":5,"오전(6-12시)":25,"오후(12-18시)":35,"저녁(18-24시)":35},
+  "hns_review_summary": "홈앤쇼핑 판매 상품이라면 고객 리뷰 요약 (추정), 없으면 '홈앤쇼핑 미판매 상품'"
+}
+규칙:
+- titles는 5개, 각 15자 내외
+- competitors는 유사 상품 기준 추정 (정확한 데이터가 아닌 시장 분석 기반)
+- demographics는 해당 카테고리 홈쇼핑 구매 고객 연령 비율 추정
+- peak_hours는 해당 카테고리 편성 시간대 비율 추정
+- broadcast는 반드시 사실에 근거, 과대광고/금칙어 없이 작성`;
 
   const res = await fetch(PROXY + '/api/summarize', {
     method: 'POST',
@@ -1312,13 +1367,98 @@ function generateTemplate(product, category, price, feat1, feat2) {
 }
 
 /* ── RENDER RESULTS ── */
+var _chartInstances = [];
+
 function renderResults(data) {
-  document.getElementById('r-titles').innerHTML = data.titles.map((t,i) =>
+  _chartInstances.forEach(function(c){c.destroy();}); _chartInstances=[];
+
+  // 1. 상품 이미지 히어로
+  var heroEl = document.getElementById('r-product-hero');
+  if (_lastProductData && _lastProductCode) {
+    var imgUrl = 'https://image.hnsmall.com/images/goods/958/' + _lastProductCode + '_r.jpg';
+    heroEl.style.display = 'flex';
+    heroEl.innerHTML = '<div style="display:flex;gap:16px;align-items:center;padding:16px;background:#f8f8f8;border-radius:12px;margin-bottom:16px;">'
+      + '<img src="'+imgUrl+'" onerror="this.src=\'https://image.hnsmall.com/images/goods/240/'+_lastProductCode+'_r.jpg\'" style="width:120px;height:120px;border-radius:10px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.1);">'
+      + '<div><div style="font-size:16px;font-weight:800;color:#111;margin-bottom:4px;">'+escapeHtml(_lastProductName)+'</div>'
+      + '<div style="font-size:14px;color:#e8192c;font-weight:700;">'+escapeHtml(document.getElementById('f-price').value)+'</div>'
+      + '<div style="font-size:12px;color:#888;margin-top:4px;">'+escapeHtml(document.querySelector('#f-category option:checked').text)+'</div>'
+      + '</div></div>';
+  } else { heroEl.style.display = 'none'; }
+
+  // 2. 타사 비교
+  if (data.competitors && data.competitors.length) {
+    document.getElementById('r-competitors-block').style.display = 'block';
+    var tbl = '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+    tbl += '<tr style="background:#f0f0f0;"><th style="padding:8px 10px;text-align:left;border-bottom:2px solid #ddd;">채널</th><th style="padding:8px;border-bottom:2px solid #ddd;">유형</th><th style="padding:8px;border-bottom:2px solid #ddd;">판매상태</th><th style="padding:8px;border-bottom:2px solid #ddd;">가격</th></tr>';
+    data.competitors.forEach(function(c) {
+      var statusColor = (c.status||'').indexOf('판매중') > -1 ? '#16a34a' : '#999';
+      tbl += '<tr><td style="padding:8px 10px;border-bottom:1px solid #eee;font-weight:600;">'+escapeHtml(c.channel)+'</td>';
+      tbl += '<td style="padding:8px;border-bottom:1px solid #eee;text-align:center;"><span style="font-size:10px;padding:2px 6px;border-radius:4px;background:'+(c.type&&c.type.indexOf('데이터')>-1?'#eff6ff;color:#2563eb':'#f0f0f0;color:#555')+';">'+escapeHtml(c.type||'TV')+'</span></td>';
+      tbl += '<td style="padding:8px;border-bottom:1px solid #eee;text-align:center;color:'+statusColor+';font-weight:700;">'+escapeHtml(c.status||'')+'</td>';
+      tbl += '<td style="padding:8px;border-bottom:1px solid #eee;text-align:center;">'+escapeHtml(c.price||'-')+'</td></tr>';
+    });
+    tbl += '</table><div style="font-size:10px;color:#aaa;margin-top:6px;">※ AI 추정 데이터입니다. 실제와 다를 수 있습니다.</div>';
+    document.getElementById('r-competitors').innerHTML = tbl;
+  }
+
+  // 3. 고객 연령층 차트
+  if (data.demographics) {
+    var labels = Object.keys(data.demographics);
+    var values = Object.values(data.demographics);
+    var ctx1 = document.getElementById('chartDemographics').getContext('2d');
+    _chartInstances.push(new Chart(ctx1, {
+      type:'doughnut', data:{labels:labels, datasets:[{data:values, backgroundColor:['#7c3aed','#2563eb','#e8192c','#d97706','#16a34a'], borderWidth:2, borderColor:'#fff'}]},
+      options:{responsive:true, plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+    }));
+  }
+
+  // 4. 편성 시간대 차트
+  if (data.peak_hours) {
+    var hLabels = Object.keys(data.peak_hours);
+    var hValues = Object.values(data.peak_hours);
+    var ctx2 = document.getElementById('chartHours').getContext('2d');
+    _chartInstances.push(new Chart(ctx2, {
+      type:'bar', data:{labels:hLabels, datasets:[{label:'편성 비율(%)', data:hValues, backgroundColor:['#1e293b','#0369a1','#e8192c','#7c3aed'], borderRadius:6}]},
+      options:{responsive:true, scales:{y:{beginAtZero:true,max:50}}, plugins:{legend:{display:false}}}
+    }));
+  }
+
+  // 5. 홈앤쇼핑 판매 현황
+  if (data.hns_review_summary && data.hns_review_summary.indexOf('미판매') === -1) {
+    document.getElementById('r-hns-block').style.display = 'block';
+    document.getElementById('r-hns-status').innerHTML =
+      '<div style="padding:12px 16px;background:#f0fdf4;border-radius:8px;border-left:4px solid #16a34a;">'
+      + '<div style="font-size:13px;font-weight:700;color:#16a34a;margin-bottom:6px;">✅ 홈앤쇼핑 판매 중</div>'
+      + '<div style="font-size:12px;color:#444;line-height:1.7;">'+escapeHtml(data.hns_review_summary)+'</div>'
+      + '</div>';
+  } else {
+    document.getElementById('r-hns-block').style.display = 'none';
+  }
+
+  // 6. 카드뉴스 제목 5종
+  document.getElementById('r-titles').innerHTML = (data.titles||[]).map((t,i) =>
     mkItem(`title${i}`, t)
   ).join('');
-  document.getElementById('r-caption').innerHTML = mkItem('caption', data.caption);
+
+  // 7. 인스타그램 캡션 (비주얼)
+  var captionText = data.caption || '';
+  var captionLines = captionText.split('\n').filter(function(l){return l.trim();});
+  var capVisual = '<div style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);padding:20px;border-radius:12px;color:#fff;">';
+  capVisual += '<div style="font-size:11px;opacity:.7;margin-bottom:8px;">INSTAGRAM</div>';
+  captionLines.forEach(function(line) {
+    capVisual += '<div style="font-size:13px;line-height:1.7;margin-bottom:4px;">'+escapeHtml(line)+'</div>';
+  });
+  capVisual += '<button onclick="copyItem(\'caption\',this)" style="margin-top:10px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">복사</button>';
+  capVisual += '</div>';
+  document.getElementById('r-caption-visual').innerHTML = capVisual;
+  document.getElementById('r-caption').innerHTML = mkItem('caption', captionText);
+
+  // 8. 해시태그
   document.getElementById('r-hashtag').innerHTML = mkItem('hashtag', data.hashtags);
-  document.getElementById('r-opening').innerHTML = mkItem('opening', data.opening);
+
+  // 9. 방송 멘트
+  document.getElementById('r-broadcast').innerHTML = mkItem('broadcast', data.broadcast || data.opening || '');
+
   showResult();
   updateStatus();
 }
