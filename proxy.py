@@ -326,7 +326,7 @@ class Handler(BaseHTTPRequestHandler):
             )
             with client.messages.stream(
                 model=MODEL,
-                max_tokens=1024,
+                max_tokens=4096,
                 messages=[{"role": "user", "content": prompt}],
             ) as stream:
                 for chunk in stream.text_stream:
