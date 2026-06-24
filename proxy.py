@@ -171,6 +171,96 @@ def _fetch_review_score(goods_code: str) -> dict:
         return {"score": "", "count": "0", "level": ""}
 
 
+def _get_shopping_insight() -> dict:
+    """네이버 쇼핑인사이트 - 카테고리별 트렌드 + 인기 키워드"""
+    if not NAVER_ID or not NAVER_SECRET:
+        return {}
+    try:
+        from datetime import datetime, timedelta, timezone
+        KST = timezone(timedelta(hours=9))
+        end = datetime.now(KST)
+        start = end - timedelta(days=90)
+        start4 = end - timedelta(days=4)
+
+        headers = {
+            "X-Naver-Client-Id": NAVER_ID,
+            "X-Naver-Client-Secret": NAVER_SECRET,
+            "Content-Type": "application/json",
+        }
+
+        # 1. 카테고리별 클릭 추이 (3개까지)
+        cat_groups = [
+            [
+                {"name": "패션의류", "param": ["50000000"]},
+                {"name": "화장품/미용", "param": ["50000002"]},
+                {"name": "생활/건강", "param": ["50000008"]},
+            ],
+            [
+                {"name": "식품", "param": ["50000006"]},
+                {"name": "디지털/가전", "param": ["50000003"]},
+                {"name": "가구/인테리어", "param": ["50000004"]},
+            ],
+        ]
+
+        all_categories = []
+        for cats in cat_groups:
+            r = req_lib.post(
+                "https://openapi.naver.com/v1/datalab/shopping/categories",
+                headers=headers,
+                json={
+                    "startDate": start.strftime("%Y-%m-%d"),
+                    "endDate": end.strftime("%Y-%m-%d"),
+                    "timeUnit": "week",
+                    "category": cats,
+                },
+                verify=False, timeout=10,
+            )
+            if r.ok:
+                for result in r.json().get("results", []):
+                    all_categories.append({
+                        "name": result["title"],
+                        "labels": [d["period"] for d in result.get("data", [])],
+                        "values": [round(d["ratio"]) for d in result.get("data", [])],
+                    })
+
+        # 2. 분야별 인기 키워드 (쇼핑 검색으로 대체)
+        popular_keywords = {}
+        keyword_lists = {
+            "패션의류": ["원피스", "여름원피스", "블라우스", "여름가디건", "티셔츠",
+                       "린넨바지", "반팔티", "슬랙스", "청바지", "롱스커트"],
+            "화장품/미용": ["선크림", "쿠션", "토너", "클렌징", "마스크팩",
+                          "립스틱", "파운데이션", "세럼", "아이크림", "자외선차단"],
+            "식품": ["홍삼", "견과류", "닭가슴살", "프로틴", "콤부차",
+                    "제주감귤", "냉면", "삼계탕", "과일", "건강즙"],
+            "생활/건강": ["선풍기", "제습기", "에어컨", "청소기", "정수기",
+                        "비타민", "유산균", "콜라겐", "화장지", "세탁세제"],
+        }
+        for cat_name, keywords in keyword_lists.items():
+            items = []
+            for kw in keywords:
+                try:
+                    r2 = req_lib.get(
+                        "https://openapi.naver.com/v1/search/shop.json",
+                        headers={"X-Naver-Client-Id": NAVER_ID, "X-Naver-Client-Secret": NAVER_SECRET},
+                        params={"query": kw, "display": 1, "sort": "sim"},
+                        verify=False, timeout=5,
+                    )
+                    if r2.ok:
+                        items.append({"keyword": kw, "total": r2.json().get("total", 0)})
+                except Exception:
+                    pass
+            items.sort(key=lambda x: -x["total"])
+            popular_keywords[cat_name] = items[:10]
+
+        return {
+            "categories": all_categories,
+            "popular_keywords": popular_keywords,
+            "date": end.strftime("%Y.%m.%d"),
+        }
+    except Exception:
+        return {}
+
+
 def _search_naver_shop(keyword: str, display: int = 100) -> dict:
     """네이버 쇼핑 검색 API"""
     if not NAVER_ID or not NAVER_SECRET:
@@ -446,6 +536,9 @@ class Handler(BaseHTTPRequestHandler):
             code = params.get("code", [""])[0]
             detail = _fetch_product_detail(code) if code else {}
             self._json_response(detail)
+
+        elif parsed.path == "/api/shopping-insight":
+            self._json_response(_get_shopping_insight())
 
         elif parsed.path == "/api/shop-search":
             q = params.get("q", [""])[0]
