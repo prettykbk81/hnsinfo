@@ -174,7 +174,7 @@ async function analyzeTrend() {
 
   // 쇼핑 인사이트 + 시장 분석 대시보드 (병렬 로드)
   var searchKeyword = focus || (cats.indexOf('전체')>-1 ? '홈쇼핑' : cats.join(' '));
-  var _datalabMonthly = null;
+  _datalabMonthly = null;
   loadShoppingInsight();
   loadMarketDash(searchKeyword);
 
@@ -373,7 +373,6 @@ function renderReport(r) {
     html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:4px;">📈 월간 검색 트렌드</div>';
     html += '<div style="font-size:9px;color:#0d9488;margin-bottom:8px;">네이버 DataLab API · 90일</div>';
     html += '<canvas id="chartMonthly" height="180"></canvas></div>';
-    if (false) { // monthly_search는 DataLab으로 대체
     if (r.age_distribution) {
       html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
       html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">👥 구매 고객 연령 분포</div>';
@@ -445,6 +444,7 @@ function makeSection(cls, icon, title, items) {
 
 var _trendCharts = [];
 var _insightCharts = [];
+var _datalabMonthly = null;
 
 async function loadShoppingInsight() {
   var area = document.getElementById('shoppingInsight');
