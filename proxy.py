@@ -224,18 +224,14 @@ def _get_shopping_insight() -> dict:
                     })
 
         # 2. 분야별 인기 키워드 (쇼핑 검색으로 대체)
-        popular_keywords = {}
-        keyword_lists = {
-            "패션의류": ["원피스", "여름원피스", "블라우스", "여름가디건", "티셔츠",
-                       "린넨바지", "반팔티", "슬랙스", "청바지", "롱스커트"],
-            "화장품/미용": ["선크림", "쿠션", "토너", "클렌징", "마스크팩",
-                          "립스틱", "파운데이션", "세럼", "아이크림", "자외선차단"],
-            "식품": ["홍삼", "견과류", "닭가슴살", "프로틴", "콤부차",
-                    "제주감귤", "냉면", "삼계탕", "과일", "건강즙"],
-            "생활/건강": ["선풍기", "제습기", "에어컨", "청소기", "정수기",
-                        "비타민", "유산균", "콜라겐", "화장지", "세탁세제"],
+        popular_keywords = {
+            "패션의류": ["원피스", "여름원피스", "블라우스", "티셔츠", "반팔티"],
+            "화장품/미용": ["선크림", "쿠션", "토너", "마스크팩", "립스틱"],
+            "식품": ["홍삼", "견과류", "닭가슴살", "과일", "냉면"],
+            "생활/건강": ["선풍기", "에어컨", "청소기", "비타민", "화장지"],
         }
-        for cat_name, keywords in keyword_lists.items():
+        result_keywords = {}
+        for cat_name, keywords in popular_keywords.items():
             items = []
             for kw in keywords:
                 try:
@@ -248,13 +244,13 @@ def _get_shopping_insight() -> dict:
                     if r2.ok:
                         items.append({"keyword": kw, "total": r2.json().get("total", 0)})
                 except Exception:
-                    pass
+                    items.append({"keyword": kw, "total": 0})
             items.sort(key=lambda x: -x["total"])
-            popular_keywords[cat_name] = items[:10]
+            result_keywords[cat_name] = items
 
         return {
             "categories": all_categories,
-            "popular_keywords": popular_keywords,
+            "popular_keywords": result_keywords,
             "date": end.strftime("%Y.%m.%d"),
         }
     except Exception:
