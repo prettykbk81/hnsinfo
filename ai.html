@@ -1244,67 +1244,46 @@ async function generate(mode) {
 
 /* ── CLAUDE API ── */
 async function callClaude(product, category, catName, price, feat1, feat2) {
-  const prompt = `당신은 한국 홈쇼핑 전문 MD전략 분석가이자 카피라이터입니다.
+  var info = `상품명: ${product}\n카테고리: ${catName}\n가격: ${price||'미정'}\n특징1: ${feat1||'-'}\n특징2: ${feat2||'-'}`;
 
-상품명: ${product}
-카테고리: ${catName}
-가격: ${price || '미정'}
-핵심 특징1: ${feat1 || '-'}
-핵심 특징2: ${feat2 || '-'}
+  // ── 1차: 마케팅 콘텐츠 ──
+  document.getElementById('loadingBar').innerHTML = '<div class="spinner"></div>① 마케팅 콘텐츠 생성 중...';
+  var prompt1 = `홈쇼핑 전문 카피라이터로서 마케팅 콘텐츠를 작성하세요.\n\n${info}\n\nJSON으로만 응답:\n{"titles":["제목1(임팩트)","제목2(가격혜택)","제목3(감성)","제목4(신뢰)","제목5(한정)"],"caption":"인스타캡션(이모지+줄바꿈 7줄, 홈앤쇼핑 안내)","hashtags":"#홈앤쇼핑 포함 20개","broadcast":"쇼호스트 방송멘트 3문장(사실근거, 심의위반없이, 구매유도)"}`;
+  var data1 = await fetchAndParse(prompt1);
 
-반드시 아래 JSON 형식으로만 응답하세요:
-{
-  "titles": ["제목1 (임팩트)", "제목2 (가격·혜택)", "제목3 (감성)", "제목4 (신뢰·인증)", "제목5 (한정·희소)"],
-  "caption": "인스타그램 캡션 (이모지 포함, 줄바꿈 사용, 7-10줄, 감성적+정보 혼합, 홈앤쇼핑 구매 안내)",
-  "hashtags": "#홈앤쇼핑 #관련태그 (총 20개)",
-  "broadcast": "방송 멘트 제안 (쇼호스트가 구매 고객에게 전달하면 매출에 도움되는 사실에 근거한 심의 위반 없는 멘트, 3-4문장, 구체적 수치와 효능 근거 포함)",
-  "competitors": [
-    {"channel":"GS샵","type":"TV/데이터","status":"판매중/미판매","price":"추정가격"},
-    {"channel":"CJ온스타일","type":"TV","status":"판매중/미판매","price":"추정가격"},
-    {"channel":"현대홈쇼핑","type":"TV","status":"판매중/미판매","price":"추정가격"},
-    {"channel":"롯데홈쇼핑","type":"TV/데이터","status":"판매중/미판매","price":"추정가격"},
-    {"channel":"NS홈쇼핑","type":"TV","status":"판매중/미판매","price":"추정가격"}
-  ],
-  "demographics": {"20대":10,"30대":20,"40대":30,"50대":25,"60대이상":15},
-  "peak_hours": {"새벽(0-6시)":5,"오전(6-12시)":25,"오후(12-18시)":35,"저녁(18-24시)":35},
-  "hns_review_summary": "홈앤쇼핑 판매 상품이라면 고객 리뷰 요약 (추정), 없으면 '홈앤쇼핑 미판매 상품'"
+  // ── 2차: 시장 분석 ──
+  document.getElementById('loadingBar').innerHTML = '<div class="spinner"></div>② 시장 분석 중...';
+  var prompt2 = `홈쇼핑 MD전략 분석가로서 시장 데이터를 분석하세요.\n\n${info}\n\nJSON으로만 응답:\n{"competitors":[{"channel":"GS샵","type":"TV","status":"판매중/미판매","price":"추정가"},{"channel":"CJ온스타일","type":"TV","status":"판매중/미판매","price":"추정가"},{"channel":"현대홈쇼핑","type":"TV","status":"판매중/미판매","price":"추정가"},{"channel":"롯데홈쇼핑","type":"TV/데이터","status":"판매중/미판매","price":"추정가"},{"channel":"NS홈쇼핑","type":"TV","status":"판매중/미판매","price":"추정가"}],"demographics":{"20대":10,"30대":20,"40대":30,"50대":25,"60대이상":15},"peak_hours":{"새벽(0-6시)":5,"오전(6-12시)":25,"오후(12-18시)":35,"저녁(18-24시)":35},"hns_review_summary":"홈앤쇼핑 판매 상품이면 리뷰요약, 아니면 홈앤쇼핑 미판매 상품"}`;
+  var data2 = await fetchAndParse(prompt2);
+
+  return Object.assign({}, data1||{}, data2||{});
 }
-규칙:
-- titles는 5개, 각 15자 내외
-- competitors는 유사 상품 기준 추정 (정확한 데이터가 아닌 시장 분석 기반)
-- demographics는 해당 카테고리 홈쇼핑 구매 고객 연령 비율 추정
-- peak_hours는 해당 카테고리 편성 시간대 비율 추정
-- broadcast는 반드시 사실에 근거, 과대광고/금칙어 없이 작성`;
 
-  const res = await fetch(PROXY + '/api/summarize', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
+async function fetchAndParse(prompt) {
+  var res = await fetch(PROXY + '/api/summarize', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({prompt:prompt}),
   });
+  if (!res.ok) throw new Error('프록시 서버 연결 실패');
 
-  if (!res.ok) throw new Error('프록시 서버 연결 실패. streamlit run app.py를 먼저 실행해주세요.');
-
-  let fullText = '';
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
+  var fullText = '';
+  var reader = res.body.getReader();
+  var decoder = new TextDecoder();
+  var buffer = '';
   while (true) {
-    const chunk = await reader.read();
+    var chunk = await reader.read();
     if (chunk.done) break;
     buffer += decoder.decode(chunk.value, {stream:true});
-    const lines = buffer.split('\n');
+    var lines = buffer.split('\n');
     buffer = lines.pop();
-    for (const line of lines) {
+    for (var line of lines) {
       if (!line.startsWith('data: ')) continue;
-      const p = line.slice(6);
+      var p = line.slice(6);
       if (p === '[DONE]') break;
       try { fullText += JSON.parse(p).text; } catch(e) {}
     }
   }
-
-  var parsed = tryParseAIJson(fullText);
-  if (!parsed) throw new Error('AI 응답 파싱 오류. 다시 시도해주세요.');
-  return parsed;
+  return tryParseAIJson(fullText);
 }
 
 function tryParseAIJson(text) {
