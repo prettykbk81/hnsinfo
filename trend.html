@@ -115,27 +115,22 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       트렌드 분석 설정
     </h2>
-    <label style="margin-bottom:8px;font-weight:600;color:#555;">관심 업종 (복수 선택 가능)</label>
-    <div class="cat-chips" id="chips">
-      <button class="cat-chip active" data-cat="전체">전체</button>
-      <button class="cat-chip" data-cat="식품/건강">식품/건강</button>
-      <button class="cat-chip" data-cat="뷰티/스킨케어">뷰티</button>
-      <button class="cat-chip" data-cat="패션/의류">패션</button>
-      <button class="cat-chip" data-cat="생활가전">생활가전</button>
-      <button class="cat-chip" data-cat="라이브커머스">라이브커머스</button>
+    <!-- 쇼핑인사이트 인기 검색어 (페이지 로드 시 자동) -->
+    <div id="shoppingInsight" style="margin-top:14px;">
+      <div style="text-align:center;padding:20px;color:#aaa;font-size:12px;">
+        <div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>쇼핑인사이트 로딩 중...
+      </div>
     </div>
-    <div class="focus-input">
-      <label for="focusTopic" style="font-weight:600;color:#555;">추가 관심 키워드 (선택)</label>
-      <input type="text" id="focusTopic" placeholder="예) MZ세대, 프리미엄, 가성비">
-    </div>
+
+    <!-- 업종/키워드 숨김 -->
+    <div id="chips" style="display:none;"><button class="cat-chip active" data-cat="전체">전체</button></div>
+    <input type="hidden" id="focusTopic" value="">
+
     <div class="btn-area">
       <button class="btn-run" id="btnRun" onclick="analyzeTrend()">트렌드 리포트 생성</button>
     </div>
     <div class="news-source" id="newsSource" style="display:none;"></div>
   </div>
-
-  <!-- 쇼핑 인사이트 -->
-  <div id="shoppingInsight" style="display:none;"></div>
 
   <!-- 시장 분석 대시보드 -->
   <div id="marketDash" style="display:none;"></div>
@@ -176,7 +171,6 @@ async function analyzeTrend() {
   // 쇼핑 인사이트 + 시장 분석 대시보드 (병렬 로드)
   var searchKeyword = focus || (cats.indexOf('전체')>-1 ? '홈쇼핑' : cats.join(' '));
   _datalabMonthly = null;
-  loadShoppingInsight();
   loadMarketDash(searchKeyword);
 
   // DataLab 월간 검색량 (AI 프롬프트에 주입)
@@ -635,6 +629,9 @@ function renderTrendLine(d) {
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// 페이지 로드 시 쇼핑인사이트 자동 로드
+loadShoppingInsight();
 </script>
 </body>
 </html>
