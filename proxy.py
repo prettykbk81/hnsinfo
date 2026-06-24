@@ -365,6 +365,10 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_whisper()
             return
 
+        if parsed.path == "/api/vision":
+            self._handle_vision()
+            return
+
         if parsed.path != "/api/summarize":
             self.send_error(404)
             return
@@ -386,6 +390,55 @@ class Handler(BaseHTTPRequestHandler):
                 model=MODEL,
                 max_tokens=4096,
                 messages=[{"role": "user", "content": prompt}],
+            ) as stream:
+                for chunk in stream.text_stream:
+                    self.wfile.write(
+                        f"data: {json.dumps({'text': chunk}, ensure_ascii=False)}\n\n".encode()
+                    )
+                    self.wfile.flush()
+        except Exception as e:
+            self.wfile.write(f"data: {json.dumps({'error': str(e)})}\n\n".encode())
+            self.wfile.flush()
+
+        self.wfile.write(b"data: [DONE]\n\n")
+        self.wfile.flush()
+
+    def _handle_vision(self):
+        """Claude Vision API - 이미지 분석"""
+        n = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(n) or b"{}")
+        images = body.get("images", [])
+        prompt_text = body.get("prompt", "이 이미지의 내용을 설명해주세요.")
+
+        content = []
+        for img_data in images[:5]:
+            if img_data.startswith("data:"):
+                media_type = img_data.split(";")[0].split(":")[1]
+                base64_data = img_data.split(",")[1]
+            else:
+                media_type = "image/png"
+                base64_data = img_data
+            content.append({
+                "type": "image",
+                "source": {"type": "base64", "media_type": media_type, "data": base64_data},
+            })
+        content.append({"type": "text", "text": prompt_text})
+
+        self.send_response(200)
+        self._cors()
+        self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+
+        try:
+            client = anthropic.Anthropic(
+                api_key=API_KEY,
+                http_client=httpx.Client(verify=False),
+            )
+            with client.messages.stream(
+                model=MODEL,
+                max_tokens=4096,
+                messages=[{"role": "user", "content": content}],
             ) as stream:
                 for chunk in stream.text_stream:
                     self.wfile.write(

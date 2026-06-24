@@ -25,6 +25,10 @@ textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-rad
 .btn-area{text-align:center;margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .btn-run{background:#0369a1;color:#fff;border:none;padding:12px 36px;border-radius:6px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
 .btn-run:hover{background:#024e7c;} .btn-run:disabled{background:#999;cursor:not-allowed;}
+#dropZone.dragover{border-color:#0369a1;background:#eff6ff;color:#0369a1;}
+.img-thumb{position:relative;display:inline-block;}
+.img-thumb img{width:80px;height:80px;object-fit:cover;border-radius:6px;border:1.5px solid #ddd;}
+.img-thumb .img-remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#dc2626;color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
 .btn-copy{background:#333;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
 .btn-word{background:#2b579a;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
 .btn-ppt{background:#d24726;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:none;}
@@ -108,9 +112,14 @@ textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-rad
       <div><label for="rPeriod">보고 기간</label><input type="text" id="rPeriod" placeholder="예) 2026.06.16 ~ 06.20"></div>
       <div><label for="rDept">부서/팀</label><input type="text" id="rDept" placeholder="예) 영업기획팀"></div>
     </div>
-    <label for="rContent">핵심 내용 (키워드 또는 메모)</label>
-    <textarea id="rContent" placeholder="보고서에 들어갈 내용을 간단히 적어주세요.&#10;&#10;예)&#10;- 6월 3주차 매출 42.3억 (전주대비 +12%)&#10;- 식품 35%, 뷰티 25%, 가전 22%, 패션 18%&#10;- 신규 입점사 3개 확보 (건강식품 2, 뷰티 1)&#10;- 라이브커머스 시범 방송 2회, 평균 시청 3,200명&#10;- 다음 주: 여름 시즌 기획전 준비"></textarea>
-    <div class="hint">※ 수치를 포함하면 자동으로 차트와 인포그래픽이 생성됩니다</div>
+    <label for="rContent">핵심 내용 (키워드, 메모, 이미지/캡처 첨부 가능)</label>
+    <textarea id="rContent" placeholder="보고서에 들어갈 내용을 간단히 적어주세요.&#10;&#10;예)&#10;- 6월 3주차 매출 42.3억 (전주대비 +12%)&#10;- 식품 35%, 뷰티 25%, 가전 22%, 패션 18%&#10;- 신규 입점사 3개 확보 (건강식품 2, 뷰티 1)&#10;- 라이브커머스 시범 방송 2회, 평균 시청 3,200명&#10;- 다음 주: 여름 시즌 기획전 준비&#10;&#10;📷 이미지를 Ctrl+V로 붙여넣기 하세요"></textarea>
+    <div id="dropZone" style="margin-top:8px;padding:18px;border:2px dashed #ccc;border-radius:8px;text-align:center;color:#999;font-size:12px;cursor:pointer;transition:all .15s;">
+      📷 이미지/캡처를 여기에 <b>드래그</b>하거나 <b>클릭</b>하여 첨부 · 텍스트 영역에서 <b>Ctrl+V</b>로 붙여넣기도 가능
+      <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+    </div>
+    <div id="imagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+    <div class="hint">※ 수치를 포함하면 자동으로 차트와 인포그래픽이 생성됩니다 · 이미지 첨부 시 AI가 내용을 읽어 보고서에 반영</div>
     <div class="btn-area"><button class="btn-run" id="btnRun" onclick="generate()">보고서 생성</button></div>
   </div>
 
@@ -133,6 +142,83 @@ textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-rad
 <script>
 var PROXY = 'http://localhost:8502';
 var _report = null;
+var _attachedImages = [];
+
+// 이미지 첨부 처리
+document.addEventListener('DOMContentLoaded', function() {
+  var dropZone = document.getElementById('dropZone');
+  var fileInput = document.getElementById('fileInput');
+  var textarea = document.getElementById('rContent');
+
+  // 드래그&드롭
+  dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('dragover'); });
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault(); dropZone.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  // 클릭으로 파일 선택
+  dropZone.addEventListener('click', function() { fileInput.click(); });
+  fileInput.addEventListener('change', function() { handleFiles(this.files); this.value=''; });
+
+  // Ctrl+V 붙여넣기 (textarea에서)
+  textarea.addEventListener('paste', function(e) {
+    var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        e.preventDefault();
+        var file = items[i].getAsFile();
+        handleFiles([file]);
+        break;
+      }
+    }
+  });
+
+  // 페이지 전체 paste도 처리
+  document.addEventListener('paste', function(e) {
+    var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        var file = items[i].getAsFile();
+        handleFiles([file]);
+        break;
+      }
+    }
+  });
+});
+
+function handleFiles(files) {
+  for (var i = 0; i < files.length; i++) {
+    if (!files[i].type.startsWith('image/')) continue;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var base64 = e.target.result;
+      _attachedImages.push(base64);
+      renderImagePreview();
+    };
+    reader.readAsDataURL(files[i]);
+  }
+}
+
+function removeImage(idx) {
+  _attachedImages.splice(idx, 1);
+  renderImagePreview();
+}
+
+function renderImagePreview() {
+  var preview = document.getElementById('imagePreview');
+  if (!_attachedImages.length) { preview.innerHTML = ''; return; }
+  var html = '';
+  _attachedImages.forEach(function(img, i) {
+    html += '<div class="img-thumb">';
+    html += '<img src="' + img + '">';
+    html += '<button class="img-remove" onclick="removeImage(' + i + ')">×</button>';
+    html += '</div>';
+  });
+  html += '<div style="font-size:11px;color:#0369a1;align-self:center;">📷 ' + _attachedImages.length + '개 첨부됨</div>';
+  preview.innerHTML = html;
+}
 var _meta = {};
 var _chartInstances = [];
 var COLORS = ['#0369a1','#e8192c','#16a34a','#d97706','#7c3aed','#0d9488','#db2777','#ea580c'];
@@ -144,22 +230,61 @@ async function generate() {
   var period = document.getElementById('rPeriod').value.trim();
   var dept = document.getElementById('rDept').value.trim() || '영업기획팀';
   var content = document.getElementById('rContent').value.trim();
-  if (!content) { alert('핵심 내용을 입력해주세요.'); return; }
+  if (!content && !_attachedImages.length) { alert('핵심 내용을 입력하거나 이미지를 첨부해주세요.'); return; }
 
   _meta = {type:type, target:target, period:period, dept:dept};
 
   document.getElementById('btnRun').disabled = true;
-  document.getElementById('btnRun').textContent = '생성 중...';
+  document.getElementById('btnRun').textContent = _attachedImages.length ? '이미지 분석 + 생성 중...' : '생성 중...';
   document.getElementById('loadingArea').style.display = 'block';
   document.getElementById('reportArea').style.display = 'none';
   document.getElementById('exportBtns').style.display = 'none';
   _chartInstances.forEach(function(c){c.destroy();}); _chartInstances=[];
 
+  // 이미지가 있으면 먼저 Vision API로 텍스트 추출
+  var imageContext = '';
+  if (_attachedImages.length) {
+    document.getElementById('loadingArea').querySelector('.ai-loading').innerHTML =
+      '<div class="ai-spinner"></div>📷 첨부 이미지 ' + _attachedImages.length + '장 분석 중...';
+    try {
+      var visionResp = await fetch(PROXY + '/api/vision', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          images: _attachedImages,
+          prompt: '이 이미지들의 내용을 상세히 설명해주세요. 숫자, 표, 차트, 텍스트가 있으면 모두 읽어서 텍스트로 정리해주세요.',
+        }),
+      });
+      if (visionResp.ok) {
+        var visionText = '';
+        var vReader = visionResp.body.getReader();
+        var vDecoder = new TextDecoder();
+        var vBuf = '';
+        while (true) {
+          var vc = await vReader.read();
+          if (vc.done) break;
+          vBuf += vDecoder.decode(vc.value, {stream:true});
+          var vLines = vBuf.split('\n');
+          vBuf = vLines.pop();
+          for (var vl of vLines) {
+            if (!vl.startsWith('data: ')) continue;
+            var vp = vl.slice(6);
+            if (vp === '[DONE]') break;
+            try { visionText += JSON.parse(vp).text; } catch(e) {}
+          }
+        }
+        if (visionText) imageContext = '\n\n[첨부 이미지 분석 결과]:\n' + visionText;
+      }
+    } catch(e) {}
+    document.getElementById('loadingArea').querySelector('.ai-loading').innerHTML =
+      '<div class="ai-spinner"></div>Claude가 인포그래픽 보고서를 작성 중입니다...';
+  }
+
   var prompt = '당신은 홈앤쇼핑 ' + dept + ' 소속 보고서 작성 전문가입니다.\n\n';
   prompt += '다음 정보로 ' + type + '를 JSON 형식으로 작성해주세요.\n\n';
   prompt += '보고서 유형: ' + type + '\n보고 대상: ' + target + '\n';
   if (period) prompt += '보고 기간: ' + period + '\n';
-  prompt += '부서: ' + dept + '\n\n핵심 내용:\n' + content + '\n\n';
+  prompt += '부서: ' + dept + '\n\n핵심 내용:\n' + (content || '(이미지 첨부 참고)') + imageContext + '\n\n';
   prompt += '반드시 아래 JSON 형식으로만 응답하세요 (다른 텍스트 없이):\n';
   prompt += '{\n';
   prompt += '  "title": "보고서 제목",\n';
