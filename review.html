@@ -402,20 +402,9 @@ function renderAnalysis(a, query, productCount, blogCount) {
     html += '</div>';
   }
 
-  // 편성 분석 영역 (비동기 로드)
-  html += '<div class="heatmap-wrap" id="broadcastCharts">';
-  html += '<h3>📊 최근 1개월 편성 분석</h3><div class="hm-sub">AI 추정 데이터 · 홈쇼핑 채널별 편성 현황</div>';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" id="priceChartsRow">';
-  html += '<div><div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">💰 가격대 분포 (전체)</div><canvas id="chartPriceDist" height="200"></canvas></div>';
-  html += '<div><div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">💰 가격대 × 채널 (누적)</div><canvas id="chartPriceChannel" height="200"></canvas></div>';
-  html += '</div></div>';
-  html += '<div class="heatmap-wrap" id="heatmapArea"><h3>📺 시간 × 채널 편성 히트맵</h3><div class="hm-sub">최근 1개월 편성 추정 · 셀 진할수록 편성 多</div><div style="text-align:center;padding:20px;color:#aaa;font-size:12px;"><div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>편성 데이터 생성 중...</div></div>';
 
   area.innerHTML = html;
   area.scrollIntoView({behavior:'smooth', block:'start'});
-
-  // 히트맵 비동기 생성
-  loadHeatmap(query);
 }
 
 var _reviewCharts = [];
