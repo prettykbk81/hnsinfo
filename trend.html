@@ -48,7 +48,8 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
 .analysis-card{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-left:4px solid #ddd;}
 .analysis-card.industry{border-left-color:#2563eb;} .analysis-card.competitor{border-left-color:#dc2626;}
-.analysis-card.consumer{border-left-color:#d97706;} .analysis-card.insight{border-left-color:#7c3aed;}
+.analysis-card.consumer{border-left-color:#d97706;} .analysis-card.distribution{border-left-color:#0d9488;}
+.analysis-card.insight{border-left-color:#7c3aed;}
 .ac-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
 .ac-icon{font-size:20px;}
 .ac-title{font-size:14px;font-weight:700;color:#333;}
@@ -230,6 +231,7 @@ async function analyzeTrend() {
   prompt += '  ],\n';
   prompt += '  "industry": ["업종별 동향1 (뉴스 기반 구체적)", "동향2", "동향3"],\n';
   prompt += '  "competitor": ["경쟁사 움직임1", "움직임2", "움직임3"],\n';
+  prompt += '  "distribution": ["유통 트렌드1 (온오프라인 채널 변화, 물류, 플랫폼 등)", "트렌드2", "트렌드3"],\n';
   prompt += '  "consumer": ["소비자 트렌드1", "트렌드2", "트렌드3"],\n';
   prompt += '  "insights": [\n';
   prompt += '    {"title":"시사점 제목 (10자)", "desc":"홈앤쇼핑에 대한 전략적 시사점 (40자)"},\n';
@@ -345,11 +347,12 @@ function renderReport(r) {
     html += '</div>';
   }
 
-  // 4섹션 그리드
+  // 4섹션 그리드 (2x2)
   html += '<div class="analysis-grid">';
   html += makeSection('industry', '📊', '업종별 동향', r.industry);
   html += makeSection('competitor', '🏢', '경쟁사 움직임', r.competitor);
   html += makeSection('consumer', '👥', '소비자 트렌드', r.consumer);
+  html += makeSection('distribution', '🚚', '유통 트렌드', r.distribution);
   html += '</div>';
 
   // 전략적 시사점
