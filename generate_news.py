@@ -383,3 +383,11 @@ if __name__ == '__main__':
     with open(out_json, 'w', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
     print(f"저장 완료 → {out_json}")
+
+    # 쇼핑인사이트 생성
+    print("\n쇼핑인사이트 생성 중...")
+    try:
+        from generate_insight import generate_shopping_insight
+        generate_shopping_insight(base)
+    except Exception as e:
+        print(f"쇼핑인사이트 생성 실패: {e}")

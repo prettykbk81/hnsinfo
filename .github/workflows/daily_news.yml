@@ -41,7 +41,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: 'AI Daily News 자동 업데이트'
-          add: 'daily_news.html daily_news.json'
+          add: 'daily_news.html daily_news.json shopping_insight.json'
           default_author: github_actions
 
       - name: 카드 이미지 생성 & 이메일 발송
