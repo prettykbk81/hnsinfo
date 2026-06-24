@@ -352,8 +352,14 @@ async function searchAll() {
     var analysis = tryParse(fullText);
     if (analysis) {
       renderAnalysis(analysis, q, products.length, blogs.length);
+    } else if (!window._reviewRetried) {
+      window._reviewRetried = true;
+      analysisArea.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>파싱 오류, 자동 재시도 중...</div></div>';
+      setTimeout(function(){ searchAll(); }, 500);
+      return;
     } else {
-      analysisArea.innerHTML = '<div class="section"><div class="result-fallback">' + esc(fullText) + '</div></div>';
+      analysisArea.innerHTML = '<div class="section"><div class="error">분석 결과 파싱 실패. 다시 검색해주세요.</div></div>';
+      window._reviewRetried = false;
     }
 
   } catch(e) {
@@ -365,11 +371,27 @@ async function searchAll() {
 }
 
 function tryParse(text) {
-  var m = text.match(/\{[\s\S]*\}/);
+  // ```json 블록 제거
+  var cleaned = text.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  var m = cleaned.match(/\{[\s\S]*\}/);
   if (!m) return null;
-  var raw = m[0].replace(/,\s*([\]}])/g,'$1');
+  var raw = m[0];
+  // 1차
   try { return JSON.parse(raw); } catch(e) {}
-  raw = raw.replace(/:\s*"([^"]*)\n([^"]*)"(?=\s*[,\]}])/g, function(m,a,b){return ': "'+a+' '+b+'"';});
+  // 2차: trailing comma
+  raw = raw.replace(/,\s*([\]}])/g,'$1');
+  try { return JSON.parse(raw); } catch(e) {}
+  // 3차: 줄바꿈 문자열
+  raw = raw.replace(/"([^"]*)\n([^"]*)"/g, function(m,a,b){return '"'+a+' '+b+'"';});
+  try { return JSON.parse(raw); } catch(e) {}
+  // 4차: 닫는 괄호 복구
+  var opens = (raw.match(/[\[{]/g)||[]).length;
+  var closes = (raw.match(/[\]}]/g)||[]).length;
+  for (var i=0; i<opens-closes; i++) {
+    var last = Math.max(raw.lastIndexOf('['), raw.lastIndexOf('{'));
+    raw += (raw[last]==='[') ? ']' : '}';
+  }
+  raw = raw.replace(/,\s*([\]}])/g,'$1');
   try { return JSON.parse(raw); } catch(e) {}
   return null;
 }
