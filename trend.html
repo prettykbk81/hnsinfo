@@ -446,16 +446,19 @@ var _datalabMonthly = null;
 async function loadShoppingInsight() {
   var area = document.getElementById('shoppingInsight');
   area.style.display = 'block';
-  area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>네이버 쇼핑인사이트 데이터 수집 중... (카테고리 트렌드 + 인기 키워드)</div></div>';
+  area.innerHTML = '<div style="text-align:center;padding:20px;color:#aaa;font-size:12px;"><div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>네이버 쇼핑인사이트 수집 중...</div>';
 
   try {
-    var r = await fetch(PROXY + '/api/shopping-insight');
+    var r = await fetch(PROXY + '/api/shopping-insight', {signal: AbortSignal.timeout(60000)});
     if (!r.ok) throw new Error('연결 실패');
     var data = await r.json();
-    if (!data.categories && !data.popular_keywords) { area.style.display='none'; return; }
+    if (!data.categories && !data.popular_keywords) throw new Error('데이터 없음');
     renderShoppingInsight(data);
   } catch(e) {
-    area.style.display = 'none';
+    // proxy 미연결 시 기본 안내 표시
+    area.innerHTML = '<div style="padding:14px 16px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;font-size:12px;color:#0d9488;">'
+      + '🛒 <b>쇼핑인사이트</b> — proxy.py 실행 시 네이버 DataLab API 실시간 데이터가 표시됩니다.'
+      + '<br><span style="font-size:10px;color:#888;">아래 "트렌드 리포트 생성" 버튼은 proxy 없이도 동작합니다.</span></div>';
   }
 }
 
