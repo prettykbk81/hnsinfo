@@ -98,16 +98,54 @@ def _fetch_review_score(goods_code: str) -> dict:
         score_m = re.search(r'class="fontType1">(\d+)</em>', r.text)
         count_m = re.search(r'상품평\s*(\d[\d,]*)\s*건', r.text)
         level_m = re.search(r'class="fontType2\s*">([^<]+)<', r.text)
-        ratings = re.findall(r'class="flag\s+(?:red|blue|green|gray)">([^<]+)<', r.text)
+
+        all_reviews = []
+        for page in range(1, 4):
+            if page == 1:
+                page_text = r.text
+            else:
+                rp = req_lib.post(
+                    "https://www.hnsmall.com/display/Igoodscomment.do",
+                    data={"goods_code": goods_code, "currentPage": str(page),
+                          "rowsPerPage": "10", "order_type": "1", "goto": "Y"},
+                    verify=False, timeout=8, headers=_HEADERS_UA,
+                )
+                page_text = rp.text
+
+            flags = re.findall(r'class="flag\s+\w+">([^<]+)<', page_text)
+            users = re.findall(r'class="user">([^<]+)<', page_text)
+            dates = re.findall(r'class="date">\s*([^\n<]+)', page_text)
+            rate_boxes = re.findall(r'<div class="rateBox">([\s\S]*?)</div>\s*</li>', page_text)
+
+            for j in range(len(flags)):
+                review_text = ""
+                if j < len(rate_boxes):
+                    txt = re.sub(r'<[^>]+>', ' ', rate_boxes[j])
+                    txt = re.sub(r'닫기', '', txt)
+                    txt = re.sub(r'\s+', ' ', txt).strip()
+                    if len(txt) > 3:
+                        review_text = txt[:300]
+                all_reviews.append({
+                    "rating": flags[j].strip(),
+                    "user": users[j].strip() if j < len(users) else "",
+                    "date": dates[j].strip() if j < len(dates) else "",
+                    "text": review_text,
+                })
+            if not flags:
+                break
+
         dist = {}
-        for rt in ratings:
-            rt = rt.strip()
+        for rv in all_reviews:
+            rt = rv["rating"]
             dist[rt] = dist.get(rt, 0) + 1
+
         return {
             "score": score_m.group(1) if score_m else "",
             "count": count_m.group(1) if count_m else "0",
             "level": level_m.group(1).strip() if level_m else "",
             "distribution": dist,
+            "reviews": all_reviews[:50],
+            "review_count": len(all_reviews),
         }
     except Exception:
         return {"score": "", "count": "0", "level": ""}
