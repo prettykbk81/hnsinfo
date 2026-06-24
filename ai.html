@@ -1220,7 +1220,14 @@ async function generate(mode) {
   try {
     let data;
     if (mode === 'ai') {
-      data = await callClaude(product, category, catName, price, feat1, feat2);
+      try {
+        data = await callClaude(product, category, catName, price, feat1, feat2);
+      } catch(e1) {
+        if (e1.message.indexOf('파싱') > -1) {
+          document.querySelector('.loading-bar').innerHTML = '<div class="spinner"></div>JSON 오류 발생, 자동 재시도 중...';
+          data = await callClaude(product, category, catName, price, feat1, feat2);
+        } else { throw e1; }
+      }
     } else {
       data = generateTemplate(product, category, price, feat1, feat2);
     }
@@ -1295,10 +1302,36 @@ async function callClaude(product, category, catName, price, feat1, feat2) {
     }
   }
 
-  const match = fullText.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error('AI 응답 형식 오류. 다시 시도해주세요.');
+  var parsed = tryParseAIJson(fullText);
+  if (!parsed) throw new Error('AI 응답 파싱 오류. 다시 시도해주세요.');
+  return parsed;
+}
 
-  return JSON.parse(match[0].replace(/,\s*([\]}])/g,'$1'));
+function tryParseAIJson(text) {
+  var m = text.match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  var raw = m[0];
+  // 1차: 그대로
+  try { return JSON.parse(raw); } catch(e) {}
+  // 2차: trailing comma 제거
+  var c = raw.replace(/,\s*([\]}])/g, '$1');
+  try { return JSON.parse(c); } catch(e) {}
+  // 3차: 문자열 내 줄바꿈 수정
+  c = c.replace(/"([^"]*)\n([^"]*)"/g, function(m,a,b){return '"'+a.replace(/\n/g,'\\n')+b+'"';});
+  try { return JSON.parse(c); } catch(e) {}
+  // 4차: 닫는 괄호 복구
+  var opens = (c.match(/[\[{]/g)||[]).length;
+  var closes = (c.match(/[\]}]/g)||[]).length;
+  for (var i=0; i<opens-closes; i++) {
+    var last = Math.max(c.lastIndexOf('['), c.lastIndexOf('{'));
+    c += (c[last]==='[') ? ']' : '}';
+  }
+  c = c.replace(/,\s*([\]}])/g, '$1');
+  try { return JSON.parse(c); } catch(e) {}
+  // 5차: 배열 내 잘못된 쉼표/따옴표 수정
+  c = raw.replace(/,\s*([\]}])/g,'$1').replace(/([}\]])\s*([{\[])/g,'$1,$2');
+  try { return JSON.parse(c); } catch(e) {}
+  return null;
 }
 
 /* ── TEMPLATE (오프라인 폴백) ── */
