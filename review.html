@@ -234,18 +234,37 @@ async function searchAll() {
   area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>홈앤쇼핑에서 상품을 검색하고 있습니다...</div></div>';
 
   try {
-    // 1. 상품 검색 + 카테고리 필터링
+    // 1. 상품 검색 + 같은 카테고리만 필터링
     var r = await fetch(PROXY + '/api/search-product?q=' + encodeURIComponent(q));
     if (!r.ok) throw new Error('프록시 연결 실패');
     var allProducts = await r.json();
-    // 검색어 키워드가 상품명에 포함된 것만 필터
+    if (!allProducts.length) { area.innerHTML = '<div class="section" style="text-align:center;color:#888;padding:40px;">검색 결과가 없습니다.</div>'; return; }
+
+    // 검색어 키워드 매칭 + 첫 상품 기준 카테고리 필터링
     var qWords = q.replace(/[[\]()]/g,'').split(/\s+/).filter(function(w){return w.length>=2;});
-    var products = allProducts.filter(function(p) {
+
+    // 키워드 매칭 먼저
+    var matched = allProducts.filter(function(p) {
       var name = (p.name||'').toLowerCase();
       return qWords.some(function(w){return name.indexOf(w.toLowerCase())>-1;});
     });
+    if (!matched.length) matched = allProducts;
+
+    // 첫 상품의 핵심 키워드를 기준으로 유사 상품만 필터
+    var firstName = (matched[0].name||'').replace(/[\[\]()A-Z+]/g,' ');
+    var catWords = firstName.split(/\s+/).filter(function(w){
+      return w.length >= 2 && !['추가','증정','특집','특가','세트','패키지','총','팩','개','입','롤','장'].includes(w);
+    }).slice(0,3);
+
+    var products = matched;
+    if (catWords.length > 0) {
+      var filtered = matched.filter(function(p) {
+        var name = (p.name||'').toLowerCase();
+        return catWords.some(function(w){return name.indexOf(w.toLowerCase())>-1;});
+      });
+      if (filtered.length >= 2) products = filtered;
+    }
     if (!products.length) products = allProducts;
-    if (!products.length) { area.innerHTML = '<div class="section" style="text-align:center;color:#888;padding:40px;">검색 결과가 없습니다.</div>'; return; }
 
     // 2. 상품 리스트 렌더 (로딩 상태)
     area.innerHTML = '<div class="section"><h2><span class="step-badge">2</span> 검색된 상품 (' + products.length + '개) — 만족도 수집 중...</h2><div class="product-list" id="productList"></div></div><div id="analysisArea"></div>';
