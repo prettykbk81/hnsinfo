@@ -37,7 +37,7 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 .report-header .rh-summary{font-size:14px;margin-top:10px;line-height:1.7;opacity:.9;}
 
 /* 트렌드 TOP 카드 */
-.trend-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.trend-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
 .trend-card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,.06);border-top:3px solid #0d9488;position:relative;}
 .trend-card .tc-rank{position:absolute;top:12px;right:14px;font-size:28px;font-weight:900;color:rgba(13,148,136,.12);}
 .trend-card .tc-label{font-size:10px;font-weight:700;color:#0d9488;letter-spacing:.5px;margin-bottom:6px;}
@@ -170,8 +170,8 @@ async function analyzeTrend() {
   area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>뉴스 데이터를 불러오고 트렌드를 분석 중입니다...</div></div>';
 
   // 시장 분석 대시보드 (병렬 로드)
-  var searchKeyword = focus || cats.join(' ');
-  if (searchKeyword && searchKeyword !== '전체') loadMarketDash(searchKeyword);
+  var searchKeyword = focus || (cats.indexOf('전체')>-1 ? '홈쇼핑' : cats.join(' '));
+  loadMarketDash(searchKeyword);
 
   // daily_news.json에서 뉴스 데이터 로드
   var newsContext = '';
@@ -214,7 +214,8 @@ async function analyzeTrend() {
   prompt += '  "trends": [\n';
   prompt += '    {"rank":1, "title":"트렌드 제목 (15자)", "desc":"설명 (60자 내외, 수치와 사례 포함)"},\n';
   prompt += '    {"rank":2, "title":"트렌드 제목", "desc":"설명"},\n';
-  prompt += '    {"rank":3, "title":"트렌드 제목", "desc":"설명"}\n';
+  prompt += '    {"rank":3, "title":"트렌드 제목", "desc":"설명"},\n';
+  prompt += '    {"rank":4, "title":"트렌드 제목", "desc":"설명"}\n';
   prompt += '  ],\n';
   prompt += '  "industry": ["업종별 동향1 (뉴스 기반 구체적)", "동향2", "동향3"],\n';
   prompt += '  "competitor": ["경쟁사 움직임1", "움직임2", "움직임3"],\n';
@@ -224,9 +225,12 @@ async function analyzeTrend() {
   prompt += '    {"title":"시사점2", "desc":"설명"},\n';
   prompt += '    {"title":"시사점3", "desc":"설명"}\n';
   prompt += '  ],\n';
+  prompt += '  "monthly_search": {"4월":65,"5월":78,"6월":92},\n';
+  prompt += '  "age_distribution": {"10대":5,"20대":15,"30대":25,"40대":28,"50대":18,"60대이상":9},\n';
+  prompt += '  "channel_share": {"TV홈쇼핑":35,"라이브커머스":25,"온라인몰":22,"모바일앱":18},\n';
   prompt += '  "next_week": ["다음 주 주목할 포인트1", "포인트2", "포인트3"]\n';
   prompt += '}\n';
-  prompt += '규칙: 뉴스 기사에 있는 실제 내용과 수치를 인용하세요. 날짜는 반드시 ' + newsDate + ' 기준입니다.';
+  prompt += '규칙:\n- 뉴스 기사 실제 내용과 수치를 인용\n- trends는 4개\n- monthly_search: 최근 3개월 월별 검색 관심도 (추정)\n- age_distribution: 홈쇼핑 구매 고객 연령 비율 추정\n- channel_share: 채널별 구매 비율 추정\n- 날짜는 ' + newsDate + ' 기준';
 
   try {
     var resp = await fetch(PROXY + '/api/summarize', {
@@ -321,6 +325,28 @@ function renderReport(r) {
     html += '</div>';
   }
 
+  // 차트 영역 (3개)
+  var hasChartData = r.monthly_search || r.age_distribution || r.channel_share;
+  if (hasChartData) {
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;" id="aiChartsRow">';
+    if (r.monthly_search) {
+      html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
+      html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">📈 월별 검색 관심도 추이</div>';
+      html += '<canvas id="chartMonthly" height="180"></canvas></div>';
+    }
+    if (r.age_distribution) {
+      html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
+      html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">👥 구매 고객 연령 분포</div>';
+      html += '<canvas id="chartAge" height="180"></canvas></div>';
+    }
+    if (r.channel_share) {
+      html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
+      html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px;">📺 채널별 구매 비율</div>';
+      html += '<canvas id="chartChannel" height="180"></canvas></div>';
+    }
+    html += '</div>';
+  }
+
   // 다음 주
   if (r.next_week && r.next_week.length) {
     html += '<div class="nextweek"><h3>📅 다음 주 주목 포인트</h3><ul>';
@@ -331,6 +357,38 @@ function renderReport(r) {
   html += '<div class="report-footer">홈앤쇼핑 AI 트렌드 리포트 · 네이버 뉴스 × Claude AI · ' + esc(r.date||'') + '</div>';
   area.innerHTML = html;
   area.scrollIntoView({behavior:'smooth'});
+
+  // AI 생성 차트 렌더링
+  var chartColors = ['#0d9488','#2563eb','#e8192c','#d97706','#7c3aed','#16a34a'];
+  try {
+    if (r.monthly_search) {
+      var mLabels = Object.keys(r.monthly_search);
+      var mValues = Object.values(r.monthly_search);
+      var ctx1 = document.getElementById('chartMonthly');
+      if (ctx1) new Chart(ctx1.getContext('2d'), {
+        type:'bar', data:{labels:mLabels, datasets:[{label:'검색 관심도',data:mValues,backgroundColor:chartColors.slice(0,mLabels.length),borderRadius:6}]},
+        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+      });
+    }
+    if (r.age_distribution) {
+      var aLabels = Object.keys(r.age_distribution);
+      var aValues = Object.values(r.age_distribution);
+      var ctx2 = document.getElementById('chartAge');
+      if (ctx2) new Chart(ctx2.getContext('2d'), {
+        type:'doughnut', data:{labels:aLabels, datasets:[{data:aValues,backgroundColor:chartColors,borderWidth:2,borderColor:'#fff'}]},
+        options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}
+      });
+    }
+    if (r.channel_share) {
+      var cLabels = Object.keys(r.channel_share);
+      var cValues = Object.values(r.channel_share);
+      var ctx3 = document.getElementById('chartChannel');
+      if (ctx3) new Chart(ctx3.getContext('2d'), {
+        type:'pie', data:{labels:cLabels, datasets:[{data:cValues,backgroundColor:chartColors,borderWidth:2,borderColor:'#fff'}]},
+        options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}
+      });
+    }
+  } catch(e) { console.log('차트 오류:', e); }
 }
 
 function makeSection(cls, icon, title, items) {
