@@ -93,13 +93,23 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 <div class="wrap">
   <div class="section">
     <h2><span class="step-badge">1</span> 상품 검색</h2>
-    <div style="margin-bottom:10px;">
+    <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <button id="btnSchedule" onclick="loadSchedule()" style="background:#0369a1;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">
         📺 오늘 방송 편성표
       </button>
-      <span style="font-size:11px;color:#999;margin-left:8px;">편성표에서 상품을 클릭하면 자동으로 검색됩니다</span>
+      <button onclick="toggleProductSearch()" style="background:#e8192c;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">
+        🔍 상품 검색
+      </button>
+      <span style="font-size:11px;color:#999;">상품을 클릭하면 자동으로 검색됩니다</span>
     </div>
     <div id="scheduleArea" style="display:none;margin-bottom:14px;"></div>
+    <div id="productSearchArea" style="display:none;margin-bottom:14px;">
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="text" id="productSearchQuery" placeholder="홈앤쇼핑 상품명 검색 (예: 홍삼, 선풍기)" style="flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;" onkeypress="if(event.keyCode===13)searchProductList()">
+        <button onclick="searchProductList()" style="background:#e8192c;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;">검색</button>
+      </div>
+      <div id="productSearchResults" style="max-height:300px;overflow-y:auto;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;"></div>
+    </div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="검색어를 입력하세요 (예: 홍삼, 선풍기, 한라봉)" onkeypress="if(event.keyCode===13)searchAll()">
       <button id="btnSearch" onclick="searchAll()">검색 &amp; 분석</button>
@@ -112,6 +122,49 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
 
 <script>
 var PROXY = 'http://localhost:8502';
+
+function toggleProductSearch() {
+  var area = document.getElementById('productSearchArea');
+  if (area.style.display === 'none') {
+    area.style.display = 'block';
+    document.getElementById('productSearchQuery').focus();
+    document.getElementById('scheduleArea').style.display = 'none';
+  } else {
+    area.style.display = 'none';
+  }
+}
+
+async function searchProductList() {
+  var q = document.getElementById('productSearchQuery').value.trim();
+  if (!q) return;
+  var results = document.getElementById('productSearchResults');
+  results.innerHTML = '<div style="text-align:center;padding:20px;color:#888;"><div class="ai-spinner"></div>검색 중...</div>';
+  try {
+    var r = await fetch(PROXY + '/api/search-product?q=' + encodeURIComponent(q));
+    if (!r.ok) throw new Error('연결 실패');
+    var products = await r.json();
+    if (!products.length) { results.innerHTML = '<div style="padding:16px;color:#888;text-align:center;">검색 결과가 없습니다.</div>'; return; }
+    var html = '';
+    products.forEach(function(p) {
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background .1s;" onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'transparent\'" onclick="pickProduct(\'' + esc(p.name).replace(/'/g,"\\'") + '\')">';
+      html += '<img src="' + p.image + '" style="width:50px;height:50px;border-radius:6px;object-fit:cover;" onerror="this.style.display=\'none\'">';
+      html += '<div style="flex:1;min-width:0;"><div style="font-size:12.5px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(p.name) + '</div>';
+      if (p.price) html += '<div style="font-size:12px;color:#e8192c;font-weight:700;">' + p.price + '원</div>';
+      html += '</div>';
+      html += '<div style="font-size:10px;color:#e8192c;font-weight:700;flex-shrink:0;">선택 →</div>';
+      html += '</div>';
+    });
+    results.innerHTML = html;
+  } catch(e) {
+    results.innerHTML = '<div style="padding:16px;color:#c0392b;text-align:center;">검색 실패. proxy.py 실행 여부를 확인하세요.</div>';
+  }
+}
+
+function pickProduct(name) {
+  document.getElementById('searchInput').value = name;
+  document.getElementById('productSearchArea').style.display = 'none';
+  searchAll();
+}
 
 async function loadSchedule() {
   var area = document.getElementById('scheduleArea');
