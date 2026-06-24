@@ -40,21 +40,28 @@ textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-rad
 @keyframes spin{to{transform:rotate(360deg);}}
 .error{color:#c0392b;font-weight:600;padding:16px;text-align:center;}
 
-/* ── 비주얼 리포트 ── */
+/* ── Streamlit 스타일 대시보드 리포트 ── */
 .report{display:none;}
-.report-header{background:linear-gradient(135deg,#0369a1,#0284c7);color:#fff;padding:28px 32px;border-radius:10px;margin-bottom:16px;}
-.report-header h1{font-size:22px;font-weight:800;margin-bottom:6px;}
-.report-header .rh-sub{font-size:12px;opacity:.7;}
+.report-header{background:linear-gradient(135deg,#0f172a 0%,#0369a1 50%,#0284c7 100%);color:#fff;padding:32px 36px;border-radius:12px;margin-bottom:20px;position:relative;overflow:hidden;}
+.report-header::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);border-radius:50%;}
+.report-header h1{font-size:24px;font-weight:900;margin-bottom:6px;position:relative;}
+.report-header .rh-sub{font-size:12px;opacity:.65;position:relative;}
+.report-header .rh-summary{font-size:14px;margin-top:12px;line-height:1.7;opacity:.9;position:relative;border-left:3px solid rgba(255,255,255,.3);padding-left:12px;}
+.report-header .rh-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:16px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-top:10px;position:relative;}
 
-/* 메트릭 카드 */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-.metric-card{background:#fff;border-radius:10px;padding:18px 16px;box-shadow:0 1px 6px rgba(0,0,0,.06);text-align:center;border-top:3px solid #0369a1;}
+/* 메트릭 카드 (Streamlit st.metric 스타일) */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.metric-card{background:#fff;border-radius:12px;padding:20px 18px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-align:center;border-top:3px solid #0369a1;position:relative;overflow:hidden;transition:transform .15s;}
+.metric-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
 .metric-card.up{border-top-color:#16a34a;} .metric-card.down{border-top-color:#dc2626;}
-.mc-icon{font-size:24px;margin-bottom:6px;}
-.mc-value{font-size:22px;font-weight:800;color:#111;}
-.mc-label{font-size:11px;color:#888;margin-top:2px;}
-.mc-change{font-size:12px;font-weight:700;margin-top:4px;}
+.metric-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(3,105,161,.1),transparent);}
+.mc-icon{font-size:28px;margin-bottom:8px;}
+.mc-value{font-size:26px;font-weight:900;color:#111;letter-spacing:-0.5px;}
+.mc-label{font-size:11px;color:#888;margin-top:4px;font-weight:600;letter-spacing:.3px;}
+.mc-change{font-size:13px;font-weight:800;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:4px;}
 .mc-change.up{color:#16a34a;} .mc-change.down{color:#dc2626;} .mc-change.neutral{color:#888;}
+.mc-bar{height:4px;background:#f0f0f0;border-radius:2px;margin-top:8px;overflow:hidden;}
+.mc-bar-fill{height:100%;border-radius:2px;transition:width .6s ease;}
 
 /* 차트 */
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
@@ -63,24 +70,29 @@ textarea{width:100%;height:160px;padding:12px;border:1.5px solid #ddd;border-rad
 .chart-box h3::before{content:'';display:inline-block;width:4px;height:14px;background:#0369a1;border-radius:2px;}
 .chart-box canvas{max-height:220px;}
 
-/* 섹션 */
-.report-section{background:#fff;border-radius:10px;padding:22px 26px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
-.report-section h3{font-size:14px;font-weight:700;color:#0369a1;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e0f2fe;display:flex;align-items:center;gap:8px;}
-.rs-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+/* 섹션 (Streamlit st.container 스타일) */
+.report-section{background:#fff;border-radius:12px;padding:24px 28px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid #f0f0f0;transition:box-shadow .15s;}
+.report-section:hover{box-shadow:0 4px 18px rgba(0,0,0,.08);}
+.report-section h3{font-size:15px;font-weight:800;color:#0f172a;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #e0f2fe;display:flex;align-items:center;gap:10px;}
+.rs-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:#eff6ff;}
 .report-section ul{margin:0;padding-left:0;list-style:none;}
-.report-section li{padding:8px 0 8px 22px;border-left:3px solid #e0f2fe;margin-bottom:4px;line-height:1.7;font-size:13px;color:#444;}
+.report-section li{padding:10px 0 10px 20px;border-left:3px solid #bfdbfe;margin-bottom:6px;line-height:1.7;font-size:13px;color:#444;background:linear-gradient(90deg,#f8faff,transparent);border-radius:0 6px 6px 0;}
 .report-section li strong{color:#0369a1;}
 .report-section p{line-height:1.8;font-size:13px;color:#444;margin-bottom:6px;}
 
-/* 액션/플랜 */
-.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-.action-box{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
-.action-box h3{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+/* 액션/플랜 (Streamlit columns 스타일) */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+.action-box{background:#fff;border-radius:12px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid #f0f0f0;position:relative;overflow:hidden;}
+.action-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.action-box.issues::before{background:linear-gradient(90deg,#dc2626,#f87171);}
+.action-box.plans::before{background:linear-gradient(90deg,#16a34a,#4ade80);}
+.action-box h3{font-size:14px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 .action-box.issues h3{color:#dc2626;} .action-box.plans h3{color:#16a34a;}
 .action-box ol{margin:0;padding-left:20px;}
 .action-box li{padding:4px 0;font-size:12.5px;line-height:1.6;color:#444;}
 
-.report-footer{text-align:center;font-size:10px;color:#aaa;padding:12px 0;border-top:1px solid #eee;margin-top:8px;}
+.report-footer{text-align:center;font-size:10px;color:#aaa;padding:16px 0;border-top:1px solid #f0f0f0;margin-top:12px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
 @media(max-width:700px){.metrics{grid-template-columns:repeat(2,1fr);}.charts-row,.action-grid{grid-template-columns:1fr;}}
 </style>
@@ -399,20 +411,29 @@ function renderReport(r) {
   area.style.display = 'block';
   area.innerHTML = '';
 
-  // 헤더
-  area.innerHTML += '<div class="report-header"><h1>' + esc(r.title||'') + '</h1><div class="rh-sub">' + esc(r.subtitle||'') + ' | ' + esc(_meta.dept) + ' | 보고 대상: ' + esc(_meta.target) + '</div></div>';
+  // 헤더 (Streamlit st.header 스타일)
+  var headerHtml = '<div class="report-header">';
+  headerHtml += '<div class="rh-badge">📊 AI GENERATED REPORT</div>';
+  headerHtml += '<h1>' + esc(r.title||'') + '</h1>';
+  headerHtml += '<div class="rh-sub">' + esc(r.subtitle||'') + ' | ' + esc(_meta.dept) + ' | 보고 대상: ' + esc(_meta.target) + '</div>';
+  if (r.summary) headerHtml += '<div class="rh-summary">' + esc(r.summary) + '</div>';
+  headerHtml += '</div>';
+  area.innerHTML += headerHtml;
 
-  // 메트릭 카드
+  // 메트릭 카드 (Streamlit st.metric 스타일 + 프로그레스 바)
   if (r.metrics && r.metrics.length) {
     var mhtml = '<div class="metrics">';
-    r.metrics.forEach(function(m) {
+    r.metrics.forEach(function(m, idx) {
       var cls = m.trend==='up'?' up':m.trend==='down'?' down':'';
-      var arrow = m.trend==='up'?'&#9650; ':m.trend==='down'?'&#9660; ':'';
-      mhtml += '<div class="metric-card'+cls+'">';
+      var arrow = m.trend==='up'?'▲ ':m.trend==='down'?'▼ ':'';
+      var barColor = m.trend==='up'?'#16a34a':m.trend==='down'?'#dc2626':'#0369a1';
+      var barWidth = 50 + Math.random()*40;
+      mhtml += '<div class="metric-card'+cls+'" style="animation:fadeIn .4s ease '+(idx*0.1)+'s both;">';
       mhtml += '<div class="mc-icon">'+(m.icon||'📊')+'</div>';
       mhtml += '<div class="mc-value">'+esc(m.value||'')+'</div>';
       mhtml += '<div class="mc-label">'+esc(m.label||'')+'</div>';
       if(m.change) mhtml += '<div class="mc-change'+cls+'">'+arrow+esc(m.change)+'</div>';
+      mhtml += '<div class="mc-bar"><div class="mc-bar-fill" style="width:'+barWidth+'%;background:'+barColor+';"></div></div>';
       mhtml += '</div>';
     });
     mhtml += '</div>';
@@ -442,24 +463,35 @@ function renderReport(r) {
     });
   }
 
-  // 이슈 + 향후 계획
+  // 이슈 + 향후 계획 (Streamlit columns 스타일)
   if ((r.issues && r.issues.length) || (r.plans && r.plans.length)) {
     var ahtml = '<div class="action-grid">';
     if (r.issues && r.issues.length) {
-      ahtml += '<div class="action-box issues"><h3>&#9888;&#65039; 이슈 / 요청사항</h3><ol>';
-      r.issues.forEach(function(it){ ahtml += '<li>'+esc(it)+'</li>'; });
-      ahtml += '</ol></div>';
+      ahtml += '<div class="action-box issues"><h3>⚠️ 이슈 / 요청사항</h3>';
+      r.issues.forEach(function(it, idx){
+        ahtml += '<div style="display:flex;gap:10px;padding:10px 12px;margin-bottom:6px;background:linear-gradient(90deg,#fef2f2,transparent);border-radius:6px;border-left:3px solid #fca5a5;">';
+        ahtml += '<span style="font-size:18px;flex-shrink:0;">⚡</span>';
+        ahtml += '<span style="font-size:12.5px;color:#444;line-height:1.6;">'+esc(it)+'</span></div>';
+      });
+      ahtml += '</div>';
     }
     if (r.plans && r.plans.length) {
-      ahtml += '<div class="action-box plans"><h3>&#128640; 향후 계획</h3><ol>';
-      r.plans.forEach(function(it){ ahtml += '<li>'+esc(it)+'</li>'; });
-      ahtml += '</ol></div>';
+      ahtml += '<div class="action-box plans"><h3>🚀 향후 계획</h3>';
+      r.plans.forEach(function(it, idx){
+        ahtml += '<div style="display:flex;gap:10px;padding:10px 12px;margin-bottom:6px;background:linear-gradient(90deg,#f0fdf4,transparent);border-radius:6px;border-left:3px solid #86efac;">';
+        ahtml += '<span style="font-size:14px;font-weight:900;color:#16a34a;flex-shrink:0;width:22px;">'+(idx+1)+'</span>';
+        ahtml += '<span style="font-size:12.5px;color:#444;line-height:1.6;">'+esc(it)+'</span></div>';
+      });
+      ahtml += '</div>';
     }
     ahtml += '</div>';
     area.innerHTML += ahtml;
   }
 
-  area.innerHTML += '<div class="report-footer">홈앤쇼핑 AI 보고서 자동 생성기 · powered by Claude</div>';
+  // 푸터
+  var now = new Date();
+  var timeStr = now.getFullYear()+'.'+('0'+(now.getMonth()+1)).slice(-2)+'.'+('0'+now.getDate()).slice(-2)+' '+('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
+  area.innerHTML += '<div class="report-footer">홈앤쇼핑 AI 보고서 자동 생성기 · powered by Claude · 생성: '+timeStr+'</div>';
 
   // 차트 렌더링
   if (r.chart1) renderChart('chart1', r.chart1);
