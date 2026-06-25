@@ -116,13 +116,6 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       트렌드 분석 설정
     </h2>
-    <!-- 쇼핑인사이트 인기 검색어 (페이지 로드 시 자동) -->
-    <div id="shoppingInsight" style="margin-top:14px;">
-      <div style="text-align:center;padding:20px;color:#aaa;font-size:12px;">
-        <div class="ai-spinner" style="width:20px;height:20px;margin:0 auto 8px;"></div>쇼핑인사이트 로딩 중...
-      </div>
-    </div>
-
     <div id="chips" style="display:none;"><button class="cat-chip active" data-cat="전체">전체</button></div>
     <input type="hidden" id="focusTopic" value="">
 
@@ -466,11 +459,11 @@ function renderReport(r) {
     }
   } catch(e) { console.log('차트 오류:', e); }
 
-  // 쇼핑인사이트를 리포트 하단에 복제
-  var srcInsight = document.getElementById('shoppingInsight');
+  // 쇼핑인사이트를 리포트 하단에 직접 로드
   var destInsight = document.getElementById('insightInReport');
-  if (srcInsight && destInsight && srcInsight.innerHTML.indexOf('로딩') === -1) {
-    destInsight.innerHTML = srcInsight.innerHTML;
+  if (destInsight) {
+    destInsight.id = 'shoppingInsight';
+    loadShoppingInsight();
   }
 }
 
@@ -692,9 +685,8 @@ function renderTrendLine(d) {
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// 페이지 로드 시 쇼핑인사이트 + 트렌드 리포트 자동 생성
-loadShoppingInsight();
-setTimeout(analyzeTrend, 1000);
+// 페이지 로드 시 트렌드 리포트 자동 생성
+setTimeout(analyzeTrend, 500);
 </script>
 </body>
 </html>
