@@ -426,10 +426,10 @@ function renderReport(r) {
   var hasChartData = _datalabMonthly || r.age_distribution || r.channel_share;
   if (hasChartData) {
     html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;" id="aiChartsRow">';
-    // DataLab 실제 월간 검색량
+    // DataLab 시즌 인기 상품 비교
     html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
-    html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:4px;">📈 월간 검색 트렌드</div>';
-    html += '<div style="font-size:9px;color:#0d9488;margin-bottom:8px;">네이버 DataLab API · 90일</div>';
+    html += '<div style="font-size:12px;font-weight:700;color:#333;margin-bottom:4px;">📈 시즌 인기 상품 검색 트렌드</div>';
+    html += '<div style="font-size:9px;color:#0d9488;margin-bottom:8px;">네이버 DataLab API · 월별 상품 비교</div>';
     html += '<canvas id="chartMonthly" height="180"></canvas></div>';
     if (r.age_distribution) {
       html += '<div style="background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);">';
@@ -462,22 +462,7 @@ function renderReport(r) {
   var chartColors = ['#0d9488','#2563eb','#e8192c','#d97706','#7c3aed','#16a34a'];
   try {
     // DataLab 실제 월간 검색량
-    if (_datalabMonthly && _datalabMonthly.labels) {
-      // 마지막 불완전한 주 제외 (급락 방지)
-      var dlLabels = _datalabMonthly.labels.slice();
-      var dlValues = _datalabMonthly.values.slice();
-      if (dlValues.length > 2 && dlValues[dlValues.length-1] < dlValues[dlValues.length-2] * 0.7) {
-        dlLabels.pop(); dlValues.pop();
-      }
-      var mLabels = dlLabels.map(function(l){return l.slice(5);});
-      var mValues = dlValues.map(function(v){return Math.round(v);});
-      var ctx1 = document.getElementById('chartMonthly');
-      if (ctx1) { if (_monthlyChartInstance) _monthlyChartInstance.destroy(); _monthlyChartInstance = new Chart(ctx1.getContext('2d'), {
-        type:'line',
-        data:{labels:mLabels, datasets:[{label:'검색 트렌드',data:mValues,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.08)',fill:true,tension:0.3,pointRadius:2,pointBackgroundColor:'#0d9488',borderWidth:2}]},
-        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}}}}
-      }); }
-    }
+    reRenderMonthlyChart();
     if (r.age_distribution) {
       var aLabels = Object.keys(r.age_distribution);
       var aValues = Object.values(r.age_distribution);
@@ -536,20 +521,42 @@ function extractHotKeyword(text) {
 
 function reRenderMonthlyChart() {
   if (_monthlyChartInstance) { _monthlyChartInstance.destroy(); _monthlyChartInstance = null; }
-  if (!_datalabMonthly || !_datalabMonthly.labels) return;
-  var dlLabels = _datalabMonthly.labels.slice();
-  var dlValues = _datalabMonthly.values.slice();
-  if (dlValues.length > 2 && dlValues[dlValues.length-1] < dlValues[dlValues.length-2] * 0.7) {
-    dlLabels.pop(); dlValues.pop();
-  }
-  var mLabels = dlLabels.map(function(l){return l.slice(5);});
-  var mValues = dlValues.map(function(v){return Math.round(v);});
+  if (!_datalabMonthly) return;
   var ctx1 = document.getElementById('chartMonthly');
-  if (ctx1) {
+  if (!ctx1) return;
+
+  var chartColors = ['#0d9488','#2563eb','#e8192c','#d97706','#7c3aed'];
+
+  // 다중 키워드 비교 차트
+  if (_datalabMonthly.type === 'multi' && _datalabMonthly.datasets) {
+    var datasets = _datalabMonthly.datasets.map(function(ds, i) {
+      return {
+        label: ds.keyword,
+        data: ds.values,
+        backgroundColor: chartColors[i % chartColors.length] + 'cc',
+        borderColor: chartColors[i % chartColors.length],
+        borderWidth: 1,
+        borderRadius: 4,
+      };
+    });
+    _monthlyChartInstance = new Chart(ctx1.getContext('2d'), {
+      type:'bar',
+      data:{labels:_datalabMonthly.labels, datasets:datasets},
+      options:{responsive:true, plugins:{legend:{position:'bottom',labels:{font:{size:9}}}},
+        scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    });
+  }
+  // 단일 키워드 (폴백)
+  else if (_datalabMonthly.labels) {
+    var dlLabels = _datalabMonthly.labels.slice();
+    var dlValues = (_datalabMonthly.values||[]).slice();
+    if (dlValues.length > 2 && dlValues[dlValues.length-1] < dlValues[dlValues.length-2] * 0.7) {
+      dlLabels.pop(); dlValues.pop();
+    }
     _monthlyChartInstance = new Chart(ctx1.getContext('2d'), {
       type:'line',
-      data:{labels:mLabels, datasets:[{label:'검색 트렌드',data:mValues,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.08)',fill:true,tension:0.3,pointRadius:2,pointBackgroundColor:'#0d9488',borderWidth:2}]},
-      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}}}}
+      data:{labels:dlLabels.map(function(l){return l.slice(5);}), datasets:[{label:'검색 트렌드',data:dlValues,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.08)',fill:true,tension:0.3,pointRadius:2,borderWidth:2}]},
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:8}}}}}
     });
   }
 }

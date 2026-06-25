@@ -355,7 +355,7 @@ def _search_naver_shop(keyword: str, display: int = 100) -> dict:
 
 
 def _get_datalab_trend(keyword: str) -> dict:
-    """네이버 DataLab 검색 트렌드 API (90일)"""
+    """네이버 DataLab 검색 트렌드 — 시즌 인기 상품 5개 비교"""
     if not NAVER_ID or not NAVER_SECRET:
         return {}
     try:
@@ -363,32 +363,62 @@ def _get_datalab_trend(keyword: str) -> dict:
         KST = timezone(timedelta(hours=9))
         end = datetime.now(KST)
         start = end - timedelta(days=90)
+        month = end.month
+
+        season_keywords = {
+            1: ["패딩", "홍삼", "다이어트", "가습기", "설선물"],
+            2: ["초콜릿", "봄신상", "졸업선물", "면역력", "트렌치코트"],
+            3: ["공기청정기", "봄원피스", "선크림", "미세먼지", "꽃배달"],
+            4: ["캠핑", "자외선차단", "봄나들이", "등산화", "로봇청소기"],
+            5: ["어버이날선물", "가족여행", "원피스", "안마의자", "어린이날"],
+            6: ["에어컨", "선풍기", "선크림", "삼계탕", "제습기"],
+            7: ["수영복", "캠핑", "삼계탕", "선풍기", "여름휴가"],
+            8: ["가을신상", "추석선물", "학용품", "노트북", "보양식"],
+            9: ["추석선물세트", "한우", "가을자켓", "등산", "홍삼"],
+            10: ["김장재료", "난방기", "패딩", "할로윈", "캠핑"],
+            11: ["블랙프라이데이", "김장", "패딩", "코트", "가습기"],
+            12: ["크리스마스선물", "패딩", "와인", "겨울부츠", "연말선물"],
+        }
+        kws = season_keywords.get(month, ["홈쇼핑", "가전", "패션", "식품", "뷰티"])
+
+        headers = {
+            "X-Naver-Client-Id": NAVER_ID,
+            "X-Naver-Client-Secret": NAVER_SECRET,
+            "Content-Type": "application/json",
+        }
+
         r = req_lib.post(
             "https://openapi.naver.com/v1/datalab/search",
-            headers={
-                "X-Naver-Client-Id": NAVER_ID,
-                "X-Naver-Client-Secret": NAVER_SECRET,
-                "Content-Type": "application/json",
-            },
+            headers=headers,
             json={
                 "startDate": start.strftime("%Y-%m-%d"),
                 "endDate": end.strftime("%Y-%m-%d"),
-                "timeUnit": "week",
-                "keywordGroups": [{"groupName": keyword, "keywords": [keyword]}],
+                "timeUnit": "month",
+                "keywordGroups": [{"groupName": k, "keywords": [k]} for k in kws],
             },
             verify=False, timeout=10,
         )
         r.raise_for_status()
         data = r.json()
         results = data.get("results", [])
-        if results:
-            points = results[0].get("data", [])
-            return {
-                "keyword": keyword,
-                "labels": [p["period"] for p in points],
-                "values": [p["ratio"] for p in points],
-            }
-        return {}
+
+        datasets = []
+        labels = []
+        for result in results:
+            points = result.get("data", [])
+            if not labels and points:
+                labels = [p["period"][:7] for p in points]
+            datasets.append({
+                "keyword": result["title"],
+                "values": [round(p["ratio"]) for p in points],
+            })
+
+        return {
+            "type": "multi",
+            "keywords": kws,
+            "labels": labels,
+            "datasets": datasets,
+        }
     except Exception:
         return {}
 
