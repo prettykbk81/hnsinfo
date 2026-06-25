@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>홈쇼핑 트렌드 리포트 · 홈앤쇼핑 AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
@@ -390,6 +391,9 @@ function renderReport(r) {
     html += '</ul></div>';
   }
 
+  // 쇼핑인사이트 (리포트 하단에 다시 표시)
+  html += '<div id="insightInReport"></div>';
+
   html += '<div class="report-footer">홈앤쇼핑 AI 트렌드 리포트 · 네이버 뉴스 × Claude AI · ' + esc(r.date||'') + '</div>';
   area.innerHTML = html;
   area.scrollIntoView({behavior:'smooth'});
@@ -427,6 +431,13 @@ function renderReport(r) {
       });
     }
   } catch(e) { console.log('차트 오류:', e); }
+
+  // 쇼핑인사이트를 리포트 하단에 복제
+  var srcInsight = document.getElementById('shoppingInsight');
+  var destInsight = document.getElementById('insightInReport');
+  if (srcInsight && destInsight && srcInsight.innerHTML.indexOf('로딩') === -1) {
+    destInsight.innerHTML = srcInsight.innerHTML;
+  }
 }
 
 function makeSection(cls, icon, title, items) {
