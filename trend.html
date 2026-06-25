@@ -291,10 +291,18 @@ async function analyzeTrend() {
 
   updateLoading(2, 'Claude AI가 트렌드 리포트를 작성 중...');
   try {
-    var resp = await fetch(PROXY + '/api/summarize', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({prompt:prompt}),
-    });
+    var resp;
+    try {
+      resp = await fetch(PROXY + '/api/summarize', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({prompt:prompt}),
+        signal: AbortSignal.timeout(90000),
+      });
+    } catch(fetchErr) {
+      area.innerHTML = '<div class="section"><div class="error">proxy.py가 실행되지 않았습니다.<br><small style="color:#888;">streamlit run app.py 또는 python proxy.py를 먼저 실행해주세요.</small></div></div>';
+      btn.disabled = false; btn.textContent = '🔄 트렌드 리포트 다시 생성';
+      return;
+    }
     if (!resp.ok) throw new Error('프록시 연결 실패');
 
     var fullText = '';
