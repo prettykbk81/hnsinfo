@@ -163,12 +163,9 @@ async function analyzeTrend() {
   btn.disabled = true; btn.textContent = '분석 중...';
   area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>뉴스 데이터를 불러오고 트렌드를 분석 중입니다...</div></div>';
 
-  // 쇼핑 인사이트 + 시장 분석 대시보드 (병렬 로드)
-  var searchKeyword = focus || (cats.indexOf('전체')>-1 ? '홈쇼핑' : cats.join(' '));
+  // 1단계: 기본 데이터 수집 (홈쇼핑 키워드)
+  var searchKeyword = '홈쇼핑';
   _datalabMonthly = null;
-  loadMarketDash(searchKeyword);
-
-  // DataLab + 네이버 뉴스 병렬 수집
   var _naverNews = [];
   try {
     var [dlResp, newsApiResp] = await Promise.all([
@@ -310,6 +307,33 @@ async function analyzeTrend() {
     var report = tryParse(fullText);
     if (report) {
       renderReport(report);
+
+      // 2단계: summary에서 핵심 키워드 추출 → DataLab/시장분석 재조회
+      var summaryText = report.summary || '';
+      var trendTitles = (report.trends||[]).map(function(t){return t.title||'';}).join(' ');
+      var hotKeyword = extractHotKeyword(summaryText + ' ' + trendTitles);
+      if (hotKeyword && hotKeyword !== '홈쇼핑') {
+        // DataLab 재조회 (핫 키워드)
+        try {
+          var dl2 = await fetch(PROXY + '/api/datalab-trend?q=' + encodeURIComponent(hotKeyword));
+          if (dl2.ok) {
+            var dlData2 = await dl2.json();
+            if (dlData2.labels && dlData2.labels.length > 3) {
+              _datalabMonthly = dlData2;
+              // 차트 제목에 키워드 반영
+              var chartTitle = document.querySelector('#aiChartsRow div:first-child div:first-child');
+              if (chartTitle) chartTitle.innerHTML = '📈 "' + esc(hotKeyword) + '" 월간 검색 트렌드<div style="font-size:9px;color:#0d9488;">네이버 DataLab API · 90일</div>';
+              // 차트 다시 그리기
+              reRenderMonthlyChart();
+            }
+          }
+        } catch(e){}
+        // 시장 분석도 핫 키워드로
+        loadMarketDash(hotKeyword);
+      } else {
+        loadMarketDash('홈쇼핑');
+      }
+
     } else if (!window._trendRetried) {
       window._trendRetried = true;
       area.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>JSON 파싱 오류, 자동 재시도 중...</div></div>';
@@ -448,11 +472,11 @@ function renderReport(r) {
       var mLabels = dlLabels.map(function(l){return l.slice(5);});
       var mValues = dlValues.map(function(v){return Math.round(v);});
       var ctx1 = document.getElementById('chartMonthly');
-      if (ctx1) new Chart(ctx1.getContext('2d'), {
+      if (ctx1) { if (_monthlyChartInstance) _monthlyChartInstance.destroy(); _monthlyChartInstance = new Chart(ctx1.getContext('2d'), {
         type:'line',
         data:{labels:mLabels, datasets:[{label:'검색 트렌드',data:mValues,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.08)',fill:true,tension:0.3,pointRadius:2,pointBackgroundColor:'#0d9488',borderWidth:2}]},
         options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}}}}
-      });
+      }); }
     }
     if (r.age_distribution) {
       var aLabels = Object.keys(r.age_distribution);
@@ -495,6 +519,40 @@ function makeSection(cls, icon, title, items) {
 var _trendCharts = [];
 var _insightCharts = [];
 var _datalabMonthly = null;
+var _monthlyChartInstance = null;
+
+function extractHotKeyword(text) {
+  // summary + 트렌드 제목에서 핵심 상품 키워드 추출
+  var stopWords = ['홈쇼핑','트렌드','업계','시장','강화','확대','심화','추진','증가','성장','전략','분석','경쟁','소비자','채널','매출','상승','하락','전년','대비','동향','리포트','시즌','본격'];
+  var words = text.replace(/[^가-힣a-zA-Z0-9\s]/g,' ').split(/\s+/).filter(function(w){
+    return w.length >= 2 && w.length <= 8 && stopWords.indexOf(w) === -1;
+  });
+  // 빈도수 카운팅
+  var freq = {};
+  words.forEach(function(w){ freq[w] = (freq[w]||0) + 1; });
+  var sorted = Object.keys(freq).sort(function(a,b){return freq[b]-freq[a];});
+  return sorted[0] || '홈쇼핑';
+}
+
+function reRenderMonthlyChart() {
+  if (_monthlyChartInstance) { _monthlyChartInstance.destroy(); _monthlyChartInstance = null; }
+  if (!_datalabMonthly || !_datalabMonthly.labels) return;
+  var dlLabels = _datalabMonthly.labels.slice();
+  var dlValues = _datalabMonthly.values.slice();
+  if (dlValues.length > 2 && dlValues[dlValues.length-1] < dlValues[dlValues.length-2] * 0.7) {
+    dlLabels.pop(); dlValues.pop();
+  }
+  var mLabels = dlLabels.map(function(l){return l.slice(5);});
+  var mValues = dlValues.map(function(v){return Math.round(v);});
+  var ctx1 = document.getElementById('chartMonthly');
+  if (ctx1) {
+    _monthlyChartInstance = new Chart(ctx1.getContext('2d'), {
+      type:'line',
+      data:{labels:mLabels, datasets:[{label:'검색 트렌드',data:mValues,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.08)',fill:true,tension:0.3,pointRadius:2,pointBackgroundColor:'#0d9488',borderWidth:2}]},
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}}}}
+    });
+  }
+}
 
 async function loadShoppingInsight() {
   var area = document.getElementById('shoppingInsight');
