@@ -171,6 +171,28 @@ def _fetch_review_score(goods_code: str) -> dict:
         return {"score": "", "count": "0", "level": ""}
 
 
+def _search_naver_news(keyword: str, display: int = 5) -> list:
+    """네이버 뉴스 검색"""
+    if not NAVER_ID or not NAVER_SECRET:
+        return []
+    try:
+        r = req_lib.get(
+            "https://openapi.naver.com/v1/search/news.json",
+            headers={"X-Naver-Client-Id": NAVER_ID, "X-Naver-Client-Secret": NAVER_SECRET},
+            params={"query": keyword, "display": display, "sort": "date"},
+            verify=False, timeout=10,
+        )
+        r.raise_for_status()
+        results = []
+        for item in r.json().get("items", []):
+            title = re.sub(r"<[^>]+>", "", item.get("title", "")).strip()
+            desc = re.sub(r"<[^>]+>", "", item.get("description", "")).strip()
+            results.append({"title": title, "desc": desc, "link": item.get("link", ""), "date": item.get("pubDate", "")})
+        return results
+    except Exception:
+        return []
+
+
 def _get_shopping_insight() -> dict:
     """네이버 쇼핑인사이트 - 카테고리별 트렌드 + 인기 키워드"""
     if not NAVER_ID or not NAVER_SECRET:
@@ -535,6 +557,11 @@ class Handler(BaseHTTPRequestHandler):
 
         elif parsed.path == "/api/shopping-insight":
             self._json_response(_get_shopping_insight())
+
+        elif parsed.path == "/api/news-search":
+            q = params.get("q", [""])[0]
+            n = int(params.get("n", ["5"])[0])
+            self._json_response(_search_naver_news(q, n) if q else [])
 
         elif parsed.path == "/api/shop-search":
             q = params.get("q", [""])[0]

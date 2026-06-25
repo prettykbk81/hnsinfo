@@ -123,12 +123,11 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
       </div>
     </div>
 
-    <!-- 업종/키워드 숨김 -->
     <div id="chips" style="display:none;"><button class="cat-chip active" data-cat="전체">전체</button></div>
     <input type="hidden" id="focusTopic" value="">
 
     <div class="btn-area">
-      <button class="btn-run" id="btnRun" onclick="analyzeTrend()">트렌드 리포트 생성</button>
+      <button class="btn-run" id="btnRun" onclick="analyzeTrend()">🔄 트렌드 리포트 다시 생성</button>
     </div>
     <div class="news-source" id="newsSource" style="display:none;"></div>
   </div>
@@ -174,10 +173,15 @@ async function analyzeTrend() {
   _datalabMonthly = null;
   loadMarketDash(searchKeyword);
 
-  // DataLab 월간 검색량 (AI 프롬프트에 주입)
+  // DataLab + 네이버 뉴스 병렬 수집
+  var _naverNews = [];
   try {
-    var dlResp = await fetch(PROXY + '/api/datalab-trend?q=' + encodeURIComponent(searchKeyword));
+    var [dlResp, newsApiResp] = await Promise.all([
+      fetch(PROXY + '/api/datalab-trend?q=' + encodeURIComponent(searchKeyword)).catch(function(){return {ok:false};}),
+      fetch(PROXY + '/api/news-search?q=' + encodeURIComponent('홈쇼핑 유통 트렌드') + '&n=5').catch(function(){return {ok:false};}),
+    ]);
     if (dlResp.ok) _datalabMonthly = await dlResp.json();
+    if (newsApiResp.ok) _naverNews = await newsApiResp.json();
   } catch(e) {}
 
   // daily_news.json에서 뉴스 데이터 로드
@@ -241,10 +245,18 @@ async function analyzeTrend() {
 
   // DataLab 실제 검색량 데이터 주입
   if (_datalabMonthly && _datalabMonthly.labels) {
-    prompt += '\n\n참고 - 네이버 DataLab 실제 검색 트렌드 데이터 (' + searchKeyword + '):\n';
+    prompt += '\n\n참고 - 네이버 DataLab 실제 검색 트렌드 (' + searchKeyword + '):\n';
     for (var di=0; di<_datalabMonthly.labels.length; di++) {
       prompt += _datalabMonthly.labels[di] + ': ' + Math.round(_datalabMonthly.values[di]) + '\n';
     }
+  }
+
+  // 네이버 뉴스 최신 기사
+  if (_naverNews && _naverNews.length) {
+    prompt += '\n\n참고 - 네이버 뉴스 최신 기사:\n';
+    _naverNews.forEach(function(n, i) {
+      prompt += (i+1) + '. ' + n.title + '\n  ' + n.desc.slice(0,80) + '\n';
+    });
   }
 
   try {
@@ -658,8 +670,9 @@ function renderTrendLine(d) {
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// 페이지 로드 시 쇼핑인사이트 자동 로드
+// 페이지 로드 시 쇼핑인사이트 + 트렌드 리포트 자동 생성
 loadShoppingInsight();
+setTimeout(analyzeTrend, 1000);
 </script>
 </body>
 </html>
