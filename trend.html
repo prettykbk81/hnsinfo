@@ -143,7 +143,6 @@ body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;c
   <div id="marketDash" style="display:none;"></div>
 
   <!-- 검색 트렌드 차트 -->
-  <div id="trendLineArea" style="display:none;"></div>
 
   <div id="resultArea"></div>
 </div>
@@ -697,7 +696,6 @@ async function loadMarketDash(keyword) {
     if (shopResp && shopResp.total) renderMarketDash(shopResp, keyword);
     else dash.style.display = 'none';
 
-    if (trendResp && trendResp.labels) renderTrendLine(trendResp);
     else trendArea.style.display = 'none';
   } catch(e) {
     dash.style.display = 'none';
