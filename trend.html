@@ -439,8 +439,14 @@ function renderReport(r) {
   try {
     // DataLab 실제 월간 검색량
     if (_datalabMonthly && _datalabMonthly.labels) {
-      var mLabels = _datalabMonthly.labels.map(function(l){return l.slice(5);});
-      var mValues = _datalabMonthly.values.map(function(v){return Math.round(v);});
+      // 마지막 불완전한 주 제외 (급락 방지)
+      var dlLabels = _datalabMonthly.labels.slice();
+      var dlValues = _datalabMonthly.values.slice();
+      if (dlValues.length > 2 && dlValues[dlValues.length-1] < dlValues[dlValues.length-2] * 0.7) {
+        dlLabels.pop(); dlValues.pop();
+      }
+      var mLabels = dlLabels.map(function(l){return l.slice(5);});
+      var mValues = dlValues.map(function(v){return Math.round(v);});
       var ctx1 = document.getElementById('chartMonthly');
       if (ctx1) new Chart(ctx1.getContext('2d'), {
         type:'line',
