@@ -203,9 +203,11 @@ async function analyzeTrend() {
       var newsData = await newsResp.json();
       newsDate = newsData.date || '';
       var allCards = (newsData.left || []).concat(newsData.right || []);
-      newsContext = allCards.slice(0,6).map(function(c) {
-        return '[' + c.category + '] ' + (c.title||'').replace(/<br>/g,' ');
-      }).join('\n');
+      newsContext = allCards.map(function(c) {
+        var items = (c.items || []).map(function(it){return it.keyword+': '+(it.desc||'').replace(/<[^>]+>/g,'');}).join('\n');
+        var sources = (c.sources||[]).map(function(s){return s.title;}).join(', ');
+        return '[' + c.category + '] ' + (c.title||'').replace(/<br>/g,' ') + '\n' + items + (sources ? '\n출처: '+sources : '');
+      }).join('\n\n');
       newsSource.innerHTML = '📰 <b>뉴스 데이터:</b> ' + newsDate + ' 기준 카드뉴스 ' + allCards.length + '건 기반 분석';
       newsSource.style.display = 'block';
     }
@@ -279,10 +281,12 @@ async function analyzeTrend() {
   prompt += '}\n';
   prompt += '규칙:\n- 뉴스 기사 실제 내용과 수치를 인용\n- trends는 4개\n- age_distribution: 홈쇼핑 구매 고객 연령 비율 추정\n- channel_share: 채널별 구매 비율 추정\n- 날짜는 ' + newsDate + ' 기준';
 
-  // 네이버 뉴스 최신 기사 (간략)
+  // 네이버 뉴스 최신 기사
   if (_naverNews && _naverNews.length) {
-    prompt += '\n참고 뉴스: ';
-    prompt += _naverNews.slice(0,3).map(function(n){return n.title;}).join(' / ');
+    prompt += '\n\n참고 - 네이버 뉴스 최신 기사:\n';
+    _naverNews.forEach(function(n, i) {
+      prompt += (i+1) + '. ' + n.title + '\n  ' + n.desc.slice(0,80) + '\n';
+    });
   }
 
   updateLoading(2, 'Claude AI가 트렌드 리포트를 작성 중...');
@@ -682,21 +686,14 @@ function renderShoppingInsight(data) {
 
 async function loadMarketDash(keyword) {
   var dash = document.getElementById('marketDash');
-  var trendArea = document.getElementById('trendLineArea');
   dash.style.display = 'block';
   dash.innerHTML = '<div class="section"><div class="ai-loading"><div class="ai-spinner"></div>네이버 쇼핑 API로 시장 데이터 수집 중...</div></div>';
 
   try {
-    // 쇼핑 검색 + DataLab 병렬
-    var [shopResp, trendResp] = await Promise.all([
-      fetch(PROXY + '/api/shop-search?q=' + encodeURIComponent(keyword) + '&n=100').then(function(r){return r.json();}),
-      fetch(PROXY + '/api/datalab-trend?q=' + encodeURIComponent(keyword)).then(function(r){return r.json();}),
-    ]);
+    var shopResp = await fetch(PROXY + '/api/shop-search?q=' + encodeURIComponent(keyword) + '&n=100').then(function(r){return r.json();});
 
     if (shopResp && shopResp.total) renderMarketDash(shopResp, keyword);
     else dash.style.display = 'none';
-
-    else trendArea.style.display = 'none';
   } catch(e) {
     dash.style.display = 'none';
   }
@@ -763,23 +760,6 @@ function renderMarketDash(d, keyword) {
 
 function mmCard(value, label, sub, colorClass) {
   return '<div class="mm-card"><div class="mm-value '+(colorClass||'')+'">'+value+'</div><div class="mm-label">'+label+'</div>'+(sub?'<div class="mm-sub">'+sub+'</div>':'')+'</div>';
-}
-
-function renderTrendLine(d) {
-  var area = document.getElementById('trendLineArea');
-  area.style.display = 'block';
-  area.innerHTML = '<div class="trend-line-box"><h4>📈 "'+esc(d.keyword)+'" 90일 검색 트렌드 <span style="font-size:9px;color:#0d9488;background:#f0fdfa;padding:2px 6px;border-radius:3px;margin-left:6px;">DataLab API</span></h4><canvas id="trendLineChart" height="120"></canvas></div>';
-
-  _trendCharts.forEach(function(c){c.destroy();}); _trendCharts=[];
-  var ctx = document.getElementById('trendLineChart');
-  if (ctx) {
-    var labels = (d.labels||[]).map(function(l){return l.slice(5);});
-    _trendCharts.push(new Chart(ctx.getContext('2d'), {
-      type:'line',
-      data:{labels:labels, datasets:[{label:'검색 트렌드',data:d.values||[],borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,.1)',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#0d9488'}]},
-      options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:false,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
-    }));
-  }
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
