@@ -650,13 +650,15 @@ function renderMarketDash(d, keyword) {
   });
   html += '</div>';
 
-  // 카테고리 분포
+  // 카테고리 분포 (최소 5개)
   html += '<div class="mc-box"><h4>📂 카테고리 분포 <span class="badge-api">실시간</span></h4>';
   var cats = d.categories || {};
-  var catMax = Math.max.apply(null, Object.values(cats).concat([1]));
-  Object.keys(cats).slice(0,8).forEach(function(k){
+  var catKeys = Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];});
+  var catMax = catKeys.length ? cats[catKeys[0]] : 1;
+  catKeys.slice(0,10).forEach(function(k){
     html += '<div class="mc-bar"><span class="mc-bar-label">'+esc(k)+'</span><div class="mc-bar-fill" style="width:'+Math.round(cats[k]/catMax*100)+'%;background:#2563eb;"></div><span class="mc-bar-val">'+cats[k]+'</span></div>';
   });
+  html += '<div style="margin-top:8px;font-size:10px;color:#888;text-align:right;">그 외 카테고리는 <a href="https://datalab.naver.com/shoppingInsight/sCategory.naver" target="_blank" style="color:#0d9488;font-weight:600;text-decoration:underline;">네이버 DataLab 참조 →</a></div>';
   html += '</div>';
 
   // Top 10 브랜드

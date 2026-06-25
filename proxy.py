@@ -294,11 +294,27 @@ def _search_naver_shop(keyword: str, display: int = 100) -> dict:
         data = r.json()
         items = data.get("items", [])
 
+        # 추가 키워드로 다양한 카테고리 수집
+        extra_queries = ["건강식품", "여름가전", "화장품", "패션", "생활용품"]
+        all_items = list(items)
+        for eq in extra_queries:
+            try:
+                r3 = req_lib.get(
+                    "https://openapi.naver.com/v1/search/shop.json",
+                    headers={"X-Naver-Client-Id": NAVER_ID, "X-Naver-Client-Secret": NAVER_SECRET},
+                    params={"query": eq, "display": 20, "sort": "sim"},
+                    verify=False, timeout=5,
+                )
+                if r3.ok:
+                    all_items.extend(r3.json().get("items", []))
+            except Exception:
+                pass
+
         prices = [int(it.get("lprice", 0)) for it in items if it.get("lprice")]
         malls = {}
         cats = {}
         brands = {}
-        for it in items:
+        for it in all_items:
             title = re.sub(r"<[^>]+>", "", it.get("title", ""))
             mall = it.get("mallName", "기타")
             cat = it.get("category2") or it.get("category1") or "기타"
