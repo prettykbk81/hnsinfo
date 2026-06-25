@@ -4,25 +4,25 @@
   "left": [
     {
       "category": "실적·성장",
-      "title": "셀럽 프로그램으로<br>프리미엄 가전 판매 강화",
+      "title": "쿠쿠, 홈앤쇼핑으로<br>여름 가전 승부수",
       "items": [
         {
-          "keyword": "방송 시간",
-          "desc": "24일 오후 8시 45분 '김경란의 취향찬란'<br>대표 셀럽 프로그램 활용"
+          "keyword": "신제품 런칭",
+          "desc": "<b>에코웨일 큐브</b> 음식물처리기<br>24일 오후 8시 45분 방송"
         },
         {
-          "keyword": "신제품 론칭",
-          "desc": "<b>쿠쿠 에코웨일 큐브</b> 음식물처리기<br>독보적 기술력 입증 예정"
+          "keyword": "타겟시즌",
+          "desc": "여름철 음식물 쓰레기 관리 수요<br><b>시즌 수요 극대화</b>"
         },
         {
-          "keyword": "시장 타이밍",
-          "desc": "여름철 음식물 쓰레기 관리 수요 증가<br>계절 수요 정조준"
+          "keyword": "프로그램",
+          "desc": "대표 셀럽 프로그램<br>'김경란의 취향찬란' 선정"
         }
       ],
-      "footer": "셀럽 프로그램과 계절 상품기획의 시너지로 고객 접점 확대",
+      "footer": "여름 성수기 대형 가전 판매 기회 선점으로 분기 실적 견인",
       "sources": [
         {
-          "title": "쿠쿠, 에코웨일 큐브 홈앤쇼핑서 공개",
+          "title": "쿠쿠, 신제품 에코웨일 큐브",
           "url": "http://www.hansbiz.co.kr/news/articleView.html?idxno=846219"
         },
         {
@@ -32,117 +32,92 @@
       ]
     },
     {
-      "category": "트렌드",
-      "title": "여름철 위생 가전<br>수요 집중도 상승",
-      "items": [
-        {
-          "keyword": "장마 시즌",
-          "desc": "본격 장마 임박 시 집안 습기·악취 관리<br>위생 가전 수요 급증"
-        },
-        {
-          "keyword": "건조·분쇄 기술",
-          "desc": "쿠쿠의 <b>독보적 기술력</b>으로<br>관리 편의성 극대화"
-        },
-        {
-          "keyword": "소비자 관심",
-          "desc": "음식물처리기 중심 신상 가전<br>트렌드 상승세"
-        }
-      ],
-      "footer": "계절성 수요에 맞춘 고기능 가전이 홈쇼핑의 핵심 성장동력",
-      "sources": [
-        {
-          "title": "가전 트렌드, 위생 가전에 주목",
-          "url": "https://www.ibabynews.com/news/articleView.html?idxno=152323"
-        },
-        {
-          "title": "음식물처리기 홈앤쇼핑 판매 강화",
-          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
-        }
-      ]
-    },
-    {
-      "category": "채널·파트너",
-      "title": "단일 채널 다중 마케팅<br>전략으로 접점 극대화",
-      "items": [
-        {
-          "keyword": "홈쇼핑 방송",
-          "desc": "쿠쿠, 홈앤쇼핑 셀럽 프로그램<br>통해 대량 고객 동시 노출"
-        },
-        {
-          "keyword": "체험 마케팅",
-          "desc": "쿠첸 밥솥, 제주도 호텔 체험 마케팅<br>브랜드 신뢰도 강화"
-        },
-        {
-          "keyword": "다채널 전략",
-          "desc": "TV홈쇼핑 + 체험 마케팅<br>소비자 접점 2중 확대"
-        }
-      ],
-      "footer": "단일 상품의 다양한 채널 활용으로 시장 커버리지 강화",
-      "sources": [
-        {
-          "title": "쿠쿠 음식물처리기 판매 및 마케팅",
-          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
-        },
-        {
-          "title": "산업 브리핑, 쿠쿠 신제품 출시",
-          "url": "http://www.niceeconomy.co.kr/news/articleView.html?idxno=90113"
-        }
-      ]
-    },
-    {
       "category": "경쟁력",
-      "title": "쿠쿠의 기술력이<br>홈앤쇼핑 경쟁력",
+      "title": "홈앤쇼핑, 차별화된<br>가전 기술력 증명",
       "items": [
         {
-          "keyword": "독보적 기술",
-          "desc": "<b>건조·분쇄 기술</b>로<br>경쟁사 대비 차별화"
+          "keyword": "기술 차별화",
+          "desc": "쿠쿠만의 <b>독보적 건조·분쇄</b><br>기술력 소비자 증명"
         },
         {
           "keyword": "편의성",
-          "desc": "압도적 관리 편의성 검증<br>소비자 신뢰도 상승"
-        },
-        {
-          "keyword": "프리미엄 포지셍",
-          "desc": "고기능 음식물처리기로<br>가전 판매 고가격대 달성"
+          "desc": "<b>압도적 관리 편의성</b><br>실제 사용 경험 중심"
         }
       ],
-      "footer": "상품 기술력이 홈쇼핑의 판매력 차별화 요소로 작용",
       "sources": [
         {
-          "title": "여름 가전 정조준, 쿠쿠 승부수",
+          "title": "여름 가전 정조준 쿠쿠",
           "url": "https://www.asiatime.co.kr/article/20260624500265"
-        },
-        {
-          "title": "쿠쿠, 홈앤쇼핑서 신제품 선봬",
-          "url": "http://www.niceeconomy.co.kr/news/articleView.html?idxno=90113"
         }
       ]
     },
     {
-      "category": "전략·계획",
-      "title": "여름 시즌 프리미엄<br>가전 집중 공략",
+      "category": "트렌드",
+      "title": "장마철 위생 가전<br>수요 급증",
       "items": [
         {
-          "keyword": "계절 수요",
-          "desc": "여름철 음식물 쓰레기 관리 수요<br>선제적 타이밍 포착"
+          "keyword": "시즌특성",
+          "desc": "본격 장마 임박으로<br><b>습기·악취 관리 가전</b> 주목"
         },
         {
-          "keyword": "신제품 론칭",
-          "desc": "에코웨일 큐브 음식물처리기<br>6월 24일 방송 선보임"
-        },
-        {
-          "keyword": "연간 전략",
-          "desc": "쿠첸 밥솥, 쿠쿠 처리기 등<br>프리미엄 라인업 집중 마케팅"
+          "keyword": "제품군",
+          "desc": "음식물처리기 등 위생 가전<br><b>핵심 마케팅 카테고리</b>"
         }
       ],
-      "footer": "계절성 수요 분석으로 연간 마케팅 전략 체계적 수립",
+      "footer": "계절 변화에 따른 생활가전 수요 트렌드 선점 필수",
       "sources": [
         {
-          "title": "쿠쿠, 신제품 홈앤쇼핑서 공개",
-          "url": "http://www.hansbiz.co.kr/news/articleView.html?idxno=846219"
+          "title": "본격 장마 임박 위생 가전",
+          "url": "https://www.ibabynews.com/news/articleView.html?idxno=152323"
+        }
+      ]
+    },
+    {
+      "category": "채널전략",
+      "title": "홈쇼핑+체험마케팅<br>투트랙 전개",
+      "items": [
+        {
+          "keyword": "방송판매",
+          "desc": "홈앤쇼핑 생방송을 통한<br><b>즉각적 판매 전환</b>"
         },
         {
-          "title": "쿠쿠·쿠첸 마케팅 전략",
+          "keyword": "체험마케팅",
+          "desc": "호텔 등 오프라인 체험을<br><b>병행</b>하며 접점 극대화"
+        },
+        {
+          "keyword": "신규고객",
+          "desc": "소비자 접점 다층화로<br><b>신규고객 유입</b> 기대"
+        }
+      ],
+      "footer": "온·오프라인 통합 마케팅으로 전환율 및 고객만족도 제고",
+      "sources": [
+        {
+          "title": "쿠쿠 음식물처리기 판매 전략",
+          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
+        }
+      ]
+    },
+    {
+      "category": "포트폴리오",
+      "title": "프리미엄 가전 제품군<br>동시 강화",
+      "items": [
+        {
+          "keyword": "음식물처리기",
+          "desc": "에코웨일 큐브<br>위생 가전 강화"
+        },
+        {
+          "keyword": "프리미엄 밥솥",
+          "desc": "쿠첸 '123 밥솥'<br>고가 제품군 확대"
+        },
+        {
+          "keyword": "전략",
+          "desc": "<b>대형·프리미엄</b> 카테고리<br>동시 전개로 객단가 상승"
+        }
+      ],
+      "footer": "고가 프리미엄 가전 포트폴리오 확대로 수익성 개선 추진",
+      "sources": [
+        {
+          "title": "쿠쿠·쿠첸 판매 마케팅",
           "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
         }
       ]
@@ -151,142 +126,138 @@
   "right": [
     {
       "category": "경쟁사 동향",
-      "title": "GS샵, AI 에이전트<br>30개 통합 포털 출시",
+      "title": "주요 경쟁사, <br>온·오프 통합 전략 가속",
       "items": [
         {
-          "keyword": "통합 포털",
-          "desc": "<b>xhub+</b>로 DX·AX 업무 플랫폼 일원화"
+          "keyword": "NS홈쇼핑",
+          "desc": "<b>홈플러스익스프레스 인수</b> 완료, SSM과의 시너지 본격화"
         },
         {
-          "keyword": "AI 에이전트",
-          "desc": "방송 분석부터 신규 입점까지 <b>30개 AI 도구</b> 통합"
+          "keyword": "GS샵",
+          "desc": "GS더프레시와 <b>공동판매·마케팅</b> 강화 중"
         },
         {
-          "keyword": "현장 중심",
-          "desc": "고객 반응 분석·리뷰 분석 등 <b>실시간 데이터</b> 제공"
+          "keyword": "업황 대응",
+          "desc": "온·오프라인 협업으로 <b>부진 타개</b> 추진 중"
         }
       ],
-      "footer": "경쟁사 AI 시스템 고도화, 우리의 디지털 전략 재점검 필요",
+      "footer": "경쟁사들이 통합 유통 전략으로 시장 재편 중",
       "sources": [
         {
-          "title": "GS샵 AI 에이전트 30개 통합",
-          "url": "http://www.paxetv.com/news/articleView.html?idxno=275559"
-        },
-        {
-          "title": "GS샵 엑스허브플러스 구축",
-          "url": "https://www.m-i.kr/news/articleView.html?idxno=1385126"
+          "title": "한 지붕 SSM·홈쇼핑, 협업 시너지",
+          "url": "https://www.etoday.co.kr/news/view/2597319"
         }
       ]
     },
     {
-      "category": "트렌드",
-      "title": "AI 스튜디오 고도화<br>방송 콘텐츠 혁신",
+      "category": "기술·혁신",
+      "title": "GS샵, AI 통합 포털<br>'xhub+' 오픈",
       "items": [
         {
-          "keyword": "AI 인사이트",
-          "desc": "AI 활용 사례·산출물을 <b>체계적으로 공유</b>하는 시스템"
+          "keyword": "AI인사이트",
+          "desc": "영상 콘텐츠 분야 AI 활용 성과 <b>축적·재사용</b> 시스템"
         },
         {
-          "keyword": "AI 라이브러리",
-          "desc": "프롬프트·이미지·영상 등 <b>생성형 AI 자산</b> 축적"
+          "keyword": "중복 작업 감축",
+          "desc": "검증된 AI 도구 <b>재활용</b>으로 업무 효율성 극대화"
         },
         {
-          "keyword": "방송 스튜디오",
-          "desc": "Gen.AI를 탑재한 <b>스튜디오 고도화</b> 진행 중"
+          "keyword": "조직 자산화",
+          "desc": "개인 AI 경험을 <b>조직 전체 자산</b>으로 전환"
         }
       ],
-      "footer": "홈쇼핑 영상 제작에 생성형 AI 활용 필수 시대 도래",
+      "footer": "AI 업무 도구 통합으로 생산성 향상 가속화 중",
       "sources": [
         {
-          "title": "AI인사이트·라이브러리 시스템 오픈",
-          "url": "https://www.ziksir.com/news/articleView.html?idxno=137956"
+          "title": "GS샵, AI 통합 포털 xhub+ 오픈",
+          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463152"
         },
         {
-          "title": "AI 스튜디오 고도화 추진",
-          "url": "https://www.m-i.kr/news/articleView.html?idxno=1385126"
+          "title": "상품기획, 리뷰 분석 한 번에",
+          "url": "https://www.mt.co.kr/living/2026/06/25/2026062516494411750"
+        }
+      ]
+    },
+    {
+      "category": "사업 확대",
+      "title": "공영홈쇼핑,<br>혁신 제품 발굴 본격화",
+      "items": [
+        {
+          "keyword": "공모전 개최",
+          "desc": "<b>우수 아이디어·혁신기업 제품 공모전</b> 시상식 개최"
+        },
+        {
+          "keyword": "선정 상품",
+          "desc": "대상·최우수상·우수상 <b>10개 상품</b> 방송 판매 확정"
+        },
+        {
+          "keyword": "상품화 지원",
+          "desc": "방송 전 <b>상품화 지원</b>으로 신규 진입 장벽 낮춤"
+        }
+      ],
+      "footer": "스타트업·혁신기업과의 협력으로 차별화 추진",
+      "sources": [
+        {
+          "title": "공영홈쇼핑, 혁신기업 제품 공모전",
+          "url": "http://www.lawissue.co.kr/view.php?ud=202606251908367551204ead0791_12"
         }
       ]
     },
     {
       "category": "사회공헌",
-      "title": "롯데홈쇼핑<br>시각장애 아동 지원",
+      "title": "업계, 보훈·사회공헌<br>활동 강화",
       "items": [
         {
-          "keyword": "드림보이스",
-          "desc": "배우 이유리와 협력한 <b>음성도서 재능기부</b> 프로젝트"
+          "keyword": "NS홈쇼핑",
+          "desc": "순직·공상 경찰관 등 <b>1억원 후원</b> (장학금 5천+기금 5천)"
         },
         {
-          "keyword": "정보 접근성",
-          "desc": "시각장애 아동의 <b>교육 기회 확대</b> 지원"
+          "keyword": "롯데홈쇼핑",
+          "desc": "2016년부터 시각장애 아동용 <b>음성도서 223권</b> 제작"
         },
         {
-          "keyword": "사회공헌",
-          "desc": "브랜드 신뢰도 강화 및 <b>사회적 가치</b> 창출"
+          "keyword": "브랜드 가치",
+          "desc": "사회공헌으로 <b>기업 신뢰도·로열티</b> 강화"
         }
       ],
-      "footer": "경쟁사 사회공헌 강화, 우리도 차별화된 기업 이미지 구축 시급",
+      "footer": "사회공헌 활동으로 ESG 경영 실천 강화",
       "sources": [
         {
-          "title": "이유리와 음성도서 제작",
-          "url": "https://www.100ssd.co.kr/news/articleView.html?idxno=210498"
+          "title": "NS홈쇼핑, 순직공상 경찰관 가족 후원",
+          "url": "https://www.ddaily.co.kr/page/view/2026062516493984849"
         },
         {
-          "title": "드림보이스 사회공헌사업",
-          "url": "https://news.tf.co.kr/read/economy/2336316.htm"
+          "title": "롯데홈쇼핑, 드림보이스 사업",
+          "url": "https://www.hani.co.kr/arti/society/obituary/1265395.html"
         }
       ]
     },
     {
-      "category": "상품 판매",
-      "title": "셰프 콜라보<br>HMR 시장 확대",
+      "category": "산업 트렌드",
+      "title": "온·오프 통합·AI 혁신·<br>사회공헌, 3대 전략 부상",
       "items": [
         {
-          "keyword": "현대홈쇼핑",
-          "desc": "'부채도사' 김태우 셰프 <b>민물장어구이</b> 라이브 판매"
+          "keyword": "온·오프 통합",
+          "desc": "SSM 인수·제휴로 <b>채널 확장</b> 경쟁 심화"
         },
         {
-          "keyword": "HMR 제품",
-          "desc": "가정간편식 시장 진출로 <b>신규 고객층</b> 확보"
+          "keyword": "AI 기술 도입",
+          "desc": "업무 자동화·콘텐츠 분석으로 <b>경쟁력 차별화</b>"
         },
         {
-          "keyword": "접점 확대",
-          "desc": "셀럽 협력을 통한 <b>브랜드 신뢰도</b> 강화"
+          "keyword": "ESG 경영",
+          "desc": "보훈·사회공헌으로 <b>브랜드 가치</b> 제고"
         }
       ],
-      "footer": "유명 셰프 협력 모델 효과적, 우리 HMR 상품 강화 필요",
+      "footer": "홈쇼핑 업계, 수익성·기술·가치 균형 경영 추진 중",
       "sources": [
         {
-          "title": "동경밥상 현대홈쇼핑 판매",
-          "url": "https://www.asiatoday.co.kr/kn/view.php?key=20260625000923031"
-        }
-      ]
-    },
-    {
-      "category": "성장",
-      "title": "AI·인플루언서<br>판매 시너지",
-      "items": [
-        {
-          "keyword": "생성형 AI",
-          "desc": "홈쇼핑 콘텐츠 제작에서 <b>핵심 경쟁 도구</b> 부상"
+          "title": "한 지붕 SSM·홈쇼핑, 협업 시너지",
+          "url": "https://www.etoday.co.kr/news/view/2597319"
         },
         {
-          "keyword": "셀럽 마케팅",
-          "desc": "배우·셰프 콜라보로 <b>신뢰도·신규 수요</b> 창출"
-        },
-        {
-          "keyword": "데이터 기반",
-          "desc": "고객 반응 분석 AI로 <b>판매 효율성</b> 극대화"
-        }
-      ],
-      "footer": "AI + 인플루언서 결합이 차세대 판매 성장 동력, 즉시 전략화",
-      "sources": [
-        {
-          "title": "GS샵 AI 에이전트 30개 통합",
-          "url": "http://www.paxetv.com/news/articleView.html?idxno=275559"
-        },
-        {
-          "title": "현대홈쇼핑 셰프 콜라보",
-          "url": "https://www.asiatoday.co.kr/kn/view.php?key=20260625000923031"
+          "title": "GS샵, AI 통합 포털 xhub+ 오픈",
+          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463152"
         }
       ]
     }
