@@ -1,263 +1,288 @@
 {
-  "date": "2026년 06월 25일",
-  "date_en": "JUNE 25, 2026",
+  "date": "2026년 06월 26일",
+  "date_en": "JUNE 26, 2026",
   "left": [
     {
       "category": "실적·성장",
-      "title": "쿠쿠, 홈앤쇼핑으로<br>여름 가전 승부수",
+      "title": "버킷리스트 여행 특집<br>희소성 높은 상품 집중 편성",
       "items": [
         {
-          "keyword": "신제품 런칭",
-          "desc": "<b>에코웨일 큐브</b> 음식물처리기<br>24일 오후 8시 45분 방송"
+          "keyword": "구채구",
+          "desc": "<b>9년 만에</b> 복귀, 아시아나 직항 노선 활용으로 가치 극대화"
         },
         {
-          "keyword": "타겟시즌",
-          "desc": "여름철 음식물 쓰레기 관리 수요<br><b>시즌 수요 극대화</b>"
+          "keyword": "편성 기간",
+          "desc": "6월 마지막 주 집중 편성으로 <b>하반기 여행 수요</b> 선점"
         },
         {
-          "keyword": "프로그램",
-          "desc": "대표 셀럽 프로그램<br>'김경란의 취향찬란' 선정"
+          "keyword": "상품 포트폴리오",
+          "desc": "오로라·남미·구채구 <b>3대 버킷리스트</b> 동시 구성"
         }
       ],
-      "footer": "여름 성수기 대형 가전 판매 기회 선점으로 분기 실적 견인",
+      "footer": "희소성 높은 장거리 여행상품으로 여름·하반기 고객 수요 극대화",
       "sources": [
         {
-          "title": "쿠쿠, 신제품 에코웨일 큐브",
-          "url": "http://www.hansbiz.co.kr/news/articleView.html?idxno=846219"
+          "title": "홈앤쇼핑, 오로라·남미·구채구 여행상품 연이어 선봬",
+          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463266"
         },
         {
-          "title": "쿠쿠, 에코웨일 큐브로 승부수",
-          "url": "https://www.asiatime.co.kr/article/20260624500265"
+          "title": "홈앤쇼핑, 남미·구채구·오로라 포함 여행 상품 방송 편성",
+          "url": "http://www.lawissue.co.kr/view.php?ud=202606260847559274204ead0791_12"
         }
       ]
     },
     {
-      "category": "경쟁력",
-      "title": "홈앤쇼핑, 차별화된<br>가전 기술력 증명",
+      "category": "마케팅",
+      "title": "가격 경쟁력 강화<br>고객 부담 최소화 전략",
       "items": [
         {
-          "keyword": "기술 차별화",
-          "desc": "쿠쿠만의 <b>독보적 건조·분쇄</b><br>기술력 소비자 증명"
+          "keyword": "비용 제거",
+          "desc": "옵션·쇼핑·유류할증료·환율차액 <b>모두 삭제</b>"
         },
         {
-          "keyword": "편의성",
-          "desc": "<b>압도적 관리 편의성</b><br>실제 사용 경험 중심"
+          "keyword": "가격 투명성",
+          "desc": "숨겨진 비용 없이 <b>명확한 가격 책정</b>으로 신뢰 구축"
+        },
+        {
+          "keyword": "고객 가치",
+          "desc": "<b>동일 상품 대비 최저가</b> 보장으로 선택 이유 강화"
         }
       ],
+      "footer": "가격 투명성으로 고객 선택 이유를 명확히 하고 경쟁력 확보",
       "sources": [
         {
-          "title": "여름 가전 정조준 쿠쿠",
+          "title": "당장 떠나요…홈앤쇼핑 '버킷리스트 여행' 특집",
+          "url": "https://www.newsis.com/view/NISX20260626_0003684483"
+        }
+      ]
+    },
+    {
+      "category": "콘텐츠·편성",
+      "title": "셀럽 프로그램 활용<br>프리미엄 가전 판매 강화",
+      "items": [
+        {
+          "keyword": "방송 프로그램",
+          "desc": "'<b>김경란의 취향찬란</b>' 대표 셀럽 프로그램 활용"
+        },
+        {
+          "keyword": "신제품 런칭",
+          "desc": "쿠쿠 '<b>에코웨일 큐브</b>' 음식물처리기 6월 24일 방송"
+        },
+        {
+          "keyword": "타겟팅",
+          "desc": "장마·여름철 <b>위생 가전 수요</b> 정조준 전략"
+        }
+      ],
+      "footer": "셀럽 프로그램과 신제품으로 프리미엄 가전 카테고리 확대 중",
+      "sources": [
+        {
+          "title": "쿠쿠, 신제품 '에코웨일 큐브 음식물처리기' 홈앤쇼핑서 공개",
+          "url": "http://www.hansbiz.co.kr/news/articleView.html?idxno=846219"
+        },
+        {
+          "title": "여름 가전 정조준…쿠쿠, '에코웨일 큐브'로 승부수",
           "url": "https://www.asiatime.co.kr/article/20260624500265"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "장마철 위생 가전<br>수요 급증",
+      "title": "계절 수요 대응<br>여름·장마철 가전 집중 편성",
       "items": [
         {
-          "keyword": "시즌특성",
-          "desc": "본격 장마 임박으로<br><b>습기·악취 관리 가전</b> 주목"
+          "keyword": "시즈널 기획",
+          "desc": "여름·장마철 <b>습기·악취 제거 가전</b> 수요 본격화"
         },
         {
-          "keyword": "제품군",
-          "desc": "음식물처리기 등 위생 가전<br><b>핵심 마케팅 카테고리</b>"
+          "keyword": "위생 가전",
+          "desc": "음식물처리기 등 <b>집안 위생 솔루션</b> 강화 편성"
+        },
+        {
+          "keyword": "타이밍",
+          "desc": "6월 말~7월 초 <b>장마 임박 시점</b> 정조준 마케팅"
         }
       ],
-      "footer": "계절 변화에 따른 생활가전 수요 트렌드 선점 필수",
+      "footer": "계절성 수요를 빠르게 포착하여 관련 상품 집중 편성 중",
       "sources": [
         {
-          "title": "본격 장마 임박 위생 가전",
+          "title": "본격 장마 임박… 집안 습기와 악취 잡는 위생 가전",
           "url": "https://www.ibabynews.com/news/articleView.html?idxno=152323"
         }
       ]
     },
     {
-      "category": "채널전략",
-      "title": "홈쇼핑+체험마케팅<br>투트랙 전개",
+      "category": "전략",
+      "title": "여행·가전 투트랙<br>전 계절 수요 커버리지",
       "items": [
         {
-          "keyword": "방송판매",
-          "desc": "홈앤쇼핑 생방송을 통한<br><b>즉각적 판매 전환</b>"
+          "keyword": "여행 상품",
+          "desc": "버킷리스트 특집으로 <b>고가 장거리 여행</b> 수요 확보"
         },
         {
-          "keyword": "체험마케팅",
-          "desc": "호텔 등 오프라인 체험을<br><b>병행</b>하며 접점 극대화"
+          "keyword": "가전 상품",
+          "desc": "프리미염 음식물처리기로 <b>생활용품 판매 강화</b>"
         },
         {
-          "keyword": "신규고객",
-          "desc": "소비자 접점 다층화로<br><b>신규고객 유입</b> 기대"
+          "keyword": "포트폴리오",
+          "desc": "시즈널 상품 혼합으로 <b>연중 고객 수요</b> 안정화"
         }
       ],
-      "footer": "온·오프라인 통합 마케팅으로 전환율 및 고객만족도 제고",
+      "footer": "여행과 가전의 투트랙 전략으로 안정적 고객 기반 확대 중",
       "sources": [
         {
-          "title": "쿠쿠 음식물처리기 판매 전략",
-          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
-        }
-      ]
-    },
-    {
-      "category": "포트폴리오",
-      "title": "프리미엄 가전 제품군<br>동시 강화",
-      "items": [
-        {
-          "keyword": "음식물처리기",
-          "desc": "에코웨일 큐브<br>위생 가전 강화"
+          "title": "홈앤쇼핑, 남미·오로라·구채구까지…버킷리스트 여행 특집",
+          "url": "https://www.insightkorea.co.kr/news/articleView.html?idxno=248906"
         },
         {
-          "keyword": "프리미엄 밥솥",
-          "desc": "쿠첸 '123 밥솥'<br>고가 제품군 확대"
-        },
-        {
-          "keyword": "전략",
-          "desc": "<b>대형·프리미엄</b> 카테고리<br>동시 전개로 객단가 상승"
-        }
-      ],
-      "footer": "고가 프리미엄 가전 포트폴리오 확대로 수익성 개선 추진",
-      "sources": [
-        {
-          "title": "쿠쿠·쿠첸 판매 마케팅",
-          "url": "https://www.slist.kr/news/articleView.html?idxno=747339"
+          "title": "여름 가전 정조준…쿠쿠, '에코웨일 큐브'로 승부수",
+          "url": "https://www.asiatime.co.kr/article/20260624500265"
         }
       ]
     }
   ],
   "right": [
     {
+      "category": "트렌드",
+      "title": "라이브커머스, 창고형<br>콘셉트로 진화 중",
+      "items": [
+        {
+          "keyword": "NS홈쇼핑",
+          "desc": "<b>도매꾹과 협업</b>해 '반값창고' 라이브커머스 론칭"
+        },
+        {
+          "keyword": "현장성",
+          "desc": "상품보관·출고과정 <b>생생한 공개</b>로 신뢰도 강화"
+        },
+        {
+          "keyword": "소비자반응",
+          "desc": "가격 경쟁력과 창고형 콘셉트에 <b>긍정적 반응</b>"
+        }
+      ],
+      "footer": "전통 홈쇼핑에서 B2B 협업 기반 새로운 비즈니스 모델로 진화",
+      "sources": [
+        {
+          "title": "NS홈쇼핑, 도매꾹 협업 반값창고",
+          "url": "https://www.handmk.com/news/articleView.html?idxno=40743"
+        },
+        {
+          "title": "NS홈쇼핑 엔라방 '반값창고' 호평",
+          "url": "https://www.catchnews.kr/news/articleView.html?idxno=125419"
+        }
+      ]
+    },
+    {
       "category": "경쟁사 동향",
-      "title": "주요 경쟁사, <br>온·오프 통합 전략 가속",
+      "title": "롯데홈쇼핑, ESG<br>경영으로 브랜드 강화",
       "items": [
         {
-          "keyword": "NS홈쇼핑",
-          "desc": "<b>홈플러스익스프레스 인수</b> 완료, SSM과의 시너지 본격화"
+          "keyword": "드림보이스",
+          "desc": "시각장애 아동 위한 <b>음성도서 제작</b> 사회공헌사업 추진"
         },
         {
-          "keyword": "GS샵",
-          "desc": "GS더프레시와 <b>공동판매·마케팅</b> 강화 중"
+          "keyword": "연예인 참여",
+          "desc": "배우 이유리와 함께 녹음·홍보 <b>스타 마케팅</b> 활용"
         },
         {
-          "keyword": "업황 대응",
-          "desc": "온·오프라인 협업으로 <b>부진 타개</b> 추진 중"
+          "keyword": "지속성",
+          "desc": "<b>2016년부터</b> 쇼호스트·음악감독 등 전문가 참여"
         }
       ],
-      "footer": "경쟁사들이 통합 유통 전략으로 시장 재편 중",
+      "footer": "사회공헌을 통한 ESG 강화로 고객충성도 및 브랜드 가치 상승",
       "sources": [
         {
-          "title": "한 지붕 SSM·홈쇼핑, 협업 시너지",
-          "url": "https://www.etoday.co.kr/news/view/2597319"
+          "title": "롯데홈쇼핑 드림보이스 진행",
+          "url": "http://www.wsobi.com/news/articleView.html?idxno=314310"
+        },
+        {
+          "title": "이유리의 목소리 기부 캠페인",
+          "url": "https://www.thepublic.kr/news/articleView.html?idxno=309057"
         }
       ]
     },
     {
-      "category": "기술·혁신",
-      "title": "GS샵, AI 통합 포털<br>'xhub+' 오픈",
+      "category": "실적·성장",
+      "title": "현대지에프홀딩스,<br>주주환원 강화 신호",
       "items": [
         {
-          "keyword": "AI인사이트",
-          "desc": "영상 콘텐츠 분야 AI 활용 성과 <b>축적·재사용</b> 시스템"
+          "keyword": "완전자회사화",
+          "desc": "현대홈쇼핑 포괄적 주식교환으로 <b>통합 가속화</b>"
         },
         {
-          "keyword": "중복 작업 감축",
-          "desc": "검증된 AI 도구 <b>재활용</b>으로 업무 효율성 극대화"
+          "keyword": "배당 정책",
+          "desc": "올해 주당배당금(DPS) <b>441원 예정</b>으로 주주환원"
         },
         {
-          "keyword": "조직 자산화",
-          "desc": "개인 AI 경험을 <b>조직 전체 자산</b>으로 전환"
+          "keyword": "자사주매입",
+          "desc": "자사주 매입·배당 규모 <b>총 7.4%</b> 규모 추진"
         }
       ],
-      "footer": "AI 업무 도구 통합으로 생산성 향상 가속화 중",
+      "footer": "주주가치 극대화 전략으로 투자자 신뢰도 및 주가 상승 견인",
       "sources": [
         {
-          "title": "GS샵, AI 통합 포털 xhub+ 오픈",
-          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463152"
+          "title": "현대지에프홀딩스 목표주가 상향",
+          "url": "https://www.gokorea.kr/news/articleView.html?idxno=870399"
         },
         {
-          "title": "상품기획, 리뷰 분석 한 번에",
-          "url": "https://www.mt.co.kr/living/2026/06/25/2026062516494411750"
+          "title": "현대지에프홀딩스 주당배당금 441원",
+          "url": "https://www.itooza.com/common/iview.php?no=2026062609141425588"
         }
       ]
     },
     {
-      "category": "사업 확대",
-      "title": "공영홈쇼핑,<br>혁신 제품 발굴 본격화",
+      "category": "시장분석",
+      "title": "홈쇼핑 업계,<br>다각화 전략 심화",
       "items": [
         {
-          "keyword": "공모전 개최",
-          "desc": "<b>우수 아이디어·혁신기업 제품 공모전</b> 시상식 개최"
+          "keyword": "B2B 협업",
+          "desc": "온라인 유통 플랫폼과 연결해 <b>신규 시장 확대</b>"
         },
         {
-          "keyword": "선정 상품",
-          "desc": "대상·최우수상·우수상 <b>10개 상품</b> 방송 판매 확정"
+          "keyword": "사회공헌",
+          "desc": "ESG 경영으로 <b>브랜드 차별화</b> 강화 추세"
         },
         {
-          "keyword": "상품화 지원",
-          "desc": "방송 전 <b>상품화 지원</b>으로 신규 진입 장벽 낮춤"
+          "keyword": "주주환원",
+          "desc": "배당 및 자사주매입으로 <b>기업가치 제고</b> 경쟁"
         }
       ],
-      "footer": "스타트업·혁신기업과의 협력으로 차별화 추진",
+      "footer": "전통 홈쇼핑에서 종합 유통·금융 플랫폼으로 사업 영역 확장 중",
       "sources": [
         {
-          "title": "공영홈쇼핑, 혁신기업 제품 공모전",
-          "url": "http://www.lawissue.co.kr/view.php?ud=202606251908367551204ead0791_12"
+          "title": "NS홈쇼핑-도매꾹 협업 반값창고",
+          "url": "https://www.handmk.com/news/articleView.html?idxno=40743"
+        },
+        {
+          "title": "롯데홈쇼핑 ESG 경영 강화",
+          "url": "http://www.wsobi.com/news/articleView.html?idxno=314310"
         }
       ]
     },
     {
-      "category": "사회공헌",
-      "title": "업계, 보훈·사회공헌<br>활동 강화",
+      "category": "경영전략",
+      "title": "현대홈쇼핑,<br>SK 목표주가 2만원 상향",
       "items": [
         {
-          "keyword": "NS홈쇼핑",
-          "desc": "순직·공상 경찰관 등 <b>1억원 후원</b> (장학금 5천+기금 5천)"
+          "keyword": "주가전망",
+          "desc": "목표주가 <b>2만원으로 상향</b> 조정으로 강세 신호"
         },
         {
-          "keyword": "롯데홈쇼핑",
-          "desc": "2016년부터 시각장애 아동용 <b>음성도서 223권</b> 제작"
+          "keyword": "백화점지분",
+          "desc": "자회사 편입으로 <b>지분가치 상승</b> 기대"
         },
         {
-          "keyword": "브랜드 가치",
-          "desc": "사회공헌으로 <b>기업 신뢰도·로열티</b> 강화"
+          "keyword": "배당정책",
+          "desc": "주주환원 정책 강화로 <b>투자매력도 증대</b>"
         }
       ],
-      "footer": "사회공헌 활동으로 ESG 경영 실천 강화",
+      "footer": "구조조정과 주주환원으로 기업가치 재평가받고 있는 상황",
       "sources": [
         {
-          "title": "NS홈쇼핑, 순직공상 경찰관 가족 후원",
-          "url": "https://www.ddaily.co.kr/page/view/2026062516493984849"
+          "title": "현대지에프홀딩스 2만원 목표주가",
+          "url": "https://www.gokorea.kr/news/articleView.html?idxno=870399"
         },
         {
-          "title": "롯데홈쇼핑, 드림보이스 사업",
-          "url": "https://www.hani.co.kr/arti/society/obituary/1265395.html"
-        }
-      ]
-    },
-    {
-      "category": "산업 트렌드",
-      "title": "온·오프 통합·AI 혁신·<br>사회공헌, 3대 전략 부상",
-      "items": [
-        {
-          "keyword": "온·오프 통합",
-          "desc": "SSM 인수·제휴로 <b>채널 확장</b> 경쟁 심화"
-        },
-        {
-          "keyword": "AI 기술 도입",
-          "desc": "업무 자동화·콘텐츠 분석으로 <b>경쟁력 차별화</b>"
-        },
-        {
-          "keyword": "ESG 경영",
-          "desc": "보훈·사회공헌으로 <b>브랜드 가치</b> 제고"
-        }
-      ],
-      "footer": "홈쇼핑 업계, 수익성·기술·가치 균형 경영 추진 중",
-      "sources": [
-        {
-          "title": "한 지붕 SSM·홈쇼핑, 협업 시너지",
-          "url": "https://www.etoday.co.kr/news/view/2597319"
-        },
-        {
-          "title": "GS샵, AI 통합 포털 xhub+ 오픈",
-          "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463152"
+          "title": "현대지에프홀딩스 주주환원 정책",
+          "url": "https://www.itooza.com/common/iview.php?no=2026062609141425588"
         }
       ]
     }
