@@ -1,276 +1,264 @@
 {
-  "date": "2026년 06월 26일",
-  "date_en": "JUNE 26, 2026",
+  "date": "2026년 06월 27일",
+  "date_en": "JUNE 27, 2026",
   "left": [
     {
       "category": "성장",
-      "title": "버킷리스트 여행상품<br>프리미엄 공략",
+      "title": "버킷리스트 여행 특집으로<br>프리미엄 시장 공략",
       "items": [
         {
           "keyword": "구채구",
-          "desc": "<b>9년 만에 편성</b>, 69만9000원부터 시작"
+          "desc": "<b>9년 만에</b> 편성, 69만9000원부터 시작"
         },
         {
           "keyword": "오로라 투어",
-          "desc": "북극권 헌팅 투어 신규 추가로 차별화"
+          "desc": "북극권 헌팅 투어로 차별화된 상품 강화"
         },
         {
           "keyword": "남미 일주",
-          "desc": "프리미엄 완전일주 상품으로 <b>고가 수요</b> 포섭"
+          "desc": "프리미엄 완전일주 상품으로 고가 상품 확대"
         }
       ],
-      "footer": "코로나 이후 장거리 여행 수요 확대에 선제 대응 중",
+      "footer": "포스트 코로나 고급 여행 수요 확대에 선제 대응",
       "sources": [
         {
-          "title": "홈앤쇼핑, 버킷리스트 여행상품 잇달아 선",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=202356"
-        },
-        {
-          "title": "구채구·남미·오로라 등 버킷리스트",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124928"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "해외여행 특집<br>6월 마지막주 집중편성",
-      "items": [
-        {
-          "keyword": "편성 시기",
-          "desc": "6월 마지막 주 주말 <b>연속 방송</b>으로 극대화"
-        },
-        {
-          "keyword": "직항노선",
-          "desc": "아시아나항공 성도 직항 활용한 접근성 강화"
-        },
-        {
-          "keyword": "비용절감",
-          "desc": "유류할증료·환율차액 없는 조건으로 신뢰도 ↑"
-        }
-      ],
-      "footer": "차별화된 상품으로 프리미엄 여행객 공략 강화",
-      "sources": [
-        {
-          "title": "여행 버킷리스트 총집합 특집 방송",
+          "title": "여행 버킷리스트 총집합",
           "url": "https://www.ziksir.com/news/articleView.html?idxno=138192"
         },
         {
-          "title": "굿모닝 26일 유통가 소식",
-          "url": "https://www.goodkyung.com/news/articleView.html?idxno=288574"
-        }
-      ]
-    },
-    {
-      "category": "시장동향",
-      "title": "포스트코로나<br>여행수요 급증",
-      "items": [
-        {
-          "keyword": "시장변화",
-          "desc": "단순 휴양지→<b>버킷리스트 여행</b> 관심 확대"
-        },
-        {
-          "keyword": "고객니즈",
-          "desc": "한 번은 꼭 가봐야 할 특별 여행지 수요 ↑"
-        },
-        {
-          "keyword": "채널확대",
-          "desc": "직항 노선 확대로 장거리 여행 접근성 개선"
-        }
-      ],
-      "footer": "일상 회복에 따른 프리미엄 여행 수요가 신사업 기회",
-      "sources": [
-        {
-          "title": "홈앤쇼핑, 버킷리스트 여행상품 잇달아",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=202356"
-        },
-        {
-          "title": "유통가 오늘 홈앤쇼핑 특집",
+          "title": "[유통가 오늘] 홈앤쇼핑 버킷리스트 여행",
           "url": "https://www.cnbnews.com/news/articleView.html?idxno=1006007"
         }
       ]
     },
     {
-      "category": "경영",
-      "title": "TV홈쇼핑<br>수익성 악화 경고",
+      "category": "트렌드",
+      "title": "해외여행 수요 변화<br>버킷리스트 중심으로 전환",
       "items": [
         {
-          "keyword": "구조문제",
-          "desc": "<b>송출수수료</b>로 매출 대부분 유출되는 구조"
+          "keyword": "시장 변화",
+          "desc": "단순 휴양지 → <b>꼭 가봐야 할</b> 특별한 경험"
         },
         {
-          "keyword": "수익역전",
-          "desc": "'돈 버는 사업'→'돈 새는 사업' 전환 중"
+          "keyword": "직항 확대",
+          "desc": "프리미엠 장거리 여행 수요 증가 추세"
         },
         {
-          "keyword": "경쟁심화",
-          "desc": "모바일·라이브커머스 확산으로 <b>TV 의존도 ↓</b>"
+          "keyword": "소비 심화",
+          "desc": "코로나19 이후 해외여행이 일상으로 정착"
         }
       ],
-      "footer": "TV 채널의 수익성 악화 시대, 온라인·상품다각화 필수",
+      "footer": "차별화된 상품 편성이 고객 수요와 정확히 부합",
       "sources": [
         {
-          "title": "TV홈쇼핑 송출수수료에 수익성 붕괴",
+          "title": "버킷리스트 여행상품 잇달아 선보여",
+          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=202356"
+        }
+      ]
+    },
+    {
+      "category": "실적",
+      "title": "투명한 가격 정책으로<br>고객 신뢰 확보",
+      "items": [
+        {
+          "keyword": "추가 비용",
+          "desc": "옵션·유류할증료·환율차액 <b>없음</b>"
+        },
+        {
+          "keyword": "가격 투명성",
+          "desc": "쇼핑 비용까지 포함한 올인원 상품 구성"
+        },
+        {
+          "keyword": "신뢰도 강화",
+          "desc": "명확한 가격 책정으로 고객 만족도 상승"
+        }
+      ],
+      "footer": "투명한 가격 정책이 프리미엄 상품의 핵심 경쟁력",
+      "sources": [
+        {
+          "title": "구채구·남미·오로라 버킷리스트 여행",
+          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124928"
+        }
+      ]
+    },
+    {
+      "category": "경쟁사 동향",
+      "title": "TV홈쇼핑 업계<br>수익성 악화 심화",
+      "items": [
+        {
+          "keyword": "수익 구조",
+          "desc": "매출 대부분이 <b>송출수수료로 유출</b>"
+        },
+        {
+          "keyword": "시장 위협",
+          "desc": "모바일·라이브커머스 확산으로 경쟁 심화"
+        },
+        {
+          "keyword": "구조 변화",
+          "desc": "수익 창출 → <b>수익 상실</b> 구조 역전"
+        }
+      ],
+      "footer": "차별화된 상품과 고부가가치 서비스가 생존 전략",
+      "sources": [
+        {
+          "title": "TV홈쇼핑, 벌수록 새는 구조 송출수수료",
           "url": "https://www.newsway.co.kr/news/view?ud=2026062614262588821"
         }
       ]
     },
     {
-      "category": "전략",
-      "title": "패키지여행 파트너십<br>경쟁력 강화",
+      "category": "정책·규제",
+      "title": "6월 마지막 주 특집<br>방송 편성 강화",
       "items": [
         {
-          "keyword": "협력사",
-          "desc": "여기어때투어와 <b>공동 기획</b>으로 전문성 강화"
+          "keyword": "방송 시간",
+          "desc": "<b>6월 27일 토요일</b> 오후 방송 편성"
         },
         {
-          "keyword": "차별화",
-          "desc": "항공사 직항 활용한 <b>비용 절감형</b> 상품 개발"
+          "keyword": "편성 확대",
+          "desc": "마지막 주 동안 연이어 차별화된 상품 구성"
         },
         {
-          "keyword": "신뢰도",
-          "desc": "옵션·쇼핑비 투명한 공시로 고객 신뢰 확보"
+          "keyword": "전략 편성",
+          "desc": "시즈널 수요에 맞춘 집중 공략 전개"
         }
       ],
-      "footer": "전문 여행사와 협력으로 TV홈쇼핑의 수익성 재구성",
+      "footer": "여름 휴가 시즌 수요 피크에 맞춘 타이밍 전략",
       "sources": [
         {
-          "title": "구채구 6일 상품 방송 9년만 선보여",
+          "title": "[굿모닝] 26일 유통가 소식 홈앤쇼핑",
           "url": "https://www.goodkyung.com/news/articleView.html?idxno=288574"
-        },
-        {
-          "title": "홈앤쇼핑 구채구·남미·오로라 버킷리스트",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124928"
         }
       ]
     }
   ],
   "right": [
     {
-      "category": "실적·성장",
-      "title": "B2B 협력 모델로<br>재고 소진 성공",
+      "category": "정책·규제",
+      "title": "광고 과장 표시, <br>업계 적신호",
       "items": [
         {
-          "keyword": "채널 융합",
-          "desc": "<b>지앤지커머스·NS홈쇼핑</b> 공급사 네트워크와 방송 인프라 결합"
+          "keyword": "법정제재",
+          "desc": "NS홈쇼핑·KT알파쇼핑 <b>주의 처분</b> 받음"
         },
         {
-          "keyword": "창고 운영",
-          "desc": "공급사 <b>재고 소진</b>을 위한 라이브방송 성료"
+          "keyword": "원료 허위",
+          "desc": "알부민 복합물 90% → 실제 <b>0.495%</b>에 불과"
         },
         {
-          "keyword": "비즈니스",
-          "desc": "B2B 파트너십 기반의 <b>새로운 판매채널</b> 확대"
+          "keyword": "규제강화",
+          "desc": "방송미디어통신심의위원회 적극 단속 중"
         }
       ],
-      "footer": "홈쇼핑은 단순 판매를 넘어 공급망 최적화 파트너로 진화 중",
+      "footer": "철저한 제품 검증 및 광고 검수 체계 강화 필수",
       "sources": [
         {
-          "title": "지앤지커머스-NS홈쇼핑 공급사 재고 소진",
-          "url": "https://www.mt.co.kr/industry/2026/06/26/2026062613315977563"
+          "title": "알부민 복합물 90% 함유? 핵심 원료는..",
+          "url": "https://www.mediatoday.co.kr/news/articleView.html?idxno=335336"
+        }
+      ]
+    },
+    {
+      "category": "경쟁사동향",
+      "title": "홈플러스 자산 <br>매각 가속화",
+      "items": [
+        {
+          "keyword": "영업양수도",
+          "desc": "홈플러스익스프레스를 <b>NS홈쇼핑에 양도</b>"
+        },
+        {
+          "keyword": "자금조성",
+          "desc": "<b>1,200억원</b> 규모 자금 확보"
+        },
+        {
+          "keyword": "경영위기",
+          "desc": "직원 급여 지급 차질로 생존 모드"
+        }
+      ],
+      "footer": "경쟁사 구조조정 심화, 시장 재편 진행 중",
+      "sources": [
+        {
+          "title": "MBK-메리츠, 홈플러스 제로섬 게임 절정",
+          "url": "https://www.newsworks.co.kr/news/articleView.html?idxno=845209"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "셀럽 기반 여행상품<br>홈쇼핑 판매 확대",
+      "title": "셀프 피부관리 <br>수요 급증",
       "items": [
         {
-          "keyword": "연예인 마케팅",
-          "desc": "개그맨 <b>김준호</b>가 추천하는 태항산 여행 패키지"
+          "keyword": "속기미 관심",
+          "desc": "쇼호스트 미자 공개한 <b>숨겨진 색소침착</b>"
         },
         {
-          "keyword": "상품 다양화",
-          "desc": "여행·관광 상품의 <b>홈쇼핑 채널 진출</b> 증가"
+          "keyword": "상품기회",
+          "desc": "피부 고민층의 <b>지속적 관리 수요</b> 증가"
         },
         {
-          "keyword": "소비층",
-          "desc": "대자연 선호 여행자 타겟의 <b>역대급 가격</b> 제시"
+          "keyword": "마케팅",
+          "desc": "연예인 피부고민 공개로 대중 공감 확산"
         }
       ],
-      "footer": "홈쇼핑, 생활용품 벗어나 라이프스타일 상품으로 성장",
+      "footer": "셀프 피부케어 상품 판매 기회 확대 중",
       "sources": [
         {
-          "title": "바른투어, 김준호 태항산 여행 홈쇼핑",
-          "url": "https://sports.donga.com/life/article/all/20260626/134190896/1"
+          "title": "꿀피부인줄 알았는데 피부 속 기미 가득",
+          "url": "https://kormedi.com/?p=2827934"
         }
       ]
     },
     {
-      "category": "경쟁사 동향",
-      "title": "플랫폼 기반<br>청년 창업 생태계 구축",
+      "category": "사회공헌",
+      "title": "호국보훈월 <br>업계 기부 릴레이",
       "items": [
         {
-          "keyword": "JDC 전략",
-          "desc": "<b>K뷰티·K푸드·K컬처</b> 생산품 판매 플랫폼 운영"
+          "keyword": "NS홈쇼핑",
+          "desc": "경찰·소방 지원금 <b>총 1억원</b> 기부"
         },
         {
-          "keyword": "채널 운영",
-          "desc": "플랫폼과 <b>홈쇼핑 기반</b> 이중 판매채널 구성"
+          "keyword": "기부내용",
+          "desc": "순직공상 경찰관 자녀 장학금 포함"
         },
         {
-          "keyword": "청년 지원",
-          "desc": "청년들의 <b>직접 판매·창업</b> 기반 마련"
+          "keyword": "브랜드",
+          "desc": "사회공헌으로 기업 이미지 제고"
         }
       ],
-      "footer": "경쟁사, 홈쇼핑을 청년 창업 생태계의 핵심 채널로 활용",
+      "footer": "ESG경영 강화로 브랜드 신뢰도 향상 추세",
       "sources": [
         {
-          "title": "JDC 기술·사람·문화 융합 인재 양성",
-          "url": "http://www.jejunews.com/news/articleView.html?idxno=2226366"
+          "title": "호국 보훈의 달 맞아 시민 속으로",
+          "url": "https://www.sedaily.com/article/20060757?ref=naver"
+        },
+        {
+          "title": "건강검진부터 음식 나눔까지",
+          "url": "http://www.ftoday.co.kr/news/articleView.html?idxno=361164"
         }
       ]
     },
     {
       "category": "실적·성장",
-      "title": "제품 카테고리별<br>프리미엄 상품 판매 강화",
+      "title": "초복 시즌 <br>보양식 판매 호조",
       "items": [
         {
-          "keyword": "브랜드 확보",
-          "desc": "<b>JONR</b> 글로벌 로봇청소기 <b>X1 MAX</b> 특별가 판매"
+          "keyword": "GS샵",
+          "desc": "정관장 홍삼을 <b>TV홈쇼핑으로 집중 판매</b>"
         },
         {
-          "keyword": "방송 운영",
-          "desc": "SK스토아 홈쇼핑 <b>60분 집중 방송</b> 진행"
+          "keyword": "구성전략",
+          "desc": "한우·생닭·전복 등 <b>할인 행사 순차 실시</b>"
         },
         {
-          "keyword": "판매 전략",
-          "desc": "방송 중 <b>특별 혜택</b>으로 프리미엄 구매력 자극"
+          "keyword": "시즈널",
+          "desc": "초복 앞두고 보양식 <b>수요 집중 대비</b>"
         }
       ],
-      "footer": "홈쇼핝, 프리미엄 전자제품의 신뢰할 수 있는 판매처로 확립",
+      "footer": "계절 수요 기반 상품 기획으로 매출 최대화",
       "sources": [
         {
-          "title": "JONR 로봇청소기 SK스토아 홈쇼핑",
-          "url": "https://www.woodkorea.co.kr/news/articleView.html?idxno=90041"
-        }
-      ]
-    },
-    {
-      "category": "정책·규제",
-      "title": "다채널 유통 구조로<br>지역기업 수출 지원",
-      "items": [
-        {
-          "keyword": "협력사",
-          "desc": "<b>현대·롯데e·카카오스타일</b> 등 10개사 MD 참여"
-        },
-        {
-          "keyword": "플랫폼",
-          "desc": "K-MEDI 실크로드 플랫폼으로 <b>제품 경쟁력</b> 검토"
-        },
-        {
-          "keyword": "글로컬",
-          "desc": "홈쇼핑을 통한 <b>지역기업 세계시장</b> 진출 확대"
-        }
-      ],
-      "footer": "정부-기업-홈쇼핑 협력으로 지역기업의 글로벌 확장 가속화",
-      "sources": [
-        {
-          "title": "대구한의대 K-MEDI 실크로드 플랫폼",
-          "url": "https://news.unn.net/news/articleView.html?idxno=594022"
-        },
-        {
-          "title": "롯데홈쇼핑 드림보이스 서포터즈 발대식",
-          "url": "http://www.newslock.co.kr/news/articleView.html?idxno=132268"
+          "title": "초복 앞두고 입맛 잡는다 보양식 총출동",
+          "url": "https://www.segye.com/newsView/20260626512830?OutUrl=naver"
         }
       ]
     }
