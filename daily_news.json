@@ -1,268 +1,272 @@
 {
-  "date": "2026년 06월 28일",
-  "date_en": "JUNE 28, 2026",
+  "date": "2026년 06월 29일",
+  "date_en": "JUNE 29, 2026",
   "left": [
     {
       "category": "실적·성장",
-      "title": "제주 천혜향, 50분 완판<br>9,800만원 매출 달성",
+      "title": "제주 천혜향,<br>50분 만에 완판",
       "items": [
         {
-          "keyword": "판매 속도",
-          "desc": "방송 시작 후 <b>50분 만에</b> 3,027세트 완판"
+          "keyword": "판매량",
+          "desc": "<b>3,027세트</b> 완판 (50분 내 소진)"
         },
         {
-          "keyword": "매출 규모",
-          "desc": "단일 상품 <b>약 9,800만원</b> 기록"
+          "keyword": "매출액",
+          "desc": "약 <b>9,800만원</b> 기록"
         },
         {
-          "keyword": "시사점",
-          "desc": "농산물 기획상품의 <b>높은 수익성</b> 입증"
+          "keyword": "전략",
+          "desc": "지역 특산물 기획상품화로 판로 다변화"
         }
       ],
-      "footer": "제한된 물량의 프리미엄 상품이 초고속 판매 성공의 핵심",
+      "footer": "로컬 상품의 차별화된 마케팅으로 높은 전환율 달성",
       "sources": [
         {
-          "title": "전주 동네수퍼마켓, 전국 유통망",
+          "title": "전주 동네수퍼마켓, 상생 입고...",
           "url": "http://www.domin.co.kr/news/articleView.html?idxno=1560029"
         }
       ]
     },
     {
       "category": "트렌드",
-      "title": "버킷리스트 여행, 新성장<br>프리미엄 여행상품 확대",
+      "title": "버킷리스트 여행,<br>홈쇼핑 신성장 축",
       "items": [
         {
-          "keyword": "수요 변화",
-          "desc": "단순 휴양지에서 <b>'꼭 가봐야 할'</b> 특별 여행으로 전환"
+          "keyword": "시장변화",
+          "desc": "코로나 이후 <b>해외여행 일상화</b>로 관심 증가"
         },
         {
-          "keyword": "상품 라인업",
-          "desc": "구채구·오로라·남미 등 <b>희소성 높은</b> 상품 연이어 편성"
+          "keyword": "수요확대",
+          "desc": "프리미엄 장거리 여행 수요 <b>급증</b>"
         },
         {
-          "keyword": "고객 구조",
-          "desc": "직항 노선 확대로 <b>프리미엄 장거리</b> 수요 증가"
+          "keyword": "상품라인",
+          "desc": "구채구·오로라·남미 등 <b>희소성 높은</b> 상품"
         }
       ],
-      "footer": "포스트코로나 시대, 경험과 추억 중심의 여행 트렌드 반영한 신규 성장 기회",
+      "footer": "단순 휴양지에서 경험 기반 프리미엄 여행으로 패러다임 전환",
       "sources": [
         {
-          "title": "버킷리스트 여행상품 잇달아 선",
-          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=202356"
+          "title": "홈앤쇼핑, 버킷리스트 여행 특집",
+          "url": "https://www.thepublic.kr/news/articleView.html?idxno=309254"
         },
         {
-          "title": "구채구·남미·오로라 등 버킷리스트",
-          "url": "http://www.popcornnews.net/news/articleView.html?idxno=124928"
+          "title": "구채구부터 오로라까지 버킷리스트...",
+          "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=202356"
         }
       ]
     },
     {
       "category": "마케팅",
-      "title": "차별화된 가치제안으로<br>고객 신뢰 강화",
+      "title": "차별화 여행상품,<br>수수료 부담 최소화",
       "items": [
         {
-          "keyword": "비용 투명성",
-          "desc": "<b>옵션·쇼핑·유류료·환율차액</b> 없는 조건으로 신뢰 구축"
+          "keyword": "기획",
+          "desc": "옵션·환율차액·유류할증료 <b>제로 정책</b>"
         },
         {
-          "keyword": "희소성 강조",
-          "desc": "평소 만나기 어려운 <b>특별한 상품</b>만 엄선 편성"
+          "keyword": "고객만족",
+          "desc": "추가 비용 부담 제거로 <b>실제 가성비</b> 극대화"
         },
         {
-          "keyword": "판로 다변화",
-          "desc": "지역 수퍼마켓부터 국내외 여행까지 <b>포트폴리오 확대</b>"
+          "keyword": "전략",
+          "desc": "투명 가격정책으로 <b>신뢰도</b> 강화"
         }
       ],
-      "footer": "투명한 가격정책과 희소성이 결합된 프리미엄 마케팅 전략이 핵심",
+      "footer": "비용 투명성으로 고객 신뢰 구축 및 차별화 경쟁력 확보",
       "sources": [
         {
-          "title": "구채구·남미·오로라 등 버킷리스트",
+          "title": "홈앤쇼핑, 구채구·남미·오로라 등...",
           "url": "http://www.popcornnews.net/news/articleView.html?idxno=124928"
         }
       ]
     },
     {
-      "category": "정책·규제",
-      "title": "TV홈쇼핑, 수익성<br>악화 위기 심화",
+      "category": "산업이슈",
+      "title": "홈쇼핑 수익성,<br>송출수수료에 잠식",
       "items": [
         {
-          "keyword": "구조 문제",
-          "desc": "벌어들인 매출 대부분이 <b>송출수수료로 유출</b>"
+          "keyword": "구조문제",
+          "desc": "벌어들인 매출 <b>대부분이 수수료</b>로 유출"
         },
         {
-          "keyword": "수익 역전",
-          "desc": "<b>'돈을 버는 사업'에서<br>'돈이 새는 사업'</b>으로 변질"
+          "keyword": "수익성",
+          "desc": "TV홈쇼핑 수익구조 <b>역전</b> 상황"
         },
         {
-          "keyword": "산업 위협",
-          "desc": "모바일 쇼핑·라이브커머스 확산으로 <b>TV 의존도 감소</b>"
+          "keyword": "위기요인",
+          "desc": "모바일·라이브커머스 확산으로 <b>경쟁 심화</b>"
         }
       ],
-      "footer": "전통 TV홈쇼핑의 수익 모델 재검토 및 채널 다각화 시급",
+      "footer": "수익성 악화에 대응한 신규 수익원 다각화 시급",
       "sources": [
         {
-          "title": "TV홈쇼핑, 벌수록 새는 구조",
+          "title": "TV홈쇼핑, 벌수록 새는 구조...",
           "url": "https://www.newsway.co.kr/news/view?ud=2026062614262588821"
         }
       ]
     },
     {
       "category": "성장전략",
-      "title": "지역 소상공인 상생<br>전국 유통망 확보",
+      "title": "지역상품부터<br>프리미엄 여행까지",
       "items": [
         {
-          "keyword": "협력 구조",
-          "desc": "전주 동네수퍼마켓 물품을 <b>홈쇼핑 플랫폼</b>으로 유통"
+          "keyword": "포트폴리오",
+          "desc": "농산물→여행상품 <b>다각화 편성</b>"
         },
         {
-          "keyword": "판로 개척",
-          "desc": "지역 제품의 <b>전국 유통망 구축</b>으로 판매 확대"
+          "keyword": "타겟확대",
+          "desc": "대중상품에서 <b>프리미엄</b> 고객층으로 확대"
         },
         {
-          "keyword": "상생 모델",
-          "desc": "소상공인 성장과 <b>홈앤쇼핑 신규 고객</b> 동시 확보"
+          "keyword": "차별화",
+          "desc": "기획력과 투명성으로 <b>경쟁사 대비 우위</b> 확보"
         }
       ],
-      "footer": "지역 중소 공급업체와의 상생 협력이 신규 매출 창출과 사회적 책임의 이중 효과",
+      "footer": "수평적 판매 다변화와 수직적 프리미엄화 동시 추진 중",
       "sources": [
         {
-          "title": "전주 동네수퍼마켓, 전국 유통망",
+          "title": "전주 동네수퍼마켓, 상생 입고...",
           "url": "http://www.domin.co.kr/news/articleView.html?idxno=1560029"
+        },
+        {
+          "title": "여행 버킷리스트 총집합...",
+          "url": "https://www.ziksir.com/news/articleView.html?idxno=138192"
         }
       ]
     }
   ],
   "right": [
     {
-      "category": "실적·성장",
-      "title": "현대홈쇼핑, 삼성전자 프로모션<br>최대 20% 혜택 제공",
+      "category": "경쟁사 동향",
+      "title": "현대홈쇼핑, 삼성전자와<br>전략적 제휴 추진",
       "items": [
         {
-          "keyword": "온누리상품권",
-          "desc": "<b>20%</b> 지급으로 고객 유입 극대화"
+          "keyword": "제휴 전략",
+          "desc": "<b>삼성전자 감사 페스티벌</b>과 협력으로 고객 확대"
         },
         {
-          "keyword": "적립금 혜택",
-          "desc": "최대 <b>14%</b> 추가 적립으로 경쟁력 강화"
+          "keyword": "혜택 강화",
+          "desc": "디지털 온누리상품권 → 현대H몰 <b>적립금 2배</b>"
         },
         {
-          "keyword": "기간 연장",
-          "desc": "7월 31일까지 확대하여 <b>판매 극대화</b>"
+          "keyword": "플랫폼 확대",
+          "desc": "브랜드 신뢰도 높은 파트너십으로 고객 유입 극대화"
         }
       ],
-      "footer": "메인 브랜드 파트너십으로 고객 만족도와 재방문율 동시 확보",
+      "footer": "대형 기업과의 협력이 홈쇼핑 경쟁력 강화의 핵심",
       "sources": [
         {
-          "title": "삼성전자 감사 페스티벌 진행",
-          "url": "https://www.etoday.co.kr/news/view/2597958"
+          "title": "현대홈쇼핑, 삼성전자 감사 페스티벌 참여",
+          "url": "https://www.webeconomy.co.kr/news/articleView.html?idxno=2216154"
+        }
+      ]
+    },
+    {
+      "category": "실적·성장",
+      "title": "뷰티/건강식품,<br>홈쇼핑 신성장 동력",
+      "items": [
+        {
+          "keyword": "완판 사례",
+          "desc": "엘라비에 '기미쿠션' 롯데홈쇼핑 <b>전량 완판</b> 달성"
         },
         {
-          "title": "현대홈쇼핑 삼성전자 혜택 공개",
-          "url": "http://www.financialreview.co.kr/news/articleView.html?idxno=43176"
+          "keyword": "채널 다각화",
+          "desc": "농산물 업체, 라이브커머스 채널 개설으로 <b>수익 확대</b>"
+        },
+        {
+          "keyword": "시장 기회",
+          "desc": "더모코스메틱, 자사몰·약국·홈쇼핑 등 <b>다중 채널 판매</b>"
+        }
+      ],
+      "footer": "고기능성 상품과 라이브커머스가 신성장 분야로 부상",
+      "sources": [
+        {
+          "title": "휴메딕스 기미쿠션 완판",
+          "url": "http://www.doctorstimes.com/news/articleView.html?idxno=238792"
+        },
+        {
+          "title": "농산물 라이브커머스 확대",
+          "url": "http://www.gndomin.com/news/articleView.html?idxno=480401"
         }
       ]
     },
     {
       "category": "경쟁사 동향",
-      "title": "홈플러스, 자금난 심화<br>2000억 조달 난항",
+      "title": "롯데온, 버티컬<br>전략으로 재도약",
       "items": [
         {
-          "keyword": "자금난 심화",
-          "desc": "필요 <b>2000억원</b> 중 <b>1000억원</b>만 확보"
+          "keyword": "플랫폼 통합",
+          "desc": "롯데백화점·마트·홈쇼핑 등 <b>그룹 계열사 연결</b>"
         },
         {
-          "keyword": "구조 조정",
-          "desc": "익스프레스 사업부 NS홈쇼핑에 매각 단행"
+          "keyword": "차별화 전략",
+          "desc": "통합 플랫폼 대신 <b>카테고리별 버티컬</b> 강화"
         },
         {
-          "keyword": "회생 리스크",
-          "desc": "<b>대주주 책임</b> 강화 필요 상황 직면"
+          "keyword": "고객층 확대",
+          "desc": "프리미엄 브랜드부터 생활용품까지 <b>전폭적 확대</b>"
         }
       ],
-      "footer": "경쟁사의 구조적 위기는 우리의 시장점유율 확대 기회",
+      "footer": "대형 유통사들의 플랫폼 통합과 차별화 경쟁 심화",
       "sources": [
         {
-          "title": "홈플러스 자금 조달 난항",
-          "url": "https://www.newscj.com/news/articleView.html?idxno=3412696"
-        },
-        {
-          "title": "익스프레스 정상화 사례 분석",
-          "url": "https://www.etoday.co.kr/news/view/2597705"
-        }
-      ]
-    },
-    {
-      "category": "트렌드",
-      "title": "PB 상품 중심 확장<br>'더김치' 사례에서 배우다",
-      "items": [
-        {
-          "keyword": "저자본 시작",
-          "desc": "자본금 <b>300만원</b>에서 시작한 성공 사례"
-        },
-        {
-          "keyword": "채널 다각화",
-          "desc": "주요 홈쇼핑 <b>전채널 입점</b> 달성"
-        },
-        {
-          "keyword": "지속 성장",
-          "desc": "신뢰도 높은 PB 브랜드로 <b>고공행진</b>"
-        }
-      ],
-      "footer": "자체 브랜드 개발과 육성이 수익성 확보의 핵심 전략",
-      "sources": [
-        {
-          "title": "더김치 CEO 성공 신화",
-          "url": "https://www.tvreport.co.kr/star/article/1057397/"
-        }
-      ]
-    },
-    {
-      "category": "실적·성장",
-      "title": "롯데홈쇼핑, 건기식<br>해외 진출 본격화",
-      "items": [
-        {
-          "keyword": "비에날씬",
-          "desc": "건기식 브랜드 <b>일본·베트남</b> 등 진출"
-        },
-        {
-          "keyword": "현지 유통망",
-          "desc": "해외 판로 발굴 및 <b>다중 채널화</b> 추진"
-        },
-        {
-          "keyword": "글로벌 확대",
-          "desc": "<b>수출 기반</b> 마련으로 신성장 동력 확보"
-        }
-      ],
-      "footer": "국내 시장 포화 속 해외 시장 개척이 실적 성장의 새로운 축",
-      "sources": [
-        {
-          "title": "롯데홈쇼핑 건기식 해외 진출",
-          "url": "https://www.etoday.co.kr/news/view/2597943"
+          "title": "롯데온의 버티컬 전략",
+          "url": "https://www.kukinews.com/article/view/kuk202606290184"
         }
       ]
     },
     {
       "category": "정책·규제",
-      "title": "전통시장 상생 전략<br>'온누리샵' 활성화 중",
+      "title": "현대홈쇼핑,<br>AI·빅데이터 혁신 추진",
       "items": [
         {
-          "keyword": "온누리상품권",
-          "desc": "<b>전통시장 상생</b> 전문관 개설로 사회적 가치 창출"
+          "keyword": "혁신 참여",
+          "desc": "G-오픈이노베이션 챌린지 <b>참가기업</b>으로 선정"
         },
         {
-          "keyword": "정부 정책 연계",
-          "desc": "온누리샵 통해 <b>소비 유도</b> 및 활성화"
+          "keyword": "기술 분야",
+          "desc": "<b>AI·빅데이터, 바이오·헬스케어</b> 등 미래 기술 개발"
         },
         {
-          "keyword": "ESG 경영",
-          "desc": "사회 공헌 이미지 강화 및 <b>브랜드 가치</b> 상승"
+          "keyword": "협력 확대",
+          "desc": "CJ·삼성·아모레 등 <b>우수 기업과 협력</b> 강화"
         }
       ],
-      "footer": "정부 정책 동반 상생 마케팅은 기업 이미지와 매출 동시 확보",
+      "footer": "홈쇼핑 업계도 디지털·AI 혁신으로 경쟁력 강화 중",
       "sources": [
         {
-          "title": "온누리샵 활성화 전략",
-          "url": "https://www.etoday.co.kr/news/view/2597958"
+          "title": "김해시 G-오픈이노베이션 챌린지",
+          "url": "http://www.newsprime.co.kr/news/article.html?no=738371"
+        }
+      ]
+    },
+    {
+      "category": "트렌드",
+      "title": "홈쇼핑, 다채널<br>유통 전략으로 전환",
+      "items": [
+        {
+          "keyword": "채널 다양화",
+          "desc": "방송 중심 → 자사몰·약국·면세점 <b>멀티채널화</b>"
+        },
+        {
+          "keyword": "한계 극복",
+          "desc": "기존 방송 수수료 부담에서 <b>신규 채널로 수익성</b> 개선"
+        },
+        {
+          "keyword": "미래 경영",
+          "desc": "라이브커머스·온라인 플랫폼으로 <b>생존 전략 전환</b>"
+        }
+      ],
+      "footer": "전통 TV홈쇼핑의 다채널화가 업계 생존의 필수 과제",
+      "sources": [
+        {
+          "title": "열매나무 라이브커머스 채널 개설",
+          "url": "http://www.gndomin.com/news/articleView.html?idxno=480401"
+        },
+        {
+          "title": "에이지온 멀티채널 판매",
+          "url": "https://www.joongang.co.kr/article/25440840"
         }
       ]
     }
