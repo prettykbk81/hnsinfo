@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실시간 라이브 방송 분석 · 홈앤쇼핑 AI</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
+.page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.page-title{font-size:16px;font-weight:700;color:#111;display:flex;align-items:center;gap:8px;}
+.page-title .badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.5px;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;}
+.home-btn:hover{background:#f0f0f0;color:#ef4444;}
+.wrap{max-width:1360px;margin:24px auto;padding:0 16px;}
+
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start;}
+.col-head{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:#333;margin-bottom:10px;}
+.col-num{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;font-size:12px;font-weight:800;flex-shrink:0;}
+@media (max-width:980px){.three-col{grid-template-columns:1fr;}}
+
+.section{background:#fff;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.section h2{font-size:14px;font-weight:700;color:#ef4444;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.search-bar{display:flex;gap:8px;}
+.search-bar input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;}
+.search-bar input:focus{outline:none;border-color:#ef4444;}
+.search-bar button{background:#ef4444;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.search-bar button:hover{background:#dc2626;} .search-bar button:disabled{background:#999;cursor:not-allowed;}
+.hint{font-size:11px;color:#999;margin-top:8px;line-height:1.6;}
+
+.loading{text-align:center;padding:36px;color:#888;}
+.spinner{width:28px;height:28px;border:3px solid #ddd;border-top-color:#ef4444;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error{color:#c0392b;font-weight:600;padding:16px;text-align:center;white-space:pre-wrap;line-height:1.6;}
+
+/* 라이브 패널 */
+.live-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;}
+.live-player{width:100%;max-height:480px;background:#000;border-radius:10px;display:block;}
+.live-status{font-size:12px;margin-top:10px;padding:8px 12px;border-radius:8px;}
+.live-status.ok{background:#f0fdf4;color:#16a34a;}
+.live-status.err{background:#fef2f2;color:#c0392b;}
+
+/* 실시간 자막 */
+.caption-count{font-size:11.5px;font-weight:700;color:#ef4444;background:#fef2f2;padding:3px 10px;border-radius:20px;}
+.transcript-box{max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:2px;}
+.caption-card{border:1px solid #eee;border-radius:10px;padding:12px 14px;background:#fff;}
+.caption-top{display:flex;align-items:center;justify-content:space-between;color:#aaa;font-size:11px;margin-bottom:8px;}
+.caption-top .time{display:flex;align-items:center;gap:4px;}
+.caption-text{font-size:13px;line-height:1.6;color:#333;}
+.spk{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:6px;white-space:nowrap;}
+.spk-1{background:#eff6ff;color:#2563eb;}
+.spk-2{background:#f0fdf4;color:#16a34a;}
+.spk-3{background:#fff7ed;color:#ea580c;}
+.collapsible-head{cursor:pointer;justify-content:space-between;user-select:none;margin-bottom:0;}
+.collapsible-head.open{margin-bottom:14px;}
+.collapsible-head.open #liveUrlChevron{transform:rotate(180deg);}
+
+/* 방송 정보 카드 */
+.bi-card{display:flex;gap:14px;}
+.bi-thumb{width:88px;height:88px;border-radius:8px;object-fit:cover;background:#f5f5f5;flex-shrink:0;}
+.bi-info{flex:1;min-width:0;}
+.bi-name{font-size:15px;font-weight:700;color:#111;line-height:1.4;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 16px;font-size:12.5px;color:#555;}
+.bi-grid b{color:#ef4444;font-weight:700;margin-right:4px;}
+.bi-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:8px;vertical-align:middle;}
+.bi-badge.new{background:#fef2f2;color:#ef4444;}
+.bi-badge.rerun{background:#f0f9ff;color:#0284c7;}
+.bi-badge.checking{background:#f5f5f5;color:#999;}
+
+.bi-progress{margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;}
+.bi-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.bi-time-range{font-size:13px;font-weight:700;color:#333;}
+.bi-percent{font-size:13px;font-weight:800;color:#16a34a;}
+.bi-bar{height:8px;background:#eee;border-radius:4px;overflow:hidden;}
+.bi-bar-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:4px;transition:width .3s;}
+.bi-progress-sub{display:flex;justify-content:space-between;margin-top:8px;font-size:11.5px;color:#999;}
+
+/* 경쟁사 카드 (컬럼2) */
+.comp-card{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #f3f3f3;}
+.comp-card:last-child{border-bottom:none;}
+.comp-card.pending{color:#bbb;font-size:12px;padding:10px 0;display:block;}
+.comp-history{font-size:12px;color:#bbb;margin-top:4px;}
+.comp-history-date{font-size:12px;font-weight:700;color:#ef4444;margin-right:8px;}
+.comp-history-price{font-size:12px;font-weight:800;color:#ef4444;}
+.comp-history-name{font-size:12px;color:#555;margin-top:3px;line-height:1.4;}
+.comp-thumb{width:44px;height:44px;border-radius:6px;object-fit:cover;background:#f5f5f5;flex-shrink:0;}
+.comp-name{font-size:11.5px;font-weight:800;color:#666;margin-bottom:3px;}
+.comp-pname{font-size:12.5px;color:#111;font-weight:600;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.comp-price{font-size:12px;font-weight:800;color:#ef4444;margin-top:2px;}
+
+/* 웹 상품정보 (컬럼3) */
+.web-kw{font-size:11px;color:#999;margin-bottom:10px;}
+.web-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;font-size:12px;color:#555;margin-bottom:14px;}
+.web-stat-grid b{color:#ef4444;display:block;font-size:11px;margin-bottom:2px;}
+.web-mall-list{font-size:12px;color:#555;line-height:1.9;}
+.web-section-title{font-size:12px;font-weight:800;color:#ef4444;margin:14px 0 8px;padding-top:14px;border-top:1px solid #f0f0f0;}
+.trend-svg{width:100%;height:60px;display:block;}
+
+/* AI 문맥 분석 */
+.insight-text{font-size:13px;line-height:1.8;color:#333;white-space:pre-wrap;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">
+    <span class="live-dot" style="width:10px;height:10px;"></span>
+    실시간 라이브 방송 분석 <span class="badge">LIVE</span>
+  </span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="section">
+    <h2 class="collapsible-head" onclick="toggleLiveUrl()">
+      <span><span class="live-dot" style="display:inline-block;"></span> URL</span>
+      <svg id="liveUrlChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .15s;"><polyline points="6,9 12,15 18,9"/></svg>
+    </h2>
+    <div id="liveUrlBody" style="display:none;">
+      <div class="search-bar">
+        <input type="text" id="liveUrl" value="https://livevod.hnsmall.com:2935/live/mp4:a.stream/playlist.m3u8" placeholder="홈앤쇼핑 라이브 방송 URL을 입력하세요 (m3u8)" onkeydown="if(event.key==='Enter')playLive();">
+        <button id="btnPlayLive" onclick="playLive()">재생</button>
+      </div>
+      <div class="hint">
+        ※ HLS(m3u8 + .ts) — 홈앤쇼핑 라이브 송출 표준을 사용합니다. 브라우저 재생은 hls.js로 처리합니다.<br/>
+        ※ 서버에서 FFmpeg로 오디오를 실시간 추출해 faster-whisper(small)로 발화 텍스트를 생성합니다.
+      </div>
+    </div>
+    <div id="liveStatus"></div>
+  </div>
+
+  <div class="three-col">
+    <!-- 1: 방송 정보 · 영상 · 자막 · AI 문맥분석 -->
+    <div class="col">
+      <div class="col-head"><span class="col-num">1</span>방송 정보 · 영상 · 자막</div>
+
+      <div class="section" id="broadcastInfoCard">
+        <h2>📺 현재 방송 정보</h2>
+        <div class="loading" style="padding:20px;"><div class="spinner"></div>방송 정보를 불러오는 중...</div>
+      </div>
+
+      <div class="section" style="padding:16px;">
+        <video id="livePlayerEl" class="live-player" controls muted></video>
+      </div>
+
+      <div class="section">
+        <h2 style="justify-content:space-between;">
+          <span>📄 실시간 자막</span>
+          <span class="caption-count" id="captionCount">0건</span>
+        </h2>
+        <div id="liveTranscript" class="transcript-box">
+          <div class="hint" style="margin-top:0;">재생을 시작하면 음성 인식 결과가 여기에 표시됩니다. (모델 최초 로딩 시 다소 걸릴 수 있어요)</div>
+        </div>
+      </div>
+
+      <div class="section" id="contextInsightCard">
+        <h2>🧠 AI 문맥 분석</h2>
+        <div class="hint" style="margin-top:0;">자막이 어느 정도 쌓이면 자동으로 문맥을 분석해 보여드립니다.</div>
+      </div>
+    </div>
+
+    <!-- 2: 경쟁사 방송 정보 -->
+    <div class="col">
+      <div class="col-head"><span class="col-num">2</span>경쟁사 방송 정보</div>
+      <div class="section" id="competitorCard">
+        <div class="loading" style="padding:20px;"><div class="spinner"></div>불러오는 중...</div>
+      </div>
+    </div>
+
+    <!-- 3: 웹 상품 정보(네이버/DataLab) -->
+    <div class="col">
+      <div class="col-head"><span class="col-num">3</span>웹 상품 정보</div>
+      <div class="section" id="webInfoCard">
+        <div class="hint" style="margin-top:0;">방송 정보가 확인되면 네이버 쇼핑/검색 트렌드를 불러옵니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var PROXY = 'http://localhost:8502';
+var _hls = null;
+
+function toggleLiveUrl() {
+  var body = document.getElementById('liveUrlBody');
+  var head = document.getElementById('liveUrlChevron').closest('.collapsible-head');
+  var open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  head.classList.toggle('open', !open);
+}
+
+function playLive() {
+  var url = document.getElementById('liveUrl').value.trim();
+  var statusEl = document.getElementById('liveStatus');
+  var video = document.getElementById('livePlayerEl');
+  if (!url) { alert('HLS 스트림 주소를 입력해주세요.'); return; }
+
+  statusEl.className = 'live-status';
+  statusEl.textContent = '';
+
+  if (_hls) { _hls.destroy(); _hls = null; }
+
+  if (window.Hls && Hls.isSupported()) {
+    _hls = new Hls();
+    _hls.loadSource(url);
+    _hls.attachMedia(video);
+    _hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      statusEl.className = 'live-status ok';
+      statusEl.textContent = '✅ 스트림 연결 완료 — 재생을 시작합니다.';
+      video.play().catch(function () {});
+    });
+    _hls.on(Hls.Events.ERROR, function (event, data) {
+      if (data.fatal) {
+        statusEl.className = 'live-status err';
+        statusEl.textContent = '❌ 스트림 재생 실패: ' + (data.details || data.type);
+      }
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.play().catch(function () {});
+    statusEl.className = 'live-status ok';
+    statusEl.textContent = '✅ 스트림 연결을 시도합니다. (Safari 네이티브 재생)';
+  } else {
+    statusEl.className = 'live-status err';
+    statusEl.textContent = '❌ 이 브라우저는 HLS 재생을 지원하지 않습니다.';
+  }
+
+  startLiveSTT(url);
+  loadBroadcastInfo();
+}
+
+function fmtCategory(c) { return c ? c : '알 수 없음'; }
+
+async function loadBroadcastInfo() {
+  var card = document.getElementById('broadcastInfoCard');
+  card.innerHTML = '<h2>📺 현재 방송 정보</h2><div class="loading" style="padding:20px;"><div class="spinner"></div>방송 정보를 불러오는 중...</div>';
+
+  try {
+    var res = await fetch(PROXY + '/api/live-broadcast-info');
+    var d = await res.json();
+    if (d.error) {
+      card.innerHTML = '<h2>📺 현재 방송 정보</h2><div class="error">' + esc(d.error) + '</div>';
+      return;
+    }
+
+    card.innerHTML =
+      '<h2>📺 현재 방송 정보 <span class="bi-badge checking" id="biNewBadge">확인 중...</span></h2>' +
+      '<div class="bi-card">' +
+        '<img class="bi-thumb" src="' + esc(d.image || '') + '" onerror="this.style.visibility=\'hidden\'">' +
+        '<div class="bi-info">' +
+          '<div class="bi-name">' + esc(d.name || '(상품명 없음)') + '</div>' +
+          '<div class="bi-grid">' +
+            '<div><b>아이템</b>' + esc(d.item || '-') + '</div>' +
+            '<div><b>카테고리</b>' + esc(fmtCategory(d.category)) + '</div>' +
+            '<div><b>가격</b>' + esc(d.price || '-') + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="bi-progress" id="biProgress"></div>';
+
+    if (d.code) loadBroadcastHistory(d.code);
+    if (d.name) loadWebProductInfo(d.name);
+
+    _biTimeStart = d.time_start || '';
+    _biTimeEnd = d.time_end || '';
+    _currentBroadcastName = d.name || d.item || '';
+    loadCompetitorInfo(_currentBroadcastName);
+    renderProgress();
+    if (_biProgressTimer) clearInterval(_biProgressTimer);
+    _biProgressTimer = setInterval(renderProgress, 60000);
+  } catch (e) {
+    card.innerHTML = '<h2>📺 현재 방송 정보</h2><div class="error">방송 정보를 불러오지 못했습니다: ' + esc(e.message) + '</div>';
+  }
+}
+
+var _biTimeStart = '';
+var _biTimeEnd = '';
+var _biProgressTimer = null;
+var _currentBroadcastName = '';
+
+function parseHM(hm) {
+  var parts = (hm || '').split(':');
+  if (parts.length !== 2) return null;
+  var h = parseInt(parts[0], 10), m = parseInt(parts[1], 10);
+  if (isNaN(h) || isNaN(m)) return null;
+  return h * 60 + m;
+}
+
+function renderProgress() {
+  var el = document.getElementById('biProgress');
+  if (!el) return;
+  var startMin = parseHM(_biTimeStart);
+  var endMin = parseHM(_biTimeEnd);
+  if (startMin === null || endMin === null) { el.innerHTML = ''; return; }
+  if (endMin <= startMin) endMin += 24 * 60; // 자정을 넘기는 방송(예: 23:55~01:00) 보정
+
+  var now = new Date();
+  var nowMin = now.getHours() * 60 + now.getMinutes();
+  if (nowMin < startMin) nowMin += 24 * 60;
+
+  var total = endMin - startMin;
+  var elapsed = Math.min(Math.max(nowMin - startMin, 0), total);
+  var remaining = total - elapsed;
+  var percent = total > 0 ? Math.round((elapsed / total) * 100) : 0;
+
+  el.innerHTML =
+    '<div class="bi-progress-top">' +
+      '<span class="bi-time-range">' + esc(_biTimeStart) + ' ~ ' + esc(_biTimeEnd) + '</span>' +
+      '<span class="bi-percent">' + percent + '%</span>' +
+    '</div>' +
+    '<div class="bi-bar"><div class="bi-bar-fill" style="width:' + percent + '%;"></div></div>' +
+    '<div class="bi-progress-sub">' +
+      '<span>경과 ' + elapsed + '분</span><span>총 ' + total + '분</span><span>남음 ' + remaining + '분</span>' +
+    '</div>';
+}
+
+async function loadBroadcastHistory(code) {
+  var badge = document.getElementById('biNewBadge');
+  try {
+    var res = await fetch(PROXY + '/api/broadcast-history?code=' + encodeURIComponent(code));
+    var d = await res.json();
+    if (!badge) return;
+    if (d.is_new) {
+      badge.className = 'bi-badge new';
+      badge.textContent = '🆕 신상품 (최근 6개월 방송 이력 없음)';
+    } else {
+      badge.className = 'bi-badge rerun';
+      var timeRange = (d.last_time_start && d.last_time_end) ? (' ' + d.last_time_start + '~' + d.last_time_end) : '';
+      badge.textContent = '직전 방송: ' + esc(d.last_date || '') + esc(timeRange);
+    }
+  } catch (e) {
+    if (badge) { badge.className = 'bi-badge checking'; badge.textContent = '확인 실패'; }
+  }
+}
+
+async function loadCompetitorInfo(productName) {
+  var card = document.getElementById('competitorCard');
+  card.innerHTML = '<div class="loading" style="padding:20px;"><div class="spinner"></div>불러오는 중...</div>';
+  try {
+    var res = await fetch(PROXY + '/api/live-all-channels?name=' + encodeURIComponent(productName || ''));
+    var list = await res.json();
+    var others = list.filter(function (ch) { return ch.company !== '홈앤쇼핑' && ch.status === 'ok'; });
+    card.innerHTML = others.map(function (ch) {
+      return (
+        '<div class="comp-card">' +
+          '<img class="comp-thumb" src="' + esc(ch.image || '') + '" onerror="this.style.visibility=\'hidden\'">' +
+          '<div>' +
+            '<div class="comp-name">' + esc(ch.company) + '</div>' +
+            '<div class="comp-pname">' + esc(ch.name || '(상품명 없음)') + '</div>' +
+            '<div class="comp-price">' + esc(ch.price || '-') + '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    if (productName) loadCompetitorHistory(productName);
+    else showCompetitorEmptyIfNeeded();
+  } catch (e) {
+    card.innerHTML = '<div class="error">경쟁사 정보를 불러오지 못했습니다.</div>';
+  }
+}
+
+async function loadCompetitorHistory(productName) {
+  var card = document.getElementById('competitorCard');
+  ['CJ온스타일', '롯데홈쇼핑', '현대홈쇼핑', 'NS홈쇼핑'].forEach(function (company) {
+    var el = document.createElement('div');
+    el.className = 'comp-card pending';
+    el.setAttribute('data-company', company);
+    el.innerHTML =
+      '<div class="comp-name">' + esc(company) + '</div>' +
+      '<div class="comp-history">최근 1개월 내 동일 방송 이력 확인 중...</div>';
+    card.appendChild(el);
+  });
+
+  try {
+    var res = await fetch(PROXY + '/api/competitor-history?name=' + encodeURIComponent(productName));
+    var d = await res.json();
+    (d.results || []).forEach(function (r) {
+      var elCard = card.querySelector('.comp-card.pending[data-company="' + r.company + '"]');
+      if (!elCard) return;
+      if (r.found) {
+        elCard.querySelector('.comp-history').innerHTML =
+          '<span class="comp-history-date">📅 ' + esc(r.date) + ' ' + esc(r.time_start) +
+            (r.time_end ? '~' + esc(r.time_end) : '') + '</span>' +
+          (r.price ? '<span class="comp-history-price">' + Number(r.price).toLocaleString() + '원</span>' : '') +
+          '<div class="comp-history-name">' + esc(r.name) + '</div>';
+      } else {
+        elCard.remove();
+      }
+    });
+  } catch (e) {
+    card.querySelectorAll('.comp-card.pending').forEach(function (el) { el.remove(); });
+  }
+  showCompetitorEmptyIfNeeded();
+}
+
+function showCompetitorEmptyIfNeeded() {
+  var card = document.getElementById('competitorCard');
+  if (!card.querySelector('.comp-card')) {
+    card.innerHTML = '<div class="hint" style="margin-top:0;">최근 1개월 내 동일 상품을 방송한 경쟁사가 없습니다.</div>';
+  }
+}
+
+async function loadWebProductInfo(name) {
+  var card = document.getElementById('webInfoCard');
+  card.innerHTML = '<div class="loading" style="padding:20px;"><div class="spinner"></div>네이버 쇼핑/트렌드 조회 중...</div>';
+  try {
+    var res = await fetch(PROXY + '/api/product-web-info?name=' + encodeURIComponent(name));
+    var d = await res.json();
+    var shop = d.shop || {};
+    var trend = d.trend || {};
+
+    var html = '<div class="web-kw">검색어: "' + esc(d.keyword || name) + '"</div>';
+
+    if (shop.avg_price) {
+      html += '<div class="web-stat-grid">' +
+        '<div><b>평균가</b>' + Number(shop.avg_price).toLocaleString() + '원</div>' +
+        '<div><b>최저가</b>' + Number(shop.min_price).toLocaleString() + '원</div>' +
+        '<div><b>최고가</b>' + Number(shop.max_price).toLocaleString() + '원</div>' +
+        '<div><b>판매처 수</b>' + (shop.mall_count || 0) + '곳</div>' +
+      '</div>';
+      if (shop.top_malls && shop.top_malls.length) {
+        html += '<div class="web-mall-list">' +
+          shop.top_malls.map(function (m) { return esc(m.name) + ' (' + m.count + ')'; }).join(' · ') +
+        '</div>';
+      }
+    } else {
+      html += '<div class="hint" style="margin-top:0;">네이버 쇼핑 검색 결과가 없습니다.</div>';
+    }
+
+    if (trend.values && trend.values.length) {
+      html += '<div class="web-section-title">📈 최근 90일 검색 트렌드</div>' + renderTrendSvg(trend.values);
+    }
+
+    card.innerHTML = html;
+  } catch (e) {
+    card.innerHTML = '<div class="error">웹 상품 정보를 불러오지 못했습니다.</div>';
+  }
+}
+
+function renderTrendSvg(values) {
+  var w = 260, h = 60, pad = 4;
+  var max = Math.max.apply(null, values) || 1;
+  var step = values.length > 1 ? (w - pad * 2) / (values.length - 1) : 0;
+  var points = values.map(function (v, i) {
+    var x = pad + i * step;
+    var y = h - pad - (v / max) * (h - pad * 2);
+    return x.toFixed(1) + ',' + y.toFixed(1);
+  }).join(' ');
+  return '<svg class="trend-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+    '<polyline points="' + points + '" fill="none" stroke="#ef4444" stroke-width="2"/>' +
+  '</svg>';
+}
+
+var _liveSessionId = null;
+var _liveTranscriptCount = 0;
+var _livePollTimer = null;
+
+async function startLiveSTT(url) {
+  stopLiveSTT();
+  var box = document.getElementById('liveTranscript');
+  box.innerHTML = '<div class="hint" style="margin-top:0;">오디오 추출을 준비하는 중입니다... (모델 최초 로딩 시 최대 1분 정도 걸릴 수 있어요)</div>';
+
+  try {
+    var res = await fetch(PROXY + '/api/live-start', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url: url}),
+    });
+    var data = await res.json();
+    if (data.error) { box.innerHTML = '<div class="error">' + esc(data.error) + '</div>'; return; }
+
+    _liveSessionId = data.id;
+    _liveTranscriptCount = 0;
+    box.innerHTML = '';
+    document.getElementById('captionCount').textContent = '0건';
+    _fullCaptionText = '';
+    _lastAnalyzedLength = 0;
+    _livePollTimer = setInterval(pollLiveTranscript, 4000);
+    if (_contextTimer) clearInterval(_contextTimer);
+    _contextTimer = setInterval(runContextAnalysis, 30000);
+  } catch (e) {
+    box.innerHTML = '<div class="error">오디오 추출 시작 실패: ' + esc(e.message) + '</div>';
+  }
+}
+
+async function pollLiveTranscript() {
+  if (!_liveSessionId) return;
+  try {
+    var res = await fetch(PROXY + '/api/live-transcript?id=' + _liveSessionId + '&since=' + _liveTranscriptCount);
+    var data = await res.json();
+    var box = document.getElementById('liveTranscript');
+    (data.segments || []).forEach(function (seg) {
+      var card = document.createElement('div');
+      card.className = 'caption-card';
+      var spkNum = (seg.speaker || '').replace(/[^0-9]/g, '') || '1';
+      var spkHtml = seg.speaker ? '<span class="spk spk-' + spkNum + '">' + esc(seg.speaker) + '</span><br/>' : '';
+      card.innerHTML =
+        '<div class="caption-top"><span class="time">🕐 ' + fmtClock() + '</span></div>' +
+        spkHtml +
+        '<div class="caption-text">' + esc(seg.text) + '</div>';
+      box.appendChild(card);
+      _fullCaptionText += seg.text + ' ';
+    });
+    if (data.segments && data.segments.length) box.scrollTop = box.scrollHeight;
+    _liveTranscriptCount = data.total || _liveTranscriptCount;
+    document.getElementById('captionCount').textContent = _liveTranscriptCount + '건';
+  } catch (e) {}
+}
+
+var _fullCaptionText = '';
+var _lastAnalyzedLength = 0;
+var _contextTimer = null;
+
+async function runContextAnalysis() {
+  if (_fullCaptionText.length - _lastAnalyzedLength < 80) return; // 새로 쌓인 자막이 너무 적으면 스킵
+  var card = document.getElementById('contextInsightCard');
+  var prompt =
+    '당신은 홈쇼핑 방송 분석가입니다. 아래는 지금 방송 중인 쇼호스트의 실시간 발화를 STT로 받아적은 스크립트입니다.\n' +
+    '(STT 특성상 오타나 잘못 인식된 단어가 섞여 있을 수 있습니다. 문맥상 자연스럽게 이해해서 분석해주세요.)\n\n' +
+    '[스크립트]\n' + _fullCaptionText.slice(-3000) + '\n\n' +
+    '다음 항목을 포함해서 4~6줄로 분석해주세요:\n' +
+    '1. 쇼호스트가 지금 무엇을 말하고 싶어하는지 (핵심 메시지)\n' +
+    '2. 상품과 가격을 강하게 어필하고 있는지, 어떤 방식으로 어필하는지 (예: 가격 강조, 한정 수량, 혜택 등)\n' +
+    '3. 방송과 상품에 대한 전반적인 분석 및 시청자에게 줄 수 있는 인사이트';
+
+  card.innerHTML = '<h2>🧠 AI 문맥 분석</h2><div class="loading" style="padding:16px;"><div class="spinner"></div>분석 중...</div>';
+  _lastAnalyzedLength = _fullCaptionText.length;
+
+  try {
+    var resp = await fetch(PROXY + '/api/summarize', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({prompt: prompt}),
+    });
+    var fullText = '';
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, {stream: true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        var p = line.slice(6);
+        if (p === '[DONE]') break;
+        try { fullText += JSON.parse(p).text; } catch (e) {}
+      }
+    }
+    card.innerHTML = '<h2>🧠 AI 문맥 분석</h2><div class="insight-text">' + esc(fullText || '(분석 결과 없음)') + '</div>';
+  } catch (e) {
+    card.innerHTML = '<h2>🧠 AI 문맥 분석</h2><div class="error">분석 실패: ' + esc(e.message) + '</div>';
+  }
+}
+
+function fmtClock() {
+  var d = new Date();
+  var p = function (n) { return (n < 10 ? '0' : '') + n; };
+  return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+}
+
+function stopLiveSTT() {
+  if (_livePollTimer) { clearInterval(_livePollTimer); _livePollTimer = null; }
+  if (_contextTimer) { clearInterval(_contextTimer); _contextTimer = null; }
+  if (_liveSessionId) {
+    var id = _liveSessionId;
+    fetch(PROXY + '/api/live-stop', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id: id}),
+    }).catch(function () {});
+    _liveSessionId = null;
+  }
+}
+
+window.addEventListener('beforeunload', stopLiveSTT);
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+playLive();
+</script>
+</body>
+</html>
