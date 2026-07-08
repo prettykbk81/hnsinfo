@@ -14,3 +14,12 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# 다운로드된 영상 오디오 캐시
+video_cache/
+
+# 로컬 실행 로그/스크래치 파일
+out.txt
+proxy_stdout.log
+proxy_stderr.log
+.claude/settings.json

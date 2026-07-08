@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>생방송 · 홈앤쇼핑 AI</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
+.page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.page-title{font-size:16px;font-weight:700;color:#111;display:flex;align-items:center;gap:8px;}
+.page-title .badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.5px;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;}
+.home-btn:hover{background:#f0f0f0;color:#ef4444;}
+.wrap{max-width:1080px;margin:24px auto;padding:0 16px;}
+
+.page-lead{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.page-lead h1{font-size:17px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#ef4444;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.refresh-hint{font-size:11px;color:#999;margin-left:auto;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.ch-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);border:1px solid #eee;}
+.ch-name{font-size:12.5px;font-weight:800;color:#555;display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+.ch-name .live-dot{width:7px;height:7px;}
+.ch-card.pending .ch-name{color:#bbb;}
+
+.ch-body{display:flex;gap:12px;}
+.ch-thumb{width:64px;height:64px;border-radius:8px;object-fit:cover;background:#f5f5f5;flex-shrink:0;}
+.ch-info{flex:1;min-width:0;}
+.ch-pname{font-size:13px;font-weight:700;color:#111;line-height:1.4;margin-bottom:6px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ch-price{font-size:13px;font-weight:800;color:#ef4444;margin-bottom:4px;}
+.ch-time{font-size:11px;color:#999;}
+
+.ch-pending{text-align:center;padding:18px 0;color:#bbb;font-size:12px;}
+.ch-error{text-align:center;padding:18px 0;color:#c0392b;font-size:11.5px;}
+
+.watch-btn{margin-top:10px;width:100%;background:#111;color:#fff;border:none;padding:7px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px;}
+.watch-btn:hover{background:#333;}
+.watch-btn.playing{background:#ef4444;}
+.ch-player{margin-top:10px;display:none;}
+.ch-player video{width:100%;border-radius:8px;background:#000;display:block;}
+.ch-player.open{display:block;}
+
+.loading{text-align:center;padding:60px;color:#888;}
+.spinner{width:30px;height:30px;border:3px solid #ddd;border-top-color:#ef4444;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#ef4444" stroke-width="2" fill="#ef4444" fill-opacity="0.1"/><circle cx="12" cy="12" r="3" fill="#ef4444"/></svg>
+    생방송 <span class="badge">LIVE</span>
+  </span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="page-lead">
+    <h1><span class="live-dot"></span>현재 방송 중인 홈쇼핑 채널</h1>
+    <span class="refresh-hint" id="refreshHint"></span>
+  </div>
+
+  <div id="channelGrid">
+    <div class="loading"><div class="spinner"></div>생방송 정보를 불러오는 중...</div>
+  </div>
+</div>
+
+<script>
+var PROXY = 'http://localhost:8502';
+
+function fmtTime(s, e) {
+  if (!s && !e) return '';
+  return (s || '?') + ' ~ ' + (e || '?');
+}
+
+function renderCard(ch) {
+  if (ch.status === 'ok') {
+    var cid = 'ch_' + ch.company.replace(/[^a-zA-Z0-9]/g, '_');
+    var watchBtn = ch.stream_url ?
+      '<button class="watch-btn" id="btn_' + cid + '" onclick="togglePlayer(\'' + cid + '\', \'' + esc(ch.stream_url) + '\')">▶ 방송 보기</button>' +
+      '<div class="ch-player" id="player_' + cid + '"><video id="video_' + cid + '" controls muted></video></div>'
+      : '';
+    return (
+      '<div class="ch-card">' +
+        '<div class="ch-name"><span class="live-dot"></span>' + esc(ch.company) + '</div>' +
+        '<div class="ch-body">' +
+          '<img class="ch-thumb" src="' + esc(ch.image || '') + '" onerror="this.style.visibility=\'hidden\'">' +
+          '<div class="ch-info">' +
+            '<div class="ch-pname">' + esc(ch.name || '(상품명 없음)') + '</div>' +
+            '<div class="ch-price">' + esc(ch.price || '-') + '</div>' +
+            '<div class="ch-time">' + esc(fmtTime(ch.time_start, ch.time_end)) + '</div>' +
+          '</div>' +
+        '</div>' +
+        watchBtn +
+      '</div>'
+    );
+  }
+  if (ch.status === 'error') {
+    return (
+      '<div class="ch-card pending">' +
+        '<div class="ch-name">' + esc(ch.company) + '</div>' +
+        '<div class="ch-error">' + esc(ch.error || '정보를 가져오지 못했습니다') + '</div>' +
+      '</div>'
+    );
+  }
+  return (
+    '<div class="ch-card pending">' +
+      '<div class="ch-name">' + esc(ch.company) + '</div>' +
+      '<div class="ch-pending">준비중</div>' +
+    '</div>'
+  );
+}
+
+var _hlsInstances = {};
+var _openPlayers = 0;
+
+function togglePlayer(cid, streamUrl) {
+  var player = document.getElementById('player_' + cid);
+  var btn = document.getElementById('btn_' + cid);
+  var video = document.getElementById('video_' + cid);
+  var isOpen = player.classList.contains('open');
+
+  if (isOpen) {
+    if (_hlsInstances[cid]) { _hlsInstances[cid].destroy(); delete _hlsInstances[cid]; }
+    video.removeAttribute('src');
+    player.classList.remove('open');
+    btn.classList.remove('playing');
+    btn.textContent = '▶ 방송 보기';
+    _openPlayers = Math.max(0, _openPlayers - 1);
+    return;
+  }
+
+  player.classList.add('open');
+  btn.classList.add('playing');
+  btn.textContent = '■ 닫기';
+  _openPlayers++;
+
+  if (window.Hls && Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(streamUrl);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function () { video.play().catch(function () {}); });
+    _hlsInstances[cid] = hls;
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = streamUrl;
+    video.play().catch(function () {});
+  }
+}
+
+async function loadChannels() {
+  if (_openPlayers > 0) return; // 재생 중인 플레이어가 있으면 화면을 갈아엎지 않음
+  var grid = document.getElementById('channelGrid');
+  try {
+    var res = await fetch(PROXY + '/api/live-all-channels');
+    var list = await res.json();
+    grid.innerHTML = '<div class="grid">' + list.map(renderCard).join('') + '</div>';
+    document.getElementById('refreshHint').textContent = '마지막 갱신: ' + new Date().toLocaleTimeString('ko-KR');
+  } catch (e) {
+    grid.innerHTML = '<div class="loading">불러오지 못했습니다. proxy.py가 실행 중인지 확인해주세요.<br/>(' + esc(e.message) + ')</div>';
+  }
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+loadChannels();
+setInterval(loadChannels, 60000);
+</script>
+</body>
+</html>
