@@ -49,6 +49,49 @@ NAVER_SECRET = _toml("NAVER_CLIENT_SECRET")
 _HEADERS_UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 
+# ───────────────────────────────────────────────────────────
+# Lens(사내 생방송 진행 대시보드) 연동 — 이메일 인증코드 로그인 후
+# Bearer 토큰으로 API 호출. 개발 서버라 인증코드가 응답에 그대로 내려온다.
+# ───────────────────────────────────────────────────────────
+LENS_BASE = "http://172.16.209.98:5176"
+LENS_EMAIL = "fullmoon@hnsmall.com"
+_lens_token = None
+_lens_lock = threading.Lock()
+
+
+def _lens_login() -> str:
+    global _lens_token
+    r = req_lib.post(
+        f"{LENS_BASE}/api/auth/request-code",
+        json={"email": LENS_EMAIL, "purpose": "login"}, timeout=10,
+    )
+    r.raise_for_status()
+    dev_code = r.json().get("devCode")
+    r2 = req_lib.post(
+        f"{LENS_BASE}/api/auth/verify",
+        json={"email": LENS_EMAIL, "code": dev_code, "purpose": "login"}, timeout=10,
+    )
+    r2.raise_for_status()
+    _lens_token = r2.json().get("token")
+    return _lens_token
+
+
+def _lens_get(path: str) -> dict:
+    """Lens API GET — 토큰이 없거나 만료(401)됐으면 재로그인 후 1회 재시도"""
+    global _lens_token
+    with _lens_lock:
+        if not _lens_token:
+            _lens_login()
+        headers = {"Authorization": f"Bearer {_lens_token}"}
+        r = req_lib.get(f"{LENS_BASE}{path}", headers=headers, timeout=10)
+        if r.status_code == 401:
+            _lens_login()
+            headers = {"Authorization": f"Bearer {_lens_token}"}
+            r = req_lib.get(f"{LENS_BASE}{path}", headers=headers, timeout=10)
+        r.raise_for_status()
+        return r.json()
+
+
 def _search_hnsmall(keyword: str) -> list[dict]:
     """홈앤쇼핑 사이트에서 상품 검색"""
     try:
@@ -1254,6 +1297,21 @@ class Handler(BaseHTTPRequestHandler):
             name = params.get("name", [""])[0]
             self._json_response(_check_competitor_history(name) if name else {"error": "name이 없습니다"})
 
+        elif parsed.path == "/api/lens/broadcast-monitor":
+            self._lens_proxy("/api/live/broadcast-monitor")
+
+        elif parsed.path == "/api/lens/broadcast-status":
+            self._lens_proxy("/api/live/broadcast-status")
+
+        elif parsed.path == "/api/lens/inflow-outflow":
+            self._lens_proxy("/api/live/inflow-outflow")
+
+        elif parsed.path == "/api/lens/competitor-schedule":
+            self._lens_proxy("/api/live/competitor-schedule")
+
+        elif parsed.path == "/api/lens/collection-status":
+            self._lens_proxy("/api/settings/collection-status")
+
         else:
             self.send_error(404)
 
@@ -1427,6 +1485,12 @@ class Handler(BaseHTTPRequestHandler):
             self._json_response({"error": "whisper 미설치. pip install openai-whisper 실행 필요"})
         except Exception as e:
             self._json_response({"error": str(e)})
+
+    def _lens_proxy(self, lens_path):
+        try:
+            self._json_response(_lens_get(lens_path))
+        except Exception as e:
+            self._json_response({"error": f"Lens 연동 실패: {e}"})
 
     def _json_response(self, data):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")

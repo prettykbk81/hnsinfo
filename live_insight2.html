@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실시간 라이브 방송 분석 (Lens) · 홈앤쇼핑 AI</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eaeaea;color:#333;font-size:13px;}
+.page-header{background:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.page-title{font-size:16px;font-weight:700;color:#111;display:flex;align-items:center;gap:8px;}
+.page-title .badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.5px;}
+.collect-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:12px;background:#f5f5f5;color:#999;margin-left:6px;}
+.collect-badge.ok{background:#f0fdf4;color:#16a34a;}
+.collect-badge.warn{background:#fffbeb;color:#b45309;}
+.home-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);text-decoration:none;color:#444;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;}
+.home-btn:hover{background:#f0f0f0;color:#ef4444;}
+.wrap{max-width:1440px;margin:24px auto;padding:0 16px;}
+
+.section{background:#fff;border-radius:10px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.section h2{font-size:13.5px;font-weight:700;color:#ef4444;margin-bottom:12px;display:flex;align-items:center;gap:6px;justify-content:space-between;}
+.section h2 .unit{font-size:10.5px;color:#bbb;font-weight:600;}
+.hint{font-size:11px;color:#999;margin-top:8px;line-height:1.6;}
+.loading{text-align:center;padding:30px;color:#888;}
+.spinner{width:26px;height:26px;border:3px solid #ddd;border-top-color:#ef4444;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error{color:#c0392b;font-weight:600;padding:12px;text-align:center;font-size:12px;}
+
+/* 방송정보/주문현황 행 */
+.bm-wrap{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;}
+.bm-card{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.bm-product{flex:2 1 300px;display:flex;gap:14px;}
+.bm-product img{width:64px;height:64px;border-radius:8px;object-fit:cover;background:#f5f5f5;flex-shrink:0;}
+.bm-cat{font-size:10.5px;color:#999;margin-bottom:2px;}
+.bm-time{font-size:11px;color:#ef4444;font-weight:800;margin-bottom:4px;}
+.bm-name{font-size:14px;font-weight:800;color:#111;margin-bottom:2px;}
+.bm-goods{font-size:11.5px;color:#666;margin-bottom:6px;line-height:1.4;}
+.bm-link{font-size:11px;color:#ef4444;text-decoration:none;font-weight:700;}
+
+.bm-total{flex:0 0 110px;text-align:center;background:#fef2f2;}
+.bm-total-label{font-size:10.5px;color:#b45766;margin-bottom:6px;font-weight:700;}
+.bm-total-num{font-size:30px;font-weight:900;color:#ef4444;}
+
+.bm-block{flex:1 1 180px;}
+.bm-block-title{font-size:10.5px;font-weight:800;color:#999;margin-bottom:8px;display:flex;justify-content:space-between;}
+.bm-block-title .sub{font-weight:600;color:#ccc;}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;}
+.pill{flex:1 1 56px;background:#f7f7f8;border-radius:8px;padding:6px 4px;text-align:center;}
+.pill.hl{background:#fef2f2;}
+.pill-label{font-size:9px;color:#999;margin-bottom:2px;}
+.pill-val{font-size:12.5px;font-weight:800;color:#111;}
+.pill-accum{font-size:9px;color:#bbb;font-weight:600;}
+
+/* 3단 / 2단 그리드 */
+.three-col{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:16px;align-items:start;margin-bottom:16px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+@media (max-width:1100px){.three-col,.two-col{grid-template-columns:1fr;}}
+
+/* 시청가구 차트 */
+.rank-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.rank-item{background:#f7f7f8;border-radius:8px;padding:5px 9px;font-size:11px;color:#555;}
+.rank-item .num{font-weight:800;color:#aaa;margin-right:4px;}
+.rank-item.mine{background:#fef2f2;color:#ef4444;font-weight:800;}
+
+/* 생방송 화면 */
+.live-player{width:100%;max-height:340px;background:#000;border-radius:10px;display:block;}
+.live-status{font-size:11px;margin-top:8px;padding:6px 10px;border-radius:8px;}
+.live-status.ok{background:#f0fdf4;color:#16a34a;}
+.live-status.err{background:#fef2f2;color:#c0392b;}
+
+/* 경쟁사 현재 편성 */
+.cs-group-title{font-size:11px;font-weight:800;color:#999;margin:10px 0 6px;}
+.cs-group-title:first-child{margin-top:0;}
+.cs-row{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #f3f3f3;font-size:12px;}
+.cs-row:last-child{border-bottom:none;}
+.cs-name{font-weight:800;color:#555;flex:0 0 78px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cs-prog{flex:1;color:#333;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cs-time{color:#999;flex:0 0 38px;text-align:right;}
+
+/* 유입/유출 */
+.io-summary{display:flex;gap:12px;margin-bottom:10px;font-size:12px;font-weight:700;}
+.io-summary .neg{color:#ef4444;} .io-summary .pos{color:#16a34a;}
+.sankey-label{font-size:10px;fill:#555;}
+.sankey-val{font-size:9px;fill:#999;}
+.sankey-mid-label{font-size:11px;font-weight:800;fill:#fff;}
+
+/* 실시간 자막 */
+.caption-count{font-size:11px;font-weight:700;color:#ef4444;background:#fef2f2;padding:3px 10px;border-radius:20px;}
+.transcript-box{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:2px;}
+.caption-card{border:1px solid #eee;border-radius:10px;padding:10px 12px;background:#fff;}
+.caption-top{display:flex;align-items:center;justify-content:space-between;color:#aaa;font-size:10.5px;margin-bottom:6px;}
+.caption-text{font-size:12.5px;line-height:1.6;color:#333;}
+.spk{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:5px;white-space:nowrap;}
+.spk-1{background:#eff6ff;color:#2563eb;}
+.spk-2{background:#f0fdf4;color:#16a34a;}
+.spk-3{background:#fff7ed;color:#ea580c;}
+.collapsible-head{cursor:pointer;justify-content:space-between;user-select:none;margin-bottom:0;}
+.collapsible-head.open{margin-bottom:12px;}
+.collapsible-head.open #liveUrlChevron{transform:rotate(180deg);}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;}
+.search-bar{display:flex;gap:8px;}
+.search-bar input{flex:1;padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:13px;font-family:inherit;}
+.search-bar input:focus{outline:none;border-color:#ef4444;}
+.search-bar button{background:#ef4444;color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.search-bar button:hover{background:#dc2626;}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <span class="page-title">
+    <span class="live-dot" style="width:10px;height:10px;"></span>
+    실시간 라이브 방송 분석 <span class="badge">LENS</span>
+    <span class="collect-badge" id="collectBadge">수집 상태 확인 중</span>
+  </span>
+  <a class="home-btn" href="https://prettykbk81.github.io/hnsinfo/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+    </svg>
+  </a>
+</div>
+
+<div class="wrap">
+
+  <!-- 방송정보 + 주문현황 -->
+  <div class="bm-wrap" id="bmWrap">
+    <div class="bm-card" style="flex:1 1 100%;"><div class="loading"><div class="spinner"></div>방송/주문 현황을 불러오는 중...</div></div>
+  </div>
+
+  <div class="three-col">
+    <!-- 1: 시청가구 변화 추이 -->
+    <div class="section" id="viewershipCard">
+      <h2>홈쇼핑사 시청가구 변화 추이 <span class="unit" id="viewershipUnit"></span></h2>
+      <div class="loading" style="padding:20px;"><div class="spinner"></div>불러오는 중...</div>
+    </div>
+
+    <!-- 2: 생방송 화면 -->
+    <div class="section">
+      <h2 class="collapsible-head" onclick="toggleLiveUrl()">
+        <span>📺 생방송 화면</span>
+        <svg id="liveUrlChevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .15s;"><polyline points="6,9 12,15 18,9"/></svg>
+      </h2>
+      <div id="liveUrlBody" style="display:none;margin-bottom:10px;">
+        <div class="search-bar">
+          <input type="text" id="liveUrl" value="https://livevod.hnsmall.com:2935/live/mp4:a.stream/playlist.m3u8" placeholder="홈앤쇼핑 라이브 방송 URL을 입력하세요 (m3u8)" onkeydown="if(event.key==='Enter')playLive();">
+          <button onclick="playLive()">재생</button>
+        </div>
+      </div>
+      <video id="livePlayerEl" class="live-player" controls muted></video>
+      <div id="liveStatus"></div>
+    </div>
+
+    <!-- 3: 경쟁사 현재 편성 -->
+    <div class="section" id="competitorScheduleCard">
+      <h2>경쟁사 현재 편성 <span class="unit" id="csUnit"></span></h2>
+      <div class="loading" style="padding:20px;"><div class="spinner"></div>불러오는 중...</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- 유입/유출 -->
+    <div class="section" id="inflowOutflowCard">
+      <h2>유입/유출 변화 추이 <span class="unit" id="ioUnit"></span></h2>
+      <div class="loading" style="padding:20px;"><div class="spinner"></div>불러오는 중...</div>
+    </div>
+
+    <!-- 실시간 자막 -->
+    <div class="section">
+      <h2><span>📄 실시간 방송 자막</span><span class="caption-count" id="captionCount">0건</span></h2>
+      <div id="liveTranscript" class="transcript-box">
+        <div class="hint" style="margin-top:0;">재생을 시작하면 음성 인식 결과가 여기에 표시됩니다.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var PROXY = 'http://localhost:8502';
+var _hls = null;
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtHM(s){ if (!s || s.length < 12) return ''; return s.slice(8,10) + ':' + s.slice(10,12); }
+function numOr(v){ return (v === null || v === undefined) ? '-' : Number(v).toLocaleString(); }
+
+/* ── 생방송 화면 ── */
+function toggleLiveUrl() {
+  var body = document.getElementById('liveUrlBody');
+  var head = document.getElementById('liveUrlChevron').closest('.collapsible-head');
+  var open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  head.classList.toggle('open', !open);
+}
+
+function playLive() {
+  var url = document.getElementById('liveUrl').value.trim();
+  var statusEl = document.getElementById('liveStatus');
+  var video = document.getElementById('livePlayerEl');
+  if (!url) return;
+
+  statusEl.className = 'live-status';
+  statusEl.textContent = '';
+  if (_hls) { _hls.destroy(); _hls = null; }
+
+  if (window.Hls && Hls.isSupported()) {
+    _hls = new Hls();
+    _hls.loadSource(url);
+    _hls.attachMedia(video);
+    _hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      statusEl.className = 'live-status ok';
+      statusEl.textContent = '✅ 스트림 연결 완료';
+      video.play().catch(function () {});
+    });
+    _hls.on(Hls.Events.ERROR, function (event, data) {
+      if (data.fatal) {
+        statusEl.className = 'live-status err';
+        statusEl.textContent = '❌ 스트림 재생 실패: ' + (data.details || data.type);
+      }
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.play().catch(function () {});
+    statusEl.className = 'live-status ok';
+    statusEl.textContent = '✅ 스트림 연결을 시도합니다.';
+  }
+
+  startLiveSTT(url);
+}
+
+/* ── 실시간 STT 자막 ── */
+var _liveSessionId = null;
+var _liveTranscriptCount = 0;
+var _livePollTimer = null;
+
+async function startLiveSTT(url) {
+  stopLiveSTT();
+  var box = document.getElementById('liveTranscript');
+  box.innerHTML = '<div class="hint" style="margin-top:0;">오디오 추출을 준비하는 중입니다... (모델 최초 로딩 시 다소 걸릴 수 있어요)</div>';
+
+  try {
+    var res = await fetch(PROXY + '/api/live-start', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url: url}),
+    });
+    var data = await res.json();
+    if (data.error) { box.innerHTML = '<div class="error">' + esc(data.error) + '</div>'; return; }
+
+    _liveSessionId = data.id;
+    _liveTranscriptCount = 0;
+    box.innerHTML = '';
+    document.getElementById('captionCount').textContent = '0건';
+    _livePollTimer = setInterval(pollLiveTranscript, 4000);
+  } catch (e) {
+    box.innerHTML = '<div class="error">오디오 추출 시작 실패: ' + esc(e.message) + '</div>';
+  }
+}
+
+async function pollLiveTranscript() {
+  if (!_liveSessionId) return;
+  try {
+    var res = await fetch(PROXY + '/api/live-transcript?id=' + _liveSessionId + '&since=' + _liveTranscriptCount);
+    var data = await res.json();
+    var box = document.getElementById('liveTranscript');
+    (data.segments || []).forEach(function (seg) {
+      var card = document.createElement('div');
+      card.className = 'caption-card';
+      var spkNum = (seg.speaker || '').replace(/[^0-9]/g, '') || '1';
+      var spkHtml = seg.speaker ? '<span class="spk spk-' + spkNum + '">' + esc(seg.speaker) + '</span><br/>' : '';
+      card.innerHTML =
+        '<div class="caption-top"><span>🕐 ' + fmtClock() + '</span></div>' +
+        spkHtml +
+        '<div class="caption-text">' + esc(seg.text) + '</div>';
+      box.appendChild(card);
+    });
+    if (data.segments && data.segments.length) box.scrollTop = box.scrollHeight;
+    _liveTranscriptCount = data.total || _liveTranscriptCount;
+    document.getElementById('captionCount').textContent = _liveTranscriptCount + '건';
+  } catch (e) {}
+}
+
+function fmtClock() {
+  var d = new Date();
+  var p = function (n) { return (n < 10 ? '0' : '') + n; };
+  return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+}
+
+function stopLiveSTT() {
+  if (_livePollTimer) { clearInterval(_livePollTimer); _livePollTimer = null; }
+  if (_liveSessionId) {
+    var id = _liveSessionId;
+    fetch(PROXY + '/api/live-stop', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id: id}),
+    }).catch(function () {});
+    _liveSessionId = null;
+  }
+}
+window.addEventListener('beforeunload', stopLiveSTT);
+
+/* ── 방송정보 + 주문현황 (Lens) ── */
+function pill(label, val) {
+  return '<div class="pill"><div class="pill-label">' + esc(label) + '</div><div class="pill-val">' + numOr(val) + '</div></div>';
+}
+function pill2(label, live, accum, hl) {
+  return '<div class="pill' + (hl ? ' hl' : '') + '"><div class="pill-label">' + esc(label) + '</div>' +
+    '<div class="pill-val">' + numOr(live) + '<span class="pill-accum">/' + numOr(accum) + '</span></div></div>';
+}
+
+async function loadBroadcastMonitor() {
+  var wrap = document.getElementById('bmWrap');
+  try {
+    var res = await fetch(PROXY + '/api/lens/broadcast-monitor');
+    var d = await res.json();
+    if (d.error) { wrap.innerHTML = '<div class="bm-card error" style="flex:1 1 100%;">' + esc(d.error) + '</div>'; return; }
+
+    var b = d.broadcast || {}, o = d.order || {}, c = d.concurrent || {}, cn = d.connect || {};
+
+    wrap.innerHTML =
+      '<div class="bm-card bm-product">' +
+        '<img src="' + esc(b.imageUrl || '') + '" onerror="this.style.visibility=\'hidden\'">' +
+        '<div>' +
+          '<div class="bm-cat">' + esc(b.category || '') + ' · ' + fmtHM(b.startTime) + '~' + fmtHM(b.endTime) + '</div>' +
+          '<div class="bm-name">' + esc(b.progName || '') + '</div>' +
+          '<div class="bm-goods">' + esc(b.goodsName || '') + '</div>' +
+          (b.detailUrl ? '<a class="bm-link" href="' + esc(b.detailUrl) + '" target="_blank">상품 상세 ↗</a>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="bm-card bm-total">' +
+        '<div class="bm-total-label">총 주문접속</div>' +
+        '<div class="bm-total-num">' + numOr(cn.orderConTotCnt) + '</div>' +
+      '</div>' +
+      '<div class="bm-card bm-block">' +
+        '<div class="bm-block-title">주문 접속</div>' +
+        '<div class="pill-row">' + pill('모바일', cn.orderConMcCnt) + pill('ARS', cn.orderConArsCnt) + pill('상담원', cn.orderConCallCnt) + pill('콜대기', cn.orderConCallWaitCnt) + pill('PC웹', cn.orderConPcCnt) + '</div>' +
+      '</div>' +
+      '<div class="bm-card bm-block">' +
+        '<div class="bm-block-title">주문 완료 <span class="sub">실시간/누적</span></div>' +
+        '<div class="pill-row">' + pill2('모바일', o.orderMcCnt, o.orderAccumMcCnt) + pill2('ARS', o.orderArsCnt, o.orderAccumArsCnt) + pill2('상담원', o.orderCallCnt, o.orderAccumCallCnt) + pill2('카카오챗봇', o.orderKcbotCnt, o.orderAccumKcbotCnt) + pill2('PC웹', o.orderPcCnt, o.orderAccumPcCnt) + pill2('전체', o.orderTotCnt, o.orderAccumTotCnt, true) + '</div>' +
+      '</div>' +
+      '<div class="bm-card bm-block" style="flex:0 0 140px;">' +
+        '<div class="bm-block-title">동시접속</div>' +
+        '<div class="pill-row">' + pill('모바일', c.concurrentUserMcCnt) + pill('PC웹', c.concurrentUserPcCnt) + '</div>' +
+      '</div>';
+  } catch (e) {
+    wrap.innerHTML = '<div class="bm-card error" style="flex:1 1 100%;">방송 현황을 불러오지 못했습니다.</div>';
+  }
+}
+
+/* ── 시청가구 변화 추이 (Lens, 다중 라인 차트) ── */
+var VIEW_PALETTE = ['#6366f1','#f59e0b','#10b981','#3b82f6','#a855f7','#ec4899','#14b8a6','#84cc16','#f97316','#0ea5e9','#8b5cf6','#64748b','#eab308','#22c55e'];
+
+function renderMultiLineChart(labels, series) {
+  var w = 560, h = 190, padL = 4, padR = 4, padT = 10, padB = 4;
+  var allVals = [];
+  series.forEach(function (s) { (s.data || []).forEach(function (v) { allVals.push(v); }); });
+  if (!allVals.length) return '<div class="hint">데이터가 없습니다.</div>';
+  var minV = Math.min.apply(null, allVals), maxV = Math.max.apply(null, allVals);
+  if (minV === maxV) maxV = minV + 1;
+  var n = labels.length;
+  var xStep = n > 1 ? (w - padL - padR) / (n - 1) : 0;
+  function X(i) { return padL + i * xStep; }
+  function Y(v) { return h - padB - ((v - minV) / (maxV - minV)) * (h - padT - padB); }
+
+  var paths = '';
+  var colorIdx = 0;
+  series.filter(function (s) { return !s.isMine; }).forEach(function (s) {
+    var pts = (s.data || []).map(function (v, i) { return X(i).toFixed(1) + ',' + Y(v).toFixed(1); }).join(' ');
+    paths += '<polyline points="' + pts + '" fill="none" stroke="' + VIEW_PALETTE[colorIdx % VIEW_PALETTE.length] + '" stroke-width="1.3" opacity="0.55"/>';
+    colorIdx++;
+  });
+  series.filter(function (s) { return s.isMine; }).forEach(function (s) {
+    var pts = (s.data || []).map(function (v, i) { return X(i).toFixed(1) + ',' + Y(v).toFixed(1); }).join(' ');
+    paths += '<polyline points="' + pts + '" fill="none" stroke="#ef4444" stroke-width="2.4"/>';
+  });
+
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" style="width:100%;height:180px;display:block;">' + paths + '</svg>';
+}
+
+function renderRankList(series) {
+  var ranked = series.map(function (s) { return {name: s.name, now: s.now || 0, isMine: s.isMine}; })
+    .sort(function (a, b) { return b.now - a.now; });
+  ranked.forEach(function (r, i) { r.rank = i + 1; });
+  var top = ranked.slice(0, 5);
+  var mine = ranked.filter(function (r) { return r.isMine; })[0];
+  if (mine && mine.rank > 5) top.push(mine);
+  return '<div class="rank-list">' + top.map(function (r) {
+    return '<div class="rank-item' + (r.isMine ? ' mine' : '') + '"><span class="num">' + r.rank + '</span>' + esc(r.name) + ' ' + numOr(r.now) + '</div>';
+  }).join('') + '</div>';
+}
+
+async function loadViewershipTrend() {
+  var card = document.getElementById('viewershipCard');
+  try {
+    var res = await fetch(PROXY + '/api/lens/broadcast-status');
+    var d = await res.json();
+    if (d.error) { card.innerHTML = '<h2>홈쇼핑사 시청가구 변화 추이</h2><div class="error">' + esc(d.error) + '</div>'; return; }
+
+    card.innerHTML =
+      '<h2>홈쇼핑사 시청가구 변화 추이 <span class="unit">최근 ' + (d.windowMin || '') + '분 · ' + (d.unitSec || '') + '초 간격</span></h2>' +
+      renderMultiLineChart(d.labels || [], d.series || []) +
+      renderRankList(d.series || []);
+  } catch (e) {
+    card.innerHTML = '<h2>홈쇼핑사 시청가구 변화 추이</h2><div class="error">시청가구 데이터를 불러오지 못했습니다.</div>';
+  }
+}
+
+/* ── 경쟁사 현재 편성 (Lens) ── */
+async function loadCompetitorSchedule() {
+  var card = document.getElementById('competitorScheduleCard');
+  try {
+    var res = await fetch(PROXY + '/api/lens/competitor-schedule');
+    var d = await res.json();
+    if (d.error) { card.innerHTML = '<h2>경쟁사 현재 편성</h2><div class="error">' + esc(d.error) + '</div>'; return; }
+
+    var items = d.items || [];
+    var tv = items.filter(function (i) { return i.group === 'TV'; });
+    var t = items.filter(function (i) { return i.group === 'T'; });
+    function row(it) {
+      return '<div class="cs-row"><div class="cs-name">' + esc(it.name) + '</div>' +
+        '<div class="cs-prog">' + esc(it.prgmNm || '편성 정보 없음') + '</div>' +
+        '<div class="cs-time">' + esc(it.start || '') + '</div></div>';
+    }
+    card.innerHTML = '<h2>경쟁사 현재 편성 <span class="unit">TV ' + tv.length + ' · T커머스 ' + t.length + '</span></h2>' +
+      '<div class="cs-group-title">TV홈쇼핑</div>' + tv.map(row).join('') +
+      '<div class="cs-group-title">T커머스</div>' + t.map(row).join('');
+  } catch (e) {
+    card.innerHTML = '<h2>경쟁사 현재 편성</h2><div class="error">편성 정보를 불러오지 못했습니다.</div>';
+  }
+}
+
+/* ── 유입/유출 변화 추이 (Lens, Sankey) ── */
+function ribbonPath(x0, y0, y1, x1, Y0, Y1) {
+  var cx = (x0 + x1) / 2;
+  return 'M' + x0 + ',' + y0 +
+    ' C' + cx + ',' + y0 + ' ' + cx + ',' + Y0 + ' ' + x1 + ',' + Y0 +
+    ' L' + x1 + ',' + Y1 +
+    ' C' + cx + ',' + Y1 + ' ' + cx + ',' + y1 + ' ' + x0 + ',' + y1 + ' Z';
+}
+
+function renderSankey(d) {
+  var inflow = (d.topInflow || []).filter(function (x) { return x.last > 0; }).slice(0, 8);
+  var outflow = (d.topOutflow || []).filter(function (x) { return x.last > 0; }).slice(0, 8);
+  if (!inflow.length && !outflow.length) return '<div class="hint">최근 유입/유출 데이터가 없습니다.</div>';
+
+  var W = 620, gap = 6, minSlot = 22, maxBand = 46;
+  var barW = 7, sideW = 92;
+  var midX1 = W / 2 - 9, midX2 = W / 2 + 9, leftBarX = sideW, rightBarX = W - sideW - barW;
+  var palette = ['#6366f1', '#f59e0b', '#10b981', '#3b82f6', '#a855f7', '#ec4899', '#14b8a6', '#84cc16'];
+
+  var maxVal = Math.max.apply(null, inflow.concat(outflow).map(function (x) { return x.last; })) || 1;
+  var pxPerUnit = maxBand / maxVal;
+
+  function buildSegs(list) {
+    var y = 0;
+    return list.map(function (x, i) {
+      var bandH = Math.max(3, x.last * pxPerUnit);
+      var slotH = Math.max(minSlot, bandH);
+      var bandY0 = y + (slotH - bandH) / 2;
+      var seg = {
+        y0: bandY0, y1: bandY0 + bandH, slotMid: y + slotH / 2,
+        name: x.name, val: x.last, color: palette[i % palette.length],
+      };
+      y += slotH + gap;
+      return seg;
+    });
+  }
+  var leftSegs = buildSegs(inflow);
+  var rightSegs = buildSegs(outflow);
+  var midH = Math.max(leftSegs.length ? leftSegs[leftSegs.length - 1].y1 : 0, rightSegs.length ? rightSegs[rightSegs.length - 1].y1 : 0, minSlot);
+
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + (midH + 4) + '" style="width:100%;height:' + (midH + 4) + 'px;">';
+
+  leftSegs.forEach(function (seg) {
+    svg += '<path d="' + ribbonPath(leftBarX + barW, seg.y0, seg.y1, midX1, seg.y0, seg.y1) + '" fill="' + seg.color + '" opacity="0.35"/>';
+  });
+  rightSegs.forEach(function (seg) {
+    svg += '<path d="' + ribbonPath(midX2, seg.y0, seg.y1, rightBarX, seg.y0, seg.y1) + '" fill="' + seg.color + '" opacity="0.35"/>';
+  });
+
+  svg += '<rect x="' + midX1 + '" y="0" width="' + (midX2 - midX1) + '" height="' + midH + '" rx="4" fill="#ef4444"/>';
+  svg += '<text class="sankey-mid-label" x="' + (midX1 + (midX2 - midX1) / 2) + '" y="' + (midH / 2) + '" text-anchor="middle" dominant-baseline="middle" transform="rotate(90 ' + (midX1 + (midX2 - midX1) / 2) + ' ' + (midH / 2) + ')">' + esc(d.me || '홈&쇼핑') + '</text>';
+
+  leftSegs.forEach(function (seg) {
+    svg += '<rect x="' + leftBarX + '" y="' + seg.y0 + '" width="' + barW + '" height="' + (seg.y1 - seg.y0) + '" rx="2" fill="' + seg.color + '"/>';
+    svg += '<text class="sankey-label" x="' + (leftBarX - 6) + '" y="' + (seg.slotMid - 5) + '" text-anchor="end" dominant-baseline="middle">' + esc(seg.name) + '</text>';
+    svg += '<text class="sankey-val" x="' + (leftBarX - 6) + '" y="' + (seg.slotMid + 7) + '" text-anchor="end" dominant-baseline="middle">' + seg.val + '</text>';
+  });
+  rightSegs.forEach(function (seg) {
+    svg += '<rect x="' + rightBarX + '" y="' + seg.y0 + '" width="' + barW + '" height="' + (seg.y1 - seg.y0) + '" rx="2" fill="' + seg.color + '"/>';
+    svg += '<text class="sankey-label" x="' + (rightBarX + barW + 6) + '" y="' + (seg.slotMid - 5) + '" text-anchor="start" dominant-baseline="middle">' + esc(seg.name) + '</text>';
+    svg += '<text class="sankey-val" x="' + (rightBarX + barW + 6) + '" y="' + (seg.slotMid + 7) + '" text-anchor="start" dominant-baseline="middle">' + seg.val + '</text>';
+  });
+
+  svg += '</svg>';
+  return svg;
+}
+
+async function loadInflowOutflow() {
+  var card = document.getElementById('inflowOutflowCard');
+  try {
+    var res = await fetch(PROXY + '/api/lens/inflow-outflow');
+    var d = await res.json();
+    if (d.error) { card.innerHTML = '<h2>유입/유출 변화 추이</h2><div class="error">' + esc(d.error) + '</div>'; return; }
+
+    var netClass = d.net < 0 ? 'neg' : 'pos';
+    card.innerHTML =
+      '<h2>유입/유출 변화 추이 <span class="unit">최근 10초</span></h2>' +
+      '<div class="io-summary"><span>유입 ' + numOr(d.inflowTotal) + '</span><span>유출 ' + numOr(d.outflowTotal) + '</span>' +
+      '<span class="' + netClass + '">순증감 ' + (d.net > 0 ? '+' : '') + numOr(d.net) + '</span></div>' +
+      renderSankey(d);
+  } catch (e) {
+    card.innerHTML = '<h2>유입/유출 변화 추이</h2><div class="error">유입/유출 데이터를 불러오지 못했습니다.</div>';
+  }
+}
+
+/* ── 수집 상태 배지 ── */
+async function loadCollectionStatus() {
+  var badge = document.getElementById('collectBadge');
+  try {
+    var res = await fetch(PROXY + '/api/lens/collection-status');
+    var d = await res.json();
+    if (d.error) { badge.className = 'collect-badge'; badge.textContent = '수집 상태 확인 실패'; return; }
+    var down = d.downCount || 0, warn = d.warnCount || 0;
+    if (down > 0) { badge.className = 'collect-badge'; badge.textContent = '⚠ 수집 중단 ' + down; }
+    else if (warn > 0) { badge.className = 'collect-badge warn'; badge.textContent = '수집 지연 ' + warn; }
+    else { badge.className = 'collect-badge ok'; badge.textContent = '수집 정상'; }
+  } catch (e) {
+    badge.className = 'collect-badge';
+    badge.textContent = '수집 상태 확인 실패';
+  }
+}
+
+/* ── 폴링 시작 ── */
+loadBroadcastMonitor();
+setInterval(loadBroadcastMonitor, 5000);
+loadViewershipTrend();
+setInterval(loadViewershipTrend, 12000);
+loadCompetitorSchedule();
+setInterval(loadCompetitorSchedule, 30000);
+loadInflowOutflow();
+setInterval(loadInflowOutflow, 15000);
+loadCollectionStatus();
+setInterval(loadCollectionStatus, 60000);
+playLive();
+</script>
+</body>
+</html>
